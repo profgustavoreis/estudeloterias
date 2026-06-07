@@ -23,6 +23,10 @@ export interface LoteriaSummary {
   /** @nullable */
   premioAcumulado?: number | null;
   acumulado: boolean;
+  /** @nullable */
+  ganhadoresFaixa1?: number | null;
+  /** @nullable */
+  valorPremioFaixa1?: number | null;
   dezenas: string[];
   icone: string;
 }

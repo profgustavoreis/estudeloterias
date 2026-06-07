@@ -43,12 +43,16 @@ router.get("/loterias", async (req, res) => {
         try {
           const latest = await getLatest(m.modalidade);
           if (!latest) return { ...m, ultimoConcurso: 0, dataUltimoSorteio: "", premioAcumulado: null, acumulado: false, dezenas: [] };
+          const premios = latest.premios as Array<{ faixa: number; ganhadores: number; valorPremio: number }>;
+          const faixa1 = premios?.find(p => p.faixa === 1);
           return {
             ...m,
             ultimoConcurso: latest.concurso,
             dataUltimoSorteio: latest.data,
             premioAcumulado: latest.valorAcumulado ? Number(latest.valorAcumulado) : null,
             acumulado: latest.acumulado,
+            ganhadoresFaixa1: faixa1?.ganhadores ?? null,
+            valorPremioFaixa1: faixa1?.valorPremio ?? null,
             dezenas: (latest.dezenas as string[]).slice(0, 6),
           };
         } catch {

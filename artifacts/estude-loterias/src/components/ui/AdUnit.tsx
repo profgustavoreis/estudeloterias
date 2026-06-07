@@ -26,10 +26,18 @@ export function AdUnit({ slot, format = "auto", className = "", label = true }: 
   }, []);
 
   if (IS_DEV || !PUBLISHER_ID) {
+    const height = format === "horizontal" ? 90 : format === "rectangle" ? 250 : 100;
     return (
-      <div className={`flex flex-col items-center justify-center bg-muted/40 border border-dashed border-border rounded-lg ${className}`}
-        style={{ minHeight: format === "horizontal" ? 90 : format === "rectangle" ? 250 : 100 }}>
-        {label && <span className="text-xs text-muted-foreground">Anúncio — slot: {slot}</span>}
+      <div
+        className={`flex flex-col items-center justify-center bg-muted/30 border border-dashed border-muted-foreground/30 rounded-lg gap-1 ${className}`}
+        style={{ minHeight: height }}
+      >
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">Publicidade</span>
+        {label && (
+          <span className="text-[10px] text-muted-foreground/40">
+            {format === "horizontal" ? "728×90" : format === "rectangle" ? "300×250" : "Responsivo"} · slot {slot}
+          </span>
+        )}
       </div>
     );
   }

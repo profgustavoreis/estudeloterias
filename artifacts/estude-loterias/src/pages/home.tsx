@@ -66,7 +66,17 @@ export default function Home() {
                       <div className="text-2xl font-bold">{formatCurrency(loteria.premioAcumulado)}</div>
                     </div>
                   ) : (
-                    <div className="text-sm text-muted-foreground mt-5">Prêmio principal saiu</div>
+                    <div>
+                      <div className="text-sm font-semibold uppercase tracking-wider" style={{ color: loteria.cor }}>
+                        {(() => {
+                          const n = loteria.ganhadoresFaixa1 ?? 0;
+                          return `Saiu! (${n} ${n === 1 ? "acertador" : "acertadores"})`;
+                        })()}
+                      </div>
+                      {loteria.valorPremioFaixa1 != null && loteria.valorPremioFaixa1 > 0 && (
+                        <div className="text-2xl font-bold">{formatCurrency(loteria.valorPremioFaixa1)}</div>
+                      )}
+                    </div>
                   )}
                 </div>
                 

@@ -255,6 +255,10 @@ components:
           type: ["number", "null"]
         acumulado:
           type: boolean
+        ganhadoresFaixa1:
+          type: ["integer", "null"]
+        valorPremioFaixa1:
+          type: ["number", "null"]
         dezenas:
           type: array
           items:
