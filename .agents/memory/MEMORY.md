@@ -1,0 +1,2 @@
+- [Caixa API headers](caixa-api-headers.md) — API da Caixa requer Origin+Referer específicos; sem esses headers retorna 403.
+- [Lottery sync strategy](lottery-sync-strategy.md) — seed cron-based com Caixa API + rate limiting; guidi API tem timeout intermitente.

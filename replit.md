@@ -1,6 +1,6 @@
-# [Project name]
+# Estude Loterias
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Site de estatísticas e ferramentas para as loterias da Caixa (Mega-Sena, Lotofácil, Quina e mais), disponível em estudeloterias.com.br.
 
 ## Run & Operate
 
