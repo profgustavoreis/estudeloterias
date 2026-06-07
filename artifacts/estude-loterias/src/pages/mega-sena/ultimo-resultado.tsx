@@ -5,6 +5,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MapPin, Calendar, Target, Trophy } from "lucide-react";
+import { AdUnit } from "@/components/ui/AdUnit";
 
 export default function MegaSenaUltimoResultado() {
   const { data: resultado, isLoading, isError } = useGetMegaSenaUltimoResultado();
@@ -108,6 +109,8 @@ export default function MegaSenaUltimoResultado() {
             </div>
           </CardContent>
         </Card>
+
+        <AdUnit slot="5566778899" format="rectangle" className="w-full max-w-sm mx-auto" />
 
         <Card>
           <CardHeader>

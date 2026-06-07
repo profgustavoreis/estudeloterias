@@ -4,6 +4,7 @@ import { formatCurrency, formatDate } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
+import { AdUnit } from "@/components/ui/AdUnit";
 
 export default function Home() {
   const { data: loterias, isLoading, isError } = useGetLoterias();
@@ -44,6 +45,8 @@ export default function Home() {
         <h1 className="text-3xl font-bold tracking-tight">Visão Geral das Loterias</h1>
         <p className="text-muted-foreground mt-2">Acompanhe os últimos resultados e prêmios acumulados.</p>
       </div>
+
+      <AdUnit slot="1234567890" format="horizontal" className="w-full" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {loterias.map(loteria => (
@@ -93,6 +96,8 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      <AdUnit slot="0987654321" format="horizontal" className="w-full" />
     </div>
   );
 }

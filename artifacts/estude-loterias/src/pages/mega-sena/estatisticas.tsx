@@ -5,6 +5,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { Trophy, TrendingUp, AlertTriangle } from "lucide-react";
+import { AdUnit } from "@/components/ui/AdUnit";
 
 export default function MegaSenaEstatisticas() {
   const { data: stats, isLoading, isError } = useGetMegaSenaEstatisticas();
@@ -76,6 +77,8 @@ export default function MegaSenaEstatisticas() {
           </CardContent>
         </Card>
       </div>
+
+      <AdUnit slot="1122334455" format="horizontal" className="w-full" />
 
       <Card>
         <CardHeader>
