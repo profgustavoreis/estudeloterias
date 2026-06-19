@@ -124,8 +124,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       .select()
       .from(lotteryResultsTable)
       .where(eq(lotteryResultsTable.modalidade, "megasena"))
-      .orderBy(desc(lotteryResultsTable.concurso))
-      .limit(500);
+      .orderBy(desc(lotteryResultsTable.concurso));
 
     if (rows.length === 0) {
       res.status(503).json({ error: "Dados insuficientes. Sincronização em andamento." });
@@ -297,13 +296,12 @@ router.get("/mega-sena/resumo", async (req, res) => {
 
     const latestRow = await getLatest("megasena");
 
-    // Biggest prize from last 500
+    // Biggest prize — all records
     const rows = await db
       .select()
       .from(lotteryResultsTable)
       .where(eq(lotteryResultsTable.modalidade, "megasena"))
-      .orderBy(desc(lotteryResultsTable.concurso))
-      .limit(500);
+      .orderBy(desc(lotteryResultsTable.concurso));
 
     let maiorPremio = 0;
     let maiorPremioConcurso = 0;

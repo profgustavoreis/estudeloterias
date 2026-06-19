@@ -1,6 +1,6 @@
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
-import { eq, desc, max } from "drizzle-orm";
+import { eq, desc, max, min } from "drizzle-orm";
 import { logger } from "../lib/logger";
 
 const CAIXA_API = "https://servicebus2.caixa.gov.br/portaldeloterias/api";
@@ -118,13 +118,18 @@ async function batchFetch(
   delayMs = 120,
 ) {
   let succeeded = 0;
-  for (let n = to; n >= from; n--) {
+  const total = to - from + 1;
+  for (let n = from; n <= to; n++) {
     const raw = await fetchCaixa(modalidade, n);
     if (raw) {
       await upsertResult(normalizeResult(raw, modalidade));
       succeeded++;
     }
-    if (n > from) await sleep(delayMs);
+    const done = n - from + 1;
+    if (done % 100 === 0) {
+      logger.info({ modalidade, progress: `${done}/${total}`, concurso: n }, "Batch fetch progress");
+    }
+    if (n < to) await sleep(delayMs);
   }
   logger.info({ modalidade, from, to, succeeded }, "Batch fetch complete");
 }
@@ -153,11 +158,7 @@ export async function syncLatest(modalidade: string): Promise<void> {
 }
 
 export async function seedInitialData(modalidade: string): Promise<void> {
-  const [stored] = await db
-    .select({ maxConcurso: max(lotteryResultsTable.concurso) })
-    .from(lotteryResultsTable)
-    .where(eq(lotteryResultsTable.modalidade, modalidade));
-
+  // Fetch latest concurso from Caixa to know the ceiling
   const raw = await fetchCaixa(modalidade);
   if (!raw) {
     logger.warn({ modalidade }, "Could not fetch latest for seed");
@@ -166,21 +167,35 @@ export async function seedInitialData(modalidade: string): Promise<void> {
 
   const latest = normalizeResult(raw, modalidade);
   await upsertResult(latest);
-
   const latestConcurso = latest.concurso;
   if (!latestConcurso) return;
 
-  const maxStored = stored?.maxConcurso ?? 0;
-  const DESIRED = 300;
-  const seedFrom = Math.max(1, latestConcurso - DESIRED);
+  // Get current DB coverage
+  const [coverage] = await db
+    .select({
+      minConcurso: min(lotteryResultsTable.concurso),
+      maxConcurso: max(lotteryResultsTable.concurso),
+    })
+    .from(lotteryResultsTable)
+    .where(eq(lotteryResultsTable.modalidade, modalidade));
 
-  if (maxStored < seedFrom) {
-    logger.info({ modalidade, from: seedFrom, to: latestConcurso - 1 }, "Seeding");
-    await batchFetch(modalidade, seedFrom, latestConcurso - 1, 150);
-  } else if (maxStored < latestConcurso - 1) {
-    await batchFetch(modalidade, maxStored + 1, latestConcurso - 1, 150);
-  } else {
-    logger.info({ modalidade }, "DB already seeded, skipping");
+  const minStored = coverage?.minConcurso ?? latestConcurso;
+  const maxStored = coverage?.maxConcurso ?? latestConcurso;
+
+  // Backfill: fetch everything from 1 up to the oldest record we have
+  if (minStored > 1) {
+    logger.info({ modalidade, from: 1, to: minStored - 1 }, "Historical backfill starting");
+    await batchFetch(modalidade, 1, minStored - 1, 120);
+  }
+
+  // Gap fill: fetch anything between maxStored and latest
+  if (maxStored < latestConcurso - 1) {
+    logger.info({ modalidade, from: maxStored + 1, to: latestConcurso - 1 }, "Gap fill starting");
+    await batchFetch(modalidade, maxStored + 1, latestConcurso - 1, 120);
+  }
+
+  if (minStored <= 1 && maxStored >= latestConcurso - 1) {
+    logger.info({ modalidade }, "DB fully seeded, skipping");
   }
 }
 
