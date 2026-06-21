@@ -78,7 +78,8 @@ export function normalizeResult(raw: CaixaResult, modalidade: string) {
     metadata.dezenas2 = raw.listaDezenasSegundoSorteio;
   }
   if (raw.nomeTimeCoracaoMesSorte) {
-    metadata.nomeEspecial = raw.nomeTimeCoracaoMesSorte;
+    const cleaned = raw.nomeTimeCoracaoMesSorte.replace(/\u0000/g, "").trim();
+    if (cleaned) metadata.nomeEspecial = cleaned;
   }
   if (raw.trevosSorteados?.length) {
     metadata.trevos = raw.trevosSorteados.map(String);
