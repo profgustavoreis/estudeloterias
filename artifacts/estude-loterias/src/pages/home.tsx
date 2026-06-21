@@ -145,7 +145,14 @@ export default function Home() {
                   {loteria.acumulado ? (
                     <div>
                       <div className="text-xs font-semibold text-destructive uppercase tracking-wider">Acumulou!</div>
-                      <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.premioAcumulado)}</div>
+                      {!(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
+                        <div className="flex items-baseline justify-between mt-0.5">
+                          <span className="text-2xl font-bold">{formatCurrency(loteria.premioAcumulado)}</span>
+                          <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                        </div>
+                      ) : (
+                        <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.premioAcumulado)}</div>
+                      )}
                     </div>
                   ) : (
                     <div>
@@ -156,7 +163,14 @@ export default function Home() {
                         })()}
                       </div>
                       {loteria.valorPremioFaixa1 != null && loteria.valorPremioFaixa1 > 0 && (
-                        <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.valorPremioFaixa1)}</div>
+                        !(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
+                          <div className="flex items-baseline justify-between mt-0.5">
+                            <span className="text-2xl font-bold">{formatCurrency(loteria.valorPremioFaixa1)}</span>
+                            <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                          </div>
+                        ) : (
+                          <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.valorPremioFaixa1)}</div>
+                        )
                       )}
                     </div>
                   )}
@@ -173,10 +187,17 @@ export default function Home() {
                         </div>
                       </div>
                     )}
-                    {loteria.valorEstimadoProximoConcurso != null && loteria.valorEstimadoProximoConcurso > 0 && (
+                    {loteria.valorEstimadoProximoConcurso != null && loteria.valorEstimadoProximoConcurso > 0 ? (
                       <div>
                         <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Prêmio estimado</div>
-                        <div className="text-lg font-bold mt-0.5">{formatCurrency(loteria.valorEstimadoProximoConcurso)}</div>
+                        <div className="flex items-baseline justify-between mt-0.5">
+                          <span className="text-lg font-bold">{formatCurrency(loteria.valorEstimadoProximoConcurso)}</span>
+                          <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex justify-end">
+                        <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
                       </div>
                     )}
                   </div>
