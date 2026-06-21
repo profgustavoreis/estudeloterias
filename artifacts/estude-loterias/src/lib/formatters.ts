@@ -34,3 +34,13 @@ export function formatLongDate(dateString: string | null | undefined): string {
 export function padNumber(num: number | string): string {
   return num.toString().padStart(2, "0");
 }
+
+export function formatDateWithWeekday(dateStr: string | null | undefined): string {
+  if (!dateStr) return "";
+  const parts = dateStr.split("/");
+  if (parts.length !== 3) return dateStr;
+  const [dd, mm, yyyy] = parts;
+  const date = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  const weekday = date.toLocaleDateString("pt-BR", { weekday: "long" });
+  return `${Number(dd)}/${Number(mm)}/${yyyy} (${weekday})`;
+}

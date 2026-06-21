@@ -21,5 +21,13 @@ export interface LoteriaSummary {
   /** @nullable */
   valorPremioFaixa1?: number | null;
   dezenas: string[];
+  dezenas2?: string[] | null;
+  /** @nullable */
+  nomeEspecial?: string | null;
+  trevos?: string[] | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
   icone: string;
 }

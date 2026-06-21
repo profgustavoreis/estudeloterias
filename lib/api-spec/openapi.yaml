@@ -263,6 +263,22 @@ components:
           type: array
           items:
             type: string
+        dezenas2:
+          type: array
+          nullable: true
+          items:
+            type: string
+        nomeEspecial:
+          type: ["string", "null"]
+        trevos:
+          type: array
+          nullable: true
+          items:
+            type: string
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
         icone:
           type: string
       required:

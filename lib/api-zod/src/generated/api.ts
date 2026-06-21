@@ -32,6 +32,11 @@ export const GetLoteriasResponseItem = zod.object({
   "ganhadoresFaixa1": zod.number().nullish(),
   "valorPremioFaixa1": zod.number().nullish(),
   "dezenas": zod.array(zod.string()),
+  "dezenas2": zod.array(zod.string()).nullish(),
+  "nomeEspecial": zod.string().nullish(),
+  "trevos": zod.array(zod.string()).nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
   "icone": zod.string()
 })
 export const GetLoteriasResponse = zod.array(GetLoteriasResponseItem)

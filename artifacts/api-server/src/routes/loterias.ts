@@ -45,6 +45,7 @@ router.get("/loterias", async (req, res) => {
           if (!latest) return { ...m, ultimoConcurso: 0, dataUltimoSorteio: "", premioAcumulado: null, acumulado: false, dezenas: [] };
           const premios = latest.premios as Array<{ faixa: number; ganhadores: number; valorPremio: number }>;
           const faixa1 = premios?.find(p => p.faixa === 1);
+          const meta = latest.metadata as { dezenas2?: string[]; nomeEspecial?: string; trevos?: string[] } | null;
           return {
             ...m,
             ultimoConcurso: latest.concurso,
@@ -53,7 +54,12 @@ router.get("/loterias", async (req, res) => {
             acumulado: latest.acumulado,
             ganhadoresFaixa1: faixa1?.ganhadores ?? null,
             valorPremioFaixa1: faixa1?.valorPremio ?? null,
-            dezenas: (latest.dezenas as string[]).slice(0, 6),
+            dezenas: latest.dezenas as string[],
+            dezenas2: meta?.dezenas2 ?? null,
+            nomeEspecial: meta?.nomeEspecial ?? null,
+            trevos: meta?.trevos ?? null,
+            dataProximoConcurso: latest.dataProximoConcurso ?? null,
+            valorEstimadoProximoConcurso: latest.valorEstimadoProximo ? Number(latest.valorEstimadoProximo) : null,
           };
         } catch {
           return { ...m, ultimoConcurso: 0, dataUltimoSorteio: "", premioAcumulado: null, acumulado: false, dezenas: [] };

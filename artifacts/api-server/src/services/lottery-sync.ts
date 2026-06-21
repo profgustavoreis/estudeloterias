@@ -21,6 +21,9 @@ interface CaixaResult {
   numero?: number;
   dataApuracao?: string;
   listaDezenas?: string[];
+  listaDezenasSegundoSorteio?: string[];
+  nomeTimeCoracaoMesSorte?: string;
+  trevosSorteados?: Array<number | string>;
   listaRateioPremio?: Array<{
     numeroAcertos: number;
     descricaoFaixa: string;
@@ -70,6 +73,17 @@ export function normalizeResult(raw: CaixaResult, modalidade: string) {
     valorPremio: r.valorPremio,
   }));
 
+  const metadata: { dezenas2?: string[]; nomeEspecial?: string; trevos?: string[] } = {};
+  if (raw.listaDezenasSegundoSorteio?.length) {
+    metadata.dezenas2 = raw.listaDezenasSegundoSorteio;
+  }
+  if (raw.nomeTimeCoracaoMesSorte) {
+    metadata.nomeEspecial = raw.nomeTimeCoracaoMesSorte;
+  }
+  if (raw.trevosSorteados?.length) {
+    metadata.trevos = raw.trevosSorteados.map(String);
+  }
+
   return {
     modalidade,
     concurso: raw.numero ?? 0,
@@ -88,6 +102,7 @@ export function normalizeResult(raw: CaixaResult, modalidade: string) {
         : null,
     local: raw.nomeMunicipioUFSorteio ?? raw.localSorteio ?? null,
     arrecadacaoTotal: raw.valorArrecadado ? String(raw.valorArrecadado) : null,
+    metadata: Object.keys(metadata).length > 0 ? metadata : null,
   };
 }
 
@@ -107,6 +122,7 @@ async function upsertResult(data: ReturnType<typeof normalizeResult>) {
         valorEstimadoProximo: data.valorEstimadoProximo,
         local: data.local,
         arrecadacaoTotal: data.arrecadacaoTotal,
+        metadata: data.metadata as any,
       },
     });
 }

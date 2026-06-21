@@ -1,5 +1,11 @@
 import { pgTable, text, integer, boolean, numeric, jsonb, timestamp, serial, unique } from "drizzle-orm/pg-core";
 
+interface LotteryMetadata {
+  dezenas2?: string[];
+  nomeEspecial?: string;
+  trevos?: string[];
+}
+
 export const lotteryResultsTable = pgTable("lottery_results", {
   id: serial("id").primaryKey(),
   modalidade: text("modalidade").notNull(),
@@ -13,6 +19,7 @@ export const lotteryResultsTable = pgTable("lottery_results", {
   valorEstimadoProximo: numeric("valor_estimado_proximo"),
   local: text("local"),
   arrecadacaoTotal: numeric("arrecadacao_total"),
+  metadata: jsonb("metadata").$type<LotteryMetadata>(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (t) => [
   unique("lottery_results_modalidade_concurso").on(t.modalidade, t.concurso),
