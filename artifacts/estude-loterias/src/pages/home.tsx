@@ -45,10 +45,22 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
         {dezenas.map((num, i) => (
           <LotteryBall key={i} number={num} size={size} color={loteria.cor} />
         ))}
-        {trevos && trevos.map((t, i) => (
-          <LotteryBall key={`trevo-${i}`} number={t} size={size} color="#7b2d8b" />
-        ))}
       </div>
+      {trevos && trevos.length > 0 && (
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs text-muted-foreground font-medium whitespace-nowrap">Trevos da Sorte:</span>
+          <div className="flex gap-1.5">
+            {trevos.map((t, i) => (
+              <LotteryBall
+                key={`trevo-${i}`}
+                number={String(t).padStart(2, "0")}
+                size={size}
+                color="#7b2d8b"
+              />
+            ))}
+          </div>
+        </div>
+      )}
       {nomeEspecial && (
         <div className="flex items-center gap-1.5">
           <span className="text-xs text-muted-foreground font-medium">
