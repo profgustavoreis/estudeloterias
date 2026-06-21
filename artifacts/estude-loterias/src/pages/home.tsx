@@ -148,7 +148,7 @@ export default function Home() {
                       {!(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
                         <div className="flex items-baseline justify-between mt-0.5">
                           <span className="text-2xl font-bold">{formatCurrency(loteria.premioAcumulado)}</span>
-                          <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                          <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
                         </div>
                       ) : (
                         <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.premioAcumulado)}</div>
@@ -166,7 +166,7 @@ export default function Home() {
                         !(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
                           <div className="flex items-baseline justify-between mt-0.5">
                             <span className="text-2xl font-bold">{formatCurrency(loteria.valorPremioFaixa1)}</span>
-                            <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                            <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
                           </div>
                         ) : (
                           <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.valorPremioFaixa1)}</div>
@@ -192,12 +192,12 @@ export default function Home() {
                         <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Prêmio estimado</div>
                         <div className="flex items-baseline justify-between mt-0.5">
                           <span className="text-lg font-bold">{formatCurrency(loteria.valorEstimadoProximoConcurso)}</span>
-                          <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                          <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
                         </div>
                       </div>
                     ) : (
                       <div className="flex justify-end">
-                        <span className="text-xs font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                        <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
                       </div>
                     )}
                   </div>
