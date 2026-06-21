@@ -47,8 +47,8 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
         ))}
       </div>
       {trevos && trevos.length > 0 && (
-        <div className="flex items-center gap-1.5">
-          <span className="text-xs text-muted-foreground font-medium whitespace-nowrap">Trevos da Sorte:</span>
+        <div>
+          <div className="text-xs text-muted-foreground font-medium mb-1.5">Trevos da Sorte</div>
           <div className="flex gap-1.5">
             {trevos.map((t, i) => (
               <LotteryBall
