@@ -1,6 +1,6 @@
 import { useGetMegaSenaUltimoResultado } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatDate } from "@/lib/formatters";
+import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
@@ -66,7 +66,7 @@ export default function MegaSenaHub() {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle>Último Sorteio</CardTitle>
-                <CardDescription>Concurso {resultado.concurso} • {formatDate(resultado.data)}</CardDescription>
+                <CardDescription>Concurso {resultado.concurso} • {formatDateShort(resultado.data)}</CardDescription>
               </div>
             </div>
           </CardHeader>
@@ -100,10 +100,13 @@ export default function MegaSenaHub() {
               {/* Próximo sorteio */}
               <div className="p-4 bg-muted/50 rounded-lg border border-border">
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
-                  Próximo sorteio — {formatDate(resultado.dataProximoConcurso)}
+                  Próximo Sorteio
                 </div>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wider">Prêmio estimado</div>
-                <div className="text-2xl font-bold mt-0.5">{formatCurrency(resultado.valorEstimadoProximoConcurso)}</div>
+                <div className="text-sm text-muted-foreground mb-1">
+                  Concurso {resultado.concurso + 1} • {formatDateShort(resultado.dataProximoConcurso)}
+                </div>
+                <div className="text-2xl font-bold">{formatCurrency(resultado.valorEstimadoProximoConcurso)}</div>
+                <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">Prêmio Estimado</div>
               </div>
             </div>
           </CardContent>

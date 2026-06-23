@@ -35,6 +35,14 @@ export function padNumber(num: number | string): string {
   return num.toString().padStart(2, "0");
 }
 
+export function formatDateShort(dateStr: string | null | undefined): string {
+  if (!dateStr) return "";
+  const parts = dateStr.split("/");
+  if (parts.length !== 3) return dateStr;
+  const [dd, mm, yyyy] = parts;
+  return `${Number(dd)}/${Number(mm)}/${yyyy}`;
+}
+
 export function formatDateWithWeekday(dateStr: string | null | undefined): string {
   if (!dateStr) return "";
   const parts = dateStr.split("/");
