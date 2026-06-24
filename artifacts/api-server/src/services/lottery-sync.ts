@@ -1,6 +1,6 @@
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
-import { eq, desc, max, min } from "drizzle-orm";
+import { eq, desc, max, min, asc, sql } from "drizzle-orm";
 import { logger } from "../lib/logger";
 
 const CAIXA_API = "https://servicebus2.caixa.gov.br/portaldeloterias/api";
@@ -235,6 +235,52 @@ export async function runSync(): Promise<void> {
       logger.error({ err, modalidade }, "Sync failed");
     }
   }
+}
+
+export async function backfillOrdemSorteio(modalidade: string): Promise<void> {
+  logger.info({ modalidade }, "Starting dezenasOrdem backfill");
+
+  // Find all concursos missing draw order
+  const rows = await db
+    .select({ concurso: lotteryResultsTable.concurso })
+    .from(lotteryResultsTable)
+    .where(
+      sql`${lotteryResultsTable.modalidade} = ${modalidade} AND ${lotteryResultsTable.dezenasOrdem} IS NULL`,
+    )
+    .orderBy(asc(lotteryResultsTable.concurso));
+
+  const missing = rows.map((r) => r.concurso);
+  logger.info({ modalidade, count: missing.length }, "Concursos missing dezenasOrdem");
+
+  let updated = 0;
+  let failed = 0;
+  for (let i = 0; i < missing.length; i++) {
+    const concurso = missing[i];
+    try {
+      const raw = await fetchCaixa(modalidade, concurso);
+      if (raw?.dezenasSorteadasOrdemSorteio?.length) {
+        await db
+          .update(lotteryResultsTable)
+          .set({ dezenasOrdem: raw.dezenasSorteadasOrdemSorteio as any })
+          .where(
+            sql`${lotteryResultsTable.modalidade} = ${modalidade} AND ${lotteryResultsTable.concurso} = ${concurso}`,
+          );
+        updated++;
+      } else {
+        failed++;
+      }
+    } catch (err) {
+      logger.error({ err, concurso }, "backfillOrdemSorteio: fetch error");
+      failed++;
+    }
+
+    if ((i + 1) % 100 === 0) {
+      logger.info({ modalidade, progress: `${i + 1}/${missing.length}`, updated, failed }, "Backfill progress");
+    }
+    if (i < missing.length - 1) await sleep(120);
+  }
+
+  logger.info({ modalidade, updated, failed }, "dezenasOrdem backfill complete");
 }
 
 export async function runInitialSeed(): Promise<void> {
