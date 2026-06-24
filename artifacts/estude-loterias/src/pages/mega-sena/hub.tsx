@@ -62,10 +62,10 @@ export default function MegaSenaHub() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
         {/* ── Card principal: dezenas ── */}
-        <Card className="border-t-4" style={{ borderTopColor: COR }}>
+        <Card className="lg:col-span-2 border-t-4" style={{ borderTopColor: COR }}>
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
@@ -123,7 +123,7 @@ export default function MegaSenaHub() {
         <AdUnit slot="5566778899" format="rectangle" className="w-full" />
 
         {/* ── Rateio dos Prêmios ── */}
-        <Card>
+        <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Trophy className="w-5 h-5 text-amber-500" />
