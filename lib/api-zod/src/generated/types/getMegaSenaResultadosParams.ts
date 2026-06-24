@@ -5,6 +5,7 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { GetMegaSenaResultadosOrdem } from './getMegaSenaResultadosOrdem';
 
 export type GetMegaSenaResultadosParams = {
 page?: number;
@@ -13,4 +14,5 @@ limit?: number;
  * @nullable
  */
 ano?: number | null;
+ordem?: GetMegaSenaResultadosOrdem;
 };

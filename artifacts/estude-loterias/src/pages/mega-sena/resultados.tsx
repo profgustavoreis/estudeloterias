@@ -13,8 +13,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 export default function MegaSenaResultadosAnteriores() {
   const [page, setPage] = useState(1);
   const [ano, setAno] = useState<number | null>(null);
+  const [ordem, setOrdem] = useState<"asc" | "desc">("desc");
 
-  const { data, isLoading, isError } = useGetMegaSenaResultados({ page, limit: 20, ano });
+  const { data, isLoading, isError } = useGetMegaSenaResultados({ page, limit: 20, ano, ordem });
 
   const years = Array.from({ length: new Date().getFullYear() - 1995 }, (_, i) => new Date().getFullYear() - i);
 
@@ -26,23 +27,41 @@ export default function MegaSenaResultadosAnteriores() {
           <p className="text-muted-foreground mt-1">Busque e analise os concursos passados da Mega-Sena.</p>
         </div>
 
-        <Select
-          value={ano?.toString() || "todos"}
-          onValueChange={(v) => {
-            setAno(v === "todos" ? null : parseInt(v));
-            setPage(1);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filtrar por ano" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="todos">Todos os anos</SelectItem>
-            {years.map(y => (
-              <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex gap-2">
+          <Select
+            value={ano?.toString() || "todos"}
+            onValueChange={(v) => {
+              setAno(v === "todos" ? null : parseInt(v));
+              setPage(1);
+            }}
+          >
+            <SelectTrigger className="w-[160px]">
+              <SelectValue placeholder="Filtrar por ano" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="todos">Todos os anos</SelectItem>
+              {years.map(y => (
+                <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select
+            value={ordem}
+            onValueChange={(v) => {
+              setOrdem(v as "asc" | "desc");
+              setPage(1);
+            }}
+          >
+            <SelectTrigger className="w-[160px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="desc">Mais recente primeiro</SelectItem>
+              <SelectItem value="asc">Mais antigo primeiro</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <Card>

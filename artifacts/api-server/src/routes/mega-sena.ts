@@ -44,6 +44,7 @@ router.get("/mega-sena/resultados", async (req, res) => {
     const page = Math.max(1, parseInt(String(req.query.page ?? "1"), 10));
     const limit = Math.min(50, Math.max(1, parseInt(String(req.query.limit ?? "20"), 10)));
     const ano = req.query.ano ? parseInt(String(req.query.ano), 10) : null;
+    const ordem = req.query.ordem === "asc" ? "asc" : "desc";
 
     const offset = (page - 1) * limit;
 
@@ -64,7 +65,7 @@ router.get("/mega-sena/resultados", async (req, res) => {
       .select()
       .from(lotteryResultsTable)
       .where(where)
-      .orderBy(desc(lotteryResultsTable.concurso))
+      .orderBy(ordem === "asc" ? asc(lotteryResultsTable.concurso) : desc(lotteryResultsTable.concurso))
       .limit(limit)
       .offset(offset);
 

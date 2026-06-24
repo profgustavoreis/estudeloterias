@@ -112,6 +112,12 @@ paths:
           in: query
           schema:
             type: ["integer", "null"]
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
       responses:
         "200":
           description: Lista paginada de resultados

@@ -97,11 +97,13 @@ export const GetMegaSenaUltimoResultadoResponse = zod.object({
  */
 export const getMegaSenaResultadosQueryPageDefault = 1;
 export const getMegaSenaResultadosQueryLimitDefault = 20;
+export const getMegaSenaResultadosQueryOrdemDefault = `desc`;
 
 export const GetMegaSenaResultadosQueryParams = zod.object({
   "page": zod.coerce.number().default(getMegaSenaResultadosQueryPageDefault),
   "limit": zod.coerce.number().default(getMegaSenaResultadosQueryLimitDefault),
-  "ano": zod.coerce.number().nullish()
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getMegaSenaResultadosQueryOrdemDefault)
 })
 
 export const GetMegaSenaResultadosResponse = zod.object({

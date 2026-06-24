@@ -11,6 +11,7 @@ export * from './estatisticasMegaSena';
 export * from './faixaPremio';
 export * from './frequenciaDezena';
 export * from './geradorInput';
+export * from './getMegaSenaResultadosOrdem';
 export * from './getMegaSenaResultadosParams';
 export * from './healthStatus';
 export * from './jogoGerado';

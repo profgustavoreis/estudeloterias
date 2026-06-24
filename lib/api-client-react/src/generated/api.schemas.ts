@@ -176,5 +176,14 @@ limit?: number;
  * @nullable
  */
 ano?: number | null;
+ordem?: GetMegaSenaResultadosOrdem;
 };
+
+export type GetMegaSenaResultadosOrdem = typeof GetMegaSenaResultadosOrdem[keyof typeof GetMegaSenaResultadosOrdem];
+
+
+export const GetMegaSenaResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
 
