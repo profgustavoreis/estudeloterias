@@ -82,7 +82,7 @@ export default function MegaSenaHub() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Resultado */}
               <div className="p-4 bg-muted/50 rounded-lg border border-border">
-                <div className="text-xs font-semibold uppercase tracking-wider mb-1" style={{ color: COR }}>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                   Prêmio Principal
                 </div>
                 {resultado.acumulado ? (
