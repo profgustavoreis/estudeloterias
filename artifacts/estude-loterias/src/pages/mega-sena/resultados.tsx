@@ -111,7 +111,7 @@ export default function MegaSenaResultadosAnteriores() {
                             Acumulou!
                           </span>
                         ) : (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-[#009640]/10 text-[#009640] border border-[#009640]/20">
                             Saiu!
                           </span>
                         )}
