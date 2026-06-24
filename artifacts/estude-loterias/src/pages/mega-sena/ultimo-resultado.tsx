@@ -1,4 +1,5 @@
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
+import { useState, useRef } from "react";
 import {
   useGetMegaSenaUltimoResultado,
   useGetMegaSenaResultadoConcurso,
@@ -275,6 +276,59 @@ function RateioCard({ resultado }: { resultado: ResultadoMegaSena }) {
   );
 }
 
+function ConcursoNavigator({ concurso, isLatest }: { concurso: number; isLatest: boolean }) {
+  const [, navigate] = useLocation();
+  const [input, setInput] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function go(n: number) {
+    if (n < 1) return;
+    navigate(`/mega-sena/resultado/${n}`);
+  }
+
+  function handleSearch() {
+    const n = parseInt(input.trim(), 10);
+    if (!isNaN(n) && n >= 1) {
+      setInput("");
+      go(n);
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-3 flex-shrink-0">
+      <span className="text-sm text-muted-foreground hidden sm:inline whitespace-nowrap">
+        Buscar por concurso
+      </span>
+      <input
+        ref={inputRef}
+        type="number"
+        min={1}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        placeholder="Ex: 1475"
+        className="w-24 rounded-md border border-input bg-background px-3 py-1.5 text-sm text-center shadow-sm focus:outline-none focus:ring-2 focus:ring-ring"
+      />
+      <button
+        onClick={() => go(concurso - 1)}
+        disabled={concurso <= 1}
+        className="text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:underline whitespace-nowrap"
+        style={{ color: BRAND }}
+      >
+        &lt; Anterior
+      </button>
+      <button
+        onClick={() => go(concurso + 1)}
+        disabled={isLatest}
+        className="text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:underline whitespace-nowrap"
+        style={{ color: BRAND }}
+      >
+        Próximo &gt;
+      </button>
+    </div>
+  );
+}
+
 function LoadingSkeleton() {
   return (
     <div className="space-y-6">
@@ -296,22 +350,30 @@ function LoadingSkeleton() {
 
 // ─── Main view ───────────────────────────────────────────────────────────────
 
-function ResultadoView({ resultado }: { resultado: ResultadoMegaSena }) {
+function ResultadoView({
+  resultado,
+  latestConcurso,
+}: {
+  resultado: ResultadoMegaSena;
+  latestConcurso: number;
+}) {
   const localFormatted = formatLocal(resultado.local);
+  const isLatest = resultado.concurso >= latestConcurso;
 
   return (
     <div className="space-y-5">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: BRAND }}>
-          Mega-Sena · Concurso {resultado.concurso}
-        </h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          {formatDateShort(resultado.data)}
-          {localFormatted && (
-            <> · Sorteio realizado em {localFormatted}</>
-          )}
-        </p>
+      {/* Header: title + navigator on the same row */}
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: BRAND }}>
+            Mega-Sena · Concurso {resultado.concurso}
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Sorteio realizado dia {formatDateShort(resultado.data)}
+            {localFormatted && <> em {localFormatted}</>}
+          </p>
+        </div>
+        <ConcursoNavigator concurso={resultado.concurso} isLatest={isLatest} />
       </div>
 
       {/* Row 1: Dezenas | Pares/Ímpares | Moldura/Retrato */}
@@ -347,14 +409,15 @@ function LatestResultado() {
   const { data, isLoading, isError } = useGetMegaSenaUltimoResultado();
   if (isLoading) return <LoadingSkeleton />;
   if (isError || !data) return <div className="text-sm text-muted-foreground">Erro ao carregar o resultado.</div>;
-  return <ResultadoView resultado={data} />;
+  return <ResultadoView resultado={data} latestConcurso={data.concurso} />;
 }
 
 function ConcursoResultado({ concurso }: { concurso: number }) {
   const { data, isLoading, isError } = useGetMegaSenaResultadoConcurso(concurso);
+  const { data: latest } = useGetMegaSenaUltimoResultado();
   if (isLoading) return <LoadingSkeleton />;
   if (isError || !data) return <div className="text-sm text-muted-foreground">Concurso {concurso} não encontrado.</div>;
-  return <ResultadoView resultado={data} />;
+  return <ResultadoView resultado={data} latestConcurso={latest?.concurso ?? concurso} />;
 }
 
 export default function MegaSenaUltimoResultado() {
