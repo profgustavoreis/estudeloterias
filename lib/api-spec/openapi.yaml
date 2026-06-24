@@ -351,6 +351,10 @@ components:
           type: ["string", "null"]
         arrecadacaoTotal:
           type: ["number", "null"]
+        valorAcumuladoConcurso_0_5:
+          type: ["number", "null"]
+        valorAcumuladoConcursoEspecial:
+          type: ["number", "null"]
       required:
         - concurso
         - data

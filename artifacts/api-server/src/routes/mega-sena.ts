@@ -20,6 +20,8 @@ function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
     local: row.local ?? null,
     localGanhadores: null,
     arrecadacaoTotal: row.arrecadacaoTotal ? Number(row.arrecadacaoTotal) : null,
+    valorAcumuladoConcurso_0_5: row.valorAcumuladoConcurso_0_5 ? Number(row.valorAcumuladoConcurso_0_5) : null,
+    valorAcumuladoConcursoEspecial: row.valorAcumuladoConcursoEspecial ? Number(row.valorAcumuladoConcursoEspecial) : null,
   };
 }
 
@@ -110,6 +112,8 @@ router.get("/mega-sena/resultados/:concurso", async (req, res) => {
       local: norm.local,
       localGanhadores: null,
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
+      valorAcumuladoConcurso_0_5: norm.valorAcumuladoConcurso_0_5 ? Number(norm.valorAcumuladoConcurso_0_5) : null,
+      valorAcumuladoConcursoEspecial: norm.valorAcumuladoConcursoEspecial ? Number(norm.valorAcumuladoConcursoEspecial) : null,
     });
   } catch (err) {
     req.log.error({ err, concurso }, "Failed to get concurso");

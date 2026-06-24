@@ -37,6 +37,8 @@ interface CaixaResult {
   nomeMunicipioUFSorteio?: string;
   localSorteio?: string;
   valorArrecadado?: number;
+  valorAcumuladoConcurso_0_5?: number;
+  valorAcumuladoConcursoEspecial?: number;
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -103,6 +105,8 @@ export function normalizeResult(raw: CaixaResult, modalidade: string) {
         : null,
     local: raw.nomeMunicipioUFSorteio ?? raw.localSorteio ?? null,
     arrecadacaoTotal: raw.valorArrecadado ? String(raw.valorArrecadado) : null,
+    valorAcumuladoConcurso_0_5: raw.valorAcumuladoConcurso_0_5 ? String(raw.valorAcumuladoConcurso_0_5) : null,
+    valorAcumuladoConcursoEspecial: raw.valorAcumuladoConcursoEspecial ? String(raw.valorAcumuladoConcursoEspecial) : null,
     metadata: Object.keys(metadata).length > 0 ? metadata : null,
   };
 }
@@ -123,6 +127,8 @@ async function upsertResult(data: ReturnType<typeof normalizeResult>) {
         valorEstimadoProximo: data.valorEstimadoProximo,
         local: data.local,
         arrecadacaoTotal: data.arrecadacaoTotal,
+        valorAcumuladoConcurso_0_5: data.valorAcumuladoConcurso_0_5,
+        valorAcumuladoConcursoEspecial: data.valorAcumuladoConcursoEspecial,
         metadata: data.metadata as any,
       },
     });

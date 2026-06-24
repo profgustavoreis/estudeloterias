@@ -85,7 +85,9 @@ export const GetMegaSenaUltimoResultadoResponse = zod.object({
   "valorEstimadoProximoConcurso": zod.number().nullish(),
   "local": zod.string().nullish(),
   "localGanhadores": zod.string().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0_5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 })
 
 
@@ -122,7 +124,9 @@ export const GetMegaSenaResultadosResponse = zod.object({
   "valorEstimadoProximoConcurso": zod.number().nullish(),
   "local": zod.string().nullish(),
   "localGanhadores": zod.string().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0_5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 }))
 })
 
@@ -150,7 +154,9 @@ export const GetMegaSenaResultadoConcursoResponse = zod.object({
   "valorEstimadoProximoConcurso": zod.number().nullish(),
   "local": zod.string().nullish(),
   "localGanhadores": zod.string().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0_5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 })
 
 
@@ -220,7 +226,9 @@ export const GetMegaDaViradaResponse = zod.object({
   "valorEstimadoProximoConcurso": zod.number().nullish(),
   "local": zod.string().nullish(),
   "localGanhadores": zod.string().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0_5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 }))
 })
 

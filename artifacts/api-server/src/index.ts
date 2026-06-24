@@ -36,9 +36,16 @@ app.listen(port, (err) => {
     runSync().catch((err) => logger.error({ err }, "Cron sync failed"));
   });
 
-  // Also sync once every 4 hours to catch any missed draws
+  // During draw window (21:00–21:59 BR time = 00:00–00:59 UTC), sync every 1 minute
+  // Mon–Sat: draws happen every day except Sunday
+  cron.schedule("*/1 0 * * 1,2,3,4,5,6", () => {
+    logger.info("Cron: draw-window lottery sync (1 min)");
+    runSync().catch((err) => logger.error({ err }, "Draw-window sync failed"));
+  });
+
+  // After draw window, back to periodic every 4 hours
   cron.schedule("0 */4 * * *", () => {
-    logger.info("Cron: periodic lottery sync");
+    logger.info("Cron: periodic lottery sync (4h)");
     runSync().catch((err) => logger.error({ err }, "Periodic sync failed"));
   });
 });

@@ -19,6 +19,8 @@ export const lotteryResultsTable = pgTable("lottery_results", {
   valorEstimadoProximo: numeric("valor_estimado_proximo"),
   local: text("local"),
   arrecadacaoTotal: numeric("arrecadacao_total"),
+  valorAcumuladoConcurso_0_5: numeric("valor_acumulado_concurso_0_5"),
+  valorAcumuladoConcursoEspecial: numeric("valor_acumulado_concurso_especial"),
   metadata: jsonb("metadata").$type<LotteryMetadata>(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 }, (t) => [

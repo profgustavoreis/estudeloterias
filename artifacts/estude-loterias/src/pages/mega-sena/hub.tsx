@@ -4,8 +4,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AdUnit } from "@/components/ui/AdUnit";
 import { Link } from "wouter";
-import { BarChart3, CalendarDays, Dices, Gift, List, Sparkles, Target, Trophy } from "lucide-react";
+import { BarChart3, CalendarDays, Dices, Gift, List, Sparkles, Target, Trophy, Wallet, TrendingUp, PartyPopper } from "lucide-react";
 
 const COR = "#009640";
 
@@ -31,8 +32,10 @@ export default function MegaSenaHub() {
             <Skeleton className="h-4 w-56" />
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <Skeleton className="lg:col-span-2 h-64" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
           <Skeleton className="h-64" />
         </div>
       </div>
@@ -59,10 +62,10 @@ export default function MegaSenaHub() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        {/* ── Card principal: dezenas + rateio ── */}
-        <Card className="lg:col-span-2 border-t-4" style={{ borderTopColor: COR }}>
+        {/* ── Card principal: dezenas ── */}
+        <Card className="border-t-4" style={{ borderTopColor: COR }}>
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
@@ -116,6 +119,9 @@ export default function MegaSenaHub() {
           </CardContent>
         </Card>
 
+        {/* ── Publicidade ── */}
+        <AdUnit slot="5566778899" format="rectangle" className="w-full" />
+
         {/* ── Rateio dos Prêmios ── */}
         <Card>
           <CardHeader>
@@ -153,6 +159,45 @@ export default function MegaSenaHub() {
                   ))}
                 </TableBody>
               </Table>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* ── Dados do Sorteio ── */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Wallet className="w-5 h-5 text-primary" />
+              Dados do Sorteio
+            </CardTitle>
+            <CardDescription>Concurso {resultado.concurso}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Arrecadação Total</div>
+              <div className="text-2xl font-bold">{formatCurrency(resultado.arrecadacaoTotal)}</div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                <div className="flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3" />
+                  Acumulado para o próximo concurso de final 0 ou 5
+                </div>
+              </div>
+              <div className="text-lg font-semibold" style={{ color: COR }}>
+                {formatCurrency(resultado.valorAcumuladoConcurso_0_5)}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                <div className="flex items-center gap-1">
+                  <PartyPopper className="w-3 h-3" />
+                  Acumulado para a Mega da Virada
+                </div>
+              </div>
+              <div className="text-lg font-semibold" style={{ color: COR }}>
+                {formatCurrency(resultado.valorAcumuladoConcursoEspecial)}
+              </div>
             </div>
           </CardContent>
         </Card>

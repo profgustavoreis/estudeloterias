@@ -25,4 +25,8 @@ export interface ResultadoMegaSena {
   localGanhadores?: string | null;
   /** @nullable */
   arrecadacaoTotal?: number | null;
+  /** @nullable */
+  valorAcumuladoConcurso_0_5?: number | null;
+  /** @nullable */
+  valorAcumuladoConcursoEspecial?: number | null;
 }
