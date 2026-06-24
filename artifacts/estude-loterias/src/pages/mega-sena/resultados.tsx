@@ -109,10 +109,12 @@ export default function MegaSenaResultadosAnteriores() {
                         )}
                       </TableCell>
                       <TableCell className="text-right font-medium">
-                        {res.acumulado
-                          ? formatCurrency(res.valorAcumulado)
-                          : formatCurrency(res.premios.find(p => p.faixa === 1)?.valorPremio)
-                        }
+                        {(() => {
+                          if (res.acumulado) return formatCurrency(res.valorAcumulado);
+                          const p1 = res.premios.find(p => p.faixa === 1);
+                          if (!p1) return "–";
+                          return formatCurrency(p1.valorPremio * p1.ganhadores);
+                        })()}
                       </TableCell>
                       <TableCell className="text-right">
                         <Link
