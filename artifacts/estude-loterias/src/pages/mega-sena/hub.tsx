@@ -14,7 +14,7 @@ export default function MegaSenaHub() {
   const { data: resultado, isLoading } = useGetMegaSenaUltimoResultado();
 
   const quickLinks = [
-    { href: "/mega-sena/resultado", label: "Último Resultado", icon: Dices, desc: "Detalhes do último sorteio" },
+    { href: `/mega-sena/resultado/${resultado?.concurso ?? ""}`, label: "Último Resultado", icon: Dices, desc: "Detalhes do último sorteio" },
     { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List, desc: "Busque por sorteios passados" },
     { href: "/mega-sena/estatisticas", label: "Estatísticas", icon: BarChart3, desc: "Frequência de dezenas e atrasos" },
     { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles, desc: "Gere jogos inteligentes" },
@@ -72,6 +72,9 @@ export default function MegaSenaHub() {
                 <CardTitle>Último Sorteio</CardTitle>
                 <CardDescription>Concurso {resultado.concurso} • {formatDateShort(resultado.data)}</CardDescription>
               </div>
+              <Link href={`/mega-sena/resultado/${resultado.concurso}`}>
+                <span className="text-sm font-semibold" style={{ color: COR }}>Ver detalhes →</span>
+              </Link>
             </div>
           </CardHeader>
           <CardContent className="space-y-6">

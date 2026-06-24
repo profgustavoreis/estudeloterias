@@ -1,4 +1,5 @@
-import { useGetMegaSenaUltimoResultado } from "@workspace/api-client-react";
+import { useParams } from "wouter";
+import { useGetMegaSenaUltimoResultado, useGetMegaSenaResultadoConcurso } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { formatCurrency, formatLongDate, formatDate } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
@@ -6,34 +7,25 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MapPin, Calendar, Target, Trophy } from "lucide-react";
 import { AdUnit } from "@/components/ui/AdUnit";
+import type { ResultadoMegaSena } from "@workspace/api-client-react";
 
-export default function MegaSenaUltimoResultado() {
-  const { data: resultado, isLoading, isError } = useGetMegaSenaUltimoResultado();
+function LoadingSkeleton() {
+  return (
+    <div className="space-y-6">
+      <Skeleton className="h-10 w-64" />
+      <Card>
+        <CardHeader><Skeleton className="h-6 w-32" /></CardHeader>
+        <CardContent><Skeleton className="h-32 w-full" /></CardContent>
+      </Card>
+    </div>
+  );
+}
 
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <Skeleton className="h-10 w-64" />
-        <Card>
-          <CardHeader>
-            <Skeleton className="h-6 w-32" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-32 w-full" />
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  if (isError || !resultado) {
-    return <div>Erro ao carregar o resultado.</div>;
-  }
-
+function ResultadoView({ resultado, titulo }: { resultado: ResultadoMegaSena; titulo: string }) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Último Resultado</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">{titulo}</h1>
         <p className="text-muted-foreground mt-1">Concurso {resultado.concurso} • {formatLongDate(resultado.data)}</p>
       </div>
 
@@ -134,4 +126,28 @@ export default function MegaSenaUltimoResultado() {
       </div>
     </div>
   );
+}
+
+function LatestResultado() {
+  const { data, isLoading, isError } = useGetMegaSenaUltimoResultado();
+  if (isLoading) return <LoadingSkeleton />;
+  if (isError || !data) return <div>Erro ao carregar o resultado.</div>;
+  return <ResultadoView resultado={data} titulo="Último Resultado" />;
+}
+
+function ConcursoResultado({ concurso }: { concurso: number }) {
+  const { data, isLoading, isError } = useGetMegaSenaResultadoConcurso(concurso);
+  if (isLoading) return <LoadingSkeleton />;
+  if (isError || !data) return <div>Concurso {concurso} não encontrado.</div>;
+  return <ResultadoView resultado={data} titulo={`Concurso ${concurso}`} />;
+}
+
+export default function MegaSenaUltimoResultado() {
+  const params = useParams<{ concurso?: string }>();
+  const concursoNum = params.concurso ? Number(params.concurso) : undefined;
+
+  if (concursoNum) {
+    return <ConcursoResultado concurso={concursoNum} />;
+  }
+  return <LatestResultado />;
 }

@@ -27,6 +27,7 @@ function Router() {
         
         {/* Mega-Sena Routes */}
         <Route path="/mega-sena" component={MegaSenaHub} />
+        <Route path="/mega-sena/resultado/:concurso" component={MegaSenaUltimoResultado} />
         <Route path="/mega-sena/resultado" component={MegaSenaUltimoResultado} />
         <Route path="/mega-sena/resultados" component={MegaSenaResultadosAnteriores} />
         <Route path="/mega-sena/estatisticas" component={MegaSenaEstatisticas} />
