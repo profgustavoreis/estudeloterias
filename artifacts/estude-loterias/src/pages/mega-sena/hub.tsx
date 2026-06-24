@@ -131,7 +131,7 @@ export default function MegaSenaHub() {
             </CardTitle>
             <CardDescription>Concurso {resultado.concurso}</CardDescription>
           </CardHeader>
-          <CardContent className="px-0 pb-0">
+          <CardContent>
             <div className="rounded-md border">
               <Table>
                 <TableHeader>
