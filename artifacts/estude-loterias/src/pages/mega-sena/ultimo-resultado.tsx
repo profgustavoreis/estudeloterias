@@ -1,153 +1,366 @@
 import { useParams } from "wouter";
-import { useGetMegaSenaUltimoResultado, useGetMegaSenaResultadoConcurso } from "@workspace/api-client-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate, formatDate } from "@/lib/formatters";
+import {
+  useGetMegaSenaUltimoResultado,
+  useGetMegaSenaResultadoConcurso,
+} from "@workspace/api-client-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MapPin, Calendar, Target, Trophy } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
 import type { ResultadoMegaSena } from "@workspace/api-client-react";
+
+const BRAND = "#009640";
+
+// ─── Math helpers ────────────────────────────────────────────────────────────
+
+function isMoldura(n: number): boolean {
+  return n <= 10 || n >= 51 || n % 10 === 1 || n % 10 === 0;
+}
+
+function isPrime(n: number): boolean {
+  if (n < 2) return false;
+  for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
+  return true;
+}
+
+const FIBONACCI = new Set([1, 2, 3, 5, 8, 13, 21, 34, 55]);
+const TRIANGULARES = new Set([1, 3, 6, 10, 15, 21, 28, 36, 45, 55]);
+
+function calcStats(dezenas: string[]) {
+  const nums = dezenas.map(Number);
+  const soma = nums.reduce((a, b) => a + b, 0);
+  const media = soma / nums.length;
+  const variance = nums.reduce((a, b) => a + (b - media) ** 2, 0) / nums.length;
+  return {
+    soma,
+    media,
+    desvio: Math.sqrt(variance),
+  };
+}
+
+function formatLocal(local: string | null | undefined): string {
+  if (!local) return "";
+  return local.replace(", ", "/");
+}
+
+// ─── Sub-components ──────────────────────────────────────────────────────────
+
+function Balls({ dezenas, size = "md" }: { dezenas: string[]; size?: "sm" | "md" | "lg" }) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {dezenas.map((d, i) => (
+        <LotteryBall key={i} number={d} size={size} color={BRAND} />
+      ))}
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1.5">
+      {children}
+    </p>
+  );
+}
+
+function StatRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between py-2.5 border-b last:border-b-0">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-sm font-bold tabular-nums">{value}</span>
+    </div>
+  );
+}
+
+function DezenasCard({ resultado }: { resultado: ResultadoMegaSena }) {
+  const sorted = resultado.dezenas;
+  const ordem = resultado.dezenasOrdem;
+
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Dezenas Sorteadas</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 flex-1">
+        <div>
+          <SectionLabel>Em ordem crescente</SectionLabel>
+          <Balls dezenas={sorted} size="md" />
+        </div>
+        {ordem && (
+          <div>
+            <SectionLabel>Na ordem do sorteio</SectionLabel>
+            <Balls dezenas={ordem} size="md" />
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+function ParesImparesCard({ dezenas }: { dezenas: string[] }) {
+  const pares = dezenas.filter((d) => Number(d) % 2 === 0);
+  const impares = dezenas.filter((d) => Number(d) % 2 !== 0);
+
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Pares e Ímpares</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 flex-1">
+        <div>
+          <SectionLabel>Pares: {pares.length}</SectionLabel>
+          {pares.length > 0 ? <Balls dezenas={pares} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+        <div>
+          <SectionLabel>Ímpares: {impares.length}</SectionLabel>
+          {impares.length > 0 ? <Balls dezenas={impares} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MolduraRetratoCard({ dezenas }: { dezenas: string[] }) {
+  const moldura = dezenas.filter((d) => isMoldura(Number(d)));
+  const retrato = dezenas.filter((d) => !isMoldura(Number(d)));
+
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Moldura e Retrato</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 flex-1">
+        <div>
+          <SectionLabel>Moldura: {moldura.length}</SectionLabel>
+          {moldura.length > 0 ? <Balls dezenas={moldura} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+        <div>
+          <SectionLabel>Retrato: {retrato.length}</SectionLabel>
+          {retrato.length > 0 ? <Balls dezenas={retrato} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function IndicesMathCard({ dezenas }: { dezenas: string[] }) {
+  const { soma, media, desvio } = calcStats(dezenas);
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Índices Matemáticos</CardTitle>
+      </CardHeader>
+      <CardContent className="flex-1">
+        <StatRow label="Soma das dezenas" value={soma.toLocaleString("pt-BR")} />
+        <StatRow
+          label="Média aritmética"
+          value={media.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 2 })}
+        />
+        <StatRow
+          label="Desvio-padrão"
+          value={desvio.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        />
+      </CardContent>
+    </Card>
+  );
+}
+
+function RepeticoesCard({ concurso, dezenas }: { concurso: number; dezenas: string[] }) {
+  const { data: prev } = useGetMegaSenaResultadoConcurso(concurso - 1);
+  const prevSet = new Set(prev?.dezenas ?? []);
+  const repetidas = dezenas.filter((d) => prevSet.has(d));
+  const novas = dezenas.filter((d) => !prevSet.has(d));
+
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Repetições</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 flex-1">
+        <div>
+          <SectionLabel>
+            Repetidas do concurso anterior: {prev ? repetidas.length : "–"}
+          </SectionLabel>
+          {prev && (
+            repetidas.length > 0
+              ? <Balls dezenas={repetidas} size="md" />
+              : <span className="text-sm text-muted-foreground">Nenhuma</span>
+          )}
+        </div>
+        <div>
+          <SectionLabel>
+            Dezenas novas: {prev ? novas.length : "–"}
+          </SectionLabel>
+          {prev && (
+            novas.length > 0
+              ? <Balls dezenas={novas} size="md" />
+              : <span className="text-sm text-muted-foreground">Nenhuma</span>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function PadroesCard({ dezenas }: { dezenas: string[] }) {
+  const primos = dezenas.filter((d) => isPrime(Number(d)));
+  const fibonacci = dezenas.filter((d) => FIBONACCI.has(Number(d)));
+  const triangulares = dezenas.filter((d) => TRIANGULARES.has(Number(d)));
+
+  return (
+    <Card className="flex flex-col h-full">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Padrões Matemáticos</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 flex-1">
+        <div>
+          <SectionLabel>Números primos: {primos.length}</SectionLabel>
+          {primos.length > 0 ? <Balls dezenas={primos} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+        <div>
+          <SectionLabel>Números de Fibonacci: {fibonacci.length}</SectionLabel>
+          {fibonacci.length > 0 ? <Balls dezenas={fibonacci} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+        <div>
+          <SectionLabel>Números triangulares: {triangulares.length}</SectionLabel>
+          {triangulares.length > 0 ? <Balls dezenas={triangulares} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function RateioCard({ resultado }: { resultado: ResultadoMegaSena }) {
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Rateio dos Prêmios</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/50">
+                <TableHead>Faixa</TableHead>
+                <TableHead className="text-right">Ganhadores</TableHead>
+                <TableHead className="text-right">Valor do Prêmio</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {resultado.premios.map((p, i) => (
+                <TableRow key={i}>
+                  <TableCell className="font-medium">{p.descricao}</TableCell>
+                  <TableCell className="text-right">
+                    {p.ganhadores.toLocaleString("pt-BR")}
+                  </TableCell>
+                  <TableCell className="text-right font-semibold">
+                    {formatCurrency(p.valorPremio)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 function LoadingSkeleton() {
   return (
     <div className="space-y-6">
-      <Skeleton className="h-10 w-64" />
-      <Card>
-        <CardHeader><Skeleton className="h-6 w-32" /></CardHeader>
-        <CardContent><Skeleton className="h-32 w-full" /></CardContent>
-      </Card>
+      <div className="space-y-2">
+        <Skeleton className="h-9 w-72" />
+        <Skeleton className="h-5 w-56" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[0, 1, 2].map((i) => (
+          <Card key={i}>
+            <CardHeader><Skeleton className="h-5 w-32" /></CardHeader>
+            <CardContent><Skeleton className="h-20 w-full" /></CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }
 
-function ResultadoView({ resultado, titulo }: { resultado: ResultadoMegaSena; titulo: string }) {
+// ─── Main view ───────────────────────────────────────────────────────────────
+
+function ResultadoView({ resultado }: { resultado: ResultadoMegaSena }) {
+  const localFormatted = formatLocal(resultado.local);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">{titulo}</h1>
-        <p className="text-muted-foreground mt-1">Concurso {resultado.concurso} • {formatLongDate(resultado.data)}</p>
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: BRAND }}>
+          Mega-Sena · Concurso {resultado.concurso}
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          {formatDateShort(resultado.data)}
+          {localFormatted && (
+            <> · Sorteio realizado em {localFormatted}</>
+          )}
+        </p>
       </div>
 
-      <Card className="border-t-4 border-[#009640] shadow-md">
-        <CardContent className="pt-8 pb-10">
-          <div className="flex flex-col items-center justify-center space-y-8">
-            {resultado.acumulado ? (
-              <div className="text-center">
-                <h2 className="text-3xl md:text-5xl font-black text-destructive uppercase tracking-widest mb-2">Acumulou!</h2>
-                <p className="text-xl text-muted-foreground">O prêmio principal acumulou para o próximo sorteio</p>
-              </div>
-            ) : (
-              <div className="text-center">
-                <h2 className="text-3xl md:text-5xl font-black text-[#009640] uppercase tracking-widest mb-2">Saiu!</h2>
-                <p className="text-xl text-muted-foreground">Houve ganhadores para o prêmio principal</p>
-              </div>
-            )}
+      {/* Row 1: Dezenas | Pares/Ímpares | Moldura/Retrato */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <DezenasCard resultado={resultado} />
+        <ParesImparesCard dezenas={resultado.dezenas} />
+        <MolduraRetratoCard dezenas={resultado.dezenas} />
+      </div>
 
-            <div className="flex flex-wrap justify-center gap-3 md:gap-6 px-4 py-8 bg-muted/40 rounded-2xl border border-border w-full max-w-3xl">
-              {resultado.dezenas.map((num, i) => (
-                <LotteryBall key={i} number={num} size="xl" color="#009640" />
-              ))}
-            </div>
+      {/* Row 2: Rateio (2/3) + Publicidade (1/3) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2">
+          <RateioCard resultado={resultado} />
+        </div>
+        <div className="flex items-start justify-center">
+          <AdUnit slot="5566778899" format="rectangle" className="w-full max-w-sm" />
+        </div>
+      </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-3xl">
-              <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-xl shadow-sm">
-                <MapPin className="w-8 h-8 text-muted-foreground" />
-                <div>
-                  <div className="text-sm text-muted-foreground font-medium">Local do Sorteio</div>
-                  <div className="font-semibold">{resultado.local || "Espaço da Sorte, São Paulo/SP"}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-4 bg-card border border-border rounded-xl shadow-sm">
-                <Target className="w-8 h-8 text-muted-foreground" />
-                <div>
-                  <div className="text-sm text-muted-foreground font-medium">Arrecadação Total</div>
-                  <div className="font-semibold">{formatCurrency(resultado.arrecadacaoTotal)}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Trophy className="w-5 h-5 text-amber-500" />
-              Rateio dos Prêmios
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead>Faixa</TableHead>
-                    <TableHead className="text-right">Ganhadores</TableHead>
-                    <TableHead className="text-right">Valor do Prêmio</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {resultado.premios.map((premio, i) => (
-                    <TableRow key={i}>
-                      <TableCell className="font-medium">{premio.descricao}</TableCell>
-                      <TableCell className="text-right">{premio.ganhadores.toLocaleString('pt-BR')}</TableCell>
-                      <TableCell className="text-right font-semibold">{formatCurrency(premio.valorPremio)}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-
-        <AdUnit slot="5566778899" format="rectangle" className="w-full max-w-sm mx-auto" />
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-primary" />
-              Próximo Sorteio
-            </CardTitle>
-            <CardDescription>
-              {resultado.dataProximoConcurso ? formatDate(resultado.dataProximoConcurso) : "A definir"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-6 bg-muted/30 rounded-lg border border-border">
-              <div className="text-sm text-muted-foreground font-medium mb-2 uppercase tracking-wide">Prêmio Estimado</div>
-              <div className="text-3xl font-bold text-[#009640]">
-                {formatCurrency(resultado.valorEstimadoProximoConcurso)}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Row 3: Índices | Repetições | Padrões */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <IndicesMathCard dezenas={resultado.dezenas} />
+        <RepeticoesCard concurso={resultado.concurso} dezenas={resultado.dezenas} />
+        <PadroesCard dezenas={resultado.dezenas} />
       </div>
     </div>
   );
 }
+
+// ─── Entry points (hooks called unconditionally per component) ────────────────
 
 function LatestResultado() {
   const { data, isLoading, isError } = useGetMegaSenaUltimoResultado();
   if (isLoading) return <LoadingSkeleton />;
-  if (isError || !data) return <div>Erro ao carregar o resultado.</div>;
-  return <ResultadoView resultado={data} titulo="Último Resultado" />;
+  if (isError || !data) return <div className="text-sm text-muted-foreground">Erro ao carregar o resultado.</div>;
+  return <ResultadoView resultado={data} />;
 }
 
 function ConcursoResultado({ concurso }: { concurso: number }) {
   const { data, isLoading, isError } = useGetMegaSenaResultadoConcurso(concurso);
   if (isLoading) return <LoadingSkeleton />;
-  if (isError || !data) return <div>Concurso {concurso} não encontrado.</div>;
-  return <ResultadoView resultado={data} titulo={`Concurso ${concurso}`} />;
+  if (isError || !data) return <div className="text-sm text-muted-foreground">Concurso {concurso} não encontrado.</div>;
+  return <ResultadoView resultado={data} />;
 }
 
 export default function MegaSenaUltimoResultado() {
   const params = useParams<{ concurso?: string }>();
   const concursoNum = params.concurso ? Number(params.concurso) : undefined;
 
-  if (concursoNum) {
-    return <ConcursoResultado concurso={concursoNum} />;
-  }
+  if (concursoNum) return <ConcursoResultado concurso={concursoNum} />;
   return <LatestResultado />;
 }

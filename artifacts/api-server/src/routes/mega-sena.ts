@@ -12,6 +12,7 @@ function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
     concurso: row.concurso,
     data: row.data,
     dezenas: row.dezenas as string[],
+    dezenasOrdem: (row.dezenasOrdem as string[] | null) ?? null,
     premios: row.premios as Array<{ faixa: number; descricao: string; ganhadores: number; valorPremio: number }>,
     acumulado: row.acumulado,
     valorAcumulado: row.valorAcumulado ? Number(row.valorAcumulado) : null,
@@ -110,6 +111,7 @@ router.get("/mega-sena/resultados/:concurso", async (req, res) => {
     const norm = normalizeResult(raw, "megasena");
     res.json({
       ...norm,
+      dezenasOrdem: norm.dezenasOrdem ?? null,
       valorAcumulado: norm.valorAcumulado ? Number(norm.valorAcumulado) : null,
       valorEstimadoProximoConcurso: norm.valorEstimadoProximo ? Number(norm.valorEstimadoProximo) : null,
       local: norm.local,

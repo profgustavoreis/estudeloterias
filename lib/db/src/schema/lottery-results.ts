@@ -12,6 +12,7 @@ export const lotteryResultsTable = pgTable("lottery_results", {
   concurso: integer("concurso").notNull(),
   data: text("data").notNull(),
   dezenas: jsonb("dezenas").$type<string[]>().notNull(),
+  dezenasOrdem: jsonb("dezenas_ordem").$type<string[]>(),
   premios: jsonb("premios").$type<Array<{ faixa: number; descricao: string; ganhadores: number; valorPremio: number }>>().notNull(),
   acumulado: boolean("acumulado").notNull().default(false),
   valorAcumulado: numeric("valor_acumulado"),

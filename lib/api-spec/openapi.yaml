@@ -333,6 +333,11 @@ components:
           type: array
           items:
             type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
+          items:
+            type: string
         premios:
           type: array
           items:

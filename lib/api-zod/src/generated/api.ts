@@ -73,6 +73,7 @@ export const GetMegaSenaUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -112,6 +113,7 @@ export const GetMegaSenaResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -142,6 +144,7 @@ export const GetMegaSenaResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -214,6 +217,7 @@ export const GetMegaDaViradaResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),

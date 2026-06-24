@@ -21,6 +21,7 @@ interface CaixaResult {
   numero?: number;
   dataApuracao?: string;
   listaDezenas?: string[];
+  dezenasSorteadasOrdemSorteio?: string[];
   listaDezenasSegundoSorteio?: string[];
   nomeTimeCoracaoMesSorte?: string;
   trevosSorteados?: Array<number | string>;
@@ -92,6 +93,7 @@ export function normalizeResult(raw: CaixaResult, modalidade: string) {
     concurso: raw.numero ?? 0,
     data: raw.dataApuracao ?? "",
     dezenas: raw.listaDezenas ?? [],
+    dezenasOrdem: raw.dezenasSorteadasOrdemSorteio?.length ? raw.dezenasSorteadasOrdemSorteio : null,
     premios,
     acumulado: raw.acumulado ?? false,
     valorAcumulado:
@@ -120,6 +122,7 @@ async function upsertResult(data: ReturnType<typeof normalizeResult>) {
       target: [lotteryResultsTable.modalidade, lotteryResultsTable.concurso],
       set: {
         dezenas: data.dezenas as any,
+        dezenasOrdem: data.dezenasOrdem as any,
         premios: data.premios as any,
         acumulado: data.acumulado,
         valorAcumulado: data.valorAcumulado,
