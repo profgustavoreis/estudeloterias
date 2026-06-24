@@ -26,6 +26,18 @@ interface DropdownItem {
   desc: string;
 }
 
+function matchesItem(location: string, href: string) {
+  return location === href || location.startsWith(href + "/");
+}
+
+function bestMatch(location: string, items: DropdownItem[]): DropdownItem | null {
+  return items.reduce<DropdownItem | null>((best, item) => {
+    if (!matchesItem(location, item.href)) return best;
+    if (!best || item.href.length > best.href.length) return item;
+    return best;
+  }, null);
+}
+
 function Dropdown({ label, items, isOpen, onToggle }: {
   label: string;
   items: DropdownItem[];
@@ -33,7 +45,7 @@ function Dropdown({ label, items, isOpen, onToggle }: {
   onToggle: () => void;
 }) {
   const [location] = useLocation();
-  const isActive = items.some(i => location.startsWith(i.href));
+  const activeItem = bestMatch(location, items);
 
   return (
     <div className="relative">
@@ -41,7 +53,7 @@ function Dropdown({ label, items, isOpen, onToggle }: {
         onClick={onToggle}
         className={cn(
           "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors",
-          isActive
+          activeItem
             ? "text-[#009640]"
             : "text-foreground/80 hover:text-foreground hover:bg-muted"
         )}
@@ -55,7 +67,7 @@ function Dropdown({ label, items, isOpen, onToggle }: {
           <div className="p-2">
             {items.map((item) => {
               const Icon = item.icon;
-              const active = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+              const active = activeItem?.href === item.href;
               return (
                 <Link
                   key={item.href}
@@ -187,7 +199,7 @@ export function TopNav() {
               <div className="space-y-1">
                 {megaSenaItems.map(item => {
                   const Icon = item.icon;
-                  const active = location === item.href || (item.href !== "/" && location.startsWith(item.href));
+                  const active = bestMatch(location, megaSenaItems)?.href === item.href;
                   return (
                     <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                       className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
