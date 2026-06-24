@@ -354,11 +354,13 @@ router.get("/mega-sena/resumo", async (req, res) => {
 router.post("/mega-sena/gerador", async (req, res) => {
   const { quantidadeJogos = 1, quantidadeDezenas = 6 } = req.body ?? {};
   const jogosNum = Math.min(20, Math.max(1, parseInt(String(quantidadeJogos), 10)));
-  const dezenasNum = Math.min(15, Math.max(6, parseInt(String(quantidadeDezenas), 10)));
+  const dezenasNum = Math.min(20, Math.max(6, parseInt(String(quantidadeDezenas), 10)));
 
+  // Preço = C(n, 6) × R$ 6,00 (aposta mínima de 6 dezenas = R$ 6,00)
   const precos: Record<number, number> = {
-    6: 5.0, 7: 35.0, 8: 140.0, 9: 420.0, 10: 1050.0,
-    11: 2310.0, 12: 4620.0, 13: 8580.0, 14: 15015.0, 15: 25025.0,
+    6: 6.0, 7: 42.0, 8: 168.0, 9: 504.0, 10: 1260.0,
+    11: 2772.0, 12: 5544.0, 13: 10296.0, 14: 18018.0, 15: 30030.0,
+    16: 48048.0, 17: 74256.0, 18: 111384.0, 19: 162792.0, 20: 232560.0,
   };
 
   const jogos = Array.from({ length: jogosNum }, () => {
