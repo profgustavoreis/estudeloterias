@@ -1,10 +1,11 @@
 import { useGetMegaSenaUltimoResultado } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
-import { BarChart3, CalendarDays, Dices, Gift, List, Sparkles, Target } from "lucide-react";
+import { BarChart3, CalendarDays, Dices, Gift, List, Sparkles, Target, Trophy } from "lucide-react";
 
 const COR = "#009640";
 
@@ -118,36 +119,41 @@ export default function MegaSenaHub() {
         {/* ── Rateio dos Prêmios ── */}
         <Card>
           <CardHeader>
-            <CardTitle>Rateio dos Prêmios</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Trophy className="w-5 h-5 text-amber-500" />
+              Rateio dos Prêmios
+            </CardTitle>
             <CardDescription>Concurso {resultado.concurso}</CardDescription>
           </CardHeader>
           <CardContent className="px-0 pb-0">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border">
-                  <th className="text-left text-muted-foreground font-medium px-6 pb-2">Faixa</th>
-                  <th className="text-center text-muted-foreground font-medium px-2 pb-2">Ganhadores</th>
-                  <th className="text-right text-muted-foreground font-medium px-6 pb-2">Prêmio R$</th>
-                </tr>
-              </thead>
-              <tbody>
-                {resultado.premios.map((p) => (
-                  <tr key={p.faixa} className="border-b border-border last:border-0">
-                    <td className="px-6 py-3 text-left">{p.descricao}</td>
-                    <td className="px-2 py-3 text-center font-mono">
-                      {p.ganhadores === 0
-                        ? <span className="text-muted-foreground">—</span>
-                        : p.ganhadores.toLocaleString("pt-BR")}
-                    </td>
-                    <td className="px-6 py-3 text-right font-mono">
-                      {p.ganhadores === 0
-                        ? <span className="text-muted-foreground">—</span>
-                        : formatCurrency(p.valorPremio)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/50">
+                    <TableHead>Faixa</TableHead>
+                    <TableHead className="text-right">Ganhadores</TableHead>
+                    <TableHead className="text-right">Valor do Prêmio</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {resultado.premios.map((premio) => (
+                    <TableRow key={premio.faixa}>
+                      <TableCell className="font-medium">{premio.descricao}</TableCell>
+                      <TableCell className="text-right">
+                        {premio.ganhadores === 0
+                          ? <span className="text-muted-foreground">—</span>
+                          : premio.ganhadores.toLocaleString("pt-BR")}
+                      </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        {premio.ganhadores === 0
+                          ? <span className="text-muted-foreground">—</span>
+                          : formatCurrency(premio.valorPremio)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
