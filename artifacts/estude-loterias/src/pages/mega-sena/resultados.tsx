@@ -54,8 +54,8 @@ export default function MegaSenaResultadosAnteriores() {
                   <TableHead className="w-[100px]">Concurso</TableHead>
                   <TableHead className="w-[110px]">Data</TableHead>
                   <TableHead className="text-center min-w-[280px]">Dezenas Sorteadas</TableHead>
-                  <TableHead className="text-right">Situação</TableHead>
                   <TableHead className="text-right">Prêmio Principal</TableHead>
+                  <TableHead>Situação</TableHead>
                   <TableHead className="w-[130px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -97,17 +97,6 @@ export default function MegaSenaResultadosAnteriores() {
                           ))}
                         </div>
                       </TableCell>
-                      <TableCell className="text-right">
-                        {res.acumulado ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">
-                            Acumulou
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                            Saiu
-                          </span>
-                        )}
-                      </TableCell>
                       <TableCell className="text-right font-medium">
                         {(() => {
                           if (res.acumulado) return formatCurrency(res.valorAcumulado);
@@ -115,6 +104,17 @@ export default function MegaSenaResultadosAnteriores() {
                           if (!p1) return "–";
                           return formatCurrency(p1.valorPremio * p1.ganhadores);
                         })()}
+                      </TableCell>
+                      <TableCell>
+                        {res.acumulado ? (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">
+                            Acumulou!
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                            Saiu!
+                          </span>
+                        )}
                       </TableCell>
                       <TableCell className="text-right">
                         <Link
