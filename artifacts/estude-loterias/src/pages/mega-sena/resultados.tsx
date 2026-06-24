@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { useGetMegaSenaResultados } from "@workspace/api-client-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatCurrency, formatDate } from "@/lib/formatters";
+import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function MegaSenaResultadosAnteriores() {
   const [page, setPage] = useState(1);
@@ -25,25 +26,23 @@ export default function MegaSenaResultadosAnteriores() {
           <p className="text-muted-foreground mt-1">Busque e analise os concursos passados da Mega-Sena.</p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Select
-            value={ano?.toString() || "todos"}
-            onValueChange={(v) => {
-              setAno(v === "todos" ? null : parseInt(v));
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Filtrar por ano" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="todos">Todos os anos</SelectItem>
-              {years.map(y => (
-                <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        <Select
+          value={ano?.toString() || "todos"}
+          onValueChange={(v) => {
+            setAno(v === "todos" ? null : parseInt(v));
+            setPage(1);
+          }}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Filtrar por ano" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos os anos</SelectItem>
+            {years.map(y => (
+              <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <Card>
@@ -53,10 +52,11 @@ export default function MegaSenaResultadosAnteriores() {
               <TableHeader>
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
                   <TableHead className="w-[100px]">Concurso</TableHead>
-                  <TableHead className="w-[120px]">Data</TableHead>
-                  <TableHead className="text-center min-w-[300px]">Dezenas Sorteadas</TableHead>
+                  <TableHead className="w-[110px]">Data</TableHead>
+                  <TableHead className="text-center min-w-[280px]">Dezenas Sorteadas</TableHead>
                   <TableHead className="text-right">Situação</TableHead>
                   <TableHead className="text-right">Prêmio Principal</TableHead>
+                  <TableHead className="w-[130px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -74,21 +74,22 @@ export default function MegaSenaResultadosAnteriores() {
                       </TableCell>
                       <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-24 ml-auto" /></TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   ))
                 ) : isError || !data ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">Erro ao carregar dados.</TableCell>
+                    <TableCell colSpan={6} className="h-24 text-center">Erro ao carregar dados.</TableCell>
                   </TableRow>
                 ) : data.resultados.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">Nenhum resultado encontrado.</TableCell>
+                    <TableCell colSpan={6} className="h-24 text-center">Nenhum resultado encontrado.</TableCell>
                   </TableRow>
                 ) : (
                   data.resultados.map((res) => (
                     <TableRow key={res.concurso}>
-                      <TableCell className="font-medium text-muted-foreground">{res.concurso}</TableCell>
-                      <TableCell>{formatDate(res.data)}</TableCell>
+                      <TableCell className="font-bold">{res.concurso}</TableCell>
+                      <TableCell className="text-muted-foreground text-sm">{formatDateShort(res.data)}</TableCell>
                       <TableCell>
                         <div className="flex justify-center gap-1.5 flex-wrap">
                           {res.dezenas.map((num, i) => (
@@ -108,10 +109,18 @@ export default function MegaSenaResultadosAnteriores() {
                         )}
                       </TableCell>
                       <TableCell className="text-right font-medium">
-                        {res.acumulado 
+                        {res.acumulado
                           ? formatCurrency(res.valorAcumulado)
                           : formatCurrency(res.premios.find(p => p.faixa === 1)?.valorPremio)
                         }
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Link
+                          href={`/mega-sena/resultado/${res.concurso}`}
+                          className="text-sm font-semibold text-[#009640] hover:underline whitespace-nowrap"
+                        >
+                          Ver detalhes →
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))

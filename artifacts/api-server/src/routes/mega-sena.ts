@@ -47,30 +47,28 @@ router.get("/mega-sena/resultados", async (req, res) => {
 
     const offset = (page - 1) * limit;
 
-    let baseQuery = db.select().from(lotteryResultsTable).where(eq(lotteryResultsTable.modalidade, "megasena"));
+    // Build WHERE: always filter by modalidade; optionally filter by year using SPLIT_PART on the stored dd/mm/yyyy text
+    const where = ano
+      ? and(
+          eq(lotteryResultsTable.modalidade, "megasena"),
+          sql`SPLIT_PART(${lotteryResultsTable.data}, '/', 3)::integer = ${ano}`,
+        )
+      : eq(lotteryResultsTable.modalidade, "megasena");
 
-    // Count total
     const [{ total }] = await db
       .select({ total: count() })
       .from(lotteryResultsTable)
-      .where(eq(lotteryResultsTable.modalidade, "megasena"));
+      .where(where);
 
     const rows = await db
       .select()
       .from(lotteryResultsTable)
-      .where(eq(lotteryResultsTable.modalidade, "megasena"))
+      .where(where)
       .orderBy(desc(lotteryResultsTable.concurso))
       .limit(limit)
       .offset(offset);
 
-    let resultados = rows.map(toResultado);
-
-    if (ano) {
-      resultados = resultados.filter(r => {
-        const parts = r.data.split("/");
-        return parts.length === 3 && parseInt(parts[2], 10) === ano;
-      });
-    }
+    const resultados = rows.map(toResultado);
 
     res.json({
       total,
