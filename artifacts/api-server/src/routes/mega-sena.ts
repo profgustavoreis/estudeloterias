@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
-import { eq, desc, asc, count, max, sql } from "drizzle-orm";
+import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
 import { fetchGuidi, normalizeResult } from "../services/lottery-sync";
 import { getLatest } from "./loterias";
 
@@ -93,7 +93,10 @@ router.get("/mega-sena/resultados/:concurso", async (req, res) => {
     const rows = await db
       .select()
       .from(lotteryResultsTable)
-      .where(eq(lotteryResultsTable.modalidade, "megasena"))
+      .where(and(
+        eq(lotteryResultsTable.modalidade, "megasena"),
+        eq(lotteryResultsTable.concurso, concurso),
+      ))
       .limit(1);
 
     if (rows.length > 0) {
