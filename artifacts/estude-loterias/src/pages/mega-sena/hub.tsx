@@ -6,7 +6,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Link } from "wouter";
-import { BarChart3, CalendarDays, Dices, Gift, List, Sparkles, Target, Trophy, Wallet, TrendingUp, PartyPopper } from "lucide-react";
+import { BarChart3, Dices, Gift, List, Sparkles, Target, Trophy, Wallet, TrendingUp, PartyPopper } from "lucide-react";
 
 const COR = "#009640";
 
@@ -18,7 +18,6 @@ export default function MegaSenaHub() {
     { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List, desc: "Busque por sorteios passados" },
     { href: "/mega-sena/estatisticas", label: "Estatísticas", icon: BarChart3, desc: "Frequência de dezenas e atrasos" },
     { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles, desc: "Gere jogos inteligentes" },
-    { href: "/mega-sena/calendario", label: "Calendário", icon: CalendarDays, desc: "Datas dos próximos sorteios" },
     { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift, desc: "Tudo sobre o sorteio especial" },
   ];
 
