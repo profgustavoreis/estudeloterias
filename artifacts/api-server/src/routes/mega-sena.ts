@@ -233,13 +233,13 @@ router.get("/mega-sena/calendario", async (req, res) => {
       }
     }
 
-    // Generate next 20 draw dates (Tue=2, Thu=4, Sat=6)
+    // Generate next draw dates (Tue=2, Thu=4, Sat=6) — enough to fill 10 slots after dedup
     const drawDays = [2, 4, 6];
     let cursor = new Date();
     cursor.setHours(0, 0, 0, 0);
     let count = 0;
 
-    while (count < 20) {
+    while (count < 15) {
       cursor.setDate(cursor.getDate() + 1);
       if (drawDays.includes(cursor.getDay())) {
         const dd = String(cursor.getDate()).padStart(2, "0");
@@ -258,7 +258,21 @@ router.get("/mega-sena/calendario", async (req, res) => {
       }
     }
 
-    res.json(sorteios.slice(0, 20));
+    // Deduplicate by date (DB entry and generated list may share the next draw date)
+    const seen = new Set<string>();
+    const deduped = sorteios.filter(s => {
+      if (seen.has(s.data)) return false;
+      seen.add(s.data);
+      return true;
+    });
+
+    // Propagate concurso numbers to all entries
+    if (deduped.length > 0 && deduped[0].concursoEstimado !== null) {
+      const base = deduped[0].concursoEstimado;
+      deduped.forEach((s, i) => { s.concursoEstimado = base + i; });
+    }
+
+    res.json(deduped.slice(0, 10));
   } catch (err) {
     req.log.error({ err }, "Failed to get calendario");
     res.status(500).json({ error: "Erro ao buscar calendário" });

@@ -1,6 +1,6 @@
 import { useGetMegaSenaCalendario } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate } from "@/lib/formatters";
+import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Calendar as CalendarIcon, Star } from "lucide-react";
 
@@ -35,7 +35,12 @@ export default function MegaSenaCalendario() {
                       {sorteio.diaSemana}
                     </CardTitle>
                     <CardDescription className="mt-1 font-medium text-foreground">
-                      {formatLongDate(sorteio.data)}
+                      {formatDateShort(sorteio.data)}
+                      {sorteio.concursoEstimado && (
+                        <span className="ml-2 text-xs text-muted-foreground font-normal">
+                          — Concurso {sorteio.concursoEstimado}
+                        </span>
+                      )}
                     </CardDescription>
                   </div>
                   {sorteio.especial && (
@@ -46,11 +51,6 @@ export default function MegaSenaCalendario() {
                 </div>
               </CardHeader>
               <CardContent className="pt-4 border-t border-border">
-                {sorteio.concursoEstimado && (
-                  <div className="text-sm text-muted-foreground mb-1">
-                    Concurso {sorteio.concursoEstimado}
-                  </div>
-                )}
                 {sorteio.valorEstimado ? (
                   <div className="text-2xl font-bold text-[#009640]">
                     {formatCurrency(sorteio.valorEstimado)}
