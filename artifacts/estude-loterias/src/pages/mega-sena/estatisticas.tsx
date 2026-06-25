@@ -357,9 +357,9 @@ export default function MegaSenaEstatisticas() {
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(v) => `${v}P/${6 - v}Í`}
-                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
+                      tick={{ fontSize: 11 }}
                     />
-                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                     <Tooltip
                       cursor={{ fill: "rgba(0,0,0,0.04)" }}
                       content={({ active, payload }) => {
@@ -381,7 +381,7 @@ export default function MegaSenaEstatisticas() {
                       }}
                     />
                     <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
-                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -440,13 +440,13 @@ export default function MegaSenaEstatisticas() {
                     layout="vertical"
                     margin={{ top: 4, right: 52, left: 4, bottom: 0 }}
                   >
-                    <XAxis type="number" tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
+                    <XAxis type="number" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                     <YAxis
                       type="category"
                       dataKey="faixa"
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
+                      tick={{ fontSize: 11 }}
                       width={68}
                     />
                     <Tooltip
@@ -520,9 +520,9 @@ export default function MegaSenaEstatisticas() {
                       dataKey="faixa"
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
+                      tick={{ fontSize: 11 }}
                     />
-                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                     <Tooltip
                       cursor={{ fill: "rgba(0,0,0,0.04)" }}
                       content={({ active, payload }) => {
@@ -537,7 +537,7 @@ export default function MegaSenaEstatisticas() {
                       }}
                     />
                     <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -595,10 +595,10 @@ export default function MegaSenaEstatisticas() {
                       dataKey="coluna"
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
+                      tick={{ fontSize: 11 }}
                       tickFormatter={(v) => `C${v}`}
                     />
-                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                     <Tooltip
                       cursor={{ fill: "rgba(0,0,0,0.04)" }}
                       content={({ active, payload }) => {
@@ -619,7 +619,7 @@ export default function MegaSenaEstatisticas() {
                       }}
                     />
                     <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -735,10 +735,10 @@ export default function MegaSenaEstatisticas() {
                         dataKey="count"
                         tickLine={false}
                         axisLine={false}
-                        tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
+                        tick={{ fontSize: 11 }}
                         tickFormatter={(v) => `${v} dez.`}
                       />
-                      <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
+                      <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                       <Tooltip
                         cursor={{ fill: "rgba(0,0,0,0.04)" }}
                         content={({ active, payload }) => {
@@ -757,7 +757,7 @@ export default function MegaSenaEstatisticas() {
                         }}
                       />
                       <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
                       </Bar>
                     </BarChart>
                   </ResponsiveContainer>
