@@ -76,7 +76,7 @@ export default function MegaSenaSimulador() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="flex items-center gap-4">
         <div
           className="w-12 h-12 rounded-lg flex items-center justify-center text-white flex-shrink-0"
@@ -94,71 +94,69 @@ export default function MegaSenaSimulador() {
         </div>
       </div>
 
-      {/* ── Grade + Controles + Publicidade ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      {/* ── Layout principal: 1/3 + 1/3 + 1/3 ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* ── Coluna 1–2: Volante ── */}
-        <div className="lg:col-span-2 space-y-4">
-          <Card className="border-t-4" style={{ borderTopColor: COR }}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle>Escolha suas dezenas</CardTitle>
-                <span
-                  className={cn(
-                    "text-sm font-semibold tabular-nums",
-                    count < 6 ? "text-muted-foreground" : "text-[#009640]"
-                  )}
-                >
-                  {count}/20 selecionadas
-                </span>
-              </div>
-              <CardDescription>
-                Mínimo de 6 • Máximo de 20
-                {count >= 20 && (
-                  <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>
+        {/* ── Col 1: Volante ── */}
+        <Card className="border-t-4" style={{ borderTopColor: COR }}>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle>Escolha suas dezenas</CardTitle>
+              <span
+                className={cn(
+                  "text-sm font-semibold tabular-nums",
+                  count < 6 ? "text-muted-foreground" : "text-[#009640]"
                 )}
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Grade 6×10 */}
-              <div className="grid grid-cols-10 gap-1.5">
-                {Array.from({ length: 60 }, (_, i) => i + 1).map((n) => {
-                  const sel = selecionadas.has(n);
-                  return (
-                    <button
-                      key={n}
-                      onClick={() => toggleDezena(n)}
-                      disabled={!sel && count >= 20}
-                      className={cn(
-                        "aspect-square rounded-lg text-sm font-bold transition-all duration-150 select-none",
-                        sel
-                          ? "bg-[#009640] text-white shadow-md ring-2 ring-[#009640]/40 scale-105"
-                          : count >= 20
-                          ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed"
-                          : "bg-muted/60 text-foreground hover:bg-[#009640]/15 hover:text-[#009640] hover:scale-105 border border-border"
-                      )}
-                    >
-                      {String(n).padStart(2, "0")}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Preview das dezenas selecionadas */}
-              {count > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-1 border-t">
-                  {Array.from(selecionadas)
-                    .sort((a, b) => a - b)
-                    .map((n) => (
-                      <LotteryBall key={n} number={n} size="sm" />
-                    ))}
-                </div>
+              >
+                {count}/20
+              </span>
+            </div>
+            <CardDescription>
+              Mínimo de 6 • Máximo de 20
+              {count >= 20 && (
+                <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>
               )}
-            </CardContent>
-          </Card>
-        </div>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {/* Grade 6×10 */}
+            <div className="grid grid-cols-10 gap-1">
+              {Array.from({ length: 60 }, (_, i) => i + 1).map((n) => {
+                const sel = selecionadas.has(n);
+                return (
+                  <button
+                    key={n}
+                    onClick={() => toggleDezena(n)}
+                    disabled={!sel && count >= 20}
+                    className={cn(
+                      "aspect-square rounded text-xs font-bold transition-all duration-150 select-none",
+                      sel
+                        ? "bg-[#009640] text-white shadow-sm ring-1 ring-[#009640]/40 scale-105"
+                        : count >= 20
+                        ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed"
+                        : "bg-muted/60 text-foreground hover:bg-[#009640]/15 hover:text-[#009640] border border-border"
+                    )}
+                  >
+                    {String(n).padStart(2, "0")}
+                  </button>
+                );
+              })}
+            </div>
 
-        {/* ── Coluna 3: Filtro + Botões + Como funciona ── */}
+            {/* Preview das dezenas selecionadas */}
+            {count > 0 && (
+              <div className="flex flex-wrap gap-1 pt-2 border-t">
+                {Array.from(selecionadas)
+                  .sort((a, b) => a - b)
+                  .map((n) => (
+                    <LotteryBall key={n} number={n} size="sm" />
+                  ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* ── Col 2: Filtro + Como funciona ── */}
         <div className="space-y-4">
           <Card>
             <CardContent className="pt-5 space-y-4">
@@ -220,11 +218,11 @@ export default function MegaSenaSimulador() {
             </CardContent>
           </Card>
 
-          {/* "Como funciona" — accordion no mobile, card estático no desktop */}
+          {/* Como funciona — accordion no mobile, visível no desktop */}
           <Card className="bg-muted/20">
-            <CardContent className="pt-5 space-y-3 text-sm text-muted-foreground">
+            <CardContent className="pt-5 space-y-2 text-sm text-muted-foreground">
               <button
-                className="flex w-full items-center justify-between lg:cursor-default"
+                className="flex w-full items-center justify-between"
                 onClick={() => setInfoAberta((v) => !v)}
               >
                 <span className="font-semibold text-foreground">Como funciona?</span>
@@ -235,10 +233,10 @@ export default function MegaSenaSimulador() {
                   )}
                 />
               </button>
-              <div className={cn("space-y-2 lg:block", infoAberta ? "block" : "hidden")}>
-                <ol className="space-y-2 list-decimal list-inside">
+              <div className={cn("space-y-1.5 lg:block", infoAberta ? "block" : "hidden")}>
+                <ol className="space-y-1.5 list-decimal list-inside">
                   <li>Escolha de 6 a 20 números no volante.</li>
-                  <li>Defina quais concursos quer ver na lista de resultados.</li>
+                  <li>Defina quais concursos quer ver na tabela de resultados.</li>
                   <li>Clique em <strong>Simular</strong>.</li>
                   <li>
                     O sistema varre todos os sorteios anteriores e mostra em
@@ -250,158 +248,148 @@ export default function MegaSenaSimulador() {
           </Card>
         </div>
 
-        {/* ── Coluna 4: Publicidade ── */}
-        <div className="hidden lg:flex flex-col gap-4">
-          <AdUnit slot="simulador-sidebar" />
-        </div>
+        {/* ── Col 3: Publicidade ── */}
+        <AdUnit slot="5586112233" format="rectangle" className="w-full" />
       </div>
 
       {/* ── Resultados ── */}
       {resultado && (
-        <div className="space-y-6">
-          {/* Tabela de resumo */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          {/* ── Resumo da simulação (1/3) ── */}
           <Card className="border-t-4" style={{ borderTopColor: COR }}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5" style={{ color: COR }} />
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Trophy className="w-4 h-4" style={{ color: COR }} />
                 Resultado da Simulação
               </CardTitle>
               <CardDescription>
-                Varredura de{" "}
-                <strong className="text-foreground">
-                  {resultado.totalConcursos.toLocaleString("pt-BR")}
-                </strong>{" "}
-                concursos •{" "}
+                {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
                 {acertosGanhadores > 0 ? (
                   <span className="text-[#009640] font-semibold">
                     {acertosGanhadores} premiado{acertosGanhadores > 1 ? "s" : ""}
                   </span>
                 ) : (
-                  <span className="text-muted-foreground">nenhum premiado</span>
+                  "nenhum premiado"
                 )}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="max-w-sm">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="text-center">Acertos</TableHead>
-                      <TableHead className="text-center">Concursos</TableHead>
-                      <TableHead className="text-center">Situação</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {resultado.resumo.map((r) => {
-                      const emoji = situacaoEmoji(r.acertos);
-                      return (
-                        <TableRow
-                          key={r.acertos}
-                          className={cn(r.acertos >= 4 && "bg-[#009640]/5 font-semibold")}
-                        >
-                          <TableCell className="text-center font-bold text-base">
-                            {r.acertos}
-                          </TableCell>
-                          <TableCell className="text-center text-base">
-                            {r.contagem.toLocaleString("pt-BR")}
-                          </TableCell>
-                          <TableCell className="text-center text-base">
-                            {emoji ?? <span className="text-muted-foreground">—</span>}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-center">Acertos</TableHead>
+                    <TableHead className="text-center">Concursos</TableHead>
+                    <TableHead className="text-center">Situação</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {resultado.resumo.map((r) => {
+                    const emoji = situacaoEmoji(r.acertos);
+                    return (
+                      <TableRow
+                        key={r.acertos}
+                        className={cn(r.acertos >= 4 && "bg-[#009640]/5 font-semibold")}
+                      >
+                        <TableCell className="text-center font-bold">{r.acertos}</TableCell>
+                        <TableCell className="text-center">
+                          {r.contagem.toLocaleString("pt-BR")}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {emoji ?? <span className="text-muted-foreground">—</span>}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
               {acertosGanhadores === 0 && (
-                <p className="mt-4 text-sm text-muted-foreground">
+                <p className="mt-3 text-xs text-muted-foreground">
                   Nenhum acerto premiado (4 ou mais) com esta combinação.
                 </p>
               )}
             </CardContent>
           </Card>
 
-          {/* Tabela de concursos */}
-          {resultado.concursos.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>
-                  Concursos — {FILTRO_LABELS[filtro]}
-                </CardTitle>
-                <CardDescription>
-                  {resultado.concursos.length.toLocaleString("pt-BR")} concurso
-                  {resultado.concursos.length !== 1 ? "s" : ""} encontrado
-                  {resultado.concursos.length !== 1 ? "s" : ""}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead className="text-center">Concurso</TableHead>
-                        <TableHead className="text-center">Data</TableHead>
-                        <TableHead>Dezenas Sorteadas</TableHead>
-                        <TableHead className="text-center">Acertos</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {resultado.concursos.map((c) => {
-                        const emoji = situacaoEmoji(c.acertos);
-                        return (
-                          <TableRow key={c.concurso}>
-                            <TableCell className="text-center font-semibold">
-                              {c.concurso}
-                            </TableCell>
-                            <TableCell className="text-center text-muted-foreground whitespace-nowrap">
-                              {formatDateShort(c.data)}
-                            </TableCell>
-                            <TableCell>
-                              <div className="flex flex-wrap gap-1">
-                                {c.dezenas.map((d) => {
-                                  const numD = parseInt(d, 10);
-                                  const acertou = selecionadas.has(numD);
-                                  return (
-                                    <span
-                                      key={d}
-                                      className={cn(
-                                        "inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold",
-                                        acertou
-                                          ? "bg-[#009640] text-white"
-                                          : "bg-muted text-muted-foreground"
-                                      )}
-                                    >
-                                      {d}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-center font-semibold tabular-nums">
-                              {emoji ? (
-                                <span>{c.acertos} {emoji}</span>
-                              ) : (
-                                <span className="text-muted-foreground">{c.acertos}</span>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {resultado.concursos.length === 0 && (
-            <Card>
-              <CardContent className="py-10 text-center text-muted-foreground">
-                Nenhum concurso encontrado para o filtro selecionado.
-              </CardContent>
-            </Card>
-          )}
+          {/* ── Tabela de concursos (2/3) ── */}
+          <div className="lg:col-span-2">
+            {resultado.concursos.length > 0 ? (
+              <Card className="h-full">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">
+                    Concursos — {FILTRO_LABELS[filtro]}
+                  </CardTitle>
+                  <CardDescription>
+                    {resultado.concursos.length.toLocaleString("pt-BR")} concurso
+                    {resultado.concursos.length !== 1 ? "s" : ""} encontrado
+                    {resultado.concursos.length !== 1 ? "s" : ""}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="text-center w-24">Concurso</TableHead>
+                          <TableHead className="text-center w-24">Data</TableHead>
+                          <TableHead>Dezenas Sorteadas</TableHead>
+                          <TableHead className="text-center w-24">Acertos</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {resultado.concursos.map((c) => {
+                          const emoji = situacaoEmoji(c.acertos);
+                          return (
+                            <TableRow key={c.concurso}>
+                              <TableCell className="text-center font-semibold">
+                                {c.concurso}
+                              </TableCell>
+                              <TableCell className="text-center text-muted-foreground whitespace-nowrap">
+                                {formatDateShort(c.data)}
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex flex-wrap gap-1">
+                                  {c.dezenas.map((d) => {
+                                    const acertou = selecionadas.has(parseInt(d, 10));
+                                    return (
+                                      <span
+                                        key={d}
+                                        className={cn(
+                                          "inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold",
+                                          acertou
+                                            ? "bg-[#009640] text-white"
+                                            : "bg-muted text-muted-foreground"
+                                        )}
+                                      >
+                                        {d}
+                                      </span>
+                                    );
+                                  })}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-center font-semibold tabular-nums">
+                                {emoji ? (
+                                  <span>{c.acertos} {emoji}</span>
+                                ) : (
+                                  <span className="text-muted-foreground font-normal">{c.acertos}</span>
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="h-full">
+                <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
+                  Nenhum concurso encontrado para o filtro selecionado.
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </div>
       )}
     </div>
