@@ -160,6 +160,7 @@ export default function MegaSenaEstatisticas() {
                     <TableHead className="w-8"></TableHead>
                     <TableHead>Dezena</TableHead>
                     <TableHead className="text-right">Frequência</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -174,10 +175,30 @@ export default function MegaSenaEstatisticas() {
                       <TableCell className="text-right font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
+                      <TableCell className="text-right">
+                        {item.ultimoConcurso ? (
+                          <Link
+                            href={`/mega-sena/resultado/${item.ultimoConcurso}`}
+                            className="text-xs font-semibold text-[#009640] hover:underline whitespace-nowrap"
+                          >
+                            Concurso {item.ultimoConcurso} →
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">–</span>
+                        )}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
+              <div className="mt-3 flex justify-end">
+                <Link
+                  href="/mega-sena/estatisticas/tabela?tab=mais"
+                  className="text-sm font-semibold text-[#009640] hover:underline"
+                >
+                  Ver todas →
+                </Link>
+              </div>
             </CardContent>
           </Card>
 
@@ -194,6 +215,7 @@ export default function MegaSenaEstatisticas() {
                     <TableHead className="w-8"></TableHead>
                     <TableHead>Dezena</TableHead>
                     <TableHead className="text-right">Frequência</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -212,10 +234,30 @@ export default function MegaSenaEstatisticas() {
                       <TableCell className="text-right font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
+                      <TableCell className="text-right">
+                        {item.ultimoConcurso ? (
+                          <Link
+                            href={`/mega-sena/resultado/${item.ultimoConcurso}`}
+                            className="text-xs font-semibold text-[#009640] hover:underline whitespace-nowrap"
+                          >
+                            Concurso {item.ultimoConcurso} →
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">–</span>
+                        )}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
+              <div className="mt-3 flex justify-end">
+                <Link
+                  href="/mega-sena/estatisticas/tabela?tab=menos"
+                  className="text-sm font-semibold text-[#009640] hover:underline"
+                >
+                  Ver todas →
+                </Link>
+              </div>
             </CardContent>
           </Card>
 
@@ -267,6 +309,14 @@ export default function MegaSenaEstatisticas() {
                   ))}
                 </TableBody>
               </Table>
+              <div className="mt-3 flex justify-end">
+                <Link
+                  href="/mega-sena/estatisticas/tabela?tab=atrasadas"
+                  className="text-sm font-semibold text-[#009640] hover:underline"
+                >
+                  Ver todas →
+                </Link>
+              </div>
             </CardContent>
           </Card>
         </div>

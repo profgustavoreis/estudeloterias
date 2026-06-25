@@ -10,6 +10,7 @@ import MegaSenaHub from "@/pages/mega-sena/hub";
 import MegaSenaUltimoResultado from "@/pages/mega-sena/ultimo-resultado";
 import MegaSenaResultadosAnteriores from "@/pages/mega-sena/resultados";
 import MegaSenaEstatisticas from "@/pages/mega-sena/estatisticas";
+import MegaSenaEstatisticasTabela from "@/pages/mega-sena/estatisticas-tabela";
 import MegaSenaGerador from "@/pages/mega-sena/gerador";
 import MegaDaVirada from "@/pages/mega-sena/mega-da-virada";
 import MegaSenaComoJogar from "@/pages/mega-sena/como-jogar";
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/mega-sena/resultado/:concurso" component={MegaSenaUltimoResultado} />
         <Route path="/mega-sena/resultado" component={MegaSenaUltimoResultado} />
         <Route path="/mega-sena/resultados" component={MegaSenaResultadosAnteriores} />
+        <Route path="/mega-sena/estatisticas/tabela" component={MegaSenaEstatisticasTabela} />
         <Route path="/mega-sena/estatisticas" component={MegaSenaEstatisticas} />
         <Route path="/mega-sena/gerador" component={MegaSenaGerador} />
         <Route path="/mega-sena/mega-da-virada" component={MegaDaVirada} />
