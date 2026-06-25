@@ -142,6 +142,19 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
     const total = rows.length;
     const latestConcurso = rows[0].concurso;
 
+    // ── 9 fixed soma buckets ─────────────────────────────────────────────────
+    const SOMA_BUCKETS = [
+      { min: 21,  max: 56,  faixa: "21–56"   },
+      { min: 57,  max: 92,  faixa: "57–92"   },
+      { min: 93,  max: 128, faixa: "93–128"  },
+      { min: 129, max: 164, faixa: "129–164" },
+      { min: 165, max: 200, faixa: "165–200" },
+      { min: 201, max: 236, faixa: "201–236" },
+      { min: 237, max: 272, faixa: "237–272" },
+      { min: 273, max: 308, faixa: "273–308" },
+      { min: 309, max: 345, faixa: "309–345" },
+    ];
+
     // ── Special number sets ──────────────────────────────────────────────────
     const PRIMOS = new Set([2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59]);
     const FIBONACCI = new Set([1,2,3,5,8,13,21,34,55]);
@@ -200,10 +213,8 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       const soma = dezenas.reduce((a, b) => a + b, 0);
       if (soma < menorSoma.valor) menorSoma = { valor: soma, concurso: row.concurso, data: row.data };
       if (soma > maiorSoma.valor)  maiorSoma  = { valor: soma, concurso: row.concurso, data: row.data };
-      const bucketStart = Math.floor((soma - 21) / 20) * 20 + 21;
-      const bucketEnd   = Math.min(bucketStart + 19, 345);
-      const bucketKey   = `${bucketStart}-${bucketEnd}`;
-      somaHist[bucketKey] = (somaHist[bucketKey] ?? 0) + 1;
+      const bucket = SOMA_BUCKETS.find(b => soma >= b.min && soma <= b.max);
+      if (bucket) somaHist[bucket.faixa] = (somaHist[bucket.faixa] ?? 0) + 1;
 
       // Números especiais
       const pc = dezenas.filter(d => PRIMOS.has(d)).length;
@@ -254,14 +265,8 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       sorteios: freqColuna[i],
     }));
 
-    const somaIntervalos: { faixa: string; sorteios: number }[] = [];
-    for (let start = 21; start <= 345; start += 20) {
-      const end = Math.min(start + 19, 345);
-      const faixa = `${start}-${end}`;
-      somaIntervalos.push({ faixa, sorteios: somaHist[faixa] ?? 0 });
-    }
     const somaDezenas = {
-      intervalos: somaIntervalos,
+      intervalos: SOMA_BUCKETS.map(b => ({ faixa: b.faixa, sorteios: somaHist[b.faixa] ?? 0 })),
       menor: menorSoma.valor === Infinity ? null : menorSoma,
       maior: maiorSoma.valor === -Infinity ? null : maiorSoma,
     };
