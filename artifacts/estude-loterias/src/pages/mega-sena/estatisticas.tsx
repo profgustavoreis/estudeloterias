@@ -421,6 +421,8 @@ export default function MegaSenaEstatisticas() {
         </div>
       </section>
 
+      <AdUnit slot="6677889900" format="rectangle" className="w-full" />
+
       {/* ── Seção 3: Distribuição na Grade ── */}
       <section className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
@@ -543,13 +545,13 @@ export default function MegaSenaEstatisticas() {
         </div>
       </section>
 
-      <AdUnit slot="6677889900" format="horizontal" className="w-full" />
-
       {/* ── Seção 4: Números Especiais ── */}
       <section className="space-y-3">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Números Especiais
         </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div className="lg:col-span-2">
         <Card>
           <CardHeader className="pb-0">
             <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -642,6 +644,11 @@ export default function MegaSenaEstatisticas() {
             </CardContent>
           )}
         </Card>
+        </div>
+        <div className="flex flex-col gap-6">
+          <AdUnit slot="5544332211" format="rectangle" className="w-full" />
+        </div>
+        </div>
       </section>
     </div>
   );
