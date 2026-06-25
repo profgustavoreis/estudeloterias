@@ -151,6 +151,46 @@ export interface ResumoMegaSena {
   ultimoConcurso: number;
 }
 
+export type SimuladorInputFiltro = typeof SimuladorInputFiltro[keyof typeof SimuladorInputFiltro];
+
+
+export const SimuladorInputFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  sena: 'sena',
+  quina: 'quina',
+  quadra: 'quadra',
+} as const;
+
+export interface SimuladorInput {
+  /**
+     * @minItems 6
+     * @maxItems 20
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputFiltro;
+}
+
+export type SimulacaoResultadoResumoItem = {
+  acertos: number;
+  contagem: number;
+};
+
+export type SimulacaoResultadoConcursosItem = {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  acertos: number;
+  premioGanho: number;
+};
+
+export interface SimulacaoResultado {
+  resumo: SimulacaoResultadoResumoItem[];
+  concursos: SimulacaoResultadoConcursosItem[];
+  totalPremio: number;
+  totalConcursos: number;
+}
+
 export interface GeradorInput {
   /**
      * @minimum 1

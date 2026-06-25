@@ -32,6 +32,8 @@ import type {
   ResultadoMegaSena,
   ResultadosPaginados,
   ResumoMegaSena,
+  SimulacaoResultado,
+  SimuladorInput,
   Sorteio
 } from './api.schemas';
 
@@ -824,6 +826,77 @@ export function useGetMegaSenaResumo<TData = Awaited<ReturnType<typeof getMegaSe
 
 
 
+
+export const getSimularMegaSenaUrl = () => {
+
+
+
+
+  return `/api/mega-sena/simulador`
+}
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Mega-Sena
+ */
+export const simularMegaSena = async (simuladorInput: SimuladorInput, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularMegaSenaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInput,)
+  }
+);}
+
+
+
+
+export const getSimularMegaSenaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularMegaSena>>, TError,{data: BodyType<SimuladorInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularMegaSena>>, TError,{data: BodyType<SimuladorInput>}, TContext> => {
+
+const mutationKey = ['simularMegaSena'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularMegaSena>>, {data: BodyType<SimuladorInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularMegaSena(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularMegaSenaMutationResult = NonNullable<Awaited<ReturnType<typeof simularMegaSena>>>
+    export type SimularMegaSenaMutationBody = BodyType<SimuladorInput>
+    export type SimularMegaSenaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Mega-Sena
+ */
+export const useSimularMegaSena = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularMegaSena>>, TError,{data: BodyType<SimuladorInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularMegaSena>>,
+        TError,
+        {data: BodyType<SimuladorInput>},
+        TContext
+      > => {
+      return useMutation(getSimularMegaSenaMutationOptions(options));
+    }
 
 export const getGerarJogoUrl = () => {
 

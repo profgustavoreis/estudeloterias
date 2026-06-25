@@ -364,6 +364,106 @@ router.get("/mega-sena/resumo", async (req, res) => {
   }
 });
 
+// POST /api/mega-sena/simulador
+router.post("/mega-sena/simulador", async (req, res) => {
+  try {
+    const { dezenas, filtro = "premiados" } = req.body ?? {};
+
+    if (!Array.isArray(dezenas) || dezenas.length < 6 || dezenas.length > 20) {
+      res.status(400).json({ error: "Selecione entre 6 e 20 dezenas" });
+      return;
+    }
+
+    const selecionadas = (dezenas as unknown[]).map((d) =>
+      String(d).padStart(2, "0")
+    );
+
+    const selecionadasParams = selecionadas.map((d) => sql`${d}`);
+    const anyArray = sql`ARRAY[${sql.join(selecionadasParams, sql`, `)}]`;
+
+    const rows = await db.execute(sql`
+      SELECT
+        concurso, data, dezenas, premios,
+        (
+          SELECT COUNT(*)::integer
+          FROM jsonb_array_elements_text(dezenas) AS dval
+          WHERE dval = ANY(${anyArray}::text[])
+        ) AS acertos
+      FROM lottery_results
+      WHERE modalidade = 'megasena'
+      ORDER BY concurso DESC
+    `);
+
+    type PremioRow = { faixa: number; ganhadores: number; valorPremio: number };
+    type ResultRow = {
+      concurso: number;
+      data: string;
+      dezenas: string[];
+      premios: PremioRow[];
+      acertos: number;
+    };
+
+    const allRows = rows.rows as ResultRow[];
+
+    const contagemPorAcertos: Record<number, number> = {};
+    for (let i = 0; i <= 6; i++) contagemPorAcertos[i] = 0;
+
+    let totalPremio = 0;
+    const concursosFiltrados: {
+      concurso: number;
+      data: string;
+      dezenas: string[];
+      acertos: number;
+      premioGanho: number;
+    }[] = [];
+
+    for (const row of allRows) {
+      const acertos = Number(row.acertos);
+      contagemPorAcertos[acertos] = (contagemPorAcertos[acertos] ?? 0) + 1;
+
+      const premios = row.premios as PremioRow[];
+      let premioGanho = 0;
+      if (acertos === 6) premioGanho = premios.find((p) => p.faixa === 1)?.valorPremio ?? 0;
+      else if (acertos === 5) premioGanho = premios.find((p) => p.faixa === 2)?.valorPremio ?? 0;
+      else if (acertos === 4) premioGanho = premios.find((p) => p.faixa === 3)?.valorPremio ?? 0;
+
+      totalPremio += premioGanho;
+
+      const incluir =
+        filtro === "todos" ||
+        (filtro === "premiados" && acertos >= 4) ||
+        (filtro === "sena" && acertos === 6) ||
+        (filtro === "quina" && acertos === 5) ||
+        (filtro === "quadra" && acertos === 4);
+
+      if (incluir) {
+        concursosFiltrados.push({
+          concurso: Number(row.concurso),
+          data: row.data,
+          dezenas: row.dezenas as string[],
+          acertos,
+          premioGanho,
+        });
+      }
+    }
+
+    const resumo = Array.from({ length: 7 }, (_, i) => ({
+      acertos: 6 - i,
+      contagem: contagemPorAcertos[6 - i] ?? 0,
+    }));
+
+    res.json({
+      resumo,
+      concursos: concursosFiltrados,
+      totalPremio,
+      totalConcursos: allRows.length,
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to simulate mega-sena");
+    res.status(500).json({ error: "Erro ao realizar simulação" });
+  }
+});
+
 // POST /api/mega-sena/gerador
 router.post("/mega-sena/gerador", async (req, res) => {
   const { quantidadeJogos = 1, quantidadeDezenas = 6 } = req.body ?? {};

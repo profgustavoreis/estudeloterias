@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Menu, X, BarChart3, Dices, Gift, HelpCircle, Home, Info, List, Sparkles, Target, Trophy } from "lucide-react";
+import { ChevronDown, Menu, X, BarChart3, Dices, Gift, HelpCircle, Home, Info, List, Sparkles, Target, Trophy, FlaskConical } from "lucide-react";
 
 const megaSenaItems = [
   { href: "/mega-sena", label: "Painel Principal", icon: Target, desc: "Visão geral da Mega-Sena" },
@@ -9,6 +9,7 @@ const megaSenaItems = [
   { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List, desc: "Histórico completo de concursos" },
   { href: "/mega-sena/estatisticas", label: "Estatísticas", icon: BarChart3, desc: "Frequência e análise das dezenas" },
   { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles, desc: "Crie apostas aleatórias" },
+  { href: "/mega-sena/simulador", label: "Simulador", icon: FlaskConical, desc: "Confira sua aposta no histórico" },
   { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift, desc: "O sorteio especial de 31/12" },
 ];
 

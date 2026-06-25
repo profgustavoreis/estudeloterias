@@ -205,6 +205,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResumoMegaSena"
 
+  /mega-sena/simulador:
+    post:
+      operationId: simularMegaSena
+      tags: [mega-sena]
+      summary: Simula uma aposta em todos os concursos anteriores da Mega-Sena
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInput"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
   /mega-sena/gerador:
     post:
       operationId: gerarJogo
@@ -537,6 +556,58 @@ components:
         - maiorPremioAno
         - totalGanhadores6
         - ultimoConcurso
+
+    SimuladorInput:
+      type: object
+      required: [dezenas]
+      properties:
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 6
+          maxItems: 20
+        filtro:
+          type: string
+          enum: [todos, premiados, sena, quina, quadra]
+          default: premiados
+
+    SimulacaoResultado:
+      type: object
+      required: [resumo, concursos, totalPremio, totalConcursos]
+      properties:
+        resumo:
+          type: array
+          items:
+            type: object
+            required: [acertos, contagem]
+            properties:
+              acertos:
+                type: integer
+              contagem:
+                type: integer
+        concursos:
+          type: array
+          items:
+            type: object
+            required: [concurso, data, dezenas, acertos, premioGanho]
+            properties:
+              concurso:
+                type: integer
+              data:
+                type: string
+              dezenas:
+                type: array
+                items:
+                  type: string
+              acertos:
+                type: integer
+              premioGanho:
+                type: number
+        totalPremio:
+          type: number
+        totalConcursos:
+          type: integer
 
     GeradorInput:
       type: object

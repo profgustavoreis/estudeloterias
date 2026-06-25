@@ -257,6 +257,36 @@ export const GetMegaSenaResumoResponse = zod.object({
 
 
 /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Mega-Sena
+ */
+export const simularMegaSenaBodyDezenasMin = 6;
+export const simularMegaSenaBodyDezenasMax = 20;
+
+export const simularMegaSenaBodyFiltroDefault = `premiados`;
+
+export const SimularMegaSenaBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularMegaSenaBodyDezenasMin).max(simularMegaSenaBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'sena', 'quina', 'quadra']).default(simularMegaSenaBodyFiltroDefault)
+})
+
+export const SimularMegaSenaResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
  * @summary Gera um jogo aleatório de Mega-Sena
  */
 export const gerarJogoBodyQuantidadeJogosDefault = 1;
