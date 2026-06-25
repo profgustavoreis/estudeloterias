@@ -317,7 +317,7 @@ export default function MegaSenaSimulador() {
                         <TableRow>
                           <TableHead className="text-center pl-4">Concurso</TableHead>
                           <TableHead className="text-center">Data</TableHead>
-                          <TableHead>Dezenas Sorteadas</TableHead>
+                          <TableHead className="text-center">Dezenas Sorteadas</TableHead>
                           <TableHead className="text-center pr-4">Acertos</TableHead>
                         </TableRow>
                       </TableHeader>
@@ -333,7 +333,7 @@ export default function MegaSenaSimulador() {
                                 {formatDateShort(c.data)}
                               </TableCell>
                               <TableCell>
-                                <div className="flex flex-wrap gap-1 py-0.5">
+                                <div className="flex flex-wrap gap-1 py-0.5 justify-center">
                                   {c.dezenas.map((d) => {
                                     const acertou = selecionadas.has(parseInt(d, 10));
                                     return (
