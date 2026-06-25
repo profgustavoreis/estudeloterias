@@ -458,6 +458,24 @@ components:
           type: string
         maiorPremioConcurso:
           type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        frequenciaPorLinha:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        frequenciaPorColuna:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaColuna"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
       required:
         - totalConcursos
         - frequenciaDezenas
@@ -467,6 +485,98 @@ components:
         - maiorPremio
         - maiorPremioData
         - maiorPremioConcurso
+        - paresImpares
+        - frequenciaPorLinha
+        - frequenciaPorColuna
+        - somaDezenas
+        - numerosEspeciais
+
+    ParesImpares:
+      type: object
+      properties:
+        pares:
+          type: integer
+        impares:
+          type: integer
+        sorteios:
+          type: integer
+      required: [pares, impares, sorteios]
+
+    FrequenciaFaixa:
+      type: object
+      properties:
+        faixa:
+          type: string
+        sorteios:
+          type: integer
+      required: [faixa, sorteios]
+
+    FrequenciaColuna:
+      type: object
+      properties:
+        coluna:
+          type: integer
+        sorteios:
+          type: integer
+      required: [coluna, sorteios]
+
+    SomaDezenas:
+      type: object
+      properties:
+        intervalos:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        menor:
+          type: object
+          nullable: true
+          properties:
+            valor:
+              type: integer
+            concurso:
+              type: integer
+            data:
+              type: string
+          required: [valor, concurso, data]
+        maior:
+          type: object
+          nullable: true
+          properties:
+            valor:
+              type: integer
+            concurso:
+              type: integer
+            data:
+              type: string
+          required: [valor, concurso, data]
+      required: [intervalos, menor, maior]
+
+    NumerosEspeciaisItem:
+      type: object
+      properties:
+        tipo:
+          type: string
+        label:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: integer
+        quantidadeNaFaixa:
+          type: integer
+        media:
+          type: number
+        distribuicao:
+          type: array
+          items:
+            type: object
+            properties:
+              count:
+                type: integer
+              sorteios:
+                type: integer
+            required: [count, sorteios]
+      required: [tipo, label, dezenas, quantidadeNaFaixa, media, distribuicao]
 
     FrequenciaDezena:
       type: object

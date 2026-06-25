@@ -142,23 +142,89 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
     const total = rows.length;
     const latestConcurso = rows[0].concurso;
 
-    // Frequency map
+    // ── Special number sets ──────────────────────────────────────────────────
+    const PRIMOS = new Set([2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59]);
+    const FIBONACCI = new Set([1,2,3,5,8,13,21,34,55]);
+    const TRIANGULARES = new Set([1,3,6,10,15,21,28,36,45,55]);
+
+    // ── Accumulators ─────────────────────────────────────────────────────────
     const freq: Record<string, { count: number; lastSeenIdx: number | null }> = {};
     for (let i = 1; i <= 60; i++) {
       freq[String(i).padStart(2, "0")] = { count: 0, lastSeenIdx: null };
     }
 
+    const paresDistrib: Record<number, number> = {};
+    const freqLinha = [0, 0, 0, 0, 0, 0];   // index 0 = 01-10
+    const freqColuna = Array(10).fill(0);     // index 0 = col 1 (01,11,21,31,41,51)
+    const somaHist: Record<string, number> = {};
+    let menorSoma = { valor: Infinity, concurso: 0, data: "" };
+    let maiorSoma  = { valor: -Infinity, concurso: 0, data: "" };
+    const primosDistrib:  Record<number, number> = {};
+    const fibDistrib:     Record<number, number> = {};
+    const triDistrib:     Record<number, number> = {};
+    let primosTotal = 0, fibTotal = 0, triTotal = 0;
+    let maiorPremio = 0;
+    let maiorPremioRow = rows[0];
+    let acumulados = 0;
+
     rows.forEach((row, idx) => {
-      const dezenas = row.dezenas as string[];
-      dezenas.forEach(d => {
+      const dezenasStr = row.dezenas as string[];
+      const dezenas = dezenasStr.map(d => parseInt(d, 10));
+
+      // Frequency
+      dezenasStr.forEach(d => {
         const key = String(parseInt(d, 10)).padStart(2, "0");
         if (freq[key]) {
           freq[key].count++;
           if (freq[key].lastSeenIdx === null) freq[key].lastSeenIdx = idx;
         }
       });
+
+      // Pares x Ímpares
+      const pares = dezenas.filter(d => d % 2 === 0).length;
+      paresDistrib[pares] = (paresDistrib[pares] ?? 0) + 1;
+
+      // Linha (row in 10-col grid)
+      for (const d of dezenas) {
+        const linhaIdx = Math.min(Math.floor((d - 1) / 10), 5);
+        freqLinha[linhaIdx]++;
+      }
+
+      // Coluna (column in 6-row grid)
+      for (const d of dezenas) {
+        const colIdx = d % 10 === 0 ? 9 : (d % 10) - 1;
+        freqColuna[colIdx]++;
+      }
+
+      // Soma das dezenas
+      const soma = dezenas.reduce((a, b) => a + b, 0);
+      if (soma < menorSoma.valor) menorSoma = { valor: soma, concurso: row.concurso, data: row.data };
+      if (soma > maiorSoma.valor)  maiorSoma  = { valor: soma, concurso: row.concurso, data: row.data };
+      const bucketStart = Math.floor((soma - 21) / 20) * 20 + 21;
+      const bucketEnd   = Math.min(bucketStart + 19, 345);
+      const bucketKey   = `${bucketStart}-${bucketEnd}`;
+      somaHist[bucketKey] = (somaHist[bucketKey] ?? 0) + 1;
+
+      // Números especiais
+      const pc = dezenas.filter(d => PRIMOS.has(d)).length;
+      const fc = dezenas.filter(d => FIBONACCI.has(d)).length;
+      const tc = dezenas.filter(d => TRIANGULARES.has(d)).length;
+      primosDistrib[pc] = (primosDistrib[pc] ?? 0) + 1;
+      fibDistrib[fc]    = (fibDistrib[fc] ?? 0) + 1;
+      triDistrib[tc]    = (triDistrib[tc] ?? 0) + 1;
+      primosTotal += pc; fibTotal += fc; triTotal += tc;
+
+      // Maior prêmio
+      if (row.acumulado) acumulados++;
+      const premios = row.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }>;
+      const faixa1  = premios[0];
+      if (faixa1 && faixa1.valorPremio > maiorPremio && faixa1.ganhadores > 0) {
+        maiorPremio = faixa1.valorPremio;
+        maiorPremioRow = row;
+      }
     });
 
+    // ── Build outputs ────────────────────────────────────────────────────────
     const frequenciaDezenas = Object.entries(freq)
       .map(([dezena, { count: frequencia, lastSeenIdx }]) => ({
         dezena,
@@ -171,19 +237,64 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
 
     const atrasoMaiores = [...frequenciaDezenas].sort((a, b) => b.atraso - a.atraso).slice(0, 15);
 
-    const acumulados = rows.filter(r => r.acumulado).length;
+    const paresImpares = [0,1,2,3,4,5,6].map(p => ({
+      pares: p,
+      impares: 6 - p,
+      sorteios: paresDistrib[p] ?? 0,
+    }));
 
-    // Find biggest prize
-    let maiorPremio = 0;
-    let maiorPremioRow = rows[0];
-    rows.forEach(row => {
-      const premios = row.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }>;
-      const faixa1 = premios[0];
-      if (faixa1 && faixa1.valorPremio > maiorPremio && faixa1.ganhadores > 0) {
-        maiorPremio = faixa1.valorPremio;
-        maiorPremioRow = row;
-      }
-    });
+    const FAIXAS_LINHAS = ["01–10","11–20","21–30","31–40","41–50","51–60"];
+    const frequenciaPorLinha = FAIXAS_LINHAS.map((faixa, i) => ({
+      faixa,
+      sorteios: freqLinha[i],
+    }));
+
+    const frequenciaPorColuna = Array.from({ length: 10 }, (_, i) => ({
+      coluna: i + 1,
+      sorteios: freqColuna[i],
+    }));
+
+    const somaIntervalos: { faixa: string; sorteios: number }[] = [];
+    for (let start = 21; start <= 345; start += 20) {
+      const end = Math.min(start + 19, 345);
+      const faixa = `${start}-${end}`;
+      somaIntervalos.push({ faixa, sorteios: somaHist[faixa] ?? 0 });
+    }
+    const somaDezenas = {
+      intervalos: somaIntervalos,
+      menor: menorSoma.valor === Infinity ? null : menorSoma,
+      maior: maiorSoma.valor === -Infinity ? null : maiorSoma,
+    };
+
+    const makeDistrib = (distrib: Record<number, number>) =>
+      Array.from({ length: 7 }, (_, i) => ({ count: i, sorteios: distrib[i] ?? 0 }));
+
+    const numerosEspeciais = [
+      {
+        tipo: "primos",
+        label: "Números Primos",
+        dezenas: [...PRIMOS].sort((a, b) => a - b),
+        quantidadeNaFaixa: PRIMOS.size,
+        media: total > 0 ? Math.round(primosTotal / total * 100) / 100 : 0,
+        distribuicao: makeDistrib(primosDistrib),
+      },
+      {
+        tipo: "fibonacci",
+        label: "Fibonacci",
+        dezenas: [...FIBONACCI].sort((a, b) => a - b),
+        quantidadeNaFaixa: FIBONACCI.size,
+        media: total > 0 ? Math.round(fibTotal / total * 100) / 100 : 0,
+        distribuicao: makeDistrib(fibDistrib),
+      },
+      {
+        tipo: "triangulares",
+        label: "Triangulares",
+        dezenas: [...TRIANGULARES].sort((a, b) => a - b),
+        quantidadeNaFaixa: TRIANGULARES.size,
+        media: total > 0 ? Math.round(triTotal / total * 100) / 100 : 0,
+        distribuicao: makeDistrib(triDistrib),
+      },
+    ];
 
     // Total concursos (from DB max)
     const [maxRow] = await db
@@ -201,6 +312,11 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       maiorPremioData: maiorPremioRow.data,
       maiorPremioConcurso: maiorPremioRow.concurso,
       maiorSequencia: 6,
+      paresImpares,
+      frequenciaPorLinha,
+      frequenciaPorColuna,
+      somaDezenas,
+      numerosEspeciais,
     });
   } catch (err) {
     req.log.error({ err }, "Failed to compute estatisticas");

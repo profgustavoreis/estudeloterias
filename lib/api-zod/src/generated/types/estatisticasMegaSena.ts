@@ -5,7 +5,12 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { FrequenciaColuna } from './frequenciaColuna';
 import type { FrequenciaDezena } from './frequenciaDezena';
+import type { FrequenciaFaixa } from './frequenciaFaixa';
+import type { NumerosEspeciaisItem } from './numerosEspeciaisItem';
+import type { ParesImpares } from './paresImpares';
+import type { SomaDezenas } from './somaDezenas';
 
 export interface EstatisticasMegaSena {
   totalConcursos: number;
@@ -18,4 +23,9 @@ export interface EstatisticasMegaSena {
   maiorPremio: number;
   maiorPremioData: string;
   maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
 }

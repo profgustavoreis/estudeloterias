@@ -190,7 +190,47 @@ export const GetMegaSenaEstatisticasResponse = zod.object({
   "percentualAcumulado": zod.number(),
   "maiorPremio": zod.number(),
   "maiorPremioData": zod.string(),
-  "maiorPremioConcurso": zod.number()
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number()
+}))
+}))
 })
 
 

@@ -102,6 +102,54 @@ export interface FrequenciaDezena {
   atraso: number;
 }
 
+export interface ParesImpares {
+  pares: number;
+  impares: number;
+  sorteios: number;
+}
+
+export interface FrequenciaFaixa {
+  faixa: string;
+  sorteios: number;
+}
+
+export interface FrequenciaColuna {
+  coluna: number;
+  sorteios: number;
+}
+
+export type SomaDezenasMenor = {
+  valor: number;
+  concurso: number;
+  data: string;
+} | null;
+
+export type SomaDezenasMaior = {
+  valor: number;
+  concurso: number;
+  data: string;
+} | null;
+
+export interface SomaDezenas {
+  intervalos: FrequenciaFaixa[];
+  menor: SomaDezenasMenor;
+  maior: SomaDezenasMaior;
+}
+
+export type NumerosEspeciaisItemDistribuicaoItem = {
+  count: number;
+  sorteios: number;
+};
+
+export interface NumerosEspeciaisItem {
+  tipo: string;
+  label: string;
+  dezenas: number[];
+  quantidadeNaFaixa: number;
+  media: number;
+  distribuicao: NumerosEspeciaisItemDistribuicaoItem[];
+}
+
 export interface EstatisticasMegaSena {
   totalConcursos: number;
   frequenciaDezenas: FrequenciaDezena[];
@@ -113,6 +161,11 @@ export interface EstatisticasMegaSena {
   maiorPremio: number;
   maiorPremioData: string;
   maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
 }
 
 export interface Sorteio {
