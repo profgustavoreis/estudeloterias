@@ -352,7 +352,7 @@ export default function MegaSenaEstatisticas() {
                       href={`/mega-sena/resultado/${stats.somaDezenas.menor.concurso}`}
                       className="font-semibold text-[#009640] hover:underline"
                     >
-                      {stats.somaDezenas.menor.valor} (#{stats.somaDezenas.menor.concurso})
+                      {stats.somaDezenas.menor.valor} (Concurso {stats.somaDezenas.menor.concurso})
                     </Link>
                     {" "}•{" "}
                     Maior:{" "}
@@ -360,7 +360,7 @@ export default function MegaSenaEstatisticas() {
                       href={`/mega-sena/resultado/${stats.somaDezenas.maior.concurso}`}
                       className="font-semibold text-[#009640] hover:underline"
                     >
-                      {stats.somaDezenas.maior.valor} (#{stats.somaDezenas.maior.concurso})
+                      {stats.somaDezenas.maior.valor} (Concurso {stats.somaDezenas.maior.concurso})
                     </Link>
                   </>
                 ) : "Histograma de somas por sorteio"}
