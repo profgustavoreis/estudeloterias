@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 import {
   useSimularMegaSena,
@@ -131,12 +132,17 @@ export default function MegaSenaSimulador() {
             </div>
 
             {count > 0 && (
-              <div className="flex flex-wrap gap-1.5 pt-2 border-t">
-                {Array.from(selecionadas)
-                  .sort((a, b) => a - b)
-                  .map((n) => (
-                    <LotteryBall key={n} number={n} size="sm" />
-                  ))}
+              <div className="pt-2 border-t space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">
+                  Dezenas escolhidas:
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {Array.from(selecionadas)
+                    .sort((a, b) => a - b)
+                    .map((n) => (
+                      <LotteryBall key={n} number={n} size="sm" />
+                    ))}
+                </div>
               </div>
             )}
           </CardContent>
@@ -144,7 +150,7 @@ export default function MegaSenaSimulador() {
 
         {/* ── Coluna 2: Controles ── */}
         <div className="space-y-4">
-          {/* Accordion "Como usar o simulador?" — colapsável em qualquer tamanho */}
+          {/* Accordion "Como usar o simulador?" */}
           <Card className="bg-muted/20">
             <CardContent className="pt-5 text-sm text-muted-foreground">
               <button
@@ -306,19 +312,14 @@ export default function MegaSenaSimulador() {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="overflow-x-auto">
-                    <Table className="w-full table-fixed">
-                      <colgroup>
-                        <col className="w-[13%]" />
-                        <col className="w-[13%]" />
-                        <col className="w-[61%]" />
-                        <col className="w-[13%]" />
-                      </colgroup>
+                    <Table className="w-full">
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="text-center pl-4">Concurso</TableHead>
-                          <TableHead className="text-center">Data</TableHead>
+                          <TableHead className="text-center pl-4 whitespace-nowrap">Concurso</TableHead>
+                          <TableHead className="text-center whitespace-nowrap">Data</TableHead>
                           <TableHead className="text-center">Dezenas Sorteadas</TableHead>
-                          <TableHead className="text-center pr-4">Acertos</TableHead>
+                          <TableHead className="text-center whitespace-nowrap">Acertos</TableHead>
+                          <TableHead className="text-right pr-4 whitespace-nowrap"></TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -326,21 +327,22 @@ export default function MegaSenaSimulador() {
                           const premiado = c.acertos >= 4;
                           return (
                             <TableRow key={c.concurso}>
-                              <TableCell className="text-center font-semibold pl-4">
+                              <TableCell className="text-center font-semibold pl-4 whitespace-nowrap">
                                 {c.concurso}
                               </TableCell>
                               <TableCell className="text-center text-muted-foreground whitespace-nowrap">
                                 {formatDateShort(c.data)}
                               </TableCell>
-                              <TableCell>
-                                <div className="flex flex-wrap gap-1 py-0.5 justify-center">
+                              <TableCell className="text-center">
+                                {/* Mobile: 3 por linha. sm+: flex wrap centralizado */}
+                                <div className="grid grid-cols-3 gap-1 py-0.5 sm:flex sm:flex-wrap sm:justify-center sm:gap-1">
                                   {c.dezenas.map((d) => {
                                     const acertou = selecionadas.has(parseInt(d, 10));
                                     return (
                                       <span
                                         key={d}
                                         className={cn(
-                                          "inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold",
+                                          "inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold mx-auto sm:mx-0",
                                           acertou
                                             ? "bg-[#009640] text-white"
                                             : "bg-muted text-muted-foreground"
@@ -352,13 +354,21 @@ export default function MegaSenaSimulador() {
                                   })}
                                 </div>
                               </TableCell>
-                              <TableCell className="text-center pr-4">
+                              <TableCell className="text-center whitespace-nowrap">
                                 <span className={cn(
                                   "font-semibold tabular-nums",
                                   premiado ? "text-foreground" : "text-muted-foreground font-normal"
                                 )}>
                                   {c.acertos}{premiado ? ` ${PREMIADO_EMOJI}` : ""}
                                 </span>
+                              </TableCell>
+                              <TableCell className="text-right pr-4 whitespace-nowrap">
+                                <Link
+                                  href={`/mega-sena/resultado/${c.concurso}`}
+                                  className="text-sm font-semibold text-[#009640] hover:underline"
+                                >
+                                  Ver detalhes →
+                                </Link>
                               </TableCell>
                             </TableRow>
                           );
