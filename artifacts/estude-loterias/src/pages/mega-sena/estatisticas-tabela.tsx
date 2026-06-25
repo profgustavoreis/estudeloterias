@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useSearch } from "wouter";
 import { useGetMegaSenaEstatisticas } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { AdUnit } from "@/components/ui/AdUnit";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -116,7 +117,9 @@ export default function MegaSenaEstatisticasTabela() {
         ))}
       </div>
 
-      {/* Table */}
+      {/* Table + Ad sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+      <div className="lg:col-span-2">
       <Card>
         <CardHeader className="pb-3">
           <CardTitle>
@@ -197,6 +200,11 @@ export default function MegaSenaEstatisticasTabela() {
           </Table>
         </CardContent>
       </Card>
+      </div>
+      <div className="flex flex-col gap-6">
+        <AdUnit slot="3322114455" format="rectangle" className="w-full" />
+      </div>
+      </div>
     </div>
   );
 }
