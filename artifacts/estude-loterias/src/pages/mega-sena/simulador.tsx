@@ -306,13 +306,19 @@ export default function MegaSenaSimulador() {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="overflow-x-auto">
-                    <Table className="w-full">
+                    <Table className="w-full table-fixed">
+                      <colgroup>
+                        <col className="w-[13%]" />
+                        <col className="w-[13%]" />
+                        <col className="w-[61%]" />
+                        <col className="w-[13%]" />
+                      </colgroup>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="text-center pl-4 w-[90px]">Concurso</TableHead>
-                          <TableHead className="text-center w-[90px]">Data</TableHead>
+                          <TableHead className="text-center pl-4">Concurso</TableHead>
+                          <TableHead className="text-center">Data</TableHead>
                           <TableHead>Dezenas Sorteadas</TableHead>
-                          <TableHead className="text-center pr-4 w-[80px]">Acertos</TableHead>
+                          <TableHead className="text-center pr-4">Acertos</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
