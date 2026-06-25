@@ -137,28 +137,25 @@ export default function MegaSenaEstatisticasTabela() {
           <Table className="w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-10 text-center">#</TableHead>
-                <TableHead className="text-center">Dezena</TableHead>
+                <TableHead className="text-left">Dezena</TableHead>
                 {isAtrasadas ? (
                   <>
                     <TableHead className="text-center">Atraso</TableHead>
-                    <TableHead className="text-center">Última vez</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </>
                 ) : (
                   <>
                     <TableHead className="text-center">Frequência</TableHead>
-                    <TableHead className="text-center">Última vez</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </>
                 )}
               </TableRow>
             </TableHeader>
             <TableBody>
               {rows.map((item, i) => (
-                <TableRow key={item.dezena} className="even:bg-muted/40">
-                  <TableCell className="text-muted-foreground font-mono text-xs text-center">
-                    {i + 1}º
-                  </TableCell>
-                  <TableCell className="text-center">
+                <TableRow key={item.dezena} className="odd:bg-muted/40">
+                  <TableCell className="text-left">
+                    <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
                     {isAtrasadas ? (
                       <LotteryBall
                         number={parseInt(item.dezena, 10)}
@@ -180,7 +177,7 @@ export default function MegaSenaEstatisticasTabela() {
                       <TableCell className="text-center font-medium tabular-nums text-amber-600">
                         {item.atraso} sorteios
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-right">
                         <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
                       </TableCell>
                     </>
@@ -189,14 +186,14 @@ export default function MegaSenaEstatisticasTabela() {
                       <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-right">
                         <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
                       </TableCell>
                     </>
                   )}
                 </TableRow>
               ))}
-              <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+              <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
             </TableBody>
           </Table>
         </CardContent>

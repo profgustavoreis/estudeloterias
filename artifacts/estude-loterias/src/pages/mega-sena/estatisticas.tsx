@@ -50,13 +50,20 @@ function CompactTable({
   headers: string[];
   rows: (string | number | React.ReactNode)[][];
 }) {
+  const lastIdx = headers.length - 1;
   return (
     <div className="mt-4 overflow-x-auto">
       <Table className="text-xs w-full">
         <TableHeader>
           <TableRow className="border-b">
-            {headers.map((h) => (
-              <TableHead key={h} className="py-1.5 text-xs h-auto font-semibold text-center">
+            {headers.map((h, idx) => (
+              <TableHead
+                key={h}
+                className={cn(
+                  "py-1.5 text-xs h-auto font-semibold",
+                  idx === 0 ? "text-left" : idx === lastIdx ? "text-right" : "text-center",
+                )}
+              >
                 {h}
               </TableHead>
             ))}
@@ -64,9 +71,15 @@ function CompactTable({
         </TableHeader>
         <TableBody>
           {rows.map((row, i) => (
-            <TableRow key={i} className="border-b even:bg-muted/40">
+            <TableRow key={i} className="border-b odd:bg-muted/40">
               {row.map((cell, j) => (
-                <TableCell key={j} className="py-1.5 text-xs text-center">
+                <TableCell
+                  key={j}
+                  className={cn(
+                    "py-1.5 text-xs",
+                    j === 0 ? "text-left" : j === row.length - 1 ? "text-right" : "text-center",
+                  )}
+                >
                   {cell}
                 </TableCell>
               ))}
@@ -165,25 +178,22 @@ export default function MegaSenaEstatisticas() {
               <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8 text-center"></TableHead>
-                    <TableHead className="text-center">Dezena</TableHead>
+                    <TableHead className="text-left">Dezena</TableHead>
                     <TableHead className="text-center">Frequência</TableHead>
-                    <TableHead className="text-center">Última vez</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {maisSorteadas.map((item, i) => (
-                    <TableRow key={item.dezena} className="even:bg-muted/40">
-                      <TableCell className="text-muted-foreground font-mono text-xs text-center">
-                        {i + 1}º
-                      </TableCell>
-                      <TableCell className="text-center">
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
                         <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
                       </TableCell>
                       <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-right">
                         {item.ultimoConcurso ? (
                           <Link
                             href={`/mega-sena/resultado/${item.ultimoConcurso}`}
@@ -197,7 +207,7 @@ export default function MegaSenaEstatisticas() {
                       </TableCell>
                     </TableRow>
                   ))}
-                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
                 </TableBody>
               </Table>
               <div className="mt-3 flex justify-end">
@@ -221,19 +231,16 @@ export default function MegaSenaEstatisticas() {
               <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8 text-center"></TableHead>
-                    <TableHead className="text-center">Dezena</TableHead>
+                    <TableHead className="text-left">Dezena</TableHead>
                     <TableHead className="text-center">Frequência</TableHead>
-                    <TableHead className="text-center">Última vez</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {menosSorteadas.map((item, i) => (
-                    <TableRow key={item.dezena} className="even:bg-muted/40">
-                      <TableCell className="text-muted-foreground font-mono text-xs text-center">
-                        {i + 1}º
-                      </TableCell>
-                      <TableCell className="text-center">
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
                         <LotteryBall
                           number={parseInt(item.dezena, 10)}
                           size="sm"
@@ -243,7 +250,7 @@ export default function MegaSenaEstatisticas() {
                       <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-right">
                         {item.ultimoConcurso ? (
                           <Link
                             href={`/mega-sena/resultado/${item.ultimoConcurso}`}
@@ -257,7 +264,7 @@ export default function MegaSenaEstatisticas() {
                       </TableCell>
                     </TableRow>
                   ))}
-                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
                 </TableBody>
               </Table>
               <div className="mt-3 flex justify-end">
@@ -281,19 +288,16 @@ export default function MegaSenaEstatisticas() {
               <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8 text-center"></TableHead>
-                    <TableHead className="text-center">Dezena</TableHead>
+                    <TableHead className="text-left">Dezena</TableHead>
                     <TableHead className="text-center">Atraso</TableHead>
-                    <TableHead className="text-center">Última vez</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {maisAtrasadas.map((item, i) => (
-                    <TableRow key={item.dezena} className="even:bg-muted/40">
-                      <TableCell className="text-muted-foreground font-mono text-xs text-center">
-                        {i + 1}º
-                      </TableCell>
-                      <TableCell className="text-center">
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
                         <LotteryBall
                           number={parseInt(item.dezena, 10)}
                           size="sm"
@@ -303,7 +307,7 @@ export default function MegaSenaEstatisticas() {
                       <TableCell className="text-center font-medium tabular-nums text-amber-600">
                         {item.atraso} sorteios
                       </TableCell>
-                      <TableCell className="text-center">
+                      <TableCell className="text-right">
                         {item.ultimoConcurso ? (
                           <Link
                             href={`/mega-sena/resultado/${item.ultimoConcurso}`}
@@ -317,7 +321,7 @@ export default function MegaSenaEstatisticas() {
                       </TableCell>
                     </TableRow>
                   ))}
-                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
                 </TableBody>
               </Table>
               <div className="mt-3 flex justify-end">
