@@ -8,35 +8,33 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { LotteryBall } from "@/components/ui/lottery-ball";
-import { formatCurrency, formatDateShort } from "@/lib/formatters";
-import { FlaskConical, RotateCcw, Loader2, Trophy } from "lucide-react";
+import { formatDateShort } from "@/lib/formatters";
+import { AdUnit } from "@/components/ui/AdUnit";
+import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown } from "lucide-react";
 
 const COR = "#009640";
 
 const FILTRO_LABELS: Record<SimuladorInputFiltro, string> = {
-  todos: "Todos os Concursos",
-  premiados: "Todos Premiados (4+ acertos)",
-  sena: "Sena (6 acertos)",
-  quina: "Quina (5 acertos)",
-  quadra: "Quadra (4 acertos)",
+  todos:     "Todos os concursos",
+  premiados: "Somente concursos premiados (4 ou mais acertos)",
+  quadra:    "Somente concursos com 4 acertos",
+  quina:     "Somente concursos com 5 acertos",
+  sena:      "Somente concursos com 6 acertos",
 };
 
-function AcertosBadge({ acertos }: { acertos: number }) {
-  if (acertos === 6)
-    return <Badge className="bg-[#009640] text-white hover:bg-[#007a33]">Sena</Badge>;
-  if (acertos === 5)
-    return <Badge className="bg-blue-600 text-white hover:bg-blue-700">Quina</Badge>;
-  if (acertos === 4)
-    return <Badge className="bg-amber-500 text-white hover:bg-amber-600">Quadra</Badge>;
-  return <span className="text-muted-foreground text-sm">{acertos}</span>;
+function situacaoEmoji(acertos: number): string | null {
+  if (acertos === 6) return "🏆";
+  if (acertos === 5) return "🥈";
+  if (acertos === 4) return "🥉";
+  return null;
 }
 
 export default function MegaSenaSimulador() {
   const [selecionadas, setSelecionadas] = useState<Set<number>>(new Set());
   const [filtro, setFiltro] = useState<SimuladorInputFiltro>(SimuladorInputFiltro.premiados);
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
+  const [infoAberta, setInfoAberta] = useState(false);
 
   const simular = useSimularMegaSena({
     mutation: {
@@ -91,14 +89,15 @@ export default function MegaSenaSimulador() {
             Simulador
           </h1>
           <p className="text-muted-foreground mt-1">
-            Selecione de 6 a 20 dezenas e descubra quantos prêmios você teria ganho em todos os
-            sorteios anteriores.
+            Selecione de 6 a 20 dezenas e descubra em quantos sorteios anteriores você teria acertado.
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* ── Coluna esquerda: grade + controles ── */}
+      {/* ── Grade + Controles + Publicidade ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        {/* ── Coluna 1–2: Volante ── */}
         <div className="lg:col-span-2 space-y-4">
           <Card className="border-t-4" style={{ borderTopColor: COR }}>
             <CardHeader className="pb-3">
@@ -145,7 +144,7 @@ export default function MegaSenaSimulador() {
                 })}
               </div>
 
-              {/* Dezenas selecionadas (preview) */}
+              {/* Preview das dezenas selecionadas */}
               {count > 0 && (
                 <div className="flex flex-wrap gap-1.5 pt-1 border-t">
                   {Array.from(selecionadas)
@@ -157,13 +156,15 @@ export default function MegaSenaSimulador() {
               )}
             </CardContent>
           </Card>
+        </div>
 
-          {/* Filtro + botões */}
+        {/* ── Coluna 3: Filtro + Botões + Como funciona ── */}
+        <div className="space-y-4">
           <Card>
             <CardContent className="pt-5 space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">
-                  Mostrar na tabela de concursos:
+                  Mostrar na tabela:
                 </label>
                 <select
                   value={filtro}
@@ -177,7 +178,7 @@ export default function MegaSenaSimulador() {
                   ))}
                 </select>
                 <p className="text-xs text-muted-foreground">
-                  Na Mega-Sena, prêmios a partir de 4 acertos (Quadra).
+                  Na Mega-Sena, apostas são premiadas a partir de 4 acertos.
                 </p>
               </div>
 
@@ -218,35 +219,47 @@ export default function MegaSenaSimulador() {
               )}
             </CardContent>
           </Card>
-        </div>
 
-        {/* ── Coluna direita: publicidade / info ── */}
-        <div className="hidden lg:block space-y-4">
+          {/* "Como funciona" — accordion no mobile, card estático no desktop */}
           <Card className="bg-muted/20">
-            <CardContent className="pt-6 space-y-3 text-sm text-muted-foreground">
-              <p className="font-semibold text-foreground">Como funciona?</p>
-              <ol className="space-y-2 list-decimal list-inside">
-                <li>Escolha de 6 a 20 números no volante.</li>
-                <li>Defina quais concursos quer ver na lista de resultados.</li>
-                <li>Clique em <strong>Simular</strong>.</li>
-                <li>
-                  O sistema varre todos os sorteios anteriores e mostra quantos
-                  prêmios você teria acertado.
-                </li>
-              </ol>
-              <p className="pt-2 text-xs">
-                Os valores de prêmio exibidos correspondem ao montante pago por apostador
-                ganhador em cada faixa no concurso original.
-              </p>
+            <CardContent className="pt-5 space-y-3 text-sm text-muted-foreground">
+              <button
+                className="flex w-full items-center justify-between lg:cursor-default"
+                onClick={() => setInfoAberta((v) => !v)}
+              >
+                <span className="font-semibold text-foreground">Como funciona?</span>
+                <ChevronDown
+                  className={cn(
+                    "w-4 h-4 transition-transform lg:hidden",
+                    infoAberta ? "rotate-180" : ""
+                  )}
+                />
+              </button>
+              <div className={cn("space-y-2 lg:block", infoAberta ? "block" : "hidden")}>
+                <ol className="space-y-2 list-decimal list-inside">
+                  <li>Escolha de 6 a 20 números no volante.</li>
+                  <li>Defina quais concursos quer ver na lista de resultados.</li>
+                  <li>Clique em <strong>Simular</strong>.</li>
+                  <li>
+                    O sistema varre todos os sorteios anteriores e mostra em
+                    quantos você teria acertado cada faixa.
+                  </li>
+                </ol>
+              </div>
             </CardContent>
           </Card>
+        </div>
+
+        {/* ── Coluna 4: Publicidade ── */}
+        <div className="hidden lg:flex flex-col gap-4">
+          <AdUnit slot="simulador-sidebar" />
         </div>
       </div>
 
       {/* ── Resultados ── */}
       {resultado && (
         <div className="space-y-6">
-          {/* Resumo geral */}
+          {/* Tabela de resumo */}
           <Card className="border-t-4" style={{ borderTopColor: COR }}>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -268,9 +281,8 @@ export default function MegaSenaSimulador() {
                 )}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Tabela de acertos */}
+            <CardContent>
+              <div className="max-w-sm">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -280,51 +292,33 @@ export default function MegaSenaSimulador() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {resultado.resumo.map((r) => (
-                      <TableRow
-                        key={r.acertos}
-                        className={cn(r.acertos >= 4 && "bg-[#009640]/5 font-semibold")}
-                      >
-                        <TableCell className="text-center font-bold text-base">
-                          {r.acertos}
-                        </TableCell>
-                        <TableCell className="text-center text-base">
-                          {r.contagem.toLocaleString("pt-BR")}
-                        </TableCell>
-                        <TableCell className="text-center">
-                          {r.acertos === 6 && r.contagem > 0 ? (
-                            <span className="text-[#009640] font-semibold">Sena 🏆</span>
-                          ) : r.acertos === 5 && r.contagem > 0 ? (
-                            <span className="text-blue-600 font-semibold">Quina</span>
-                          ) : r.acertos === 4 && r.contagem > 0 ? (
-                            <span className="text-amber-600 font-semibold">Quadra</span>
-                          ) : r.acertos >= 4 ? (
-                            <span className="text-muted-foreground">—</span>
-                          ) : null}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {resultado.resumo.map((r) => {
+                      const emoji = situacaoEmoji(r.acertos);
+                      return (
+                        <TableRow
+                          key={r.acertos}
+                          className={cn(r.acertos >= 4 && "bg-[#009640]/5 font-semibold")}
+                        >
+                          <TableCell className="text-center font-bold text-base">
+                            {r.acertos}
+                          </TableCell>
+                          <TableCell className="text-center text-base">
+                            {r.contagem.toLocaleString("pt-BR")}
+                          </TableCell>
+                          <TableCell className="text-center text-base">
+                            {emoji ?? <span className="text-muted-foreground">—</span>}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
-
-                {/* Total de prêmios */}
-                <div className="flex flex-col justify-center items-center gap-2 p-6 rounded-xl bg-[#009640]/8 border border-[#009640]/20">
-                  <p className="text-sm text-muted-foreground text-center">
-                    Total que você teria ganho
-                  </p>
-                  <p className="text-3xl font-bold text-center" style={{ color: COR }}>
-                    {formatCurrency(resultado.totalPremio)}
-                  </p>
-                  <p className="text-xs text-muted-foreground text-center">
-                    Somando todos os prêmios de 4, 5 e 6 acertos.
-                  </p>
-                  {acertosGanhadores === 0 && (
-                    <p className="text-sm text-muted-foreground text-center mt-2">
-                      Você não teria ganho nenhum prêmio com esta combinação. 😔
-                    </p>
-                  )}
-                </div>
               </div>
+              {acertosGanhadores === 0 && (
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Nenhum acerto premiado (4 ou mais) com esta combinação.
+                </p>
+              )}
             </CardContent>
           </Card>
 
@@ -350,51 +344,50 @@ export default function MegaSenaSimulador() {
                         <TableHead className="text-center">Data</TableHead>
                         <TableHead>Dezenas Sorteadas</TableHead>
                         <TableHead className="text-center">Acertos</TableHead>
-                        <TableHead className="text-right">Prêmio</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {resultado.concursos.map((c) => (
-                        <TableRow key={c.concurso}>
-                          <TableCell className="text-center font-semibold">
-                            {c.concurso}
-                          </TableCell>
-                          <TableCell className="text-center text-muted-foreground whitespace-nowrap">
-                            {formatDateShort(c.data)}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex flex-wrap gap-1">
-                              {c.dezenas.map((d) => {
-                                const numD = parseInt(d, 10);
-                                const acertou = selecionadas.has(numD);
-                                return (
-                                  <span
-                                    key={d}
-                                    className={cn(
-                                      "inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold",
-                                      acertou
-                                        ? "bg-[#009640] text-white"
-                                        : "bg-muted text-muted-foreground"
-                                    )}
-                                  >
-                                    {d}
-                                  </span>
-                                );
-                              })}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-center">
-                            <AcertosBadge acertos={c.acertos} />
-                          </TableCell>
-                          <TableCell className="text-right font-semibold">
-                            {c.premioGanho > 0 ? (
-                              <span style={{ color: COR }}>{formatCurrency(c.premioGanho)}</span>
-                            ) : (
-                              <span className="text-muted-foreground text-sm">—</span>
-                            )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {resultado.concursos.map((c) => {
+                        const emoji = situacaoEmoji(c.acertos);
+                        return (
+                          <TableRow key={c.concurso}>
+                            <TableCell className="text-center font-semibold">
+                              {c.concurso}
+                            </TableCell>
+                            <TableCell className="text-center text-muted-foreground whitespace-nowrap">
+                              {formatDateShort(c.data)}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex flex-wrap gap-1">
+                                {c.dezenas.map((d) => {
+                                  const numD = parseInt(d, 10);
+                                  const acertou = selecionadas.has(numD);
+                                  return (
+                                    <span
+                                      key={d}
+                                      className={cn(
+                                        "inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold",
+                                        acertou
+                                          ? "bg-[#009640] text-white"
+                                          : "bg-muted text-muted-foreground"
+                                      )}
+                                    >
+                                      {d}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-center font-semibold tabular-nums">
+                              {emoji ? (
+                                <span>{c.acertos} {emoji}</span>
+                              ) : (
+                                <span className="text-muted-foreground">{c.acertos}</span>
+                              )}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
                   </Table>
                 </div>
