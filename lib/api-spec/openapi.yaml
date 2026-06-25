@@ -500,7 +500,10 @@ components:
           type: integer
         sorteios:
           type: integer
-      required: [pares, impares, sorteios]
+        ultimoConcurso:
+          type: integer
+          nullable: true
+      required: [pares, impares, sorteios, ultimoConcurso]
 
     FrequenciaFaixa:
       type: object
@@ -509,7 +512,10 @@ components:
           type: string
         sorteios:
           type: integer
-      required: [faixa, sorteios]
+        ultimoConcurso:
+          type: integer
+          nullable: true
+      required: [faixa, sorteios, ultimoConcurso]
 
     FrequenciaColuna:
       type: object

@@ -9,4 +9,5 @@
 export interface FrequenciaFaixa {
   faixa: string;
   sorteios: number;
+  ultimoConcurso: number | null;
 }

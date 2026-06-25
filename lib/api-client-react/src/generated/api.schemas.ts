@@ -106,11 +106,13 @@ export interface ParesImpares {
   pares: number;
   impares: number;
   sorteios: number;
+  ultimoConcurso: number | null;
 }
 
 export interface FrequenciaFaixa {
   faixa: string;
   sorteios: number;
+  ultimoConcurso: number | null;
 }
 
 export interface FrequenciaColuna {

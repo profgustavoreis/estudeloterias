@@ -167,9 +167,11 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
     }
 
     const paresDistrib: Record<number, number> = {};
+    const lastConcursoForPares: Record<number, number> = {};
     const freqLinha = [0, 0, 0, 0, 0, 0];   // index 0 = 01-10
     const freqColuna = Array(10).fill(0);     // index 0 = col 1 (01,11,21,31,41,51)
     const somaHist: Record<string, number> = {};
+    const lastConcursoForBucket: Record<string, number> = {};
     let menorSoma = { valor: Infinity, concurso: 0, data: "" };
     let maiorSoma  = { valor: -Infinity, concurso: 0, data: "" };
     const primosDistrib:  Record<number, number> = {};
@@ -196,6 +198,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       // Pares x Ímpares
       const pares = dezenas.filter(d => d % 2 === 0).length;
       paresDistrib[pares] = (paresDistrib[pares] ?? 0) + 1;
+      if (!(pares in lastConcursoForPares)) lastConcursoForPares[pares] = row.concurso;
 
       // Linha (row in 10-col grid)
       for (const d of dezenas) {
@@ -214,7 +217,10 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       if (soma < menorSoma.valor) menorSoma = { valor: soma, concurso: row.concurso, data: row.data };
       if (soma > maiorSoma.valor)  maiorSoma  = { valor: soma, concurso: row.concurso, data: row.data };
       const bucket = SOMA_BUCKETS.find(b => soma >= b.min && soma <= b.max);
-      if (bucket) somaHist[bucket.faixa] = (somaHist[bucket.faixa] ?? 0) + 1;
+      if (bucket) {
+        somaHist[bucket.faixa] = (somaHist[bucket.faixa] ?? 0) + 1;
+        if (!(bucket.faixa in lastConcursoForBucket)) lastConcursoForBucket[bucket.faixa] = row.concurso;
+      }
 
       // Números especiais
       const pc = dezenas.filter(d => PRIMOS.has(d)).length;
@@ -252,6 +258,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       pares: p,
       impares: 6 - p,
       sorteios: paresDistrib[p] ?? 0,
+      ultimoConcurso: lastConcursoForPares[p] ?? null,
     }));
 
     const FAIXAS_LINHAS = ["01–10","11–20","21–30","31–40","41–50","51–60"];
@@ -266,7 +273,11 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
     }));
 
     const somaDezenas = {
-      intervalos: SOMA_BUCKETS.map(b => ({ faixa: b.faixa, sorteios: somaHist[b.faixa] ?? 0 })),
+      intervalos: SOMA_BUCKETS.map(b => ({
+        faixa: b.faixa,
+        sorteios: somaHist[b.faixa] ?? 0,
+        ultimoConcurso: lastConcursoForBucket[b.faixa] ?? null,
+      })),
       menor: menorSoma.valor === Infinity ? null : menorSoma,
       maior: maiorSoma.valor === -Infinity ? null : maiorSoma,
     };

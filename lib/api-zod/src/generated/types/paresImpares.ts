@@ -10,4 +10,5 @@ export interface ParesImpares {
   pares: number;
   impares: number;
   sorteios: number;
+  ultimoConcurso: number | null;
 }

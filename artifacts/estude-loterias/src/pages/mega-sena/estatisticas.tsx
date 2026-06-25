@@ -8,8 +8,11 @@ import {
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList,
 } from "recharts";
+import {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+} from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { cn } from "@/lib/utils";
 
@@ -340,7 +343,7 @@ export default function MegaSenaEstatisticas() {
             <CardContent>
               <div className="h-[200px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={stats.paresImpares} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
+                  <BarChart data={stats.paresImpares} margin={{ top: 22, right: 8, left: -20, bottom: 0 }}>
                     <XAxis
                       dataKey="pares"
                       tickLine={false}
@@ -369,13 +372,15 @@ export default function MegaSenaEstatisticas() {
                         );
                       }}
                     />
-                    <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
               <CompactTable
-                headers={["Pares", "Ímpares", "Concursos", "%"]}
+                headers={["Pares", "Ímpares", "Concursos", "%", "Última vez"]}
                 rows={stats.paresImpares
                   .filter(d => d.sorteios > 0)
                   .map(d => [
@@ -384,6 +389,9 @@ export default function MegaSenaEstatisticas() {
                     d.sorteios.toLocaleString("pt-BR"),
                     totalSorteios > 0
                       ? `${((d.sorteios / totalSorteios) * 100).toFixed(1)}%`
+                      : "–",
+                    d.ultimoConcurso
+                      ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline">#{d.ultimoConcurso}</Link>
                       : "–",
                   ])}
               />
@@ -422,7 +430,7 @@ export default function MegaSenaEstatisticas() {
                   <BarChart
                     data={stats.somaDezenas.intervalos}
                     layout="vertical"
-                    margin={{ top: 4, right: 8, left: 4, bottom: 0 }}
+                    margin={{ top: 4, right: 52, left: 4, bottom: 0 }}
                   >
                     <XAxis type="number" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
                     <YAxis
@@ -451,18 +459,23 @@ export default function MegaSenaEstatisticas() {
                         );
                       }}
                     />
-                    <Bar dataKey="sorteios" fill={COR} radius={[0, 3, 3, 0]} />
+                    <Bar dataKey="sorteios" fill={COR} radius={[0, 3, 3, 0]}>
+                      <LabelList dataKey="sorteios" position="right" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
               <CompactTable
-                headers={["Intervalo", "Concursos", "%"]}
+                headers={["Intervalo", "Concursos", "%", "Última vez"]}
                 rows={stats.somaDezenas.intervalos.map(d => [
                   d.faixa,
                   d.sorteios.toLocaleString("pt-BR"),
                   totalSomaConcursos > 0
                     ? `${((d.sorteios / totalSomaConcursos) * 100).toFixed(1)}%`
+                    : "–",
+                  d.ultimoConcurso
+                    ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline">#{d.ultimoConcurso}</Link>
                     : "–",
                 ])}
               />
@@ -485,15 +498,15 @@ export default function MegaSenaEstatisticas() {
             <CardHeader className="pb-3">
               <CardTitle>Frequência por Linha</CardTitle>
               <CardDescription>
-                Aparições acumuladas por faixa de dezenas (01–10, 11–20…)
+                Ocorrências acumuladas por faixa de dezenas (01–10, 11–20…)
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[200px]">
+              <div className="h-[220px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={stats.frequenciaPorLinha}
-                    margin={{ top: 4, right: 8, left: -20, bottom: 0 }}
+                    margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
                   >
                     <XAxis
                       dataKey="faixa"
@@ -510,26 +523,48 @@ export default function MegaSenaEstatisticas() {
                         return (
                           <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
                             <p className="font-semibold mb-0.5">Linha {d.faixa}</p>
-                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} aparições</p>
+                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} ocorrências</p>
                           </div>
                         );
                       }}
                     />
-                    <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]} />
+                    <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
               <CompactTable
                 headers={["Linha", "Dezenas Sorteadas", "%"]}
-                rows={stats.frequenciaPorLinha.map(d => [
-                  d.faixa,
+                rows={stats.frequenciaPorLinha.map((d, i) => [
+                  `Linha ${i + 1}`,
                   d.sorteios.toLocaleString("pt-BR"),
                   totalFreqLinha > 0
                     ? `${((d.sorteios / totalFreqLinha) * 100).toFixed(1)}%`
                     : "–",
                 ])}
               />
+
+              <Accordion type="single" collapsible className="mt-2">
+                <AccordionItem value="linhas" className="border-b-0">
+                  <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
+                    Dezenas por linha
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-1 text-xs text-muted-foreground">
+                      {Array.from({ length: 6 }, (_, i) => (
+                        <div key={i}>
+                          <span className="font-semibold text-foreground">Linha {i + 1}:{" "}</span>
+                          {Array.from({ length: 10 }, (_, j) => i * 10 + j + 1)
+                            .map(n => String(n).padStart(2, "0"))
+                            .join(", ")}
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </CardContent>
           </Card>
 
@@ -542,11 +577,11 @@ export default function MegaSenaEstatisticas() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[200px]">
+              <div className="h-[220px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={stats.frequenciaPorColuna}
-                    margin={{ top: 4, right: 8, left: -20, bottom: 0 }}
+                    margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
                   >
                     <XAxis
                       dataKey="coluna"
@@ -570,12 +605,14 @@ export default function MegaSenaEstatisticas() {
                           <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
                             <p className="font-semibold mb-0.5">Coluna {d.coluna}</p>
                             <p className="text-muted-foreground text-xs mb-0.5">{dezenas}</p>
-                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} aparições</p>
+                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} ocorrências</p>
                           </div>
                         );
                       }}
                     />
-                    <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]} />
+                    <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                    </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -583,13 +620,38 @@ export default function MegaSenaEstatisticas() {
               <CompactTable
                 headers={["Coluna", "Dezenas Sorteadas", "%"]}
                 rows={stats.frequenciaPorColuna.map(d => [
-                  `C${d.coluna}`,
+                  `Coluna ${d.coluna}`,
                   d.sorteios.toLocaleString("pt-BR"),
                   totalFreqColuna > 0
                     ? `${((d.sorteios / totalFreqColuna) * 100).toFixed(1)}%`
                     : "–",
                 ])}
               />
+
+              <Accordion type="single" collapsible className="mt-2">
+                <AccordionItem value="colunas" className="border-b-0">
+                  <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
+                    Dezenas por coluna
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-1 text-xs text-muted-foreground">
+                      {Array.from({ length: 10 }, (_, i) => i + 1).map(col => {
+                        const base = col;
+                        const dezenas = [base, base + 10, base + 20, base + 30, base + 40, base + 50]
+                          .filter(n => n <= 60)
+                          .map(n => String(n).padStart(2, "0"))
+                          .join(", ");
+                        return (
+                          <div key={col}>
+                            <span className="font-semibold text-foreground">Coluna {col}:{" "}</span>
+                            {dezenas}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </CardContent>
           </Card>
         </div>
@@ -659,7 +721,7 @@ export default function MegaSenaEstatisticas() {
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       data={especial.distribuicao.filter(d => d.sorteios > 0)}
-                      margin={{ top: 4, right: 8, left: -20, bottom: 0 }}
+                      margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
                     >
                       <XAxis
                         dataKey="count"
@@ -686,7 +748,9 @@ export default function MegaSenaEstatisticas() {
                           );
                         }}
                       />
-                      <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]} />
+                      <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 10, fill: "#555" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                      </Bar>
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

@@ -194,11 +194,13 @@ export const GetMegaSenaEstatisticasResponse = zod.object({
   "paresImpares": zod.array(zod.object({
   "pares": zod.number(),
   "impares": zod.number(),
-  "sorteios": zod.number()
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
 })),
   "frequenciaPorLinha": zod.array(zod.object({
   "faixa": zod.string(),
-  "sorteios": zod.number()
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
 })),
   "frequenciaPorColuna": zod.array(zod.object({
   "coluna": zod.number(),
@@ -207,7 +209,8 @@ export const GetMegaSenaEstatisticasResponse = zod.object({
   "somaDezenas": zod.object({
   "intervalos": zod.array(zod.object({
   "faixa": zod.string(),
-  "sorteios": zod.number()
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
 })),
   "menor": zod.object({
   "valor": zod.number(),
