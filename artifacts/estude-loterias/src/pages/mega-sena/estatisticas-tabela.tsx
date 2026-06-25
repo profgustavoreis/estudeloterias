@@ -155,8 +155,9 @@ export default function MegaSenaEstatisticasTabela() {
               {rows.map((item, i) => (
                 <TableRow key={item.dezena} className="odd:bg-muted/40">
                   <TableCell className="text-left">
-                    <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
-                    {isAtrasadas ? (
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                      {isAtrasadas ? (
                       <LotteryBall
                         number={parseInt(item.dezena, 10)}
                         size="sm"
@@ -171,6 +172,7 @@ export default function MegaSenaEstatisticasTabela() {
                         className="bg-muted text-muted-foreground"
                       />
                     )}
+                    </div>
                   </TableCell>
                   {isAtrasadas ? (
                     <>

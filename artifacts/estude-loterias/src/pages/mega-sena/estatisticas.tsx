@@ -187,8 +187,10 @@ export default function MegaSenaEstatisticas() {
                   {maisSorteadas.map((item, i) => (
                     <TableRow key={item.dezena} className="odd:bg-muted/40">
                       <TableCell className="text-left">
-                        <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
-                        <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
+                        </div>
                       </TableCell>
                       <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
@@ -240,12 +242,14 @@ export default function MegaSenaEstatisticas() {
                   {menosSorteadas.map((item, i) => (
                     <TableRow key={item.dezena} className="odd:bg-muted/40">
                       <TableCell className="text-left">
-                        <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
-                        <LotteryBall
-                          number={parseInt(item.dezena, 10)}
-                          size="sm"
-                          className="bg-muted text-muted-foreground"
-                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          <LotteryBall
+                            number={parseInt(item.dezena, 10)}
+                            size="sm"
+                            className="bg-muted text-muted-foreground"
+                          />
+                        </div>
                       </TableCell>
                       <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
@@ -297,12 +301,14 @@ export default function MegaSenaEstatisticas() {
                   {maisAtrasadas.map((item, i) => (
                     <TableRow key={item.dezena} className="odd:bg-muted/40">
                       <TableCell className="text-left">
-                        <span className="text-muted-foreground font-mono text-xs mr-2">{i + 1}º</span>
-                        <LotteryBall
-                          number={parseInt(item.dezena, 10)}
-                          size="sm"
-                          className="bg-amber-100 text-amber-800 border border-amber-200"
-                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          <LotteryBall
+                            number={parseInt(item.dezena, 10)}
+                            size="sm"
+                            className="bg-amber-100 text-amber-800 border border-amber-200"
+                          />
+                        </div>
                       </TableCell>
                       <TableCell className="text-center font-medium tabular-nums text-amber-600">
                         {item.atraso} sorteios
