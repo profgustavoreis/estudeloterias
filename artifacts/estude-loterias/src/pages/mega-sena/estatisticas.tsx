@@ -52,11 +52,11 @@ function CompactTable({
 }) {
   return (
     <div className="mt-4 overflow-x-auto">
-      <Table className="text-xs">
+      <Table className="text-xs w-full">
         <TableHeader>
           <TableRow className="border-b">
             {headers.map((h) => (
-              <TableHead key={h} className="py-1.5 text-xs h-auto font-semibold">
+              <TableHead key={h} className="py-1.5 text-xs h-auto font-semibold text-center">
                 {h}
               </TableHead>
             ))}
@@ -64,14 +64,19 @@ function CompactTable({
         </TableHeader>
         <TableBody>
           {rows.map((row, i) => (
-            <TableRow key={i} className="border-b last:border-0">
+            <TableRow key={i} className="border-b even:bg-muted/40">
               {row.map((cell, j) => (
-                <TableCell key={j} className="py-1.5 text-xs">
+                <TableCell key={j} className="py-1.5 text-xs text-center">
                   {cell}
                 </TableCell>
               ))}
             </TableRow>
           ))}
+          <TableRow className="border-b">
+            {headers.map((_, j) => (
+              <TableCell key={j} className="py-0.5"> </TableCell>
+            ))}
+          </TableRow>
         </TableBody>
       </Table>
     </div>
@@ -157,28 +162,28 @@ export default function MegaSenaEstatisticas() {
               <CardDescription>As 10 dezenas com maior frequência histórica</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
+              <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8"></TableHead>
-                    <TableHead>Dezena</TableHead>
-                    <TableHead className="text-right">Frequência</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
+                    <TableHead className="w-8 text-center"></TableHead>
+                    <TableHead className="text-center">Dezena</TableHead>
+                    <TableHead className="text-center">Frequência</TableHead>
+                    <TableHead className="text-center">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {maisSorteadas.map((item, i) => (
-                    <TableRow key={item.dezena}>
-                      <TableCell className="text-muted-foreground font-mono text-xs pr-0">
+                    <TableRow key={item.dezena} className="even:bg-muted/40">
+                      <TableCell className="text-muted-foreground font-mono text-xs text-center">
                         {i + 1}º
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">
                         <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums">
+                      <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-center">
                         {item.ultimoConcurso ? (
                           <Link
                             href={`/mega-sena/resultado/${item.ultimoConcurso}`}
@@ -192,6 +197,7 @@ export default function MegaSenaEstatisticas() {
                       </TableCell>
                     </TableRow>
                   ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
                 </TableBody>
               </Table>
               <div className="mt-3 flex justify-end">
@@ -212,32 +218,32 @@ export default function MegaSenaEstatisticas() {
               <CardDescription>As 10 dezenas com menor frequência histórica</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
+              <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8"></TableHead>
-                    <TableHead>Dezena</TableHead>
-                    <TableHead className="text-right">Frequência</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
+                    <TableHead className="w-8 text-center"></TableHead>
+                    <TableHead className="text-center">Dezena</TableHead>
+                    <TableHead className="text-center">Frequência</TableHead>
+                    <TableHead className="text-center">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {menosSorteadas.map((item, i) => (
-                    <TableRow key={item.dezena}>
-                      <TableCell className="text-muted-foreground font-mono text-xs pr-0">
+                    <TableRow key={item.dezena} className="even:bg-muted/40">
+                      <TableCell className="text-muted-foreground font-mono text-xs text-center">
                         {i + 1}º
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">
                         <LotteryBall
                           number={parseInt(item.dezena, 10)}
                           size="sm"
                           className="bg-muted text-muted-foreground"
                         />
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums">
+                      <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-center">
                         {item.ultimoConcurso ? (
                           <Link
                             href={`/mega-sena/resultado/${item.ultimoConcurso}`}
@@ -251,6 +257,7 @@ export default function MegaSenaEstatisticas() {
                       </TableCell>
                     </TableRow>
                   ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
                 </TableBody>
               </Table>
               <div className="mt-3 flex justify-end">
@@ -271,22 +278,22 @@ export default function MegaSenaEstatisticas() {
               <CardDescription>Concursos sem aparecer desde a última vez</CardDescription>
             </CardHeader>
             <CardContent>
-              <Table>
+              <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="w-8"></TableHead>
-                    <TableHead>Dezena</TableHead>
+                    <TableHead className="w-8 text-center"></TableHead>
+                    <TableHead className="text-center">Dezena</TableHead>
                     <TableHead className="text-center">Atraso</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
+                    <TableHead className="text-center">Última vez</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {maisAtrasadas.map((item, i) => (
-                    <TableRow key={item.dezena}>
-                      <TableCell className="text-muted-foreground font-mono text-xs pr-0">
+                    <TableRow key={item.dezena} className="even:bg-muted/40">
+                      <TableCell className="text-muted-foreground font-mono text-xs text-center">
                         {i + 1}º
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">
                         <LotteryBall
                           number={parseInt(item.dezena, 10)}
                           size="sm"
@@ -296,7 +303,7 @@ export default function MegaSenaEstatisticas() {
                       <TableCell className="text-center font-medium tabular-nums text-amber-600">
                         {item.atraso} sorteios
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-center">
                         {item.ultimoConcurso ? (
                           <Link
                             href={`/mega-sena/resultado/${item.ultimoConcurso}`}
@@ -310,6 +317,7 @@ export default function MegaSenaEstatisticas() {
                       </TableCell>
                     </TableRow>
                   ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
                 </TableBody>
               </Table>
               <div className="mt-3 flex justify-end">
@@ -349,9 +357,9 @@ export default function MegaSenaEstatisticas() {
                       tickLine={false}
                       axisLine={false}
                       tickFormatter={(v) => `${v}P/${6 - v}Í`}
-                      tick={{ fontSize: 11 }}
+                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
                     />
-                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
                     <Tooltip
                       cursor={{ fill: "rgba(0,0,0,0.04)" }}
                       content={({ active, payload }) => {
@@ -391,7 +399,7 @@ export default function MegaSenaEstatisticas() {
                       ? `${((d.sorteios / totalSorteios) * 100).toFixed(1)}%`
                       : "–",
                     d.ultimoConcurso
-                      ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline">#{d.ultimoConcurso}</Link>
+                      ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
                       : "–",
                   ])}
               />
@@ -432,13 +440,13 @@ export default function MegaSenaEstatisticas() {
                     layout="vertical"
                     margin={{ top: 4, right: 52, left: 4, bottom: 0 }}
                   >
-                    <XAxis type="number" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <XAxis type="number" tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
                     <YAxis
                       type="category"
                       dataKey="faixa"
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 11 }}
+                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
                       width={68}
                     />
                     <Tooltip
@@ -475,7 +483,7 @@ export default function MegaSenaEstatisticas() {
                     ? `${((d.sorteios / totalSomaConcursos) * 100).toFixed(1)}%`
                     : "–",
                   d.ultimoConcurso
-                    ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline">#{d.ultimoConcurso}</Link>
+                    ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
                     : "–",
                 ])}
               />
@@ -512,9 +520,9 @@ export default function MegaSenaEstatisticas() {
                       dataKey="faixa"
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 10 }}
+                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
                     />
-                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
                     <Tooltip
                       cursor={{ fill: "rgba(0,0,0,0.04)" }}
                       content={({ active, payload }) => {
@@ -587,10 +595,10 @@ export default function MegaSenaEstatisticas() {
                       dataKey="coluna"
                       tickLine={false}
                       axisLine={false}
-                      tick={{ fontSize: 11 }}
+                      tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
                       tickFormatter={(v) => `C${v}`}
                     />
-                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
                     <Tooltip
                       cursor={{ fill: "rgba(0,0,0,0.04)" }}
                       content={({ active, payload }) => {
@@ -727,10 +735,10 @@ export default function MegaSenaEstatisticas() {
                         dataKey="count"
                         tickLine={false}
                         axisLine={false}
-                        tick={{ fontSize: 11 }}
+                        tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }}
                         tickFormatter={(v) => `${v} dez.`}
                       />
-                      <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                      <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} />
                       <Tooltip
                         cursor={{ fill: "rgba(0,0,0,0.04)" }}
                         content={({ active, payload }) => {

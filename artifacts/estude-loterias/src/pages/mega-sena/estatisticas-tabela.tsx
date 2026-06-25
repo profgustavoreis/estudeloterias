@@ -134,31 +134,31 @@ export default function MegaSenaEstatisticasTabela() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table className="w-full">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-10">#</TableHead>
-                <TableHead>Dezena</TableHead>
+                <TableHead className="w-10 text-center">#</TableHead>
+                <TableHead className="text-center">Dezena</TableHead>
                 {isAtrasadas ? (
                   <>
                     <TableHead className="text-center">Atraso</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
+                    <TableHead className="text-center">Última vez</TableHead>
                   </>
                 ) : (
                   <>
-                    <TableHead className="text-right">Frequência</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
+                    <TableHead className="text-center">Frequência</TableHead>
+                    <TableHead className="text-center">Última vez</TableHead>
                   </>
                 )}
               </TableRow>
             </TableHeader>
             <TableBody>
               {rows.map((item, i) => (
-                <TableRow key={item.dezena}>
-                  <TableCell className="text-muted-foreground font-mono text-xs">
+                <TableRow key={item.dezena} className="even:bg-muted/40">
+                  <TableCell className="text-muted-foreground font-mono text-xs text-center">
                     {i + 1}º
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">
                     {isAtrasadas ? (
                       <LotteryBall
                         number={parseInt(item.dezena, 10)}
@@ -180,22 +180,23 @@ export default function MegaSenaEstatisticasTabela() {
                       <TableCell className="text-center font-medium tabular-nums text-amber-600">
                         {item.atraso} sorteios
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-center">
                         <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
                       </TableCell>
                     </>
                   ) : (
                     <>
-                      <TableCell className="text-right font-medium tabular-nums">
+                      <TableCell className="text-center font-medium tabular-nums">
                         {item.frequencia.toLocaleString("pt-BR")} vezes
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-center">
                         <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
                       </TableCell>
                     </>
                   )}
                 </TableRow>
               ))}
+              <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
             </TableBody>
           </Table>
         </CardContent>
