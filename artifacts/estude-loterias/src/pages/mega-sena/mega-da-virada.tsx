@@ -78,7 +78,8 @@ export default function MegaDaVirada() {
                   <TableHead className="w-[80px]">Ano</TableHead>
                   <TableHead className="w-[110px]">Concurso</TableHead>
                   <TableHead className="text-center min-w-[280px]">Dezenas Sorteadas</TableHead>
-                  <TableHead className="text-right">Ganhadores (Sena)</TableHead>
+                  <TableHead className="text-right">Prêmio Principal</TableHead>
+                  <TableHead className="text-right">Apostas com 6 acertos</TableHead>
                   <TableHead className="text-right">Rateio por Ganhador</TableHead>
                   <TableHead className="w-[130px]"></TableHead>
                 </TableRow>
@@ -86,7 +87,7 @@ export default function MegaDaVirada() {
               <TableBody>
                 {megaDaVirada.historico.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center h-24">Nenhum histórico encontrado.</TableCell>
+                    <TableCell colSpan={7} className="text-center h-24">Nenhum histórico encontrado.</TableCell>
                   </TableRow>
                 ) : (
                   megaDaVirada.historico.map((sorteio) => {
@@ -102,10 +103,17 @@ export default function MegaDaVirada() {
                             ))}
                           </div>
                         </TableCell>
+                        <TableCell className="text-right font-bold text-[#009640]">
+                          {formatCurrency(
+                            premioSena && premioSena.ganhadores > 0
+                              ? premioSena.valorPremio * premioSena.ganhadores
+                              : premioSena?.valorPremio
+                          )}
+                        </TableCell>
                         <TableCell className="text-right font-medium">
                           {premioSena?.ganhadores ?? 0}
                         </TableCell>
-                        <TableCell className="text-right font-bold text-[#009640]">
+                        <TableCell className="text-right font-bold text-amber-600">
                           {formatCurrency(premioSena?.valorPremio)}
                         </TableCell>
                         <TableCell className="text-right">

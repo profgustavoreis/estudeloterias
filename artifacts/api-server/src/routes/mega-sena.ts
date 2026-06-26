@@ -451,7 +451,8 @@ router.get("/mega-sena/mega-da-virada", async (req, res) => {
 
     const virada = rows.filter(r => {
       const parts = r.data.split("/");
-      return parts[0] === "31" && parts[1] === "12";
+      const year = Number(parts[2]);
+      return parts[0] === "31" && parts[1] === "12" && year >= 2009;
     });
 
     const anoAtual = new Date().getFullYear();
