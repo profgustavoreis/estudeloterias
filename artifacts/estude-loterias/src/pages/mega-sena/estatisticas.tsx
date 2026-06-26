@@ -564,7 +564,7 @@ export default function MegaSenaEstatisticas() {
                 ])}
               />
 
-              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3">
+              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
                 <AccordionItem value="linhas" className="border-b-0">
                   <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
                     Dezenas por linha
@@ -646,7 +646,7 @@ export default function MegaSenaEstatisticas() {
                 ])}
               />
 
-              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3">
+              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
                 <AccordionItem value="colunas" className="border-b-0">
                   <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
                     Dezenas por coluna
