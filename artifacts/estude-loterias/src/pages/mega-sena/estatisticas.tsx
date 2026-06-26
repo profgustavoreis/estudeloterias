@@ -61,7 +61,7 @@ function CompactTable({
                 key={h}
                 className={cn(
                   "py-1.5 text-xs h-auto font-semibold",
-                  idx === 0 ? "text-left" : idx === lastIdx ? "text-right" : "text-center",
+                  idx === 0 ? "text-center" : idx === lastIdx ? "text-right" : "text-center",
                 )}
               >
                 {h}
@@ -77,7 +77,7 @@ function CompactTable({
                   key={j}
                   className={cn(
                     "py-1.5 text-xs",
-                    j === 0 ? "text-left" : j === row.length - 1 ? "text-right" : "text-center",
+                    j === 0 ? "text-center" : j === row.length - 1 ? "text-right" : "text-center",
                   )}
                 >
                   {cell}
@@ -564,7 +564,7 @@ export default function MegaSenaEstatisticas() {
                 ])}
               />
 
-              <Accordion type="single" collapsible className="mt-2">
+              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3">
                 <AccordionItem value="linhas" className="border-b-0">
                   <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
                     Dezenas por linha
@@ -646,7 +646,7 @@ export default function MegaSenaEstatisticas() {
                 ])}
               />
 
-              <Accordion type="single" collapsible className="mt-2">
+              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3">
                 <AccordionItem value="colunas" className="border-b-0">
                   <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
                     Dezenas por coluna
