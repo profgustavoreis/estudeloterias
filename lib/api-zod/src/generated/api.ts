@@ -197,6 +197,12 @@ export const GetMegaSenaEstatisticasResponse = zod.object({
   "sorteios": zod.number(),
   "ultimoConcurso": zod.number().nullable()
 })),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
   "frequenciaPorLinha": zod.array(zod.object({
   "faixa": zod.string(),
   "sorteios": zod.number(),

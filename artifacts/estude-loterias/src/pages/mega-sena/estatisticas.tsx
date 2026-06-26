@@ -145,6 +145,15 @@ export default function MegaSenaEstatisticas() {
   const totalPares    = stats.paresImpares.reduce((a, b) => a + b.pares * b.sorteios, 0);
   const mediaPares    = totalSorteios > 0 ? (totalPares / totalSorteios).toFixed(2) : "–";
 
+  const MOLDURA_SET = new Set([
+    ...Array.from({ length: 10 }, (_, i) => i + 1),
+    ...Array.from({ length: 10 }, (_, i) => i + 51),
+    11, 20, 21, 30, 31, 40, 41, 50,
+  ]);
+  const RETRATO_SET = new Set(
+    Array.from({ length: 60 }, (_, i) => i + 1).filter(n => !MOLDURA_SET.has(n))
+  );
+
   const totalFreqLinha   = stats.frequenciaPorLinha.reduce((a, b) => a + b.sorteios, 0);
   const totalFreqColuna  = stats.frequenciaPorColuna.reduce((a, b) => a + b.sorteios, 0);
   const totalSomaConcursos = stats.somaDezenas.intervalos.reduce((a, b) => a + b.sorteios, 0);
@@ -344,10 +353,12 @@ export default function MegaSenaEstatisticas() {
       </section>
 
       {/* ── Seção 2: Distribuição por Concurso ── */}
-      <section className="space-y-3">
+      <section className="space-y-6">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Distribuição por Concurso
         </h2>
+
+        {/* Row 1: Pares × Ímpares | Moldura × Retrato */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* Pares × Ímpares */}
@@ -415,6 +426,101 @@ export default function MegaSenaEstatisticas() {
               />
             </CardContent>
           </Card>
+
+          {/* Moldura × Retrato */}
+          {(() => {
+            const totalMoldura = (stats.molduraRetrato ?? []).reduce((a, b) => a + b.sorteios, 0);
+            return (
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle>Moldura × Retrato</CardTitle>
+                  <CardDescription>
+                    Quantas dezenas do sorteio caem na borda (moldura) ou no interior (retrato) do volante?
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[200px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={stats.molduraRetrato ?? []} margin={{ top: 22, right: 8, left: -20, bottom: 0 }}>
+                        <XAxis
+                          dataKey="moldura"
+                          tickLine={false}
+                          axisLine={false}
+                          tickFormatter={(v) => `${v}M/${6 - v}R`}
+                          tick={{ fontSize: 11 }}
+                        />
+                        <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                        <Tooltip
+                          cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                          content={({ active, payload }) => {
+                            if (!active || !payload?.length) return null;
+                            const d = payload[0].payload as { moldura: number; retrato: number; sorteios: number };
+                            return (
+                              <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                                <p className="font-semibold mb-0.5">
+                                  {d.moldura} moldura / {d.retrato} retrato
+                                </p>
+                                <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} concursos</p>
+                                {totalMoldura > 0 && (
+                                  <p className="text-muted-foreground">
+                                    {((d.sorteios / totalMoldura) * 100).toFixed(1)}% do total
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          }}
+                        />
+                        <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                          <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  <CompactTable
+                    headers={["Moldura", "Retrato", "Concursos", "%", "Última vez"]}
+                    rows={(stats.molduraRetrato ?? [])
+                      .filter(d => d.sorteios > 0)
+                      .map(d => [
+                        d.moldura,
+                        d.retrato,
+                        d.sorteios.toLocaleString("pt-BR"),
+                        totalMoldura > 0
+                          ? `${((d.sorteios / totalMoldura) * 100).toFixed(1)}%`
+                          : "–",
+                        d.ultimoConcurso
+                          ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="font-semibold text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
+                          : "–",
+                      ])}
+                  />
+
+                  <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
+                    <AccordionItem value="moldura-retrato" className="border-b-0">
+                      <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
+                        Quais são as dezenas da moldura e do retrato?
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2 text-xs text-muted-foreground">
+                          <div>
+                            <span className="font-semibold text-foreground">Moldura ({MOLDURA_SET.size} dezenas):{" "}</span>
+                            {Array.from(MOLDURA_SET).sort((a, b) => a - b).map(n => String(n).padStart(2, "0")).join(", ")}
+                          </div>
+                          <div>
+                            <span className="font-semibold text-foreground">Retrato ({RETRATO_SET.size} dezenas):{" "}</span>
+                            {Array.from(RETRATO_SET).sort((a, b) => a - b).map(n => String(n).padStart(2, "0")).join(", ")}
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            );
+          })()}
+        </div>
+
+        {/* Row 2: Soma das Dezenas | Publicidade */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* Soma das Dezenas — horizontal bars */}
           <Card>
@@ -505,10 +611,13 @@ export default function MegaSenaEstatisticas() {
               />
             </CardContent>
           </Card>
+
+          {/* Publicidade */}
+          <div className="flex flex-col gap-4">
+            <AdUnit slot="6677889900" format="rectangle" className="w-full" />
+          </div>
         </div>
       </section>
-
-      <AdUnit slot="6677889900" format="rectangle" className="w-full" />
 
       {/* ── Seção 3: Distribuição na Grade ── */}
       <section className="space-y-3">

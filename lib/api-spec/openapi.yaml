@@ -462,6 +462,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ParesImpares"
+        molduraRetrato:
+          type: array
+          items:
+            $ref: "#/components/schemas/MolduraRetrato"
         frequenciaPorLinha:
           type: array
           items:
@@ -486,10 +490,25 @@ components:
         - maiorPremioData
         - maiorPremioConcurso
         - paresImpares
+        - molduraRetrato
         - frequenciaPorLinha
         - frequenciaPorColuna
         - somaDezenas
         - numerosEspeciais
+
+    MolduraRetrato:
+      type: object
+      properties:
+        moldura:
+          type: integer
+        retrato:
+          type: integer
+        sorteios:
+          type: integer
+        ultimoConcurso:
+          type: integer
+          nullable: true
+      required: [moldura, retrato, sorteios, ultimoConcurso]
 
     ParesImpares:
       type: object

@@ -8,6 +8,7 @@
 import type { FrequenciaColuna } from './frequenciaColuna';
 import type { FrequenciaDezena } from './frequenciaDezena';
 import type { FrequenciaFaixa } from './frequenciaFaixa';
+import type { MolduraRetrato } from './molduraRetrato';
 import type { NumerosEspeciaisItem } from './numerosEspeciaisItem';
 import type { ParesImpares } from './paresImpares';
 import type { SomaDezenas } from './somaDezenas';
@@ -24,6 +25,7 @@ export interface EstatisticasMegaSena {
   maiorPremioData: string;
   maiorPremioConcurso: number;
   paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
   frequenciaPorLinha: FrequenciaFaixa[];
   frequenciaPorColuna: FrequenciaColuna[];
   somaDezenas: SomaDezenas;

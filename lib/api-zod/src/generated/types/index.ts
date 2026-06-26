@@ -19,6 +19,7 @@ export * from './healthStatus';
 export * from './jogoGerado';
 export * from './loteriaSummary';
 export * from './megaDaVirada';
+export * from './molduraRetrato';
 export * from './numerosEspeciaisItem';
 export * from './numerosEspeciaisItemDistribuicaoItem';
 export * from './paresImpares';

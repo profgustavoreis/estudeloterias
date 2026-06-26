@@ -160,6 +160,13 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
     const FIBONACCI = new Set([1,2,3,5,8,13,21,34,55]);
     const TRIANGULARES = new Set([1,3,6,10,15,21,28,36,45,55]);
 
+    // Moldura = outer border of 6×10 grid (row1 + row6 + leftmost + rightmost of rows 2–5)
+    const MOLDURA = new Set<number>([
+      ...Array.from({ length: 10 }, (_, i) => i + 1),      // row 1: 01–10
+      ...Array.from({ length: 10 }, (_, i) => i + 51),     // row 6: 51–60
+      11, 20, 21, 30, 31, 40, 41, 50,                      // left/right of rows 2–5
+    ]);
+
     // ── Accumulators ─────────────────────────────────────────────────────────
     const freq: Record<string, { count: number; lastSeenIdx: number | null }> = {};
     for (let i = 1; i <= 60; i++) {
@@ -168,6 +175,8 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
 
     const paresDistrib: Record<number, number> = {};
     const lastConcursoForPares: Record<number, number> = {};
+    const molduraDistrib: Record<number, number> = {};
+    const lastConcursoForMoldura: Record<number, number> = {};
     const freqLinha = [0, 0, 0, 0, 0, 0];   // index 0 = 01-10
     const freqColuna = Array(10).fill(0);     // index 0 = col 1 (01,11,21,31,41,51)
     const somaHist: Record<string, number> = {};
@@ -202,6 +211,11 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       const pares = dezenas.filter(d => d % 2 === 0).length;
       paresDistrib[pares] = (paresDistrib[pares] ?? 0) + 1;
       if (!(pares in lastConcursoForPares)) lastConcursoForPares[pares] = row.concurso;
+
+      // Moldura x Retrato
+      const moldura = dezenas.filter(d => MOLDURA.has(d)).length;
+      molduraDistrib[moldura] = (molduraDistrib[moldura] ?? 0) + 1;
+      if (!(moldura in lastConcursoForMoldura)) lastConcursoForMoldura[moldura] = row.concurso;
 
       // Linha (row in 10-col grid)
       for (const d of dezenas) {
@@ -265,6 +279,13 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       impares: 6 - p,
       sorteios: paresDistrib[p] ?? 0,
       ultimoConcurso: lastConcursoForPares[p] ?? null,
+    }));
+
+    const molduraRetrato = [0,1,2,3,4,5,6].map(m => ({
+      moldura: m,
+      retrato: 6 - m,
+      sorteios: molduraDistrib[m] ?? 0,
+      ultimoConcurso: lastConcursoForMoldura[m] ?? null,
     }));
 
     const FAIXAS_LINHAS = ["01–10","11–20","21–30","31–40","41–50","51–60"];
@@ -335,6 +356,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       maiorPremioConcurso: maiorPremioRow.concurso,
       maiorSequencia: 6,
       paresImpares,
+      molduraRetrato,
       frequenciaPorLinha,
       frequenciaPorColuna,
       somaDezenas,

@@ -109,6 +109,13 @@ export interface ParesImpares {
   ultimoConcurso: number | null;
 }
 
+export interface MolduraRetrato {
+  moldura: number;
+  retrato: number;
+  sorteios: number;
+  ultimoConcurso: number | null;
+}
+
 export interface FrequenciaFaixa {
   faixa: string;
   sorteios: number;
@@ -165,6 +172,7 @@ export interface EstatisticasMegaSena {
   maiorPremioData: string;
   maiorPremioConcurso: number;
   paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
   frequenciaPorLinha: FrequenciaFaixa[];
   frequenciaPorColuna: FrequenciaColuna[];
   somaDezenas: SomaDezenas;
