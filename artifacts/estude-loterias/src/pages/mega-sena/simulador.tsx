@@ -229,15 +229,9 @@ export default function MegaSenaSimulador() {
               )}
             </CardContent>
           </Card>
-        </div>
-      </div>
 
-      {/* ── Resultados ── */}
-      {resultado && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-
-          {/* ── Coluna 1/3: Resumo + Publicidade ── */}
-          <div className="space-y-4">
+          {/* ── Resultado da Simulação (aparece após simular) ── */}
+          {resultado && (
             <Card className="border-t-4" style={{ borderTopColor: COR }}>
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base">
@@ -292,11 +286,15 @@ export default function MegaSenaSimulador() {
                 )}
               </CardContent>
             </Card>
+          )}
+        </div>
+      </div>
 
-            <AdUnit slot="5586112233" format="rectangle" className="w-full" />
-          </div>
+      {/* ── Tabela de concursos + Publicidade ── */}
+      {resultado && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-          {/* ── Colunas 2–3 (2/3): Tabela de concursos ── */}
+          {/* ── Colunas 1–2 (2/3): Tabela de concursos ── */}
           <div className="lg:col-span-2">
             {resultado.concursos.length > 0 ? (
               <Card>
@@ -385,6 +383,11 @@ export default function MegaSenaSimulador() {
                 </CardContent>
               </Card>
             )}
+          </div>
+
+          {/* ── Coluna 3 (1/3): Publicidade ── */}
+          <div className="flex flex-col gap-4">
+            <AdUnit slot="5586112233" format="rectangle" className="w-full" />
           </div>
         </div>
       )}
