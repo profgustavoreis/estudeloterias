@@ -286,7 +286,7 @@ export default function MegaSenaEstatisticas() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle>Dezenas Mais Atrasadas</CardTitle>
-              <CardDescription>Concursos sem aparecer desde a última vez</CardDescription>
+              <CardDescription>Números que faz tempo que não saem!</CardDescription>
             </CardHeader>
             <CardContent>
               <Table className="w-full">
