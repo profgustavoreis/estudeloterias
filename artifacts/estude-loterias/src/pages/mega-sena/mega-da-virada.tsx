@@ -1,10 +1,16 @@
+import { Link } from "wouter";
 import { useGetMegaDaVirada } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { formatCurrency, formatLongDate } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AdUnit } from "@/components/ui/AdUnit";
 import { Gift, Calendar, Trophy } from "lucide-react";
+
+function yearFromDate(dateStr: string): string {
+  const parts = dateStr.split("/");
+  return parts.length === 3 ? (parts[2] ?? "–") : "–";
+}
 
 export default function MegaDaVirada() {
   const { data: megaDaVirada, isLoading, isError } = useGetMegaDaVirada();
@@ -29,6 +35,7 @@ export default function MegaDaVirada() {
         </div>
       </div>
 
+      {/* Row 1: Próximo Sorteio + AdUnit */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="border-t-4 border-amber-500 bg-amber-500/5">
           <CardHeader>
@@ -50,39 +57,43 @@ export default function MegaDaVirada() {
             </p>
           </CardContent>
         </Card>
+
+        <AdUnit slot="1122334456" format="rectangle" className="min-h-[250px]" />
       </div>
 
+      {/* Histórico */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-amber-500" />
             Histórico de Sorteios
           </CardTitle>
-          <CardDescription>Confira todos os resultados anteriores da Mega da Virada.</CardDescription>
+          <CardDescription>Todos os resultados da Mega da Virada desde 2009.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="w-[100px]">Ano</TableHead>
-                  <TableHead className="w-[120px]">Concurso</TableHead>
+                  <TableHead className="w-[80px]">Ano</TableHead>
+                  <TableHead className="w-[110px]">Concurso</TableHead>
                   <TableHead className="text-center min-w-[280px]">Dezenas Sorteadas</TableHead>
                   <TableHead className="text-right">Ganhadores (Sena)</TableHead>
                   <TableHead className="text-right">Rateio por Ganhador</TableHead>
+                  <TableHead className="w-[130px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {megaDaVirada.historico.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center h-24">Nenhum histórico encontrado.</TableCell>
+                    <TableCell colSpan={6} className="text-center h-24">Nenhum histórico encontrado.</TableCell>
                   </TableRow>
                 ) : (
                   megaDaVirada.historico.map((sorteio) => {
                     const premioSena = sorteio.premios.find(p => p.faixa === 1);
                     return (
                       <TableRow key={sorteio.concurso}>
-                        <TableCell className="font-bold">{new Date(sorteio.data).getFullYear()}</TableCell>
+                        <TableCell className="font-bold">{yearFromDate(sorteio.data)}</TableCell>
                         <TableCell className="text-muted-foreground font-mono">{sorteio.concurso}</TableCell>
                         <TableCell>
                           <div className="flex justify-center gap-1.5 flex-wrap">
@@ -92,10 +103,18 @@ export default function MegaDaVirada() {
                           </div>
                         </TableCell>
                         <TableCell className="text-right font-medium">
-                          {premioSena?.ganhadores || 0}
+                          {premioSena?.ganhadores ?? 0}
                         </TableCell>
                         <TableCell className="text-right font-bold text-[#009640]">
                           {formatCurrency(premioSena?.valorPremio)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Link
+                            href={`/mega-sena/resultado/${sorteio.concurso}`}
+                            className="text-sm font-semibold text-[#009640] hover:underline whitespace-nowrap"
+                          >
+                            Ver detalhes →
+                          </Link>
                         </TableCell>
                       </TableRow>
                     );

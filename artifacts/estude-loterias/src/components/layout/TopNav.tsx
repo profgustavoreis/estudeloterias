@@ -15,10 +15,10 @@ const megaSenaTools = [
   { href: "/mega-sena/estatisticas", label: "Estatísticas",           icon: BarChart3,   desc: "Frequência e análise das dezenas" },
   { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,    desc: "Crie apostas aleatórias" },
   { href: "/mega-sena/simulador",    label: "Simulador",              icon: FlaskConical,desc: "Confira sua aposta no histórico" },
-  { href: "/mega-sena/mega-da-virada", label: "Mega da Virada",      icon: Gift,        desc: "O sorteio especial de 31/12" },
 ];
 
 const megaSenaInfo = [
+  { href: "/mega-sena/mega-da-virada", label: "Mega da Virada",      icon: Gift,        desc: "O sorteio especial de 31/12" },
   { href: "/mega-sena/como-jogar",  label: "Como Jogar",            icon: BookOpen,    desc: "Regras e formas de apostar" },
   { href: "/mega-sena/premiacao",   label: "Premiação",             icon: Trophy,      desc: "Faixas e percentuais de prêmio" },
   { href: "/mega-sena/faq",         label: "Perguntas Frequentes",  icon: HelpCircle,  desc: "Dúvidas comuns respondidas" },
