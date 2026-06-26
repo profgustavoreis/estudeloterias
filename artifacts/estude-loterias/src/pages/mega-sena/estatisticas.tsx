@@ -366,7 +366,7 @@ export default function MegaSenaEstatisticas() {
                       dataKey="pares"
                       tickLine={false}
                       axisLine={false}
-                      tickFormatter={(v) => `${v}P/${6 - v}Í`}
+                      tickFormatter={(v) => `${v}P/${6 - v}I`}
                       tick={{ fontSize: 11 }}
                     />
                     <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
@@ -378,7 +378,7 @@ export default function MegaSenaEstatisticas() {
                         return (
                           <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
                             <p className="font-semibold mb-0.5">
-                              {d.pares} par{d.pares !== 1 ? "es" : ""} / {d.impares} ímpar{d.impares !== 1 ? "es" : ""}
+                              {d.pares} par{d.pares !== 1 ? "es" : ""} / {d.impares} impar{d.impares !== 1 ? "es" : ""}
                             </p>
                             <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} concursos</p>
                             {totalSorteios > 0 && (
@@ -398,7 +398,7 @@ export default function MegaSenaEstatisticas() {
               </div>
 
               <CompactTable
-                headers={["Pares", "Ímpares", "Concursos", "%", "Última vez"]}
+                headers={["Pares", "Impares", "Concursos", "%", "Última vez"]}
                 rows={stats.paresImpares
                   .filter(d => d.sorteios > 0)
                   .map(d => [
@@ -409,7 +409,7 @@ export default function MegaSenaEstatisticas() {
                       ? `${((d.sorteios / totalSorteios) * 100).toFixed(1)}%`
                       : "–",
                     d.ultimoConcurso
-                      ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
+                      ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="font-semibold text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
                       : "–",
                   ])}
               />
@@ -424,19 +424,21 @@ export default function MegaSenaEstatisticas() {
                 {stats.somaDezenas.menor && stats.somaDezenas.maior ? (
                   <>
                     Menor:{" "}
+                    {stats.somaDezenas.menor.valor}{" "}
                     <Link
                       href={`/mega-sena/resultado/${stats.somaDezenas.menor.concurso}`}
                       className="font-semibold text-[#009640] hover:underline"
                     >
-                      {stats.somaDezenas.menor.valor} (Concurso {stats.somaDezenas.menor.concurso})
+                      (Concurso {stats.somaDezenas.menor.concurso})
                     </Link>
                     {" "}•{" "}
                     Maior:{" "}
+                    {stats.somaDezenas.maior.valor}{" "}
                     <Link
                       href={`/mega-sena/resultado/${stats.somaDezenas.maior.concurso}`}
                       className="font-semibold text-[#009640] hover:underline"
                     >
-                      {stats.somaDezenas.maior.valor} (Concurso {stats.somaDezenas.maior.concurso})
+                      (Concurso {stats.somaDezenas.maior.concurso})
                     </Link>
                   </>
                 ) : "Histograma de somas por sorteio"}
@@ -466,7 +468,7 @@ export default function MegaSenaEstatisticas() {
                         const d = payload[0].payload as { faixa: string; sorteios: number };
                         return (
                           <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
-                            <p className="font-semibold mb-0.5">Soma {d.faixa}</p>
+                            <p className="font-semibold mb-0.5">Soma de {d.faixa.replace("\u2013", " a ").replace("-", " a ")}</p>
                             <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} concursos</p>
                             {totalSomaConcursos > 0 && (
                               <p className="text-muted-foreground">
@@ -485,15 +487,15 @@ export default function MegaSenaEstatisticas() {
               </div>
 
               <CompactTable
-                headers={["Intervalo", "Concursos", "%", "Última vez"]}
+                headers={["Soma", "Concursos", "%", "Última vez"]}
                 rows={stats.somaDezenas.intervalos.map(d => [
-                  d.faixa,
+                  d.faixa.replace("\u2013", " a ").replace("-", " a "),
                   d.sorteios.toLocaleString("pt-BR"),
                   totalSomaConcursos > 0
                     ? `${((d.sorteios / totalSomaConcursos) * 100).toFixed(1)}%`
                     : "–",
                   d.ultimoConcurso
-                    ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
+                    ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="font-semibold text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
                     : "–",
                 ])}
               />
@@ -567,7 +569,7 @@ export default function MegaSenaEstatisticas() {
               <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
                 <AccordionItem value="linhas" className="border-b-0">
                   <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
-                    Dezenas por linha
+                    Quais são as dezenas em cada linha?
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-1 text-xs text-muted-foreground">
@@ -649,7 +651,7 @@ export default function MegaSenaEstatisticas() {
               <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
                 <AccordionItem value="colunas" className="border-b-0">
                   <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
-                    Dezenas por coluna
+                    Quais são as dezenas em cada coluna?
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className="space-y-1 text-xs text-muted-foreground">
