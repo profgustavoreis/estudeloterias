@@ -1,25 +1,43 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Menu, X, BarChart3, Dices, Gift, HelpCircle, Home, Info, List, Sparkles, Target, Trophy, FlaskConical } from "lucide-react";
+import {
+  ChevronDown, Menu, X,
+  BarChart3, Dices, Gift, HelpCircle, Home, Info,
+  List, Sparkles, Target, Trophy, FlaskConical, BookOpen,
+} from "lucide-react";
 
-const megaSenaItems = [
-  { href: "/mega-sena", label: "Painel Principal", icon: Target, desc: "Visão geral da Mega-Sena" },
-  { href: "/mega-sena/resultado", label: "Último Resultado", icon: Dices, desc: "Dezenas e premiação do último sorteio" },
-  { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List, desc: "Histórico completo de concursos" },
-  { href: "/mega-sena/estatisticas", label: "Estatísticas", icon: BarChart3, desc: "Frequência e análise das dezenas" },
-  { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles, desc: "Crie apostas aleatórias" },
-  { href: "/mega-sena/simulador", label: "Simulador", icon: FlaskConical, desc: "Confira sua aposta no histórico" },
-  { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift, desc: "O sorteio especial de 31/12" },
+// ── Mega-Sena items, grouped ──────────────────────────────────────────────────
+const megaSenaTools = [
+  { href: "/mega-sena",              label: "Painel Principal",       icon: Target,      desc: "Visão geral da Mega-Sena" },
+  { href: "/mega-sena/resultado",    label: "Último Resultado",       icon: Dices,       desc: "Dezenas e premiação do último sorteio" },
+  { href: "/mega-sena/resultados",   label: "Resultados Anteriores",  icon: List,        desc: "Histórico completo de concursos" },
+  { href: "/mega-sena/estatisticas", label: "Estatísticas",           icon: BarChart3,   desc: "Frequência e análise das dezenas" },
+  { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,    desc: "Crie apostas aleatórias" },
+  { href: "/mega-sena/simulador",    label: "Simulador",              icon: FlaskConical,desc: "Confira sua aposta no histórico" },
+  { href: "/mega-sena/mega-da-virada", label: "Mega da Virada",      icon: Gift,        desc: "O sorteio especial de 31/12" },
 ];
 
-const infoItems = [
-  { href: "/mega-sena/como-jogar", label: "Como Jogar", icon: Info, desc: "Regras e formas de apostar" },
-  { href: "/mega-sena/premiacao", label: "Premiação", icon: Trophy, desc: "Faixas e percentuais de prêmio" },
-  { href: "/mega-sena/faq", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+const megaSenaInfo = [
+  { href: "/mega-sena/como-jogar",  label: "Como Jogar",            icon: BookOpen,    desc: "Regras e formas de apostar" },
+  { href: "/mega-sena/premiacao",   label: "Premiação",             icon: Trophy,      desc: "Faixas e percentuais de prêmio" },
+  { href: "/mega-sena/faq",         label: "Perguntas Frequentes",  icon: HelpCircle,  desc: "Dúvidas comuns respondidas" },
 ];
 
-interface DropdownItem {
+const megaSenaAll = [...megaSenaTools, ...megaSenaInfo];
+
+// ── Outras Loterias (placeholders) ───────────────────────────────────────────
+const outrasLoterias = [
+  { label: "Lotofácil",   cor: "#930089", soon: true },
+  { label: "Quina",       cor: "#260085", soon: true },
+  { label: "Dupla Sena",  cor: "#a8003c", soon: true },
+  { label: "Lotomania",   cor: "#f07d00", soon: true },
+  { label: "Timemania",   cor: "#00a650", soon: true },
+  { label: "Dia de Sorte",cor: "#f5a623", soon: true },
+];
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+interface NavItem {
   href: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -30,22 +48,19 @@ function matchesItem(location: string, href: string) {
   return location === href || location.startsWith(href + "/");
 }
 
-function bestMatch(location: string, items: DropdownItem[]): DropdownItem | null {
-  return items.reduce<DropdownItem | null>((best, item) => {
+function bestMatch(location: string, items: NavItem[]): NavItem | null {
+  return items.reduce<NavItem | null>((best, item) => {
     if (!matchesItem(location, item.href)) return best;
     if (!best || item.href.length > best.href.length) return item;
     return best;
   }, null);
 }
 
-function Dropdown({ label, items, isOpen, onToggle }: {
-  label: string;
-  items: DropdownItem[];
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
+// ── Mega-Sena grouped dropdown ────────────────────────────────────────────────
+function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
   const [location] = useLocation();
-  const activeItem = bestMatch(location, items);
+  const activeItem = bestMatch(location, megaSenaAll);
+  const isActive = !!activeItem;
 
   return (
     <div className="relative">
@@ -53,19 +68,25 @@ function Dropdown({ label, items, isOpen, onToggle }: {
         onClick={onToggle}
         className={cn(
           "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors",
-          activeItem
+          isActive
             ? "text-[#009640]"
             : "text-foreground/80 hover:text-foreground hover:bg-muted"
         )}
       >
-        {label}
+        Mega-Sena
         <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", isOpen && "rotate-180")} />
       </button>
 
       {isOpen && (
         <div className="absolute top-full left-0 mt-1 w-72 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
           <div className="p-2">
-            {items.map((item) => {
+            {/* Tools group */}
+            <div className="px-2 pt-1 pb-1">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Ferramentas
+              </span>
+            </div>
+            {megaSenaTools.map((item) => {
               const Icon = item.icon;
               const active = activeItem?.href === item.href;
               return (
@@ -74,10 +95,37 @@ function Dropdown({ label, items, isOpen, onToggle }: {
                   href={item.href}
                   onClick={onToggle}
                   className={cn(
-                    "flex items-start gap-3 p-3 rounded-lg transition-colors",
-                    active
-                      ? "bg-[#009640]/10 text-[#009640]"
-                      : "hover:bg-muted text-foreground"
+                    "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                    active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
+                  )}
+                >
+                  <Icon className="w-4 h-4 mt-0.5 shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium leading-none">{item.label}</div>
+                    <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
+                  </div>
+                </Link>
+              );
+            })}
+
+            {/* Divider + Info group */}
+            <div className="border-t border-border my-1.5" />
+            <div className="px-2 pb-1">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Informações
+              </span>
+            </div>
+            {megaSenaInfo.map((item) => {
+              const Icon = item.icon;
+              const active = activeItem?.href === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onToggle}
+                  className={cn(
+                    "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                    active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
                   )}
                 >
                   <Icon className="w-4 h-4 mt-0.5 shrink-0" />
@@ -95,6 +143,54 @@ function Dropdown({ label, items, isOpen, onToggle }: {
   );
 }
 
+// ── Outras Loterias dropdown ──────────────────────────────────────────────────
+function OutrasLoteriasDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
+  return (
+    <div className="relative">
+      <button
+        onClick={onToggle}
+        className={cn(
+          "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors",
+          "text-foreground/80 hover:text-foreground hover:bg-muted"
+        )}
+      >
+        Outras Loterias
+        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", isOpen && "rotate-180")} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 w-64 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+          <div className="p-2">
+            <div className="px-2 pt-1 pb-2">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Em breve
+              </span>
+            </div>
+            {outrasLoterias.map((loteria) => (
+              <div
+                key={loteria.label}
+                className="flex items-center justify-between gap-3 p-2.5 rounded-lg opacity-50 cursor-not-allowed select-none"
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-4 h-4 rounded-full shrink-0"
+                    style={{ backgroundColor: loteria.cor }}
+                  />
+                  <span className="text-sm font-medium text-foreground">{loteria.label}</span>
+                </div>
+                <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
+                  em breve
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Main TopNav ───────────────────────────────────────────────────────────────
 export function TopNav() {
   const [location] = useLocation();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -107,8 +203,11 @@ export function TopNav() {
       <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link href="/" onClick={() => { setOpenMenu(null); setMobileOpen(false); }}
-            className="flex items-center gap-2.5 shrink-0">
+          <Link
+            href="/"
+            onClick={() => { setOpenMenu(null); setMobileOpen(false); }}
+            className="flex items-center gap-2.5 shrink-0"
+          >
             <div className="w-8 h-8 rounded-lg bg-[#009640] flex items-center justify-center text-white font-bold text-sm leading-none">EL</div>
             <span className="font-bold text-lg tracking-tight hidden sm:block">
               <span className="text-[#009640]">Estude</span>
@@ -131,18 +230,14 @@ export function TopNav() {
               Início
             </Link>
 
-            <Dropdown
-              label="Mega-Sena"
-              items={megaSenaItems}
+            <MegaSenaDropdown
               isOpen={openMenu === "megasena"}
               onToggle={() => toggle("megasena")}
             />
 
-            <Dropdown
-              label="Informações"
-              items={infoItems}
-              isOpen={openMenu === "info"}
-              onToggle={() => toggle("info")}
+            <OutrasLoteriasDropdown
+              isOpen={openMenu === "outras"}
+              onToggle={() => toggle("outras")}
             />
           </nav>
 
@@ -188,18 +283,26 @@ export function TopNav() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-6">
-            <Link href="/" onClick={() => setMobileOpen(false)}
-              className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                location === "/" ? "bg-[#009640]/10 text-[#009640]" : "text-foreground hover:bg-muted")}>
+            <Link
+              href="/"
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                "flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                location === "/" ? "bg-[#009640]/10 text-[#009640]" : "text-foreground hover:bg-muted"
+              )}
+            >
               <Home className="w-4 h-4" /> Início
             </Link>
 
+            {/* Mega-Sena — tools */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">Mega-Sena</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                Mega-Sena
+              </div>
               <div className="space-y-1">
-                {megaSenaItems.map(item => {
+                {megaSenaTools.map(item => {
                   const Icon = item.icon;
-                  const active = bestMatch(location, megaSenaItems)?.href === item.href;
+                  const active = bestMatch(location, megaSenaAll)?.href === item.href;
                   return (
                     <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                       className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
@@ -211,10 +314,13 @@ export function TopNav() {
               </div>
             </div>
 
+            {/* Mega-Sena — info */}
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">Informações</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                Informações
+              </div>
               <div className="space-y-1">
-                {infoItems.map(item => {
+                {megaSenaInfo.map(item => {
                   const Icon = item.icon;
                   const active = location === item.href;
                   return (
@@ -228,8 +334,33 @@ export function TopNav() {
               </div>
             </div>
 
-            <a href="https://loterias.caixa.gov.br" target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center p-3 rounded-lg bg-[#009640] text-white font-semibold text-sm">
+            {/* Outras Loterias */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                Outras Loterias
+              </div>
+              <div className="space-y-1">
+                {outrasLoterias.map(loteria => (
+                  <div
+                    key={loteria.label}
+                    className="flex items-center justify-between gap-3 p-3 rounded-lg text-sm font-medium opacity-40 cursor-not-allowed"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: loteria.cor }} />
+                      {loteria.label}
+                    </div>
+                    <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">em breve</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <a
+              href="https://loterias.caixa.gov.br"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center p-3 rounded-lg bg-[#009640] text-white font-semibold text-sm"
+            >
               Apostar na Caixa
             </a>
           </div>
