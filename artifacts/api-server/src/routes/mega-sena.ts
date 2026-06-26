@@ -449,7 +449,11 @@ router.get("/mega-sena/mega-da-virada", async (req, res) => {
       .where(eq(lotteryResultsTable.modalidade, "megasena"))
       .orderBy(asc(lotteryResultsTable.concurso));
 
+    // Concursos realizados fora do padrão 31/12 (ex.: 2025 foi sorteado em 01/01/2026)
+    const VIRADA_EXCECOES = new Set([2955]);
+
     const virada = rows.filter(r => {
+      if (VIRADA_EXCECOES.has(r.concurso)) return true;
       const parts = r.data.split("/");
       const year = Number(parts[2]);
       return parts[0] === "31" && parts[1] === "12" && year >= 2009;

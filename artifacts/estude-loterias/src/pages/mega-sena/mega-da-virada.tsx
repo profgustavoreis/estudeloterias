@@ -7,7 +7,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Gift, Calendar, Trophy } from "lucide-react";
 
-function yearFromDate(dateStr: string): string {
+// Concursos sorteados em 01/01 do ano seguinte → exibe o ano da edição
+const VIRADA_ANO_EDICAO: Record<number, number> = {
+  2955: 2025,
+};
+
+function edicaoYear(concurso: number, dateStr: string): string {
+  if (VIRADA_ANO_EDICAO[concurso] !== undefined) {
+    return String(VIRADA_ANO_EDICAO[concurso]);
+  }
   const parts = dateStr.split("/");
   return parts.length === 3 ? (parts[2] ?? "–") : "–";
 }
@@ -75,12 +83,12 @@ export default function MegaDaVirada() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="w-[80px]">Ano</TableHead>
-                  <TableHead className="w-[110px]">Concurso</TableHead>
+                  <TableHead className="text-center w-[80px]">Ano</TableHead>
+                  <TableHead className="text-center w-[100px]">Concurso</TableHead>
                   <TableHead className="text-center min-w-[280px]">Dezenas Sorteadas</TableHead>
-                  <TableHead className="text-right">Prêmio Principal</TableHead>
-                  <TableHead className="text-right">Apostas com 6 acertos</TableHead>
-                  <TableHead className="text-right">Rateio por Ganhador</TableHead>
+                  <TableHead className="text-center">Prêmio Principal</TableHead>
+                  <TableHead className="text-center">Apostas com 6 acertos</TableHead>
+                  <TableHead className="text-center">Rateio por Ganhador</TableHead>
                   <TableHead className="w-[130px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -94,8 +102,12 @@ export default function MegaDaVirada() {
                     const premioSena = sorteio.premios.find(p => p.faixa === 1);
                     return (
                       <TableRow key={sorteio.concurso}>
-                        <TableCell className="font-bold">{yearFromDate(sorteio.data)}</TableCell>
-                        <TableCell className="text-muted-foreground font-mono">{sorteio.concurso}</TableCell>
+                        <TableCell className="text-center font-bold">
+                          {edicaoYear(sorteio.concurso, sorteio.data)}
+                        </TableCell>
+                        <TableCell className="text-center text-muted-foreground font-mono">
+                          {sorteio.concurso}
+                        </TableCell>
                         <TableCell>
                           <div className="flex justify-center gap-1.5 flex-wrap">
                             {sorteio.dezenas.map((num, i) => (
@@ -103,20 +115,20 @@ export default function MegaDaVirada() {
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="text-right font-bold text-[#009640]">
+                        <TableCell className="text-center font-bold text-[#009640]">
                           {formatCurrency(
                             premioSena && premioSena.ganhadores > 0
                               ? premioSena.valorPremio * premioSena.ganhadores
                               : premioSena?.valorPremio
                           )}
                         </TableCell>
-                        <TableCell className="text-right font-medium">
+                        <TableCell className="text-center font-medium">
                           {premioSena?.ganhadores ?? 0}
                         </TableCell>
-                        <TableCell className="text-right font-bold text-amber-600">
+                        <TableCell className="text-center font-bold text-amber-600">
                           {formatCurrency(premioSena?.valorPremio)}
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="text-center">
                           <Link
                             href={`/mega-sena/resultado/${sorteio.concurso}`}
                             className="text-sm font-semibold text-[#009640] hover:underline whitespace-nowrap"
