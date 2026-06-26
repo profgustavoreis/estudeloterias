@@ -355,7 +355,7 @@ export default function MegaSenaEstatisticas() {
             <CardHeader className="pb-3">
               <CardTitle>Pares × Ímpares</CardTitle>
               <CardDescription>
-                Quantas dezenas pares saem em cada sorteio — média de {mediaPares} por concurso
+                Como dezenas pares e ímpares se distribuem ao longo dos sorteios?
               </CardDescription>
             </CardHeader>
             <CardContent>
