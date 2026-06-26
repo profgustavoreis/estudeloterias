@@ -581,7 +581,10 @@ components:
                 type: integer
               sorteios:
                 type: integer
-            required: [count, sorteios]
+              ultimoConcurso:
+                type: integer
+                nullable: true
+            required: [count, sorteios, ultimoConcurso]
       required: [tipo, label, dezenas, quantidadeNaFaixa, media, distribuicao]
 
     FrequenciaDezena:

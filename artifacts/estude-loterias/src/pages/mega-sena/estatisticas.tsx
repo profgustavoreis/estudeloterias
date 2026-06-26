@@ -694,7 +694,7 @@ export default function MegaSenaEstatisticas() {
               <div>
                 <CardTitle>Sequências Matemáticas</CardTitle>
                 <CardDescription className="mt-1">
-                  Quantas dezenas de cada sequência aparecem por sorteio
+                  E mais uma vez fica provado que a Matemática é a melhor de todas!
                 </CardDescription>
               </div>
               <div className="flex gap-1 bg-muted rounded-lg p-1">
@@ -737,48 +737,72 @@ export default function MegaSenaEstatisticas() {
                 ))}
               </div>
 
-              <div>
-                <p className="text-xs font-medium text-muted-foreground mb-2">
-                  Distribuição — nº de {especial.label.toLowerCase()} por sorteio
-                </p>
-                <div className="h-[180px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={especial.distribuicao.filter(d => d.sorteios > 0)}
-                      margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
-                    >
-                      <XAxis
-                        dataKey="count"
-                        tickLine={false}
-                        axisLine={false}
-                        tick={{ fontSize: 11 }}
-                        tickFormatter={(v) => `${v} dez.`}
-                      />
-                      <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
-                      <Tooltip
-                        cursor={{ fill: "rgba(0,0,0,0.04)" }}
-                        content={({ active, payload }) => {
-                          if (!active || !payload?.length) return null;
-                          const d = payload[0].payload as { count: number; sorteios: number };
-                          return (
-                            <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
-                              <p className="font-semibold mb-0.5">
-                                {d.count} {especial.label.toLowerCase()} no sorteio
-                              </p>
-                              <p className="text-muted-foreground">
-                                {d.sorteios.toLocaleString("pt-BR")} concursos
-                              </p>
-                            </div>
-                          );
-                        }}
-                      />
-                      <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
+              {(() => {
+                const titleMap: Record<string, string> = {
+                  primos:       "Distribuição da quantidade de números primos por sorteio",
+                  fibonacci:    "Distribuição da quantidade de números de Fibonacci por sorteio",
+                  triangulares: "Distribuição da quantidade de números triangulares por sorteio",
+                };
+                const totalEspecial = especial.distribuicao.reduce((a, d) => a + d.sorteios, 0);
+                return (
+                  <div>
+                    <p className="text-xs font-medium text-muted-foreground mb-2">
+                      {titleMap[especial.tipo] ?? especial.label}
+                    </p>
+                    <div className="h-[180px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                          data={especial.distribuicao.filter(d => d.sorteios > 0)}
+                          margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
+                        >
+                          <XAxis
+                            dataKey="count"
+                            tickLine={false}
+                            axisLine={false}
+                            tick={{ fontSize: 11 }}
+                            tickFormatter={(v) => `${v}`}
+                          />
+                          <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                          <Tooltip
+                            cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                            content={({ active, payload }) => {
+                              if (!active || !payload?.length) return null;
+                              const d = payload[0].payload as { count: number; sorteios: number };
+                              return (
+                                <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                                  <p className="font-semibold mb-0.5">
+                                    {d.count} {especial.label.toLowerCase()} no sorteio
+                                  </p>
+                                  <p className="text-muted-foreground">
+                                    {d.sorteios.toLocaleString("pt-BR")} concursos
+                                  </p>
+                                </div>
+                              );
+                            }}
+                          />
+                          <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                            <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+
+                    <CompactTable
+                      headers={[especial.label, "Concursos", "%", "Última vez"]}
+                      rows={especial.distribuicao.map(d => [
+                        d.count,
+                        d.sorteios.toLocaleString("pt-BR"),
+                        totalEspecial > 0
+                          ? `${((d.sorteios / totalEspecial) * 100).toFixed(1)}%`
+                          : "–",
+                        d.ultimoConcurso
+                          ? <Link href={`/mega-sena/resultado/${d.ultimoConcurso}`} className="font-semibold text-[#009640] hover:underline whitespace-nowrap">Concurso {d.ultimoConcurso} →</Link>
+                          : "–",
+                      ])}
+                    />
+                  </div>
+                );
+              })()}
             </CardContent>
           )}
         </Card>

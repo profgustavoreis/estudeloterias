@@ -231,7 +231,8 @@ export const GetMegaSenaEstatisticasResponse = zod.object({
   "media": zod.number(),
   "distribuicao": zod.array(zod.object({
   "count": zod.number(),
-  "sorteios": zod.number()
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
 }))
 }))
 })

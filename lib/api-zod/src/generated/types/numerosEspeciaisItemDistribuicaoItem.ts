@@ -9,4 +9,5 @@
 export type NumerosEspeciaisItemDistribuicaoItem = {
   count: number;
   sorteios: number;
+  ultimoConcurso: number | null;
 };

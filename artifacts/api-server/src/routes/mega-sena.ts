@@ -177,6 +177,9 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
     const primosDistrib:  Record<number, number> = {};
     const fibDistrib:     Record<number, number> = {};
     const triDistrib:     Record<number, number> = {};
+    const lastConcursoForPrimos: Record<number, number> = {};
+    const lastConcursoForFib:    Record<number, number> = {};
+    const lastConcursoForTri:    Record<number, number> = {};
     let primosTotal = 0, fibTotal = 0, triTotal = 0;
     let maiorPremio = 0;
     let maiorPremioRow = rows[0];
@@ -229,6 +232,9 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       primosDistrib[pc] = (primosDistrib[pc] ?? 0) + 1;
       fibDistrib[fc]    = (fibDistrib[fc] ?? 0) + 1;
       triDistrib[tc]    = (triDistrib[tc] ?? 0) + 1;
+      if (!(pc in lastConcursoForPrimos)) lastConcursoForPrimos[pc] = row.concurso;
+      if (!(fc in lastConcursoForFib))    lastConcursoForFib[fc]    = row.concurso;
+      if (!(tc in lastConcursoForTri))    lastConcursoForTri[tc]    = row.concurso;
       primosTotal += pc; fibTotal += fc; triTotal += tc;
 
       // Maior prêmio
@@ -282,17 +288,17 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       maior: maiorSoma.valor === -Infinity ? null : maiorSoma,
     };
 
-    const makeDistrib = (distrib: Record<number, number>) =>
-      Array.from({ length: 7 }, (_, i) => ({ count: i, sorteios: distrib[i] ?? 0 }));
+    const makeDistrib = (distrib: Record<number, number>, lastConcurso: Record<number, number>) =>
+      Array.from({ length: 7 }, (_, i) => ({ count: i, sorteios: distrib[i] ?? 0, ultimoConcurso: lastConcurso[i] ?? null }));
 
     const numerosEspeciais = [
       {
         tipo: "primos",
-        label: "Números Primos",
+        label: "Primos",
         dezenas: [...PRIMOS].sort((a, b) => a - b),
         quantidadeNaFaixa: PRIMOS.size,
         media: total > 0 ? Math.round(primosTotal / total * 100) / 100 : 0,
-        distribuicao: makeDistrib(primosDistrib),
+        distribuicao: makeDistrib(primosDistrib, lastConcursoForPrimos),
       },
       {
         tipo: "fibonacci",
@@ -300,7 +306,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
         dezenas: [...FIBONACCI].sort((a, b) => a - b),
         quantidadeNaFaixa: FIBONACCI.size,
         media: total > 0 ? Math.round(fibTotal / total * 100) / 100 : 0,
-        distribuicao: makeDistrib(fibDistrib),
+        distribuicao: makeDistrib(fibDistrib, lastConcursoForFib),
       },
       {
         tipo: "triangulares",
@@ -308,7 +314,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
         dezenas: [...TRIANGULARES].sort((a, b) => a - b),
         quantidadeNaFaixa: TRIANGULARES.size,
         media: total > 0 ? Math.round(triTotal / total * 100) / 100 : 0,
-        distribuicao: makeDistrib(triDistrib),
+        distribuicao: makeDistrib(triDistrib, lastConcursoForTri),
       },
     ];
 
