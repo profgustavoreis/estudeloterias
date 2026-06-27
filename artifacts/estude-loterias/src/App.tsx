@@ -31,8 +31,8 @@ function Router() {
         <Route path="/mega-sena/resultado/:concurso" component={MegaSenaUltimoResultado} />
         <Route path="/mega-sena/resultado" component={MegaSenaUltimoResultado} />
         <Route path="/mega-sena/resultados" component={MegaSenaResultadosAnteriores} />
-        <Route path="/mega-sena/estatisticas/tabela" component={MegaSenaEstatisticasTabela} />
-        <Route path="/mega-sena/estatisticas" component={MegaSenaEstatisticas} />
+        <Route path="/mega-sena/tabela-de-dezenas" component={MegaSenaEstatisticasTabela} />
+        <Route path="/mega-sena/resumo-estatistico" component={MegaSenaEstatisticas} />
         <Route path="/mega-sena/gerador" component={MegaSenaGerador} />
         <Route path="/mega-sena/mega-da-virada" component={MegaDaVirada} />
         <Route path="/mega-sena/como-jogar" component={MegaSenaComoJogar} />

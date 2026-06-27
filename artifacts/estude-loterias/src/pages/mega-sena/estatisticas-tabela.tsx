@@ -149,7 +149,7 @@ export default function MegaSenaEstatisticasTabela() {
       {/* Header */}
       <div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-          <Link href="/mega-sena/estatisticas" className="hover:underline">
+          <Link href="/mega-sena/resumo-estatistico" className="hover:underline">
             Resumo Estatístico
           </Link>
           <span>/</span>

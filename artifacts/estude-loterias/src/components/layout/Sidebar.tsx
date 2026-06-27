@@ -24,7 +24,7 @@ export function Sidebar() {
         { href: "/mega-sena", label: "Painel Principal", icon: Target },
         { href: "/mega-sena/resultado", label: "Último Resultado", icon: Dices },
         { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List },
-        { href: "/mega-sena/estatisticas", label: "Estatísticas", icon: BarChart3 },
+        { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
         { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles },
         { href: "/mega-sena/calendario", label: "Calendário", icon: CalendarDays },
         { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift },

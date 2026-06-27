@@ -223,7 +223,7 @@ export default function MegaSenaEstatisticas() {
               </Table>
               <div className="mt-3 flex justify-end">
                 <Link
-                  href="/mega-sena/estatisticas/tabela?tab=mais"
+                  href="/mega-sena/tabela-de-dezenas?tab=mais"
                   className="text-sm font-semibold text-[#009640] hover:underline"
                 >
                   Ver todas →
@@ -282,7 +282,7 @@ export default function MegaSenaEstatisticas() {
               </Table>
               <div className="mt-3 flex justify-end">
                 <Link
-                  href="/mega-sena/estatisticas/tabela?tab=menos"
+                  href="/mega-sena/tabela-de-dezenas?tab=menos"
                   className="text-sm font-semibold text-[#009640] hover:underline"
                 >
                   Ver todas →
@@ -341,7 +341,7 @@ export default function MegaSenaEstatisticas() {
               </Table>
               <div className="mt-3 flex justify-end">
                 <Link
-                  href="/mega-sena/estatisticas/tabela?tab=atrasadas"
+                  href="/mega-sena/tabela-de-dezenas?tab=atrasadas"
                   className="text-sm font-semibold text-[#009640] hover:underline"
                 >
                   Ver todas →
