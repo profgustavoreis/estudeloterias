@@ -129,8 +129,13 @@ function ResultadoCard({
   const senaAcumulada =
     premiacao.senas > 0 && (premioSena?.ganhadores ?? 0) === 0;
 
+  // Quando acumulada, exibimos o valorAcumulado como prêmio simulado
+  const premioUnitarioSena = senaAcumulada
+    ? (resultado.valorAcumulado ?? 0)
+    : (premioSena?.valorPremio ?? 0);
+
   const totalPremio =
-    premiacao.senas   * (senaAcumulada ? 0 : premioSena?.valorPremio ?? 0) +
+    premiacao.senas   * premioUnitarioSena +
     premiacao.quinas  * (premioQuina?.valorPremio  ?? 0) +
     premiacao.quadras * (premioQuadra?.valorPremio ?? 0);
 
@@ -138,16 +143,16 @@ function ResultadoCard({
 
   // Rows para aposta múltipla
   const rowsMultipla = [
-    { faixa: "6 acertos (Sena)",   qtd: premiacao.senas,   premio: premioSena,   show: K >= 6 },
-    { faixa: "5 acertos (Quina)",  qtd: premiacao.quinas,  premio: premioQuina,  show: K >= 5 },
-    { faixa: "4 acertos (Quadra)", qtd: premiacao.quadras, premio: premioQuadra, show: K >= 4 },
+    { faixa: "6 acertos (Sena)",   qtd: premiacao.senas,   premio: premioSena,   unit: premioUnitarioSena,  show: K >= 6, acumulada: senaAcumulada },
+    { faixa: "5 acertos (Quina)",  qtd: premiacao.quinas,  premio: premioQuina,  unit: premioQuina?.valorPremio  ?? 0, show: K >= 5, acumulada: false },
+    { faixa: "4 acertos (Quadra)", qtd: premiacao.quadras, premio: premioQuadra, unit: premioQuadra?.valorPremio ?? 0, show: K >= 4, acumulada: false },
   ].filter((r) => r.show);
 
   // Row para aposta simples
   const rowSimples =
-    K === 6 ? { faixa: "6 acertos (Sena)",   premio: premioSena,   acumulada: senaAcumulada } :
-    K === 5 ? { faixa: "5 acertos (Quina)",  premio: premioQuina,  acumulada: false } :
-    K === 4 ? { faixa: "4 acertos (Quadra)", premio: premioQuadra, acumulada: false } :
+    K === 6 ? { faixa: "6 acertos (Sena)",   premio: premioSena,   unit: premioUnitarioSena,  acumulada: senaAcumulada } :
+    K === 5 ? { faixa: "5 acertos (Quina)",  premio: premioQuina,  unit: premioQuina?.valorPremio  ?? 0, acumulada: false } :
+    K === 4 ? { faixa: "4 acertos (Quadra)", premio: premioQuadra, unit: premioQuadra?.valorPremio ?? 0, acumulada: false } :
     null;
 
   return (
@@ -232,10 +237,8 @@ function ResultadoCard({
                 <TableBody>
                   {isMultipla ? (
                     <>
-                      {rowsMultipla.map(({ faixa, qtd, premio }) => {
-                        const isSenaRow = faixa.startsWith("6");
-                        const showAsterisk = isSenaRow && senaAcumulada;
-                        const unit = showAsterisk ? 0 : (premio?.valorPremio ?? 0);
+                      {rowsMultipla.map(({ faixa, qtd, acumulada, unit }) => {
+                        const showAsterisk = acumulada;
                         return (
                           <TableRow key={faixa}>
                             <TableCell className="font-medium py-2">{faixa}</TableCell>
@@ -248,10 +251,10 @@ function ResultadoCard({
                               ) : "—"}
                             </TableCell>
                             <TableCell className="text-right py-2 text-muted-foreground">
-                              {showAsterisk ? "—" : unit > 0 ? formatCurrency(unit) : "—"}
+                              {unit > 0 ? formatCurrency(unit) : "—"}
                             </TableCell>
                             <TableCell className="text-right py-2 font-semibold">
-                              {showAsterisk ? "—" : qtd > 0 && unit > 0 ? formatCurrency(qtd * unit) : "—"}
+                              {qtd > 0 && unit > 0 ? formatCurrency(qtd * unit) : "—"}
                             </TableCell>
                           </TableRow>
                         );
@@ -275,12 +278,10 @@ function ResultadoCard({
                         ) : "1"}
                       </TableCell>
                       <TableCell className="text-right py-2 text-muted-foreground">
-                        {rowSimples.acumulada ? "—"
-                          : rowSimples.premio?.valorPremio ? formatCurrency(rowSimples.premio.valorPremio) : "—"}
+                        {rowSimples.unit > 0 ? formatCurrency(rowSimples.unit) : "—"}
                       </TableCell>
-                      <TableCell className="text-right py-2 font-black" style={{ color: rowSimples.acumulada ? undefined : COR }}>
-                        {rowSimples.acumulada ? "—"
-                          : rowSimples.premio?.valorPremio ? formatCurrency(rowSimples.premio.valorPremio) : "—"}
+                      <TableCell className="text-right py-2 font-black" style={{ color: rowSimples.unit > 0 ? COR : undefined }}>
+                        {rowSimples.unit > 0 ? formatCurrency(rowSimples.unit) : "—"}
                       </TableCell>
                     </TableRow>
                   ) : null}
@@ -291,7 +292,8 @@ function ResultadoCard({
             {senaAcumulada && (
               <p className="mt-2 text-xs text-muted-foreground">
                 (*) O concurso {resultado.concurso} não teve ganhadores na faixa de 6 acertos.
-                A aposta conferida não foi registrada pela Caixa.
+                Portanto, a aposta conferida não foi registrada pela Caixa.
+                Os valores exibidos na tabela revelam apenas uma simulação de premiação para fins informativos.
               </p>
             )}
           </div>
