@@ -10,8 +10,12 @@ import { Button } from "@/components/ui/button";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
-import { CheckCircle2, ClipboardCheck, Loader2, RotateCcw, XCircle, ChevronDown, Trophy } from "lucide-react";
+import {
+  CheckCircle2, ClipboardCheck, Loader2, RotateCcw,
+  XCircle, ChevronDown, Trophy,
+} from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { AdUnit } from "@/components/ui/AdUnit";
 
 const COR = "#009640";
 const PRECO_SIMPLES = 5.0;
@@ -83,7 +87,28 @@ function Legenda() {
   );
 }
 
-// ── Resultado completo ────────────────────────────────────────────────────────
+// ── Widget 1: Dezenas sorteadas ───────────────────────────────────────────────
+function ConcursoCard({ resultado }: { resultado: ResultadoMegaSena }) {
+  const sorteadasNums = resultado.dezenas.map((d) => parseInt(d, 10));
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base font-semibold text-muted-foreground">
+          Concurso {resultado.concurso} · {formatDateShort(resultado.data)}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap gap-2">
+          {sorteadasNums.map((d) => (
+            <LotteryBall key={d} number={d} size="md" />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ── Widget 2: Resultado da conferência ────────────────────────────────────────
 function ResultadoCard({
   resultado,
   selecionadas,
@@ -103,14 +128,19 @@ function ResultadoCard({
   const premioQuina  = resultado.premios.find((p) => p.faixa === 2);
   const premioQuadra = resultado.premios.find((p) => p.faixa === 3);
 
+  // Acumulação: o concurso não teve ganhador na sena — a aposta não estava
+  // registrada na Caixa mesmo que os 6 números coincidam.
+  const senaAcumulada =
+    premiacao.senas > 0 && (premioSena?.ganhadores ?? 0) === 0;
+
   const totalPremio =
-    premiacao.senas   * (premioSena?.valorPremio   ?? 0) +
+    premiacao.senas   * (senaAcumulada ? 0 : premioSena?.valorPremio ?? 0) +
     premiacao.quinas  * (premioQuina?.valorPremio  ?? 0) +
     premiacao.quadras * (premioQuadra?.valorPremio ?? 0);
 
   const temPremio = K >= 4;
 
-  // Rows para a tabela de premiação múltipla
+  // Rows para aposta múltipla
   const rowsMultipla = [
     { faixa: "6 acertos (Sena)",   qtd: premiacao.senas,   premio: premioSena,   show: K >= 6 },
     { faixa: "5 acertos (Quina)",  qtd: premiacao.quinas,  premio: premioQuina,  show: K >= 5 },
@@ -118,21 +148,19 @@ function ResultadoCard({
   ].filter((r) => r.show);
 
   // Row para aposta simples
-  const rowSimples = K === 6
-    ? { faixa: "6 acertos (Sena)",   premio: premioSena }
-    : K === 5
-    ? { faixa: "5 acertos (Quina)",  premio: premioQuina }
-    : K === 4
-    ? { faixa: "4 acertos (Quadra)", premio: premioQuadra }
-    : null;
+  const rowSimples =
+    K === 6 ? { faixa: "6 acertos (Sena)",   premio: premioSena,   acumulada: senaAcumulada } :
+    K === 5 ? { faixa: "5 acertos (Quina)",  premio: premioQuina,  acumulada: false } :
+    K === 4 ? { faixa: "4 acertos (Quadra)", premio: premioQuadra, acumulada: false } :
+    null;
 
   return (
     <Card className="border-t-4" style={{ borderTopColor: COR }}>
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
           <div>
-            <CardTitle className="text-base font-semibold text-muted-foreground">
-              Concurso {resultado.concurso} · {formatDateShort(resultado.data)}
+            <CardTitle className="text-base font-semibold">
+              Resultado da conferência
             </CardTitle>
             <CardDescription className="mt-0.5">
               {isMultipla
@@ -145,27 +173,6 @@ function ResultadoCard({
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {/* Dezenas sorteadas com indicação de acerto */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-            Dezenas sorteadas
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {sorteadasNums.map((d) => (
-              <div key={d} className="relative">
-                <LotteryBall
-                  number={d}
-                  size="md"
-                  color={acertadas.has(d) ? COR : "#9ca3af"}
-                />
-                {acertadas.has(d) && (
-                  <CheckCircle2 className="absolute -top-1 -right-1 w-3.5 h-3.5 text-[#009640] bg-white rounded-full" />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Acertos e erros */}
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -233,19 +240,25 @@ function ResultadoCard({
                   {isMultipla ? (
                     <>
                       {rowsMultipla.map(({ faixa, qtd, premio }) => {
-                        const unit = premio?.valorPremio ?? 0;
+                        const isSenaRow = faixa.startsWith("6");
+                        const showAsterisk = isSenaRow && senaAcumulada;
+                        const unit = showAsterisk ? 0 : (premio?.valorPremio ?? 0);
                         return (
                           <TableRow key={faixa}>
                             <TableCell className="font-medium py-2">{faixa}</TableCell>
                             <TableCell className="text-center py-2 font-bold"
                               style={{ color: qtd > 0 ? COR : undefined }}>
-                              {qtd > 0 ? qtd : "—"}
+                              {qtd > 0 ? (
+                                showAsterisk
+                                  ? <>{qtd}&thinsp;<span className="text-muted-foreground font-normal text-xs">*</span></>
+                                  : qtd
+                              ) : "—"}
                             </TableCell>
                             <TableCell className="text-right py-2 text-muted-foreground">
-                              {unit > 0 ? formatCurrency(unit) : "—"}
+                              {showAsterisk ? "—" : unit > 0 ? formatCurrency(unit) : "—"}
                             </TableCell>
                             <TableCell className="text-right py-2 font-semibold">
-                              {qtd > 0 && unit > 0 ? formatCurrency(qtd * unit) : "—"}
+                              {showAsterisk ? "—" : qtd > 0 && unit > 0 ? formatCurrency(qtd * unit) : "—"}
                             </TableCell>
                           </TableRow>
                         );
@@ -264,23 +277,30 @@ function ResultadoCard({
                     <TableRow>
                       <TableCell className="font-medium py-2">{rowSimples.faixa}</TableCell>
                       <TableCell className="text-center py-2 font-bold" style={{ color: COR }}>
-                        1
+                        {rowSimples.acumulada ? (
+                          <>1&thinsp;<span className="text-muted-foreground font-normal text-xs">*</span></>
+                        ) : "1"}
                       </TableCell>
                       <TableCell className="text-right py-2 text-muted-foreground">
-                        {rowSimples.premio?.valorPremio
-                          ? formatCurrency(rowSimples.premio.valorPremio)
-                          : "—"}
+                        {rowSimples.acumulada ? "—"
+                          : rowSimples.premio?.valorPremio ? formatCurrency(rowSimples.premio.valorPremio) : "—"}
                       </TableCell>
-                      <TableCell className="text-right py-2 font-black" style={{ color: COR }}>
-                        {rowSimples.premio?.valorPremio
-                          ? formatCurrency(rowSimples.premio.valorPremio)
-                          : "—"}
+                      <TableCell className="text-right py-2 font-black" style={{ color: rowSimples.acumulada ? undefined : COR }}>
+                        {rowSimples.acumulada ? "—"
+                          : rowSimples.premio?.valorPremio ? formatCurrency(rowSimples.premio.valorPremio) : "—"}
                       </TableCell>
                     </TableRow>
                   ) : null}
                 </TableBody>
               </Table>
             </div>
+            {/* Nota de acumulação */}
+            {senaAcumulada && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                (*) O concurso {resultado.concurso} não teve ganhadores na faixa de 6 acertos.
+                A aposta conferida não foi registrada pela Caixa.
+              </p>
+            )}
           </div>
         )}
 
@@ -314,7 +334,6 @@ export default function MegaSenaConferidor() {
 
   const effectiveConcurso = concursoSelected ?? latestConcurso;
 
-  // Generate all concurso options descending
   const concursoOptions = useMemo(
     () => latestConcurso
       ? Array.from({ length: latestConcurso }, (_, i) => latestConcurso - i)
@@ -324,7 +343,6 @@ export default function MegaSenaConferidor() {
 
   const concursoResult = useGetMegaSenaResultadoConcurso(concursoQuery ?? 0);
 
-  // Drawn numbers set for grid coloring
   const sorteadasSet = useMemo(
     () => new Set(concursoResult.data?.dezenas?.map((d) => parseInt(d, 10)) ?? []),
     [concursoResult.data]
@@ -351,7 +369,7 @@ export default function MegaSenaConferidor() {
 
   const handleLimpar = () => {
     setSelecionadas(new Set());
-    setConcursoSelected(null); // reverts to latestConcurso via effectiveConcurso
+    setConcursoSelected(null);
     setConcursoQuery(null);
   };
 
@@ -404,7 +422,6 @@ export default function MegaSenaConferidor() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            {/* Grade de dezenas */}
             <div className="grid grid-cols-10 gap-1.5">
               {Array.from({ length: 60 }, (_, i) => i + 1).map((n) => {
                 const sel = selecionadas.has(n);
@@ -435,7 +452,6 @@ export default function MegaSenaConferidor() {
                     )}
                   >
                     {String(n).padStart(2, "0")}
-                    {/* Overlay icon */}
                     {hit && (
                       <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center pointer-events-none">
                         <CheckCircle2 className="w-3 h-3 text-[#009640]" />
@@ -451,10 +467,8 @@ export default function MegaSenaConferidor() {
               })}
             </div>
 
-            {/* Legenda (só quando há resultado) */}
             {hasResult && <Legenda />}
 
-            {/* Dezenas escolhidas como bolinhas */}
             {count > 0 && (
               <div className="pt-2 border-t space-y-1.5">
                 <p className="text-xs font-medium text-muted-foreground">Dezenas escolhidas:</p>
@@ -473,7 +487,6 @@ export default function MegaSenaConferidor() {
         {/* ── Coluna 2: Controles ── */}
         <div className="space-y-4">
 
-          {/* Accordion "Como usar" */}
           <Card className="bg-muted/20">
             <CardContent className="pt-5 text-sm text-muted-foreground">
               <button
@@ -489,23 +502,19 @@ export default function MegaSenaConferidor() {
               {infoAberta && (
                 <ol className="mt-3 space-y-1.5 list-decimal list-inside">
                   <li>Escolha de 6 a 20 números no volante à esquerda.</li>
-                  <li>Selecione o concurso que deseja conferir no campo abaixo.</li>
+                  <li>Selecione o concurso que deseja conferir.</li>
                   <li>Clique em <strong>Conferir Aposta</strong>.</li>
-                  <li>O resultado aparece abaixo: acertos em verde, erros em vermelho e dezenas sorteadas não marcadas em verde claro.</li>
-                  <li>Você pode alterar as dezenas ou o concurso a qualquer momento e conferir novamente.</li>
+                  <li>Acertos aparecem em verde, erros em vermelho e dezenas sorteadas não marcadas em verde claro.</li>
+                  <li>Altere as dezenas ou o concurso a qualquer momento e confira novamente.</li>
                 </ol>
               )}
             </CardContent>
           </Card>
 
-          {/* Concurso + Botões */}
           <Card>
             <CardContent className="pt-5 space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">
-                  Concurso:
-                </label>
-                {/* Dropdown de concursos */}
+                <label className="text-sm font-medium text-foreground">Concurso:</label>
                 {ultimo.isLoading ? (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -569,18 +578,32 @@ export default function MegaSenaConferidor() {
         </div>
       </div>
 
-      {/* ── Resultado (full-width abaixo do grid) ── */}
+      {/* ── Resultado (aparece abaixo após conferir) ── */}
       {concursoResult.isFetching && (
         <div className="flex items-center gap-3 text-muted-foreground py-4">
           <Loader2 className="w-5 h-5 animate-spin" style={{ color: COR }} />
           <span className="text-sm">Consultando o resultado…</span>
         </div>
       )}
+
       {hasResult && (
-        <ResultadoCard
-          resultado={concursoResult.data!}
-          selecionadas={selecionadas}
-        />
+        <>
+          {/* Widget 1: Concurso e dezenas sorteadas (full-width) */}
+          <ConcursoCard resultado={concursoResult.data!} />
+
+          {/* Widget 2 (2/3) + Publicidade (1/3) */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            <div className="lg:col-span-2">
+              <ResultadoCard
+                resultado={concursoResult.data!}
+                selecionadas={selecionadas}
+              />
+            </div>
+            <div className="flex flex-col gap-4">
+              <AdUnit slot="5586112233" format="rectangle" className="w-full" />
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
