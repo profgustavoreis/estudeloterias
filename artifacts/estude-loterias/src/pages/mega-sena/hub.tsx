@@ -152,7 +152,6 @@ export default function MegaSenaHub() {
               <Trophy className="w-5 h-5 text-amber-500" />
               Rateio dos Prêmios
             </CardTitle>
-            <CardDescription>Concurso {resultado.concurso}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
@@ -193,7 +192,6 @@ export default function MegaSenaHub() {
               <Wallet className="w-5 h-5 text-primary" />
               Dados do Sorteio
             </CardTitle>
-            <CardDescription>Concurso {resultado.concurso}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
