@@ -13,11 +13,23 @@ import { cn } from "@/lib/utils";
 const COR = "#009640";
 
 type Tab = "mais" | "menos" | "atrasadas";
+type SortFreq = "frequencia" | "dezena";
+type SortAtr  = "atraso"     | "dezena";
 
 const TABS: { id: Tab; label: string }[] = [
   { id: "mais",      label: "Mais Sorteadas"  },
   { id: "menos",     label: "Menos Sorteadas" },
   { id: "atrasadas", label: "Mais Atrasadas"  },
+];
+
+const SORT_FREQ: { id: SortFreq; label: string }[] = [
+  { id: "frequencia", label: "Por Frequência" },
+  { id: "dezena",     label: "Por Dezena"     },
+];
+
+const SORT_ATR: { id: SortAtr; label: string }[] = [
+  { id: "atraso",  label: "Por Atraso"  },
+  { id: "dezena",  label: "Por Dezena"  },
 ];
 
 function UltimaVezLink({ concurso }: { concurso: number | null }) {
@@ -32,6 +44,35 @@ function UltimaVezLink({ concurso }: { concurso: number | null }) {
   );
 }
 
+function SortToggle<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div className="flex gap-1 bg-muted rounded-md p-0.5 w-fit">
+      {options.map(opt => (
+        <button
+          key={opt.id}
+          onClick={() => onChange(opt.id)}
+          className={cn(
+            "px-3 py-1 text-xs font-medium rounded transition-colors",
+            value === opt.id
+              ? "bg-background shadow text-foreground"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function MegaSenaEstatisticasTabela() {
   const search = useSearch();
   const params = new URLSearchParams(search);
@@ -40,6 +81,8 @@ export default function MegaSenaEstatisticasTabela() {
   const [tab, setTab] = useState<Tab>(
     TABS.some(t => t.id === initialTab) ? initialTab : "mais",
   );
+  const [sortFreq, setSortFreq] = useState<SortFreq>("frequencia");
+  const [sortAtr,  setSortAtr]  = useState<SortAtr>("atraso");
 
   const { data: stats, isLoading, isError } = useGetMegaSenaEstatisticas();
 
@@ -71,14 +114,35 @@ export default function MegaSenaEstatisticasTabela() {
     );
   }
 
-  const sorted = {
-    mais:      [...stats.frequenciaDezenas].sort((a, b) => b.frequencia - a.frequencia),
-    menos:     [...stats.frequenciaDezenas].sort((a, b) => a.frequencia - b.frequencia),
-    atrasadas: [...stats.frequenciaDezenas].sort((a, b) => b.atraso - a.atraso),
-  };
+  // ── Sort logic ──────────────────────────────────────────────────────────────
+  const base = [...stats.frequenciaDezenas];
 
-  const rows = sorted[tab];
+  const rows = (() => {
+    if (tab === "atrasadas") {
+      if (sortAtr === "dezena")
+        return base.sort((a, b) => parseInt(b.dezena) - parseInt(a.dezena));
+      return base.sort((a, b) => b.atraso - a.atraso);
+    }
+    if (sortFreq === "dezena")
+      return base.sort((a, b) => parseInt(b.dezena) - parseInt(a.dezena));
+    if (tab === "menos")
+      return base.sort((a, b) => a.frequencia - b.frequencia);
+    return base.sort((a, b) => b.frequencia - a.frequencia);
+  })();
+
   const isAtrasadas = tab === "atrasadas";
+
+  const cardTitle = {
+    mais:      "Dezenas Mais Sorteadas",
+    menos:     "Dezenas Menos Sorteadas",
+    atrasadas: "Dezenas Mais Atrasadas",
+  }[tab];
+
+  const cardDesc = {
+    mais:      "Ranking de todas as dezenas por frequência histórica (maior → menor)",
+    menos:     "Ranking de todas as dezenas por frequência histórica (menor → maior)",
+    atrasadas: "Ranking de todas as dezenas por atraso (mais ausente → mais recente)",
+  }[tab];
 
   return (
     <div className="space-y-6">
@@ -100,110 +164,118 @@ export default function MegaSenaEstatisticasTabela() {
       </div>
 
       {/* Tab selector */}
-      <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
-        {TABS.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={cn(
-              "px-4 py-2 text-sm font-medium rounded-md transition-colors",
-              tab === t.id
-                ? "bg-background shadow text-foreground"
-                : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="flex flex-wrap items-center gap-3">
+        <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
+          {TABS.map(t => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={cn(
+                "px-4 py-2 text-sm font-medium rounded-md transition-colors",
+                tab === t.id
+                  ? "bg-background shadow text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Sort toggle — inline to the right of the tabs */}
+        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+          <span>Ordenar:</span>
+          {isAtrasadas ? (
+            <SortToggle options={SORT_ATR} value={sortAtr} onChange={(v) => setSortAtr(v)} />
+          ) : (
+            <SortToggle options={SORT_FREQ} value={sortFreq} onChange={(v) => setSortFreq(v)} />
+          )}
+        </div>
       </div>
 
       {/* Table + Ad sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-      <div className="lg:col-span-2">
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle>
-            {tab === "mais"      && "Dezenas Mais Sorteadas"}
-            {tab === "menos"     && "Dezenas Menos Sorteadas"}
-            {tab === "atrasadas" && "Dezenas Mais Atrasadas"}
-          </CardTitle>
-          <CardDescription>
-            {tab === "mais"      && "Ranking de todas as dezenas por frequência histórica (maior → menor)"}
-            {tab === "menos"     && "Ranking de todas as dezenas por frequência histórica (menor → maior)"}
-            {tab === "atrasadas" && "Ranking de todas as dezenas por atraso (mais ausente → mais recente)"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table className="w-full">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="text-left">Dezena</TableHead>
-                {isAtrasadas ? (
-                  <>
-                    <TableHead className="text-center">Atraso</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
-                  </>
-                ) : (
-                  <>
-                    <TableHead className="text-center">Frequência</TableHead>
-                    <TableHead className="text-right">Última vez</TableHead>
-                  </>
-                )}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {rows.map((item, i) => (
-                <TableRow key={item.dezena} className="odd:bg-muted/40">
-                  <TableCell className="text-left">
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
-                      {isAtrasadas ? (
-                      <LotteryBall
-                        number={parseInt(item.dezena, 10)}
-                        size="sm"
-                        className="bg-amber-100 text-amber-800 border border-amber-200"
-                      />
-                    ) : tab === "mais" ? (
-                      <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>{cardTitle}</CardTitle>
+              <CardDescription>{cardDesc}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">Dezena</TableHead>
+                    {isAtrasadas ? (
+                      <>
+                        <TableHead className="text-center">Atraso</TableHead>
+                        <TableHead className="text-right">Última vez</TableHead>
+                      </>
                     ) : (
-                      <LotteryBall
-                        number={parseInt(item.dezena, 10)}
-                        size="sm"
-                        className="bg-muted text-muted-foreground"
-                      />
+                      <>
+                        <TableHead className="text-center">Frequência</TableHead>
+                        <TableHead className="text-right">Última vez</TableHead>
+                      </>
                     )}
-                    </div>
-                  </TableCell>
-                  {isAtrasadas ? (
-                    <>
-                      <TableCell className="text-center font-medium tabular-nums text-amber-600">
-                        {item.atraso} sorteios
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rows.map((item, i) => (
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          {isAtrasadas ? (
+                            <LotteryBall
+                              number={parseInt(item.dezena, 10)}
+                              size="sm"
+                              className="bg-amber-100 text-amber-800 border border-amber-200"
+                            />
+                          ) : tab === "mais" ? (
+                            <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
+                          ) : (
+                            <LotteryBall
+                              number={parseInt(item.dezena, 10)}
+                              size="sm"
+                              className="bg-muted text-muted-foreground"
+                            />
+                          )}
+                        </div>
                       </TableCell>
-                      <TableCell className="text-right">
-                        <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
-                      </TableCell>
-                    </>
-                  ) : (
-                    <>
-                      <TableCell className="text-center font-medium tabular-nums">
-                        {item.frequencia.toLocaleString("pt-BR")} vezes
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
-                      </TableCell>
-                    </>
-                  )}
-                </TableRow>
-              ))}
-              <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-      </div>
-      <div className="flex flex-col gap-6">
-        <AdUnit slot="3322114455" format="rectangle" className="w-full" />
-      </div>
+                      {isAtrasadas ? (
+                        <>
+                          <TableCell className="text-center font-medium tabular-nums text-amber-600">
+                            {item.atraso} sorteios
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
+                          </TableCell>
+                        </>
+                      ) : (
+                        <>
+                          <TableCell className="text-center font-medium tabular-nums">
+                            {item.frequencia.toLocaleString("pt-BR")} vezes
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
+                  ))}
+                  <TableRow className="border-b">
+                    <TableCell className="py-0.5"> </TableCell>
+                    <TableCell className="py-0.5"> </TableCell>
+                    <TableCell className="py-0.5"> </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="flex flex-col gap-6">
+          <AdUnit slot="3322114455" format="rectangle" className="w-full" />
+        </div>
       </div>
     </div>
   );
