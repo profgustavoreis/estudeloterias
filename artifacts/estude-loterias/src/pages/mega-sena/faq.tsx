@@ -31,7 +31,7 @@ export default function MegaSenaFAQ() {
       <PageSEO
         title="Perguntas Frequentes sobre a Mega-Sena"
         description="Respostas às dúvidas mais comuns sobre a Mega-Sena: prazo para resgatar prêmios, bolão, Mega da Virada, apostas online e muito mais."
-        canonical="/mega-sena/faq"
+        canonical="/mega-sena/perguntas-frequentes"
       />
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">

@@ -24,7 +24,7 @@ const STATIC_PAGES: SitemapEntry[] = [
   { url: "/mega-sena/simulador",            changefreq: "monthly", priority: "0.6" },
   { url: "/mega-sena/como-jogar",           changefreq: "monthly", priority: "0.5" },
   { url: "/mega-sena/premiacao",            changefreq: "monthly", priority: "0.5" },
-  { url: "/mega-sena/faq",                  changefreq: "monthly", priority: "0.5" },
+  { url: "/mega-sena/perguntas-frequentes",   changefreq: "monthly", priority: "0.5" },
 ];
 
 function parseDate(ddmmyyyy: string): string {

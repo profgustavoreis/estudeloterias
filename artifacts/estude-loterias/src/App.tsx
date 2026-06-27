@@ -38,6 +38,7 @@ function Router() {
         <Route path="/mega-sena/mega-da-virada" component={MegaDaVirada} />
         <Route path="/mega-sena/como-jogar" component={MegaSenaComoJogar} />
         <Route path="/mega-sena/premiacao" component={MegaSenaPremiacao} />
+        <Route path="/mega-sena/perguntas-frequentes" component={MegaSenaFAQ} />
         <Route path="/mega-sena/faq" component={MegaSenaFAQ} />
         <Route path="/mega-sena/simulador" component={MegaSenaSimulador} />
         <Route path="/mega-sena/conferidor" component={MegaSenaConferidor} />

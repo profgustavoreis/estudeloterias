@@ -27,7 +27,6 @@ export function Sidebar() {
         { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
         { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles },
         { href: "/mega-sena/calendario", label: "Calendário", icon: CalendarDays },
-        { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift },
       ]
     },
     {
@@ -35,7 +34,8 @@ export function Sidebar() {
       items: [
         { href: "/mega-sena/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/mega-sena/premiacao", label: "Premiação", icon: Target },
-        { href: "/mega-sena/faq", label: "Perguntas Frequentes", icon: HelpCircle },
+        { href: "/mega-sena/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+        { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift },
       ]
     }
   ];

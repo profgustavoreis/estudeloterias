@@ -25,7 +25,7 @@ export default function MegaSenaHub() {
     { href: "/mega-sena/conferidor", label: "Conferidor de Apostas", icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
     { href: "/mega-sena/como-jogar", label: "Como Jogar", icon: BookOpen, desc: "Regras e formas de apostar" },
     { href: "/mega-sena/premiacao", label: "Premiação", icon: Trophy, desc: "Faixas e percentuais de prêmio" },
-    { href: "/mega-sena/faq", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+    { href: "/mega-sena/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
     { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift, desc: "Tudo sobre o sorteio especial" },
   ];
 
