@@ -64,11 +64,11 @@ export default function MegaSenaComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios da Mega-Sena são realizados três vezes por semana, 
-              às terças, quintas e sábados, a partir das 20h.
+              <strong>Dias de Sorteio:</strong> Os sorteios da Mega-Sena são realizados três vezes por semana,
+              às terças, quintas e sábados, a partir das 21h.
             </p>
             <p>
-              <strong>Valor da Aposta:</strong> A aposta mínima, de 6 números, custa R$ 5,00.
+              <strong>Valor da Aposta:</strong> A aposta mínima, de 6 números, custa R$ 6,00.
             </p>
           </CardContent>
         </Card>
