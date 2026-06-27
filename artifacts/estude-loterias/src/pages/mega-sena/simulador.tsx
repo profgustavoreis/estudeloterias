@@ -69,8 +69,8 @@ export default function MegaSenaSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador da Mega-Sena — Teste sua Aposta no Histórico"
-        description="Escolha suas dezenas e descubra em quantos dos mais de 3.000 sorteios da Mega-Sena você teria ganhado. Simulador gratuito e completo."
+        title="Simulador Histórico da Mega-Sena — Teste sua Aposta no Histórico"
+        description="Escolha suas dezenas e descubra em quantos dos mais de 3.000 sorteios da Mega-Sena você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/mega-sena/simulador"
       />
       {/* ── Header ── */}
@@ -83,7 +83,7 @@ export default function MegaSenaSimulador() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-            Mega-Sena · Simulador
+            Mega-Sena · Simulador Histórico
           </h1>
           <p className="text-muted-foreground mt-1">
             Selecione de 6 a 20 dezenas e descubra em quantos sorteios anteriores você teria acertado.
