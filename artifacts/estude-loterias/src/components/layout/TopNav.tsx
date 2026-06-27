@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   ChevronDown, Menu, X,
   BarChart3, Dices, Gift, HelpCircle, Home, Info,
-  List, Sparkles, Target, Trophy, FlaskConical, BookOpen,
+  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen,
 } from "lucide-react";
 
 // ── Mega-Sena items, grouped ──────────────────────────────────────────────────
@@ -12,7 +12,8 @@ const megaSenaTools = [
   { href: "/mega-sena",              label: "Painel Principal",       icon: Target,      desc: "Visão geral da Mega-Sena" },
   { href: "/mega-sena/resultado",    label: "Último Resultado",       icon: Dices,       desc: "Dezenas e premiação do último sorteio" },
   { href: "/mega-sena/resultados",   label: "Resultados Anteriores",  icon: List,        desc: "Histórico completo de concursos" },
-  { href: "/mega-sena/estatisticas", label: "Estatísticas",           icon: BarChart3,   desc: "Frequência e análise das dezenas" },
+  { href: "/mega-sena/estatisticas", label: "Resumo Estatístico",   icon: BarChart3,   desc: "Frequência e análise das dezenas" },
+  { href: "/mega-sena/estatisticas/tabela", label: "Tabela de Dezenas", icon: Table,     desc: "Ranking detalhado de todas as dezenas" },
   { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,    desc: "Crie apostas aleatórias" },
   { href: "/mega-sena/simulador",    label: "Simulador",              icon: FlaskConical,desc: "Confira sua aposta no histórico" },
 ];

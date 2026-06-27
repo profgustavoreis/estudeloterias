@@ -60,7 +60,7 @@ export default function MegaSenaEstatisticasTabela() {
     return (
       <div className="space-y-6">
         <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-          Frequência de Dezenas
+          Tabela de Dezenas
         </h1>
         <Card>
           <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
@@ -86,13 +86,13 @@ export default function MegaSenaEstatisticasTabela() {
       <div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
           <Link href="/mega-sena/estatisticas" className="hover:underline">
-            Estatísticas
+            Resumo Estatístico
           </Link>
           <span>/</span>
-          <span>Frequência de Dezenas</span>
+          <span>Tabela de Dezenas</span>
         </div>
         <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-          Frequência de Dezenas
+          Tabela de Dezenas
         </h1>
         <p className="text-muted-foreground mt-1">
           Todas as 60 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.

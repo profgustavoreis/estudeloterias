@@ -124,7 +124,7 @@ export default function MegaSenaEstatisticas() {
   if (isError || !stats) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Estatísticas</h1>
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Resumo Estatístico</h1>
         <Card>
           <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
             Erro ao carregar estatísticas. Tente novamente.
@@ -162,7 +162,7 @@ export default function MegaSenaEstatisticas() {
     <div className="space-y-8">
       {/* ── Header ── */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Estatísticas</h1>
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Resumo Estatístico</h1>
         <p className="text-muted-foreground mt-1">
           Análise completa de {stats.totalConcursos.toLocaleString("pt-BR")} concursos realizados.
         </p>
