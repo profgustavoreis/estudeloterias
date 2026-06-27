@@ -4,11 +4,12 @@ import { useGetMegaSenaEstatisticas } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { AdUnit } from "@/components/ui/AdUnit";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+  Table as Table2, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { Table as TableIcon } from "lucide-react";
 
 const COR = "#009640";
 
@@ -149,7 +150,7 @@ export default function MegaSenaEstatisticasTabela() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
-          <Table className="w-6 h-6" />
+          <TableIcon className="w-6 h-6" />
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
@@ -200,7 +201,7 @@ export default function MegaSenaEstatisticasTabela() {
               </div>
             </CardHeader>
             <CardContent>
-              <Table className="w-full">
+              <Table2 className="w-full">
                 <TableHeader>
                   <TableRow>
                     <TableHead className="text-left">Dezena</TableHead>
@@ -267,7 +268,7 @@ export default function MegaSenaEstatisticasTabela() {
                     <TableCell className="py-0.5"> </TableCell>
                   </TableRow>
                 </TableBody>
-              </Table>
+              </Table2>
             </CardContent>
           </Card>
         </div>

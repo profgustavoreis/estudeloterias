@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Info, HelpCircle } from "lucide-react";
+import { BookOpen, HelpCircle, Info } from "lucide-react";
 
 export default function MegaSenaComoJogar() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
-          <Info className="w-6 h-6" />
+          <BookOpen className="w-6 h-6" />
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Como Jogar</h1>

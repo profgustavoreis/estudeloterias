@@ -38,7 +38,7 @@ export default function MegaDaVirada() {
           <Gift className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-amber-500 uppercase">Mega-Sena · Mega da Virada</h1>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-amber-500 uppercase">Mega da Virada</h1>
           <p className="text-muted-foreground mt-1 text-lg">O sorteio mais aguardado do ano que não acumula.</p>
         </div>
       </div>
