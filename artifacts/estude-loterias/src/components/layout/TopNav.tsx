@@ -80,16 +80,16 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
-          <div className="flex divide-x divide-border">
-            {/* ── Coluna 1: itens 1–4 (Ferramentas) ── */}
-            <div className="p-2 w-56">
-              <div className="px-2 pt-1 pb-1">
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+          <div className="flex">
+            {/* ── Ferramentas (8 itens) ── */}
+            <div className="p-3 w-64">
+              <div className="px-1.5 pt-1 pb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                   Ferramentas
                 </span>
               </div>
-              {megaSenaTools.slice(0, 4).map((item) => {
+              {megaSenaTools.map((item) => {
                 const Icon = item.icon;
                 const active = activeItem?.href === item.href;
                 return (
@@ -98,7 +98,7 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
                     href={item.href}
                     onClick={onToggle}
                     className={cn(
-                      "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                      "flex items-start gap-3 px-2 py-2 rounded-lg transition-colors",
                       active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
                     )}
                   >
@@ -112,39 +112,9 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
               })}
             </div>
 
-            {/* ── Coluna 2: itens 5–8 (Ferramentas, cont.) ── */}
-            <div className="p-2 w-56">
-              <div className="px-2 pt-1 pb-1">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-transparent select-none">
-                  &nbsp;
-                </span>
-              </div>
-              {megaSenaTools.slice(4).map((item) => {
-                const Icon = item.icon;
-                const active = activeItem?.href === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={onToggle}
-                    className={cn(
-                      "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
-                      active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
-                    )}
-                  >
-                    <Icon className="w-4 h-4 mt-0.5 shrink-0" />
-                    <div>
-                      <div className="text-sm font-medium leading-none">{item.label}</div>
-                      <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* ── Coluna 3: itens 9–12 (Informações) ── */}
-            <div className="p-2 w-52 bg-muted/30">
-              <div className="px-2 pt-1 pb-1">
+            {/* ── Informações (4 itens) ── */}
+            <div className="p-3 w-56 bg-muted/40 border-l border-border">
+              <div className="px-1.5 pt-1 pb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                   Informações
                 </span>
@@ -158,7 +128,7 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
                     href={item.href}
                     onClick={onToggle}
                     className={cn(
-                      "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                      "flex items-start gap-3 px-2 py-2 rounded-lg transition-colors",
                       active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
                     )}
                   >
