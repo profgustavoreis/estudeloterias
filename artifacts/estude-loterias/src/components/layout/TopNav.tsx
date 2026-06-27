@@ -9,21 +9,21 @@ import {
 
 // ── Mega-Sena items, grouped ──────────────────────────────────────────────────
 const megaSenaTools = [
-  { href: "/mega-sena",              label: "Painel Principal",       icon: Target,      desc: "Visão geral da Mega-Sena" },
-  { href: "/mega-sena/resultado",    label: "Último Resultado",       icon: Dices,       desc: "Dezenas e premiação do último sorteio" },
-  { href: "/mega-sena/resultados",   label: "Resultados Anteriores",  icon: List,        desc: "Histórico completo de concursos" },
-  { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico",   icon: BarChart3, desc: "Frequência e análise das dezenas" },
-  { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas",   icon: Table,     desc: "Ranking detalhado de todas as dezenas" },
-  { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,    desc: "Crie apostas aleatórias" },
-  { href: "/mega-sena/simulador",    label: "Simulador Histórico",  icon: FlaskConical,    desc: "Teste suas dezenas no histórico completo" },
-  { href: "/mega-sena/conferidor",   label: "Conferidor de Apostas",  icon: ClipboardCheck,  desc: "Verifique se sua aposta ganhou" },
-  { href: "/mega-sena/mega-da-virada", label: "Mega da Virada",      icon: Gift,        desc: "O sorteio especial de 31/12" },
+  { href: "/mega-sena",              label: "Painel Principal",       icon: Target,         desc: "Visão geral da Mega-Sena" },
+  { href: "/mega-sena/resultado",    label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/mega-sena/resultados",   label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3,    desc: "Frequência e análise das dezenas" },
+  { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas",  icon: Table,        desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/mega-sena/simulador",    label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/mega-sena/conferidor",   label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
 ];
 
 const megaSenaInfo = [
-  { href: "/mega-sena/como-jogar",  label: "Como Jogar",            icon: BookOpen,    desc: "Regras e formas de apostar" },
-  { href: "/mega-sena/premiacao",   label: "Premiação",             icon: Trophy,      desc: "Faixas e percentuais de prêmio" },
-  { href: "/mega-sena/faq",         label: "Perguntas Frequentes",  icon: HelpCircle,  desc: "Dúvidas comuns respondidas" },
+  { href: "/mega-sena/como-jogar",    label: "Como Jogar",            icon: BookOpen,   desc: "Regras e formas de apostar" },
+  { href: "/mega-sena/premiacao",     label: "Premiação",             icon: Trophy,     desc: "Faixas e percentuais de prêmio" },
+  { href: "/mega-sena/faq",           label: "Perguntas Frequentes",  icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+  { href: "/mega-sena/mega-da-virada",label: "Mega da Virada",        icon: Gift,       desc: "O sorteio especial de 31/12" },
 ];
 
 const megaSenaAll = [...megaSenaTools, ...megaSenaInfo];
@@ -80,64 +80,97 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-72 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
-          <div className="p-2">
-            {/* Tools group */}
-            <div className="px-2 pt-1 pb-1">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                Ferramentas
-              </span>
+        <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
+          <div className="flex divide-x divide-border">
+            {/* ── Coluna 1: itens 1–4 (Ferramentas) ── */}
+            <div className="p-2 w-56">
+              <div className="px-2 pt-1 pb-1">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  Ferramentas
+                </span>
+              </div>
+              {megaSenaTools.slice(0, 4).map((item) => {
+                const Icon = item.icon;
+                const active = activeItem?.href === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onToggle}
+                    className={cn(
+                      "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                      active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
+                    )}
+                  >
+                    <Icon className="w-4 h-4 mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-medium leading-none">{item.label}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
-            {megaSenaTools.map((item) => {
-              const Icon = item.icon;
-              const active = activeItem?.href === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={onToggle}
-                  className={cn(
-                    "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
-                    active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
-                  )}
-                >
-                  <Icon className="w-4 h-4 mt-0.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-medium leading-none">{item.label}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
-                  </div>
-                </Link>
-              );
-            })}
 
-            {/* Divider + Info group */}
-            <div className="border-t border-border my-1.5" />
-            <div className="px-2 pb-1">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                Informações
-              </span>
+            {/* ── Coluna 2: itens 5–8 (Ferramentas, cont.) ── */}
+            <div className="p-2 w-56">
+              <div className="px-2 pt-1 pb-1">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-transparent select-none">
+                  &nbsp;
+                </span>
+              </div>
+              {megaSenaTools.slice(4).map((item) => {
+                const Icon = item.icon;
+                const active = activeItem?.href === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onToggle}
+                    className={cn(
+                      "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                      active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
+                    )}
+                  >
+                    <Icon className="w-4 h-4 mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-medium leading-none">{item.label}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
-            {megaSenaInfo.map((item) => {
-              const Icon = item.icon;
-              const active = activeItem?.href === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={onToggle}
-                  className={cn(
-                    "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
-                    active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
-                  )}
-                >
-                  <Icon className="w-4 h-4 mt-0.5 shrink-0" />
-                  <div>
-                    <div className="text-sm font-medium leading-none">{item.label}</div>
-                    <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
-                  </div>
-                </Link>
-              );
-            })}
+
+            {/* ── Coluna 3: itens 9–12 (Informações) ── */}
+            <div className="p-2 w-52 bg-muted/30">
+              <div className="px-2 pt-1 pb-1">
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  Informações
+                </span>
+              </div>
+              {megaSenaInfo.map((item) => {
+                const Icon = item.icon;
+                const active = activeItem?.href === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onToggle}
+                    className={cn(
+                      "flex items-start gap-3 p-2.5 rounded-lg transition-colors",
+                      active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
+                    )}
+                  >
+                    <Icon className="w-4 h-4 mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-medium leading-none">{item.label}</div>
+                      <div className="text-xs text-muted-foreground mt-1">{item.desc}</div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       )}
