@@ -48,12 +48,6 @@ function calcular(N: number, K: number): Premiacao {
   };
 }
 
-function acertosLabel(k: number) {
-  if (k === 6) return { label: "Sena!",   color: "text-amber-600" };
-  if (k === 5) return { label: "Quina!",  color: "text-violet-600" };
-  if (k === 4) return { label: "Quadra!", color: "text-blue-600" };
-  return { label: `${k} acerto${k !== 1 ? "s" : ""}`, color: "text-muted-foreground" };
-}
 
 // ── Legenda da grade ──────────────────────────────────────────────────────────
 function Legenda() {
@@ -93,9 +87,12 @@ function ConcursoCard({ resultado }: { resultado: ResultadoMegaSena }) {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-base font-semibold text-muted-foreground">
-          Concurso {resultado.concurso} · {formatDateShort(resultado.data)}
+        <CardTitle className="text-base font-semibold">
+          Dezenas sorteadas
         </CardTitle>
+        <CardDescription>
+          Concurso {resultado.concurso} · {formatDateShort(resultado.data)}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2">
@@ -120,7 +117,6 @@ function ResultadoCard({
   const acertadas = new Set(sorteadasNums.filter((d) => selecionadas.has(d)));
   const N = selecionadas.size;
   const K = acertadas.size;
-  const { label, color } = acertosLabel(K);
   const isMultipla = N > 6;
   const premiacao = calcular(N, K);
 
@@ -157,18 +153,15 @@ function ResultadoCard({
   return (
     <Card className="border-t-4" style={{ borderTopColor: COR }}>
       <CardHeader className="pb-3">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-          <div>
-            <CardTitle className="text-base font-semibold">
-              Resultado da conferência
-            </CardTitle>
-            <CardDescription className="mt-0.5">
-              {isMultipla
-                ? `Aposta múltipla de ${N} dezenas · ${premiacao.apostasSimples} apostas simples · ${formatCurrency(premiacao.valorAposta)}`
-                : `Aposta simples de 6 dezenas · ${formatCurrency(PRECO_SIMPLES)}`}
-            </CardDescription>
-          </div>
-          <span className={cn("text-2xl font-black shrink-0", color)}>{label}</span>
+        <div>
+          <CardTitle className="text-base font-semibold">
+            Resultado da conferência
+          </CardTitle>
+          <CardDescription className="mt-0.5">
+            {isMultipla
+              ? `Aposta múltipla de ${N} dezenas · ${premiacao.apostasSimples} apostas simples · ${formatCurrency(premiacao.valorAposta)}`
+              : `Aposta simples de 6 dezenas · ${formatCurrency(PRECO_SIMPLES)}`}
+          </CardDescription>
         </div>
       </CardHeader>
 
@@ -587,13 +580,15 @@ export default function MegaSenaConferidor() {
       )}
 
       {hasResult && (
-        <>
-          {/* Widget 1: Concurso e dezenas sorteadas (full-width) */}
-          <ConcursoCard resultado={concursoResult.data!} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          {/* Widget 1: Dezenas sorteadas (1/2 equivalente → col-span-1) */}
+          <div className="lg:col-span-1">
+            <ConcursoCard resultado={concursoResult.data!} />
+          </div>
 
-          {/* Widget 2 (2/3) + Publicidade (1/3) */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-            <div className="lg:col-span-2">
+          {/* Widget 2: Resultado da conferência + Publicidade (restante) */}
+          <div className="lg:col-span-2 grid grid-cols-1 gap-6">
+            <div>
               <ResultadoCard
                 resultado={concursoResult.data!}
                 selecionadas={selecionadas}
@@ -603,7 +598,7 @@ export default function MegaSenaConferidor() {
               <AdUnit slot="5586112233" format="rectangle" className="w-full" />
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
