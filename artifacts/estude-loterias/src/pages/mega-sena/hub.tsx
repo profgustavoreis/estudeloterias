@@ -7,7 +7,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Link } from "wouter";
-import { BarChart3, Dices, FlaskConical, Gift, List, Sparkles, Table as TableIcon, Target, Trophy, Wallet, TrendingUp, PartyPopper } from "lucide-react";
+import { BarChart3, BookOpen, ClipboardCheck, Dices, FlaskConical, Gift, HelpCircle, List, Sparkles, Table as TableIcon, Target, Trophy, Wallet, TrendingUp, PartyPopper } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
@@ -18,10 +18,14 @@ export default function MegaSenaHub() {
   const quickLinks = [
     { href: `/mega-sena/resultado/${resultado?.concurso ?? ""}`, label: "Último Resultado", icon: Dices, desc: "Detalhes do último sorteio" },
     { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List, desc: "Busque por sorteios passados" },
-    { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3,  desc: "Frequência de dezenas e atrasos" },
+    { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3, desc: "Frequência de dezenas e atrasos" },
     { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas",  icon: TableIcon, desc: "Ranking detalhado de todas as dezenas" },
     { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles, desc: "Gere jogos inteligentes" },
     { href: "/mega-sena/simulador", label: "Simulador Histórico", icon: FlaskConical, desc: "Confira sua aposta no histórico" },
+    { href: "/mega-sena/conferidor", label: "Conferidor de Apostas", icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+    { href: "/mega-sena/como-jogar", label: "Como Jogar", icon: BookOpen, desc: "Regras e formas de apostar" },
+    { href: "/mega-sena/premiacao", label: "Premiação", icon: Trophy, desc: "Faixas e percentuais de prêmio" },
+    { href: "/mega-sena/faq", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
     { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift, desc: "Tudo sobre o sorteio especial" },
   ];
 
@@ -224,7 +228,7 @@ export default function MegaSenaHub() {
 
       {/* ── Ferramentas ── */}
       <div>
-        <h2 className="text-xl font-bold mb-4">Ferramentas e Consultas</h2>
+        <h2 className="text-xl font-bold mb-4">Acesso Rápido</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {quickLinks.map((link) => {
             const Icon = link.icon;
