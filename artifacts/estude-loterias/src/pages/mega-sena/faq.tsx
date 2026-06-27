@@ -6,7 +6,7 @@ export default function MegaSenaFAQ() {
   const faqs = [
     {
       q: "Onde posso receber meu prêmio?",
-      a: "Prêmios de até R$ 2.112,00 podem ser recebidos em qualquer casa lotérica credenciada ou nas agências da Caixa. Acima desse valor, somente nas agências da Caixa. Valores iguais ou acima de R$ 10.000,00 são pagos após 2 dias da apresentação na agência da Caixa."
+      a: "Você pode receber seu prêmio em qualquer casa lotérica credenciada ou nas agências da Caixa. Caso o prêmio bruto seja superior a R$ 2.428,80, o pagamento pode ser realizado somente nas agências da Caixa, mediante apresentação de comprovante de identidade original com CPF e recibo de aposta original e premiado. Valores iguais ou acima de R$ 10.000,00 são pagos no prazo mínimo de dois dias úteis a partir de sua apresentação em Agência da Caixa."
     },
     {
       q: "Qual o prazo para receber o prêmio?",
@@ -21,8 +21,8 @@ export default function MegaSenaFAQ() {
       a: "Não. A Mega da Virada não acumula. Se não houver ganhadores na faixa principal (6 acertos), o prêmio é dividido entre os acertadores da quina (5 acertos), e assim por diante."
     },
     {
-      q: "Posso jogar pela internet?",
-      a: "Sim, é possível jogar pela internet através do portal Loterias Online da Caixa Econômica Federal, ou pelo aplicativo Loterias Caixa. O valor mínimo para apostas online é de R$ 30,00 (somando todas as apostas do carrinho)."
+      q: "Qual valor posso apostar online?",
+      a: "No portal e aplicativo Loterias Caixa você pode efetivar apostas a partir de R$ 2,50 e no máximo o limite diário estabelecido pelo canal, que pode ser consultado no menu Minha Conta - Cadastro."
     }
   ];
 
