@@ -30,7 +30,7 @@ export default function MegaSenaComoJogar() {
             Ainda é possível ganhar prêmios ao acertar 4 ou 5 números dentre os 60 disponíveis no volante de apostas.
           </p>
           <p>
-            Para realizar o sonho de ser milionário, você deve marcar de 6 a 20 números do volante,
+            Para apostar, você deve marcar de 6 a 20 números do volante,
             podendo deixar que o sistema escolha os números para você (Surpresinha) e/ou
             concorrer com a mesma aposta por 2, 4 ou 8 concursos consecutivos (Teimosinha).
           </p>
