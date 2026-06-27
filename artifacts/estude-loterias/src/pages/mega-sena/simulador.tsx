@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { formatDateShort } from "@/lib/formatters";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown } from "lucide-react";
+import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
@@ -32,9 +32,17 @@ export default function MegaSenaSimulador() {
   const [filtro, setFiltro] = useState<SimuladorInputFiltro>(SimuladorInputFiltro.premiados);
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
   const [infoAberta, setInfoAberta] = useState(false);
+  const [paginaTabela, setPaginaTabela] = useState(1);
+
+  const PAGE_SIZE = 20;
 
   const simular = useSimularMegaSena({
-    mutation: { onSuccess: (data) => setResultado(data) },
+    mutation: {
+      onSuccess: (data) => {
+        setResultado(data);
+        setPaginaTabela(1);
+      },
+    },
   });
 
   const toggleDezena = (n: number) => {
@@ -65,6 +73,14 @@ export default function MegaSenaSimulador() {
   const acertosGanhadores = resultado?.resumo
     .filter((r) => r.acertos >= 4)
     .reduce((acc, r) => acc + r.contagem, 0) ?? 0;
+
+  const totalConcursos = resultado?.concursos.length ?? 0;
+  const totalPaginasTabela = Math.max(1, Math.ceil(totalConcursos / PAGE_SIZE));
+  const paginaAtual = Math.min(paginaTabela, totalPaginasTabela);
+  const concursosPagina = resultado?.concursos.slice(
+    (paginaAtual - 1) * PAGE_SIZE,
+    paginaAtual * PAGE_SIZE
+  ) ?? [];
 
   return (
     <div className="space-y-6">
@@ -302,16 +318,17 @@ export default function MegaSenaSimulador() {
 
           {/* ── Colunas 1–2 (2/3): Tabela de concursos ── */}
           <div className="lg:col-span-2">
-            {resultado.concursos.length > 0 ? (
+            {totalConcursos > 0 ? (
+              <>
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">
                     Concursos — {FILTRO_LABELS[filtro]}
                   </CardTitle>
                   <CardDescription>
-                    {resultado.concursos.length.toLocaleString("pt-BR")} concurso
-                    {resultado.concursos.length !== 1 ? "s" : ""} encontrado
-                    {resultado.concursos.length !== 1 ? "s" : ""}
+                    {totalConcursos.toLocaleString("pt-BR")} concurso
+                    {totalConcursos !== 1 ? "s" : ""} encontrado
+                    {totalConcursos !== 1 ? "s" : ""}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="p-0">
@@ -327,7 +344,7 @@ export default function MegaSenaSimulador() {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {resultado.concursos.map((c) => {
+                        {concursosPagina.map((c) => {
                           const premiado = c.acertos >= 4;
                           return (
                             <TableRow key={c.concurso}>
@@ -382,6 +399,32 @@ export default function MegaSenaSimulador() {
                   </div>
                 </CardContent>
               </Card>
+              {totalPaginasTabela > 1 && (
+                <div className="flex items-center justify-between px-2 mt-2">
+                  <div className="text-sm text-muted-foreground">
+                    Página {paginaAtual} de {totalPaginasTabela} ({totalConcursos.toLocaleString("pt-BR")} concursos)
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaTabela(p => Math.max(1, p - 1))}
+                      disabled={paginaAtual === 1}
+                    >
+                      <ChevronLeft className="w-4 h-4 mr-1" /> Anterior
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPaginaTabela(p => Math.min(totalPaginasTabela, p + 1))}
+                      disabled={paginaAtual === totalPaginasTabela}
+                    >
+                      Próxima <ChevronRight className="w-4 h-4 ml-1" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+              </>
             ) : (
               <Card>
                 <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
