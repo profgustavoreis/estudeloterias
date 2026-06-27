@@ -6,6 +6,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
   const dezenas = loteria.dezenas ?? [];
@@ -109,6 +110,11 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
+      <PageSEO
+        title="Resultados e Estatísticas das Loterias da Caixa"
+        description="Acompanhe os resultados de hoje, prêmios acumulados e estatísticas completas da Mega-Sena, Lotofácil, Quina e demais loterias da Caixa."
+        canonical="/"
+      />
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Visão Geral das Loterias</h1>
         <p className="text-muted-foreground mt-2">Acompanhe os últimos resultados e prêmios acumulados.</p>

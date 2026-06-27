@@ -16,6 +16,7 @@ import {
 import { AdUnit } from "@/components/ui/AdUnit";
 import { cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
 
@@ -161,6 +162,11 @@ export default function MegaSenaEstatisticas() {
 
   return (
     <div className="space-y-8">
+      <PageSEO
+        title="Resumo Estatístico da Mega-Sena — Frequência e Análise das Dezenas"
+        description="Análise estatística completa da Mega-Sena: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
+        canonical="/mega-sena/resumo-estatistico"
+      />
       {/* ── Header ── */}
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>

@@ -1,5 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function MegaSenaFAQ() {
   const faqs = [
@@ -27,6 +28,11 @@ export default function MegaSenaFAQ() {
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
+      <PageSEO
+        title="Perguntas Frequentes sobre a Mega-Sena"
+        description="Respostas às dúvidas mais comuns sobre a Mega-Sena: prazo para resgatar prêmios, bolão, Mega da Virada, apostas online e muito mais."
+        canonical="/mega-sena/faq"
+      />
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
           <HelpCircle className="w-6 h-6" />

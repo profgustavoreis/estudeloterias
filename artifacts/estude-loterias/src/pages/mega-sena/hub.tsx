@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Link } from "wouter";
 import { BarChart3, Dices, FlaskConical, Gift, List, Sparkles, Table as TableIcon, Target, Trophy, Wallet, TrendingUp, PartyPopper } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
 
@@ -53,6 +54,11 @@ export default function MegaSenaHub() {
 
   return (
     <div className="space-y-8">
+      <PageSEO
+        title="Mega-Sena — Resultados, Estatísticas e Ferramentas"
+        description="Tudo sobre a Mega-Sena: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
+        canonical="/mega-sena"
+      />
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
           <Target className="w-6 h-6" />

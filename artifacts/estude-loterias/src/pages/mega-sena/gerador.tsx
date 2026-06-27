@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useGerarJogo, JogoGerado } from "@workspace/api-client-react";
 import { Sparkles, Printer, RefreshCw } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function MegaSenaGerador() {
   const [qtdJogos, setQtdJogos] = useState(1);
@@ -27,6 +28,11 @@ export default function MegaSenaGerador() {
 
   return (
     <div className="space-y-6">
+      <PageSEO
+        title="Gerador de Jogos da Mega-Sena"
+        description="Gere apostas aleatórias para a Mega-Sena escolhendo quantos jogos e quantas dezenas por jogo. Surpresinha inteligente e gratuita."
+        canonical="/mega-sena/gerador"
+      />
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
           <Sparkles className="w-6 h-6" />

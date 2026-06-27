@@ -6,6 +6,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Gift, Calendar, Trophy } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 // Concursos sorteados em 01/01 do ano seguinte → exibe o ano da edição
 const VIRADA_ANO_EDICAO: Record<number, number> = {
@@ -33,6 +34,11 @@ export default function MegaDaVirada() {
 
   return (
     <div className="space-y-8">
+      <PageSEO
+        title="Mega da Virada — Histórico, Resultados e Estatísticas"
+        description="Todos os resultados da Mega da Virada desde 2009: dezenas sorteadas, prêmios, ganhadores e estatísticas do sorteio especial de 31 de dezembro."
+        canonical="/mega-sena/mega-da-virada"
+      />
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-xl bg-amber-500 flex items-center justify-center text-white shadow-lg">
           <Gift className="w-8 h-8" />

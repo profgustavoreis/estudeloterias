@@ -1,9 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Trophy, Target } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function MegaSenaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
+      <PageSEO
+        title="Premiação da Mega-Sena — Faixas e Distribuição de Prêmios"
+        description="Entenda como o prêmio da Mega-Sena é distribuído entre as faixas de 4, 5 e 6 acertos, incluindo percentuais e regras de acumulação."
+        canonical="/mega-sena/premiacao"
+      />
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
           <Trophy className="w-6 h-6" />

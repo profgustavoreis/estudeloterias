@@ -10,6 +10,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Table as TableIcon } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
 
@@ -147,6 +148,11 @@ export default function MegaSenaEstatisticasTabela() {
 
   return (
     <div className="space-y-6">
+      <PageSEO
+        title="Tabela de Dezenas da Mega-Sena — Frequência e Atraso"
+        description="Ranking completo das 60 dezenas da Mega-Sena: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
+        canonical="/mega-sena/tabela-de-dezenas"
+      />
       {/* Header */}
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>

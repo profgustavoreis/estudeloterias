@@ -13,6 +13,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { formatDateShort } from "@/lib/formatters";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
 
@@ -67,6 +68,11 @@ export default function MegaSenaSimulador() {
 
   return (
     <div className="space-y-6">
+      <PageSEO
+        title="Simulador da Mega-Sena — Teste sua Aposta no Histórico"
+        description="Escolha suas dezenas e descubra em quantos dos mais de 3.000 sorteios da Mega-Sena você teria ganhado. Simulador gratuito e completo."
+        canonical="/mega-sena/simulador"
+      />
       {/* ── Header ── */}
       <div className="flex items-center gap-4">
         <div

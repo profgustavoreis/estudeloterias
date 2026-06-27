@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
 import type { ResultadoMegaSena } from "@workspace/api-client-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 const BRAND = "#009640";
 
@@ -386,6 +387,11 @@ function ResultadoView({
 
   return (
     <div className="space-y-5">
+      <PageSEO
+        title={`Resultado da Mega-Sena — Concurso ${resultado.concurso} (${resultado.data})`}
+        description={`Dezenas sorteadas no concurso ${resultado.concurso} da Mega-Sena em ${resultado.data}: ${resultado.dezenas.join(", ")}. Confira prêmios e estatísticas completas.`}
+        canonical={`/mega-sena/resultado/${resultado.concurso}`}
+      />
       {/* Header: title + navigator on the same row */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>

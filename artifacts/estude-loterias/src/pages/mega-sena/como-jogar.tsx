@@ -1,9 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, HelpCircle, Info } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function MegaSenaComoJogar() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
+      <PageSEO
+        title="Como Jogar na Mega-Sena"
+        description="Saiba como funciona a Mega-Sena: regras, formas de apostar, valores, dias de sorteio e tudo que você precisa para fazer sua aposta."
+        canonical="/mega-sena/como-jogar"
+      />
       <div className="flex items-center gap-4">
         <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
           <BookOpen className="w-6 h-6" />

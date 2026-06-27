@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight, List } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 export default function MegaSenaResultadosAnteriores() {
   const [page, setPage] = useState(1);
@@ -21,6 +22,11 @@ export default function MegaSenaResultadosAnteriores() {
 
   return (
     <div className="space-y-6">
+      <PageSEO
+        title="Todos os Resultados da Mega-Sena"
+        description="Consulte o histórico completo de todos os resultados da Mega-Sena. Filtre por ano, veja dezenas sorteadas e prêmios de cada concurso."
+        canonical="/mega-sena/resultados"
+      />
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
