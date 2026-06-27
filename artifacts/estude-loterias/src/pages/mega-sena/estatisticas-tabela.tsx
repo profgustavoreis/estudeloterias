@@ -148,13 +148,6 @@ export default function MegaSenaEstatisticasTabela() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-          <Link href="/mega-sena/resumo-estatistico" className="hover:underline">
-            Resumo Estatístico
-          </Link>
-          <span>/</span>
-          <span>Tabela de Dezenas</span>
-        </div>
         <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
           Tabela de Dezenas
         </h1>
