@@ -74,6 +74,7 @@ export default function MegaSenaHub() {
           concurso={resultado.concurso}
           isLatest={true}
           latestConcurso={resultado.concurso}
+          simple
         />
       </div>
 

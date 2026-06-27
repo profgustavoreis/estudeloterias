@@ -7,9 +7,10 @@ interface ConcursoNavigatorProps {
   concurso: number;
   isLatest: boolean;
   latestConcurso: number;
+  simple?: boolean;
 }
 
-export function ConcursoNavigator({ concurso, isLatest, latestConcurso }: ConcursoNavigatorProps) {
+export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple = false }: ConcursoNavigatorProps) {
   const [, navigate] = useLocation();
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -23,16 +24,58 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso }: Concur
   }
 
   function handleSearch() {
-    const n = parseInt(input.trim(), 10);
-    if (isNaN(n) || n < 1) {
-      setError("Número inválido");
+    const raw = input.trim();
+    if (!/^\d+$/.test(raw)) {
+      setError("Digite um número inteiro positivo");
+      return;
+    }
+    const n = parseInt(raw, 10);
+    if (n < 1) {
+      setError("O valor mínimo é 1");
       return;
     }
     if (n > latestConcurso) {
-      setError(`Último concurso é o ${latestConcurso}`);
+      setError(`O último concurso é o ${latestConcurso}`);
       return;
     }
     go(n);
+  }
+
+  const inputClass = `rounded-md border bg-background px-3 py-1.5 text-sm text-center shadow-sm focus:outline-none focus:ring-2 focus:ring-ring transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
+    error ? "border-destructive focus:ring-destructive" : "border-input"
+  }`;
+
+  if (simple) {
+    return (
+      <div className="flex flex-col items-end gap-1 flex-shrink-0">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground hidden sm:inline whitespace-nowrap">
+            Buscar por concurso
+          </span>
+          <input
+            ref={inputRef}
+            type="number"
+            min={1}
+            max={latestConcurso}
+            value={input}
+            onChange={(e) => { setInput(e.target.value); setError(null); }}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            placeholder={`1–${latestConcurso}`}
+            className={`w-28 ${inputClass}`}
+          />
+          <button
+            onClick={handleSearch}
+            className="px-3 py-1.5 text-sm font-semibold rounded-md border transition-colors whitespace-nowrap"
+            style={{ borderColor: BRAND, color: BRAND }}
+          >
+            Buscar
+          </button>
+        </div>
+        {error && (
+          <p className="text-xs text-destructive font-medium">{error}</p>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -50,9 +93,7 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso }: Concur
           onChange={(e) => { setInput(e.target.value); setError(null); }}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           placeholder="Ex: 1475"
-          className={`w-24 rounded-md border bg-background px-3 py-1.5 text-sm text-center shadow-sm focus:outline-none focus:ring-2 focus:ring-ring transition-colors ${
-            error ? "border-destructive focus:ring-destructive" : "border-input"
-          }`}
+          className={`w-24 ${inputClass}`}
         />
         <button
           onClick={() => go(concurso - 1)}
