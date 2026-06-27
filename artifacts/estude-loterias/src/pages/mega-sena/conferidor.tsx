@@ -568,6 +568,11 @@ export default function MegaSenaConferidor() {
               )}
             </CardContent>
           </Card>
+
+          {/* Widget 1: Dezenas sorteadas — na mesma coluna dos controles */}
+          {hasResult && (
+            <ConcursoCard resultado={concursoResult.data!} />
+          )}
         </div>
       </div>
 
@@ -579,24 +584,17 @@ export default function MegaSenaConferidor() {
         </div>
       )}
 
+      {/* Widget 2: Resultado da conferência (2/3) + Publicidade (1/3) */}
       {hasResult && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          {/* Widget 1: Dezenas sorteadas (1/2 equivalente → col-span-1) */}
-          <div className="lg:col-span-1">
-            <ConcursoCard resultado={concursoResult.data!} />
+          <div className="lg:col-span-2">
+            <ResultadoCard
+              resultado={concursoResult.data!}
+              selecionadas={selecionadas}
+            />
           </div>
-
-          {/* Widget 2: Resultado da conferência + Publicidade (restante) */}
-          <div className="lg:col-span-2 grid grid-cols-1 gap-6">
-            <div>
-              <ResultadoCard
-                resultado={concursoResult.data!}
-                selecionadas={selecionadas}
-              />
-            </div>
-            <div className="flex flex-col gap-4">
-              <AdUnit slot="5586112233" format="rectangle" className="w-full" />
-            </div>
+          <div className="flex flex-col gap-4">
+            <AdUnit slot="5586112233" format="rectangle" className="w-full" />
           </div>
         </div>
       )}
