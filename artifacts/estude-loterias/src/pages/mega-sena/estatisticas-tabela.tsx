@@ -120,11 +120,11 @@ export default function MegaSenaEstatisticasTabela() {
   const rows = (() => {
     if (tab === "atrasadas") {
       if (sortAtr === "dezena")
-        return base.sort((a, b) => parseInt(b.dezena) - parseInt(a.dezena));
+        return base.sort((a, b) => parseInt(a.dezena) - parseInt(b.dezena));
       return base.sort((a, b) => b.atraso - a.atraso);
     }
     if (sortFreq === "dezena")
-      return base.sort((a, b) => parseInt(b.dezena) - parseInt(a.dezena));
+      return base.sort((a, b) => parseInt(a.dezena) - parseInt(b.dezena));
     if (tab === "menos")
       return base.sort((a, b) => a.frequencia - b.frequencia);
     return base.sort((a, b) => b.frequencia - a.frequencia);
@@ -164,33 +164,21 @@ export default function MegaSenaEstatisticasTabela() {
       </div>
 
       {/* Tab selector */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
-          {TABS.map(t => (
-            <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
-              className={cn(
-                "px-4 py-2 text-sm font-medium rounded-md transition-colors",
-                tab === t.id
-                  ? "bg-background shadow text-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Sort toggle — inline to the right of the tabs */}
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span>Ordenar:</span>
-          {isAtrasadas ? (
-            <SortToggle options={SORT_ATR} value={sortAtr} onChange={(v) => setSortAtr(v)} />
-          ) : (
-            <SortToggle options={SORT_FREQ} value={sortFreq} onChange={(v) => setSortFreq(v)} />
-          )}
-        </div>
+      <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
+        {TABS.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={cn(
+              "px-4 py-2 text-sm font-medium rounded-md transition-colors",
+              tab === t.id
+                ? "bg-background shadow text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
       {/* Table + Ad sidebar */}
@@ -198,8 +186,20 @@ export default function MegaSenaEstatisticasTabela() {
         <div className="lg:col-span-2">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle>{cardTitle}</CardTitle>
-              <CardDescription>{cardDesc}</CardDescription>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <CardTitle>{cardTitle}</CardTitle>
+                  <CardDescription className="mt-1">{cardDesc}</CardDescription>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
+                  <span>Ordenar:</span>
+                  {isAtrasadas ? (
+                    <SortToggle options={SORT_ATR} value={sortAtr} onChange={(v) => setSortAtr(v)} />
+                  ) : (
+                    <SortToggle options={SORT_FREQ} value={sortFreq} onChange={(v) => setSortFreq(v)} />
+                  )}
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <Table className="w-full">
