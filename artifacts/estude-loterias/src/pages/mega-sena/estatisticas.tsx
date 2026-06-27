@@ -602,7 +602,7 @@ export default function MegaSenaEstatisticas() {
                       }}
                     />
                     <Bar dataKey="sorteios" fill={COR} radius={[0, 3, 3, 0]}>
-                      <LabelList dataKey="sorteios" position="right" style={{ fontSize: 10, fill: "#555", fontWeight: "bold" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                      <LabelList dataKey="sorteios" position="right" style={{ fontSize: 13, fill: "#333", fontWeight: "bold" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
