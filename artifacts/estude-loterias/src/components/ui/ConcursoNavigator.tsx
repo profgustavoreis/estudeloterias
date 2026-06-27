@@ -60,7 +60,7 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple =
             value={input}
             onChange={(e) => { setInput(e.target.value); setError(null); }}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            placeholder={`1–${latestConcurso}`}
+            placeholder="Ex: 1475"
             className={`w-28 ${inputClass}`}
           />
           <button
