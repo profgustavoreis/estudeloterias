@@ -570,7 +570,7 @@ export default function MegaSenaEstatisticas() {
               <div className="h-[260px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
-                    data={stats.somaDezenas.intervalos}
+                    data={stats.somaDezenas.intervalos.map((d) => ({ ...d, _display: Math.max(d.sorteios, 1) }))}
                     layout="vertical"
                     margin={{ top: 4, right: 52, left: 4, bottom: 0 }}
                   >
@@ -601,7 +601,7 @@ export default function MegaSenaEstatisticas() {
                         );
                       }}
                     />
-                    <Bar dataKey="sorteios" fill={COR} radius={[0, 3, 3, 0]}>
+                    <Bar dataKey="_display" fill={COR} radius={[0, 3, 3, 0]}>
                       <LabelList dataKey="sorteios" position="right" style={{ fontSize: 13, fill: "#333", fontWeight: "bold" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
                     </Bar>
                   </BarChart>
