@@ -1,4 +1,5 @@
 import { useGetMegaSenaUltimoResultado } from "@workspace/api-client-react";
+import { ConcursoNavigator } from "@/components/ui/ConcursoNavigator";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
@@ -59,14 +60,21 @@ export default function MegaSenaHub() {
         description="Tudo sobre a Mega-Sena: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/mega-sena"
       />
-      <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
-          <Target className="w-6 h-6" />
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+            <Target className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Mega-Sena · Painel Principal</h1>
+            <p className="text-muted-foreground mt-1">A principal loteria do Brasil.</p>
+          </div>
         </div>
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Mega-Sena · Painel Principal</h1>
-          <p className="text-muted-foreground mt-1">A principal loteria do Brasil.</p>
-        </div>
+        <ConcursoNavigator
+          concurso={resultado.concurso}
+          isLatest={true}
+          latestConcurso={resultado.concurso}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
