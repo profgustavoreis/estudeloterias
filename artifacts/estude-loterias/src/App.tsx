@@ -17,6 +17,7 @@ import MegaSenaComoJogar from "@/pages/mega-sena/como-jogar";
 import MegaSenaPremiacao from "@/pages/mega-sena/premiacao";
 import MegaSenaFAQ from "@/pages/mega-sena/faq";
 import MegaSenaSimulador from "@/pages/mega-sena/simulador";
+import MegaSenaConferidor from "@/pages/mega-sena/conferidor";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function Router() {
         <Route path="/mega-sena/premiacao" component={MegaSenaPremiacao} />
         <Route path="/mega-sena/faq" component={MegaSenaFAQ} />
         <Route path="/mega-sena/simulador" component={MegaSenaSimulador} />
+        <Route path="/mega-sena/conferidor" component={MegaSenaConferidor} />
 
         <Route component={NotFound} />
       </Switch>

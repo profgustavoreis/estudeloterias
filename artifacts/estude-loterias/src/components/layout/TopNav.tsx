@@ -3,8 +3,8 @@ import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
 import {
   ChevronDown, Menu, X,
-  BarChart3, Dices, Gift, HelpCircle, Home, Info,
-  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen,
+  BarChart3, Dices, Gift, HelpCircle, Home,
+  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck,
 } from "lucide-react";
 
 // ── Mega-Sena items, grouped ──────────────────────────────────────────────────
@@ -15,7 +15,8 @@ const megaSenaTools = [
   { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico",   icon: BarChart3, desc: "Frequência e análise das dezenas" },
   { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas",   icon: Table,     desc: "Ranking detalhado de todas as dezenas" },
   { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,    desc: "Crie apostas aleatórias" },
-  { href: "/mega-sena/simulador",    label: "Simulador",              icon: FlaskConical,desc: "Confira sua aposta no histórico" },
+  { href: "/mega-sena/simulador",    label: "Simulador",              icon: FlaskConical,    desc: "Teste suas dezenas no histórico completo" },
+  { href: "/mega-sena/conferidor",   label: "Conferidor de Bilhete",  icon: ClipboardCheck,  desc: "Verifique se seu bilhete ganhou" },
 ];
 
 const megaSenaInfo = [
