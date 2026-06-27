@@ -5,86 +5,61 @@ import {
   useGetMegaSenaResultadoConcurso,
 } from "@workspace/api-client-react";
 import type { ResultadoMegaSena } from "@workspace/api-client-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LotteryBall } from "@/components/ui/lottery-ball";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
-import { CheckCircle2, ClipboardCheck, Loader2, RotateCcw, XCircle } from "lucide-react";
+import { CheckCircle2, ClipboardCheck, Loader2, RotateCcw, XCircle, ChevronDown, Trophy } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
-const DEZENAS = Array.from({ length: 60 }, (_, i) => i + 1);
+const PRECO_APOSTA_SIMPLES = 5.0; // R$ 5,00 por aposta de 6 dezenas
 
-// ── Prize tier lookup ─────────────────────────────────────────────────────────
-// faixa 1 = sena (6), 2 = quina (5), 3 = quadra (4)
-function getPremio(resultado: ResultadoMegaSena, acertos: number) {
-  const faixa = acertos === 6 ? 1 : acertos === 5 ? 2 : acertos === 4 ? 3 : null;
-  if (!faixa) return null;
-  return resultado.premios.find((p) => p.faixa === faixa) ?? null;
+// ── Combinatória ──────────────────────────────────────────────────────────────
+function C(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  let r = 1;
+  for (let i = 0; i < k; i++) {
+    r = (r * (n - i)) / (i + 1);
+  }
+  return Math.round(r);
 }
 
-function acertosLabel(n: number): { label: string; color: string; bg: string } {
-  if (n === 6) return { label: "Sena!", color: "text-amber-600", bg: "bg-amber-50 border-amber-300" };
-  if (n === 5) return { label: "Quina!", color: "text-violet-600", bg: "bg-violet-50 border-violet-300" };
-  if (n === 4) return { label: "Quadra!", color: "text-blue-600", bg: "bg-blue-50 border-blue-300" };
-  if (n === 3) return { label: "3 acertos", color: "text-muted-foreground", bg: "bg-muted border-border" };
-  if (n === 2) return { label: "2 acertos", color: "text-muted-foreground", bg: "bg-muted border-border" };
-  if (n === 1) return { label: "1 acerto", color: "text-muted-foreground", bg: "bg-muted border-border" };
-  return { label: "Nenhum acerto", color: "text-muted-foreground", bg: "bg-muted border-border" };
+// Para N dezenas selecionadas com K acertos sobre as 6 sorteadas:
+//   senas  = C(K,6)
+//   quinas = C(K,5) * C(N-K,1)
+//   quadras= C(K,4) * C(N-K,2)
+interface PremiacaoMultipla {
+  apostasSimples: number;       // C(N,6)
+  valorAposta: number;          // apostasSimples * 5,00
+  senas: number;
+  quinas: number;
+  quadras: number;
 }
 
-// ── Number picker grid ────────────────────────────────────────────────────────
-function NumericGrid({
-  selecionadas,
-  acertadas,
-  showResult,
-  onToggle,
-}: {
-  selecionadas: Set<number>;
-  acertadas: Set<number>;
-  showResult: boolean;
-  onToggle: (n: number) => void;
-}) {
-  return (
-    <div className="grid grid-cols-10 gap-1.5">
-      {DEZENAS.map((n) => {
-        const sel = selecionadas.has(n);
-        const hit = showResult && acertadas.has(n);
-        const miss = showResult && sel && !acertadas.has(n);
-        return (
-          <button
-            key={n}
-            onClick={() => onToggle(n)}
-            disabled={!sel && selecionadas.size >= 15}
-            className={cn(
-              "w-full aspect-square rounded-lg text-sm font-bold transition-all border",
-              "flex items-center justify-center",
-              hit
-                ? "text-white border-[#009640]"
-                : miss
-                ? "text-white border-destructive bg-destructive"
-                : sel
-                ? "text-white border-transparent"
-                : "border-border hover:border-[#009640]/50 text-muted-foreground hover:text-foreground bg-muted/50 disabled:opacity-30 disabled:cursor-not-allowed"
-            )}
-            style={
-              hit
-                ? { backgroundColor: COR }
-                : sel && !miss
-                ? { backgroundColor: COR }
-                : undefined
-            }
-          >
-            {String(n).padStart(2, "0")}
-          </button>
-        );
-      })}
-    </div>
-  );
+function calcularPremiacaoMultipla(N: number, K: number): PremiacaoMultipla {
+  const NK = N - K;
+  return {
+    apostasSimples: C(N, 6),
+    valorAposta: C(N, 6) * PRECO_APOSTA_SIMPLES,
+    senas:   C(K, 6),
+    quinas:  C(K, 5) * C(NK, 1),
+    quadras: C(K, 4) * C(NK, 2),
+  };
 }
 
-// ── Resultado card ────────────────────────────────────────────────────────────
+// ── Helpers de label ──────────────────────────────────────────────────────────
+function acertosLabel(n: number): { label: string; color: string } {
+  if (n === 6) return { label: "Sena!", color: "text-amber-600" };
+  if (n === 5) return { label: "Quina!", color: "text-violet-600" };
+  if (n === 4) return { label: "Quadra!", color: "text-blue-600" };
+  return { label: `${n} acerto${n !== 1 ? "s" : ""}`, color: "text-muted-foreground" };
+}
+
+// ── Resultado completo ────────────────────────────────────────────────────────
 function ResultadoCard({
   resultado,
   selecionadas,
@@ -94,24 +69,46 @@ function ResultadoCard({
 }) {
   const sorteadasNums = resultado.dezenas.map((d) => parseInt(d, 10));
   const acertadas = new Set(sorteadasNums.filter((d) => selecionadas.has(d)));
-  const n = acertadas.size;
-  const { label, color, bg } = acertosLabel(n);
-  const premio = getPremio(resultado, n);
+  const N = selecionadas.size;
+  const K = acertadas.size;
+  const { label, color } = acertosLabel(K);
+  const isMultipla = N > 6;
+  const premiacao = calcularPremiacaoMultipla(N, K);
+
+  // prêmios unitários do concurso
+  const premioSena   = resultado.premios.find((p) => p.faixa === 1);
+  const premioQuina  = resultado.premios.find((p) => p.faixa === 2);
+  const premioQuadra = resultado.premios.find((p) => p.faixa === 3);
+
+  const totalPremio =
+    premiacao.senas   * (premioSena?.valorPremio   ?? 0) +
+    premiacao.quinas  * (premioQuina?.valorPremio  ?? 0) +
+    premiacao.quadras * (premioQuadra?.valorPremio ?? 0);
+
+  const temPremio = K >= 4;
 
   return (
-    <Card className={cn("border-2 mt-6", bg)}>
+    <Card className="border-t-4" style={{ borderTopColor: COR }}>
+      {/* ── Cabeçalho ── */}
       <CardHeader className="pb-3">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <CardTitle className="text-base font-semibold text-muted-foreground">
               Concurso {resultado.concurso} · {formatDateShort(resultado.data)}
             </CardTitle>
+            {isMultipla && (
+              <CardDescription>
+                Aposta de {N} dezenas · {premiacao.apostasSimples} apostas simples ·{" "}
+                {formatCurrency(premiacao.valorAposta)}
+              </CardDescription>
+            )}
           </div>
-          <span className={cn("text-2xl font-black", color)}>{label}</span>
+          <span className={cn("text-2xl font-black shrink-0", color)}>{label}</span>
         </div>
       </CardHeader>
-      <CardContent className="space-y-5">
-        {/* Sorteio balls */}
+
+      <CardContent className="space-y-6">
+        {/* ── Dezenas sorteadas ── */}
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
             Dezenas sorteadas
@@ -132,33 +129,33 @@ function ResultadoCard({
           </div>
         </div>
 
-        {/* User's dezenas classified */}
+        {/* ── Suas dezenas: acertos e erros ── */}
         <div className="grid grid-cols-2 gap-4">
-          {/* Hits */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-              Suas dezenas — acertos ({acertadas.size})
+              Acertos ({K})
             </p>
             <div className="flex flex-wrap gap-1.5">
-              {acertadas.size === 0 ? (
+              {K === 0 ? (
                 <span className="text-sm text-muted-foreground">—</span>
               ) : (
-                Array.from(acertadas).sort((a, b) => a - b).map((d) => (
-                  <span
-                    key={d}
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold text-white"
-                    style={{ backgroundColor: COR }}
-                  >
-                    {String(d).padStart(2, "0")}
-                  </span>
-                ))
+                Array.from(acertadas)
+                  .sort((a, b) => a - b)
+                  .map((d) => (
+                    <span
+                      key={d}
+                      className="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold text-white"
+                      style={{ backgroundColor: COR }}
+                    >
+                      {String(d).padStart(2, "0")}
+                    </span>
+                  ))
               )}
             </div>
           </div>
-          {/* Misses */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">
-              Suas dezenas — erros ({selecionadas.size - acertadas.size})
+              Erros ({N - K})
             </p>
             <div className="flex flex-wrap gap-1.5">
               {Array.from(selecionadas)
@@ -176,27 +173,71 @@ function ResultadoCard({
           </div>
         </div>
 
-        {/* Prize info */}
-        {n >= 4 && (
-          <div className="rounded-lg border border-border bg-background p-4 space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Prêmio estimado
+        {/* ── Tabela de premiação ── */}
+        {temPremio && (
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
+              <Trophy className="w-3.5 h-3.5" style={{ color: COR }} />
+              {isMultipla ? "Premiação da aposta múltipla" : "Premiação"}
             </p>
-            {premio && premio.ganhadores > 0 ? (
-              <>
-                <p className="text-2xl font-black" style={{ color: COR }}>
-                  {formatCurrency(premio.valorPremio)}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {premio.ganhadores} ganhador{premio.ganhadores !== 1 ? "es" : ""} neste concurso
-                </p>
-              </>
-            ) : premio ? (
-              <p className="text-sm text-muted-foreground">
-                Nenhum ganhador nesta faixa neste concurso.
+            <div className="rounded-lg border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/30">
+                    <TableHead className="py-2">Faixa</TableHead>
+                    <TableHead className="text-center py-2">Apostas premiadas</TableHead>
+                    <TableHead className="text-right py-2">Prêmio unitário</TableHead>
+                    <TableHead className="text-right py-2">Prêmio total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[
+                    { faixa: "6 acertos (Sena)",  qtd: premiacao.senas,   premio: premioSena,   show: K >= 6 },
+                    { faixa: "5 acertos (Quina)", qtd: premiacao.quinas,  premio: premioQuina,  show: K >= 5 },
+                    { faixa: "4 acertos (Quadra)",qtd: premiacao.quadras, premio: premioQuadra, show: K >= 4 },
+                  ]
+                    .filter((row) => row.show)
+                    .map(({ faixa, qtd, premio }) => {
+                      const unitario = premio?.valorPremio ?? 0;
+                      return (
+                        <TableRow key={faixa}>
+                          <TableCell className="font-medium py-2">{faixa}</TableCell>
+                          <TableCell className="text-center py-2 font-bold" style={{ color: qtd > 0 ? COR : undefined }}>
+                            {qtd > 0 ? qtd : "—"}
+                          </TableCell>
+                          <TableCell className="text-right py-2 text-muted-foreground">
+                            {unitario > 0 ? formatCurrency(unitario) : "—"}
+                          </TableCell>
+                          <TableCell className="text-right py-2 font-semibold">
+                            {qtd > 0 && unitario > 0 ? formatCurrency(qtd * unitario) : "—"}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  <TableRow className="border-t-2 bg-muted/20 font-semibold">
+                    <TableCell className="py-2">Total</TableCell>
+                    <TableCell className="py-2" />
+                    <TableCell className="py-2" />
+                    <TableCell className="text-right py-2 font-black" style={{ color: totalPremio > 0 ? COR : undefined }}>
+                      {totalPremio > 0 ? formatCurrency(totalPremio) : "—"}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+            {isMultipla && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Aposta de {N} dezenas equivale a {premiacao.apostasSimples} apostas simples de 6 dezenas
+                {" "}(valor: {formatCurrency(premiacao.valorAposta)}).
               </p>
-            ) : null}
+            )}
           </div>
+        )}
+
+        {!temPremio && (
+          <p className="text-sm text-muted-foreground">
+            Nenhuma faixa de premiação atingida (mínimo de 4 acertos).
+          </p>
         )}
       </CardContent>
     </Card>
@@ -208,41 +249,41 @@ export default function MegaSenaConferidor() {
   const [selecionadas, setSelecionadas] = useState<Set<number>>(new Set());
   const [concursoInput, setConcursoInput] = useState("");
   const [concursoQuery, setConcursoQuery] = useState<number | null>(null);
-  const [conferido, setConferido] = useState(false);
+  const [infoAberta, setInfoAberta] = useState(false);
 
   const ultimo = useGetMegaSenaUltimoResultado();
   const latestConcurso = ultimo.data?.concurso;
 
   const concursoResult = useGetMegaSenaResultadoConcurso(concursoQuery ?? 0);
 
-  const sorteadasNums =
-    concursoResult.data?.dezenas?.map((d) => parseInt(d, 10)) ?? [];
-  const acertadas = new Set(sorteadasNums.filter((d) => selecionadas.has(d)));
+  const count = selecionadas.size;
+  const podeConferir = count >= 6;
+  const hasResult = concursoResult.isSuccess && concursoResult.data != null && count >= 6;
 
   const toggleDezena = (n: number) => {
-    if (conferido) return;
     setSelecionadas((prev) => {
       const next = new Set(prev);
       if (next.has(n)) next.delete(n);
-      else if (next.size < 15) next.add(n);
+      else if (next.size < 20) next.add(n);
       return next;
     });
   };
 
   const handleConferir = () => {
-    const num = concursoInput.trim()
-      ? parseInt(concursoInput.trim(), 10)
-      : latestConcurso ?? null;
+    const raw = concursoInput.trim();
+    const num = raw ? parseInt(raw, 10) : (latestConcurso ?? null);
     if (!num || isNaN(num)) return;
     setConcursoQuery(num);
-    setConferido(true);
   };
 
   const handleLimpar = () => {
     setSelecionadas(new Set());
     setConcursoInput("");
     setConcursoQuery(null);
-    setConferido(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleConferir();
   };
 
   const usarUltimo = () => {
@@ -251,18 +292,15 @@ export default function MegaSenaConferidor() {
     }
   };
 
-  const podeConferir = selecionadas.size >= 6 && !concursoResult.isFetching;
-  const count = selecionadas.size;
-
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Conferidor da Mega-Sena — Verifique seu Bilhete"
-        description="Confira se seu bilhete da Mega-Sena ganhou! Digite suas dezenas, escolha o concurso e veja instantaneamente seus acertos e o prêmio correspondente."
+        title="Conferidor de Apostas da Mega-Sena"
+        description="Confira se sua aposta da Mega-Sena ganhou! Digite suas dezenas, escolha o concurso e veja instantaneamente seus acertos, apostas múltiplas e o prêmio correspondente."
         canonical="/mega-sena/conferidor"
       />
 
-      {/* Header */}
+      {/* ── Header ── */}
       <div className="flex items-center gap-4">
         <div
           className="w-12 h-12 rounded-lg flex items-center justify-center text-white flex-shrink-0"
@@ -272,191 +310,201 @@ export default function MegaSenaConferidor() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-            Mega-Sena · Conferidor
+            Mega-Sena · Conferidor de Apostas
           </h1>
           <p className="text-muted-foreground mt-1">
-            Selecione suas dezenas e confira se seu bilhete ganhou.
+            Selecione de 6 a 20 dezenas e confira se sua aposta ganhou.
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left: picker + concurso */}
-        <div className="lg:col-span-2 space-y-5">
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between flex-wrap gap-2">
-                <CardTitle className="text-base">
-                  Suas dezenas
-                  <span className="ml-2 text-sm font-normal text-muted-foreground">
-                    ({count} de 6–15)
-                  </span>
-                </CardTitle>
-                {count > 0 && (
+      {/* ── Layout 1/2 + 1/2 ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* ── Coluna 1: Volante ── */}
+        <Card className="border-t-4" style={{ borderTopColor: COR }}>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle>Escolha suas dezenas</CardTitle>
+              <span className={cn(
+                "text-sm font-semibold tabular-nums",
+                count < 6 ? "text-muted-foreground" : "text-[#009640]"
+              )}>
+                {count}/20
+              </span>
+            </div>
+            <CardDescription>
+              Mínimo de 6 • Máximo de 20
+              {count >= 20 && (
+                <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>
+              )}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-10 gap-1.5">
+              {Array.from({ length: 60 }, (_, i) => i + 1).map((n) => {
+                const sel = selecionadas.has(n);
+                // when result is shown: green = hit, red = miss, unsel = gray
+                const hit = hasResult && sel && concursoResult.data!.dezenas.includes(String(n).padStart(2, "0"));
+                const miss = hasResult && sel && !concursoResult.data!.dezenas.includes(String(n).padStart(2, "0"));
+                return (
                   <button
-                    onClick={handleLimpar}
-                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    key={n}
+                    onClick={() => toggleDezena(n)}
+                    disabled={!sel && count >= 20}
+                    className={cn(
+                      "aspect-square rounded-md text-sm font-bold transition-all duration-150 select-none",
+                      hit
+                        ? "bg-[#009640] text-white shadow-sm ring-2 ring-[#009640]/30 scale-105"
+                        : miss
+                        ? "bg-destructive text-white scale-105"
+                        : sel
+                        ? "bg-[#009640] text-white shadow-sm ring-2 ring-[#009640]/30 scale-105"
+                        : count >= 20
+                        ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed"
+                        : "bg-muted/60 text-foreground hover:bg-[#009640]/15 hover:text-[#009640] hover:scale-105 border border-border"
+                    )}
                   >
-                    <RotateCcw className="w-3.5 h-3.5" />
-                    Limpar
+                    {String(n).padStart(2, "0")}
                   </button>
-                )}
+                );
+              })}
+            </div>
+
+            {count > 0 && (
+              <div className="pt-2 border-t space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">Dezenas escolhidas:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {Array.from(selecionadas)
+                    .sort((a, b) => a - b)
+                    .map((n) => (
+                      <LotteryBall key={n} number={n} size="sm" />
+                    ))}
+                </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <NumericGrid
-                selecionadas={selecionadas}
-                acertadas={acertadas}
-                showResult={conferido && concursoResult.isSuccess}
-                onToggle={toggleDezena}
-              />
+            )}
+          </CardContent>
+        </Card>
+
+        {/* ── Coluna 2: Controles ── */}
+        <div className="space-y-4">
+
+          {/* Accordion "Como usar" */}
+          <Card className="bg-muted/20">
+            <CardContent className="pt-5 text-sm text-muted-foreground">
+              <button
+                className="flex w-full items-center justify-between"
+                onClick={() => setInfoAberta((v) => !v)}
+              >
+                <span className="font-semibold text-foreground">Como usar o conferidor?</span>
+                <ChevronDown className={cn(
+                  "w-4 h-4 transition-transform shrink-0",
+                  infoAberta ? "rotate-180" : ""
+                )} />
+              </button>
+              {infoAberta && (
+                <ol className="mt-3 space-y-1.5 list-decimal list-inside">
+                  <li>Escolha de 6 a 20 números no volante à esquerda.</li>
+                  <li>Informe o número do concurso que deseja conferir, ou deixe em branco para usar o último sorteio.</li>
+                  <li>Clique em <strong>Conferir aposta</strong> ou pressione Enter.</li>
+                  <li>O resultado aparece abaixo com seus acertos destacados e a premiação detalhada.</li>
+                  <li>Você pode alterar as dezenas ou o concurso a qualquer momento e conferir novamente.</li>
+                </ol>
+              )}
             </CardContent>
           </Card>
 
-          {/* Concurso + action */}
+          {/* Concurso + Botões */}
           <Card>
-            <CardContent className="pt-5">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 space-y-1.5">
-                  <label className="text-sm font-medium">Número do concurso</label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="number"
-                      min={1}
-                      placeholder={
-                        latestConcurso
-                          ? `Último: ${latestConcurso}`
-                          : "Ex: 3020"
-                      }
-                      value={concursoInput}
-                      onChange={(e) => {
-                        setConcursoInput(e.target.value);
-                        if (conferido) {
-                          setConferido(false);
-                          setConcursoQuery(null);
-                        }
-                      }}
-                      className="max-w-40"
-                      disabled={conferido}
-                    />
-                    {latestConcurso && !conferido && (
-                      <button
-                        onClick={usarUltimo}
-                        className="text-sm font-medium text-muted-foreground hover:text-[#009640] transition-colors whitespace-nowrap"
-                      >
-                        Usar último
-                      </button>
-                    )}
-                  </div>
-                </div>
-                <div className="sm:self-end">
-                  {!conferido ? (
-                    <Button
-                      onClick={handleConferir}
-                      disabled={!podeConferir || count < 6}
-                      className="w-full sm:w-auto font-bold gap-2"
-                      style={{ backgroundColor: COR }}
+            <CardContent className="pt-5 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  Número do concurso:
+                </label>
+                <div className="flex gap-2 items-center">
+                  <Input
+                    type="number"
+                    min={1}
+                    placeholder={latestConcurso ? `Último: ${latestConcurso}` : "Ex: 3023"}
+                    value={concursoInput}
+                    onChange={(e) => setConcursoInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="max-w-40"
+                  />
+                  {latestConcurso && (
+                    <button
+                      onClick={usarUltimo}
+                      className="text-sm font-medium text-muted-foreground hover:text-[#009640] transition-colors whitespace-nowrap"
                     >
-                      {concursoResult.isFetching ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <ClipboardCheck className="w-4 h-4" />
-                      )}
-                      Conferir bilhete
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="outline"
-                      onClick={handleLimpar}
-                      className="w-full sm:w-auto gap-2"
-                    >
-                      <RotateCcw className="w-4 h-4" />
-                      Novo jogo
-                    </Button>
+                      Usar último
+                    </button>
                   )}
                 </div>
+                <p className="text-xs text-muted-foreground">
+                  Deixe em branco para conferir no último sorteio.
+                </p>
               </div>
-              {count < 6 && count > 0 && (
-                <p className="mt-2 text-xs text-muted-foreground">
-                  Selecione pelo menos 6 dezenas para conferir.
+
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleConferir}
+                  disabled={!podeConferir || concursoResult.isFetching}
+                  className="flex-1 text-white font-semibold"
+                  style={{ backgroundColor: COR }}
+                >
+                  {concursoResult.isFetching ? (
+                    <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Conferindo…</>
+                  ) : (
+                    <><ClipboardCheck className="w-4 h-4 mr-2" />Conferir aposta</>
+                  )}
+                </Button>
+                <Button variant="outline" onClick={handleLimpar} disabled={concursoResult.isFetching}>
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Limpar
+                </Button>
+              </div>
+
+              {!podeConferir && count > 0 && (
+                <p className="text-sm text-amber-600 text-center">
+                  Selecione pelo menos {6 - count} dezena{6 - count > 1 ? "s" : ""} para conferir.
+                </p>
+              )}
+              {count === 0 && (
+                <p className="text-sm text-muted-foreground text-center">
+                  Selecione os números e clique em Conferir.
                 </p>
               )}
               {concursoResult.isError && (
-                <div className="mt-3 flex items-center gap-2 text-sm text-destructive">
-                  <XCircle className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-sm text-destructive">
+                  <XCircle className="w-4 h-4 shrink-0" />
                   Concurso não encontrado. Verifique o número informado.
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Result */}
-          {conferido && concursoResult.isFetching && (
-            <div className="flex items-center gap-3 text-muted-foreground py-4">
-              <Loader2 className="w-5 h-5 animate-spin" style={{ color: COR }} />
-              <span className="text-sm">Consultando o resultado...</span>
-            </div>
+          {/* Quick result summary (no result yet) */}
+          {!hasResult && !concursoResult.isFetching && concursoQuery !== null && count >= 6 && concursoResult.isSuccess && (
+            <p className="text-sm text-muted-foreground text-center">
+              Resultado disponível abaixo.
+            </p>
           )}
-          {conferido && concursoResult.isSuccess && concursoResult.data && (
-            <ResultadoCard
-              resultado={concursoResult.data}
-              selecionadas={selecionadas}
-            />
-          )}
-        </div>
-
-        {/* Right: instructions */}
-        <div className="space-y-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                Como usar
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <div className="flex gap-3">
-                <span className="font-bold text-[#009640] shrink-0">1.</span>
-                <span>Clique nas dezenas do seu bilhete (de 6 a 15 números).</span>
-              </div>
-              <div className="flex gap-3">
-                <span className="font-bold text-[#009640] shrink-0">2.</span>
-                <span>
-                  Informe o número do concurso ou deixe em branco para
-                  usar o último sorteio.
-                </span>
-              </div>
-              <div className="flex gap-3">
-                <span className="font-bold text-[#009640] shrink-0">3.</span>
-                <span>
-                  Clique em <strong>Conferir bilhete</strong> e veja seus
-                  acertos instantaneamente.
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                Faixas de prêmio
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              {[
-                { label: "Sena", n: "6 acertos", color: "text-amber-600", dot: "bg-amber-400" },
-                { label: "Quina", n: "5 acertos", color: "text-violet-600", dot: "bg-violet-400" },
-                { label: "Quadra", n: "4 acertos", color: "text-blue-600", dot: "bg-blue-400" },
-              ].map(({ label, n, color, dot }) => (
-                <div key={label} className="flex items-center gap-2 text-sm">
-                  <div className={cn("w-2 h-2 rounded-full shrink-0", dot)} />
-                  <span className={cn("font-semibold", color)}>{label}</span>
-                  <span className="text-muted-foreground">— {n}</span>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
         </div>
       </div>
+
+      {/* ── Resultado completo (full-width abaixo do grid) ── */}
+      {concursoResult.isFetching && (
+        <div className="flex items-center gap-3 text-muted-foreground py-4">
+          <Loader2 className="w-5 h-5 animate-spin" style={{ color: COR }} />
+          <span className="text-sm">Consultando o resultado...</span>
+        </div>
+      )}
+      {hasResult && (
+        <ResultadoCard
+          resultado={concursoResult.data!}
+          selecionadas={selecionadas}
+        />
+      )}
     </div>
   );
 }

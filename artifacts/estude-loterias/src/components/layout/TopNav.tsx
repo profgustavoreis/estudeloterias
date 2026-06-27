@@ -16,7 +16,7 @@ const megaSenaTools = [
   { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas",   icon: Table,     desc: "Ranking detalhado de todas as dezenas" },
   { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,    desc: "Crie apostas aleatórias" },
   { href: "/mega-sena/simulador",    label: "Simulador",              icon: FlaskConical,    desc: "Teste suas dezenas no histórico completo" },
-  { href: "/mega-sena/conferidor",   label: "Conferidor de Bilhete",  icon: ClipboardCheck,  desc: "Verifique se seu bilhete ganhou" },
+  { href: "/mega-sena/conferidor",   label: "Conferidor de Apostas",  icon: ClipboardCheck,  desc: "Verifique se sua aposta ganhou" },
 ];
 
 const megaSenaInfo = [
