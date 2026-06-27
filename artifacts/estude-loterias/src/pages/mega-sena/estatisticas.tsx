@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { cn } from "@/lib/utils";
+import { BarChart3 } from "lucide-react";
 
 const COR = "#009640";
 
@@ -124,7 +125,7 @@ export default function MegaSenaEstatisticas() {
   if (isError || !stats) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Resumo Estatístico</h1>
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Mega-Sena · Resumo Estatístico</h1>
         <Card>
           <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
             Erro ao carregar estatísticas. Tente novamente.
@@ -161,11 +162,16 @@ export default function MegaSenaEstatisticas() {
   return (
     <div className="space-y-8">
       {/* ── Header ── */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Resumo Estatístico</h1>
-        <p className="text-muted-foreground mt-1">
-          Análise completa de {stats.totalConcursos.toLocaleString("pt-BR")} concursos realizados.
-        </p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+          <BarChart3 className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Mega-Sena · Resumo Estatístico</h1>
+          <p className="text-muted-foreground mt-1">
+            Análise completa de {stats.totalConcursos.toLocaleString("pt-BR")} concursos realizados.
+          </p>
+        </div>
       </div>
 
       <AdUnit slot="1122334455" format="horizontal" className="w-full" />

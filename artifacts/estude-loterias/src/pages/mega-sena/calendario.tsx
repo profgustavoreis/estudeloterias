@@ -2,7 +2,7 @@ import { useGetMegaSenaCalendario } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Calendar as CalendarIcon, Star } from "lucide-react";
+import { Calendar as CalendarIcon, CalendarDays, Star } from "lucide-react";
 
 export default function MegaSenaCalendario() {
   const { data: sorteios, isLoading, isError } = useGetMegaSenaCalendario();
@@ -17,9 +17,14 @@ export default function MegaSenaCalendario() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Calendário de Sorteios</h1>
-        <p className="text-muted-foreground mt-1">Programe suas apostas para os próximos concursos.</p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
+          <CalendarDays className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Calendário de Sorteios</h1>
+          <p className="text-muted-foreground mt-1">Programe suas apostas para os próximos concursos.</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { HelpCircle } from "lucide-react";
 
 export default function MegaSenaFAQ() {
   const faqs = [
@@ -26,9 +27,14 @@ export default function MegaSenaFAQ() {
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Perguntas Frequentes</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Dúvidas comuns sobre a Mega-Sena e prêmios.</p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
+          <HelpCircle className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Perguntas Frequentes</h1>
+          <p className="text-muted-foreground mt-2 text-lg">Dúvidas comuns sobre a Mega-Sena e prêmios.</p>
+        </div>
       </div>
 
       <Accordion type="single" collapsible className="w-full bg-card rounded-lg border px-4">

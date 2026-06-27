@@ -4,9 +4,14 @@ import { Info, HelpCircle } from "lucide-react";
 export default function MegaSenaComoJogar() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Como Jogar na Mega-Sena</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Tudo o que você precisa saber para realizar a sua aposta.</p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
+          <Info className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Como Jogar</h1>
+          <p className="text-muted-foreground mt-2 text-lg">Tudo o que você precisa saber para realizar a sua aposta.</p>
+        </div>
       </div>
 
       <Card>

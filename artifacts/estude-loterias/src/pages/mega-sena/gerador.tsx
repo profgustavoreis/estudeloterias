@@ -27,9 +27,14 @@ export default function MegaSenaGerador() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Gerador de Jogos</h1>
-        <p className="text-muted-foreground mt-1">Crie jogos aleatórios inteligentemente baseados em parâmetros estatísticos.</p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
+          <Sparkles className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Gerador de Jogos</h1>
+          <p className="text-muted-foreground mt-1">Crie jogos aleatórios inteligentemente baseados em parâmetros estatísticos.</p>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

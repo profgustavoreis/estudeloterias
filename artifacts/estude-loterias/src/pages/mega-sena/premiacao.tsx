@@ -4,9 +4,14 @@ import { Target } from "lucide-react";
 export default function MegaSenaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Premiação</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Entenda como o prêmio da Mega-Sena é distribuído.</p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
+          <Target className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Premiação</h1>
+          <p className="text-muted-foreground mt-2 text-lg">Entenda como o prêmio da Mega-Sena é distribuído.</p>
+        </div>
       </div>
 
       <Card>

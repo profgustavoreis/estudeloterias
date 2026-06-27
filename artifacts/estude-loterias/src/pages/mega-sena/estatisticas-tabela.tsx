@@ -103,7 +103,7 @@ export default function MegaSenaEstatisticasTabela() {
     return (
       <div className="space-y-6">
         <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-          Tabela de Dezenas
+          Mega-Sena · Tabela de Dezenas
         </h1>
         <Card>
           <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
@@ -147,13 +147,18 @@ export default function MegaSenaEstatisticasTabela() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-          Tabela de Dezenas
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          Todas as 60 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
-        </p>
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+          <Table className="w-6 h-6" />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
+            Mega-Sena · Tabela de Dezenas
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Todas as 60 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
+          </p>
+        </div>
       </div>
 
       {/* Tab selector */}

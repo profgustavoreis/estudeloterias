@@ -77,7 +77,7 @@ export default function MegaSenaSimulador() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-            Simulador
+            Mega-Sena · Simulador
           </h1>
           <p className="text-muted-foreground mt-1">
             Selecione de 6 a 20 dezenas e descubra em quantos sorteios anteriores você teria acertado.

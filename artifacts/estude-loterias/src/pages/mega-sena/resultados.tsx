@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, List } from "lucide-react";
 
 export default function MegaSenaResultadosAnteriores() {
   const [page, setPage] = useState(1);
@@ -22,9 +22,14 @@ export default function MegaSenaResultadosAnteriores() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Resultados Anteriores</h1>
-          <p className="text-muted-foreground mt-1">Busque e analise os concursos passados da Mega-Sena.</p>
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white bg-[#009640]">
+            <List className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-[#009640]">Mega-Sena · Resultados Anteriores</h1>
+            <p className="text-muted-foreground mt-1">Busque e analise os concursos passados da Mega-Sena.</p>
+          </div>
         </div>
 
         <div className="flex gap-2">
