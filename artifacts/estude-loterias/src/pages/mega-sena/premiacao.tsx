@@ -23,35 +23,35 @@ export default function MegaSenaPremiacao() {
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">Distribuição do Prêmio Bruto</CardTitle>
-          <CardDescription>O prêmio bruto corresponde a 43,35% da arrecadação total do concurso.</CardDescription>
+          <CardDescription>O prêmio bruto corresponde a 43,79% da arrecadação.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6 text-muted-foreground">
           <p>
-            Deste percentual de 43,35% destinado à premiação, o valor é distribuído da seguinte forma:
+            Dessa porcentagem, o valor é distribuído da seguinte forma:
           </p>
 
           <div className="grid grid-cols-1 gap-4">
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
-              <div className="text-2xl font-bold text-[#009640] w-20 text-center">35%</div>
+              <div className="text-2xl font-bold text-[#009640] w-20 text-center">40%</div>
               <div>
                 <div className="font-semibold text-foreground">Sena (6 acertos)</div>
-                <div className="text-sm">São distribuídos entre os acertadores dos 6 números.</div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
-              <div className="text-2xl font-bold text-[#009640] w-20 text-center">19%</div>
-              <div>
-                <div className="font-semibold text-foreground">Quina (5 acertos)</div>
-                <div className="text-sm">São distribuídos entre os acertadores de 5 números.</div>
+                <div className="text-sm">São distribuídos entre os acertadores dos 6 números sorteados (Sena).</div>
               </div>
             </div>
 
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
-              <div className="text-2xl font-bold text-[#009640] w-20 text-center">19%</div>
+              <div className="text-2xl font-bold text-[#009640] w-20 text-center">13%</div>
+              <div>
+                <div className="font-semibold text-foreground">Quina (5 acertos)</div>
+                <div className="text-sm">São distribuídos entre os acertadores de 5 números (Quina).</div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
+              <div className="text-2xl font-bold text-[#009640] w-20 text-center">15%</div>
               <div>
                 <div className="font-semibold text-foreground">Quadra (4 acertos)</div>
-                <div className="text-sm">São distribuídos entre os acertadores de 4 números.</div>
+                <div className="text-sm">São distribuídos entre os acertadores de 4 números (Quadra).</div>
               </div>
             </div>
 
@@ -64,7 +64,7 @@ export default function MegaSenaPremiacao() {
             </div>
 
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-amber-500/10 border-amber-500/30">
-              <div className="text-2xl font-bold text-amber-600 w-20 text-center">5%</div>
+              <div className="text-2xl font-bold text-amber-600 w-20 text-center">10%</div>
               <div>
                 <div className="font-semibold text-foreground">Mega da Virada</div>
                 <div className="text-sm">Ficam acumulados para a primeira faixa (sena) do último concurso do ano de final 0 ou 5 (Mega da Virada).</div>
