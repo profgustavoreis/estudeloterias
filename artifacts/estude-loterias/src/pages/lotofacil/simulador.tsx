@@ -273,7 +273,7 @@ export default function LotofacilSimulador() {
                           <TableCell className="text-center">
                             {premiado
                               ? <span>{PREMIADO_EMOJI}</span>
-                              : <span className="text-muted-foreground text-xs">não premiado</span>}
+                              : <span className="text-muted-foreground text-xs">-</span>}
                           </TableCell>
                         </TableRow>
                       );

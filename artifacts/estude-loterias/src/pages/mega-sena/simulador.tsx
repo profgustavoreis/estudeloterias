@@ -17,6 +17,27 @@ import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#009640";
 
+// ── Combinatória ─────────────────────────────────────────────────────────────
+function comb(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  k = Math.min(k, n - k);
+  let r = 1;
+  for (let i = 0; i < k; i++) r = (r * (n - i)) / (i + 1);
+  return Math.round(r);
+}
+
+// "1 em X" para k acertos com N dezenas escolhidas na Mega-Sena (60 números, sorteiam 6)
+function probMegaSena(k: number, N: number): string {
+  const total = comb(60, 6); // 50.063.860
+  const ways = comb(N, k) * comb(60 - N, 6 - k);
+  if (ways <= 0) return "—";
+  const x = total / ways;
+  if (x >= 100) return `1 em ${Math.round(x).toLocaleString("pt-BR")}`;
+  if (x >= 10)  return `1 em ${Math.round(x).toLocaleString("pt-BR")}`;
+  return `1 em ${x.toFixed(2).replace(".", ",")}`;
+}
+
 const FILTRO_LABELS: Record<SimuladorInputFiltro, string> = {
   todos:     "Todos os concursos",
   premiados: "Somente concursos premiados (4 ou mais acertos)",
@@ -31,6 +52,7 @@ export default function MegaSenaSimulador() {
   const [selecionadas, setSelecionadas] = useState<Set<number>>(new Set());
   const [filtro, setFiltro] = useState<SimuladorInputFiltro>(SimuladorInputFiltro.premiados);
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
+  const [nSimulado, setNSimulado] = useState<number>(6);
   const [infoAberta, setInfoAberta] = useState(false);
   const [paginaTabela, setPaginaTabela] = useState(1);
 
@@ -40,6 +62,7 @@ export default function MegaSenaSimulador() {
     mutation: {
       onSuccess: (data) => {
         setResultado(data);
+        setNSimulado(selecionadas.size);
         setPaginaTabela(1);
       },
     },
@@ -261,6 +284,7 @@ export default function MegaSenaSimulador() {
                   Resultado da Simulação
                 </CardTitle>
                 <CardDescription>
+                  {nSimulado} dezenas escolhidas •{" "}
                   {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
                   {acertosGanhadores > 0 ? (
                     <span className="text-[#009640] font-semibold">
@@ -269,31 +293,35 @@ export default function MegaSenaSimulador() {
                   ) : "nenhum premiado"}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-3">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="text-center">Acertos</TableHead>
-                      <TableHead className="text-center">Concursos</TableHead>
-                      <TableHead className="text-center">Situação</TableHead>
+                      <TableHead className="text-center w-20">Acertos</TableHead>
+                      <TableHead className="text-center">Probabilidade</TableHead>
+                      <TableHead className="text-center w-24">Concursos</TableHead>
+                      <TableHead className="text-center w-20">Situação</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {resultado.resumo.map((r) => {
                       const premiado = r.acertos >= 4;
+                      const prob = probMegaSena(r.acertos, nSimulado);
                       return (
                         <TableRow
                           key={r.acertos}
-                          className={cn(premiado && "bg-[#009640]/5 font-semibold")}
+                          className={cn(premiado && "font-semibold")}
+                          style={premiado ? { backgroundColor: COR + "0d" } : {}}
                         >
                           <TableCell className="text-center font-bold">{r.acertos}</TableCell>
+                          <TableCell className="text-center text-sm tabular-nums text-muted-foreground">{prob}</TableCell>
                           <TableCell className="text-center">
                             {r.contagem.toLocaleString("pt-BR")}
                           </TableCell>
                           <TableCell className="text-center">
                             {premiado
                               ? <span>{PREMIADO_EMOJI}</span>
-                              : <span className="text-muted-foreground">—</span>
+                              : <span className="text-muted-foreground text-xs">não premiado</span>
                             }
                           </TableCell>
                         </TableRow>
@@ -301,11 +329,11 @@ export default function MegaSenaSimulador() {
                     })}
                   </TableBody>
                 </Table>
-                {acertosGanhadores === 0 && (
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    Nenhum acerto premiado (4 ou mais) com esta combinação.
-                  </p>
-                )}
+                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">
+                  {nSimulado === 6
+                    ? "As probabilidades indicadas correspondem a uma aposta simples de 6 dezenas."
+                    : `As probabilidades indicadas correspondem a uma aposta múltipla de ${nSimulado} dezenas.`}
+                </p>
               </CardContent>
             </Card>
           )}
