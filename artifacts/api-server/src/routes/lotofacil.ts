@@ -20,6 +20,8 @@ function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
     dataProximoConcurso: row.dataProximoConcurso ?? null,
     valorEstimadoProximoConcurso: row.valorEstimadoProximo ? Number(row.valorEstimadoProximo) : null,
     arrecadacaoTotal: row.arrecadacaoTotal ? Number(row.arrecadacaoTotal) : null,
+    valorAcumuladoConcurso_0: row.valorAcumuladoConcurso_0_5 ? Number(row.valorAcumuladoConcurso_0_5) : null,
+    valorAcumuladoConcursoEspecial: row.valorAcumuladoConcursoEspecial ? Number(row.valorAcumuladoConcursoEspecial) : null,
   };
 }
 

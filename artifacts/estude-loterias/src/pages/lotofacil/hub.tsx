@@ -7,7 +7,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Link } from "wouter";
-import { BarChart3, BookOpen, ClipboardCheck, Dices, Flag, FlaskConical, Gift, HelpCircle, List, Sparkles, Table as TableIcon, Target, Trophy, Wallet } from "lucide-react";
+import { BarChart3, BookOpen, ClipboardCheck, Dices, Flag, FlaskConical, Gift, HelpCircle, List, PartyPopper, Sparkles, Table as TableIcon, Target, Trophy, TrendingUp, Wallet } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#930089";
@@ -201,15 +201,24 @@ export default function LotofacilHub() {
             <div>
               <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                 <div className="flex items-center gap-1">
-                  <Flag className="w-3 h-3" />
-                  Sorteio Especial · 7 de Setembro
+                  <TrendingUp className="w-3 h-3" />
+                  Acumulado para o próximo concurso de final 0
                 </div>
               </div>
-              <Link href="/lotofacil/lotofacil-da-independencia">
-                <span className="text-sm font-semibold hover:underline" style={{ color: COR }}>
-                  Lotofácil da Independência →
-                </span>
-              </Link>
+              <div className="text-lg font-semibold" style={{ color: COR }}>
+                {formatCurrency(resultado.valorAcumuladoConcurso_0)}
+              </div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                <div className="flex items-center gap-1">
+                  <PartyPopper className="w-3 h-3" />
+                  Acumulado para a Lotofácil da Independência
+                </div>
+              </div>
+              <div className="text-lg font-semibold" style={{ color: COR }}>
+                {formatCurrency(resultado.valorAcumuladoConcursoEspecial)}
+              </div>
             </div>
           </CardContent>
         </Card>

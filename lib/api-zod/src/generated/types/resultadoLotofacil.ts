@@ -21,4 +21,8 @@ export interface ResultadoLotofacil {
   valorEstimadoProximoConcurso?: number | null;
   /** @nullable */
   arrecadacaoTotal?: number | null;
+  /** @nullable */
+  valorAcumuladoConcurso_0?: number | null;
+  /** @nullable */
+  valorAcumuladoConcursoEspecial?: number | null;
 }

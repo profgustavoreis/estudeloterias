@@ -376,7 +376,9 @@ export const GetLotofacilUltimoResultadoResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 })
 
 
@@ -413,7 +415,9 @@ export const GetLotofacilResultadosResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 }))
 })
 
@@ -439,7 +443,9 @@ export const GetLotofacilResultadoConcursoResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 })
 
 
@@ -572,7 +578,9 @@ export const GetLotofacilDaIndependenciaResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcurso_0": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
 }))
 })
 

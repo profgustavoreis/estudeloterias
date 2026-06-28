@@ -970,6 +970,10 @@ components:
           type: ["number", "null"]
         arrecadacaoTotal:
           type: ["number", "null"]
+        valorAcumuladoConcurso_0:
+          type: ["number", "null"]
+        valorAcumuladoConcursoEspecial:
+          type: ["number", "null"]
       required:
         - concurso
         - data
