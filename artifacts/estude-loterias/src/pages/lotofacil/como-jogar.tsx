@@ -28,7 +28,7 @@ export default function LotofacilComoJogar() {
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            A Lotofácil é uma das loterias mais populares do Brasil, com sorteios realizados às segundas, quartas e sextas-feiras.
+            A Lotofácil é uma das loterias mais populares do Brasil, com sorteios realizados de segunda a sábado (6 sorteios por semana).
             O apostador marca de 15 a 20 números dentre os 25 disponíveis no volante (de 01 a 25) e ganha
             se acertar 11, 12, 13, 14 ou 15 desses números.
           </p>
@@ -67,11 +67,11 @@ export default function LotofacilComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios da Lotofácil são realizados às segundas, quartas e sextas-feiras,
-              às 20h (horário de Brasília).
+              <strong>Dias de Sorteio:</strong> Os sorteios da Lotofácil são realizados de segunda a sábado,
+              às 21h (horário de Brasília). São seis sorteios por semana.
             </p>
             <p>
-              <strong>Valor da Aposta:</strong> A aposta mínima, de 15 números, custa R$ 3,00.
+              <strong>Valor da Aposta:</strong> A aposta mínima, de 15 números, custa R$ 3,50.
               Quanto mais números marcar, maior o preço e maior a chance de ganhar.
             </p>
           </CardContent>
@@ -93,12 +93,12 @@ export default function LotofacilComoJogar() {
                 </thead>
                 <tbody className="text-muted-foreground">
                   {[
-                    { n: 15, simples: 1,     valor: "R$ 3,00" },
-                    { n: 16, simples: 16,    valor: "R$ 48,00" },
-                    { n: 17, simples: 136,   valor: "R$ 408,00" },
-                    { n: 18, simples: 816,   valor: "R$ 2.448,00" },
-                    { n: 19, simples: 3876,  valor: "R$ 11.628,00" },
-                    { n: 20, simples: 15504, valor: "R$ 46.512,00" },
+                    { n: 15, simples: 1,     valor: "R$ 3,50" },
+                    { n: 16, simples: 16,    valor: "R$ 56,00" },
+                    { n: 17, simples: 136,   valor: "R$ 476,00" },
+                    { n: 18, simples: 816,   valor: "R$ 2.856,00" },
+                    { n: 19, simples: 3876,  valor: "R$ 13.566,00" },
+                    { n: 20, simples: 15504, valor: "R$ 54.264,00" },
                   ].map(({ n, simples, valor }) => (
                     <tr key={n} className="border-b">
                       <td className="py-2">{n} números</td>

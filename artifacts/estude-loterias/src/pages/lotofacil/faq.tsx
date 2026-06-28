@@ -19,11 +19,11 @@ const faqs = [
   },
   {
     q: "Quanto custa a aposta mínima?",
-    a: "A aposta mínima de 15 números custa R$ 3,00. Apostas com mais números custam mais, mas aumentam suas chances de ganhar.",
+    a: "A aposta mínima de 15 números custa R$ 3,50. Apostas com mais números custam mais, mas aumentam suas chances de ganhar.",
   },
   {
     q: "Quando ocorrem os sorteios da Lotofácil?",
-    a: "Os sorteios da Lotofácil são realizados às segundas, quartas e sextas-feiras, às 20h (horário de Brasília). São três sorteios por semana.",
+    a: "Os sorteios da Lotofácil são realizados de segunda a sábado, às 21h (horário de Brasília). São seis sorteios por semana.",
   },
   {
     q: "O prêmio da Lotofácil acumula?",
@@ -51,7 +51,7 @@ const faqs = [
   },
   {
     q: "Qual a diferença entre a Lotofácil e a Mega-Sena?",
-    a: "A Lotofácil tem 25 números no volante (vs. 60 da Mega-Sena), sorteia 15 números por concurso (vs. 6) e premia quem acerta de 11 a 15 números. A aposta mínima custa R$ 3,00 (vs. R$ 6,00) e os prêmios são geralmente menores, mas com muito mais ganhadores.",
+    a: "A Lotofácil tem 25 números no volante (vs. 60 da Mega-Sena), sorteia 15 números por concurso (vs. 6) e premia quem acerta de 11 a 15 números. A aposta mínima custa R$ 3,50 (vs. R$ 5,00 da Mega-Sena) e os prêmios são geralmente menores, mas com muito mais ganhadores.",
   },
 ];
 

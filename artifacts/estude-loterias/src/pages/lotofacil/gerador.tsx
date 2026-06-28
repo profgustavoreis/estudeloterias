@@ -64,7 +64,7 @@ export default function LotofacilGerador() {
                 <span className="font-mono font-medium">{qtdDezenas}</span>
               </div>
               <Slider value={[qtdDezenas]} min={15} max={20} step={1} onValueChange={v => setQtdDezenas(v[0])} />
-              <div className="text-xs text-muted-foreground">Aposta mínima: 15 dezenas (R$ 3,00). Máxima: 20 dezenas.</div>
+              <div className="text-xs text-muted-foreground">Aposta mínima: 15 dezenas (R$ 3,50). Máxima: 20 dezenas.</div>
             </div>
           </CardContent>
           <CardFooter>

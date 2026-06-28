@@ -425,8 +425,8 @@ router.get("/lotofacil/calendario", async (req, res) => {
       }
     }
 
-    // Lotofácil draws Mon/Wed/Fri (days 1, 3, 5 in JS getDay())
-    const drawDays = [1, 3, 5];
+    // Lotofácil draws Mon–Sat (days 1, 2, 3, 4, 5, 6 in JS getDay())
+    const drawDays = [1, 2, 3, 4, 5, 6];
     let cursor = new Date();
     cursor.setHours(0, 0, 0, 0);
     let drawCount = 0;
@@ -604,7 +604,7 @@ router.post("/lotofacil/gerador", async (req, res) => {
     }
 
     const apostasSimples = C(qtdDezenas, 15);
-    const custoPorJogo = apostasSimples * 3.00;
+    const custoPorJogo = apostasSimples * 3.50;
 
     const jogos: number[][] = [];
     for (let j = 0; j < qtdJogos; j++) {
