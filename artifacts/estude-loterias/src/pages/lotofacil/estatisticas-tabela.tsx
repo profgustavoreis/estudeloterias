@@ -1,148 +1,288 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useSearch } from "wouter";
 import { useGetLotofacilEstatisticas } from "@workspace/api-client-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { AdUnit } from "@/components/ui/AdUnit";
+import {
+  Table as Table2, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { TableIcon, ArrowLeft } from "lucide-react";
-import { PageSEO } from "@/components/seo/PageSEO";
 import { cn } from "@/lib/utils";
+import { Table as TableIcon } from "lucide-react";
+import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#930089";
 
-type Sort = "frequencia" | "atraso" | "dezena";
+type Tab = "mais" | "menos" | "atrasadas";
+type SortFreq = "frequencia" | "dezena";
+type SortAtr  = "atraso"     | "dezena";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "mais",      label: "Mais Sorteadas"  },
+  { id: "menos",     label: "Menos Sorteadas" },
+  { id: "atrasadas", label: "Mais Atrasadas"  },
+];
+
+const SORT_FREQ: { id: SortFreq; label: string }[] = [
+  { id: "frequencia", label: "Por Frequência" },
+  { id: "dezena",     label: "Por Dezena"     },
+];
+
+const SORT_ATR: { id: SortAtr; label: string }[] = [
+  { id: "atraso",  label: "Por Atraso"  },
+  { id: "dezena",  label: "Por Dezena"  },
+];
+
+function UltimaVezLink({ concurso }: { concurso: number | null }) {
+  if (!concurso) return <span className="text-muted-foreground">–</span>;
+  return (
+    <Link
+      href={`/lotofacil/resultado/${concurso}`}
+      className="font-semibold hover:underline whitespace-nowrap"
+      style={{ color: COR }}
+    >
+      Concurso {concurso} →
+    </Link>
+  );
+}
+
+function SortToggle<T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: T; label: string }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div className="flex gap-1 bg-muted rounded-md p-0.5 w-fit">
+      {options.map(opt => (
+        <button
+          key={opt.id}
+          onClick={() => onChange(opt.id)}
+          className={cn(
+            "px-3 py-1 text-xs font-medium rounded transition-colors",
+            value === opt.id
+              ? "bg-background shadow text-foreground"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          {opt.label}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 export default function LotofacilEstatisticasTabela() {
-  const { data, isLoading } = useGetLotofacilEstatisticas();
-  const [sort, setSort] = useState<Sort>("frequencia");
+  const search = useSearch();
+  const params = new URLSearchParams(search);
+  const initialTab = (params.get("tab") as Tab | null) ?? "mais";
 
-  if (isLoading || !data) {
+  const [tab, setTab] = useState<Tab>(
+    TABS.some(t => t.id === initialTab) ? initialTab : "mais",
+  );
+  const [sortFreq, setSortFreq] = useState<SortFreq>("frequencia");
+  const [sortAtr,  setSortAtr]  = useState<SortAtr>("atraso");
+
+  const { data: stats, isLoading, isError } = useGetLotofacilEstatisticas();
+
+  if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-10 w-64" />
-        <Skeleton className="h-96 w-full" />
+        <div>
+          <Skeleton className="h-9 w-64 mb-2" />
+          <Skeleton className="h-4 w-80" />
+        </div>
+        <Skeleton className="h-10 w-72" />
+        <Skeleton className="h-[600px] w-full" />
       </div>
     );
   }
 
-  const sorted = [...data.frequenciaDezenas].sort((a, b) => {
-    if (sort === "frequencia") return b.frequencia - a.frequencia;
-    if (sort === "atraso")     return b.atraso - a.atraso;
-    return parseInt(a.dezena, 10) - parseInt(b.dezena, 10);
-  });
+  if (isError || !stats) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
+          Lotofácil · Tabela de Dezenas
+        </h1>
+        <Card>
+          <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
+            Erro ao carregar estatísticas. Tente novamente.
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
-  const maxFreq = Math.max(...sorted.map(d => d.frequencia));
-  const maxAtraso = Math.max(...sorted.map(d => d.atraso));
+  // ── Sort logic ──────────────────────────────────────────────────────────────
+  const base = [...stats.frequenciaDezenas];
+
+  const rows = (() => {
+    if (tab === "atrasadas") {
+      if (sortAtr === "dezena")
+        return base.sort((a, b) => parseInt(a.dezena) - parseInt(b.dezena));
+      return base.sort((a, b) => b.atraso - a.atraso);
+    }
+    if (sortFreq === "dezena")
+      return base.sort((a, b) => parseInt(a.dezena) - parseInt(b.dezena));
+    if (tab === "menos")
+      return base.sort((a, b) => a.frequencia - b.frequencia);
+    return base.sort((a, b) => b.frequencia - a.frequencia);
+  })();
+
+  const isAtrasadas = tab === "atrasadas";
+
+  const cardTitle = {
+    mais:      "Dezenas Mais Sorteadas",
+    menos:     "Dezenas Menos Sorteadas",
+    atrasadas: "Dezenas Mais Atrasadas",
+  }[tab];
+
+  const cardDesc = {
+    mais:      "Ranking de todas as dezenas por frequência histórica (maior → menor)",
+    menos:     "Ranking de todas as dezenas por frequência histórica (menor → maior)",
+    atrasadas: "Ranking de todas as dezenas por atraso (mais ausente → mais recente)",
+  }[tab];
 
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Lotofácil"
-        description="Ranking completo das 25 dezenas da Lotofácil ordenadas por frequência ou atraso. Veja quais números saem mais e há quanto tempo cada dezena não aparece."
+        title="Tabela de Dezenas da Lotofácil — Frequência e Atraso"
+        description="Ranking completo das 25 dezenas da Lotofácil: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/lotofacil/tabela-de-dezenas"
       />
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
-            <TableIcon className="w-6 h-6" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Lotofácil · Tabela de Dezenas</h1>
-            <p className="text-muted-foreground mt-1">
-              Ranking de todas as 25 dezenas — {data.totalConcursos} concursos analisados.
-            </p>
-          </div>
+      {/* Header */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+          <TableIcon className="w-6 h-6" />
         </div>
-        <Link href="/lotofacil/resumo-estatistico">
-          <Button variant="outline" size="sm">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Resumo Estatístico
-          </Button>
-        </Link>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
+            Lotofácil · Tabela de Dezenas
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Todas as 25 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
+          </p>
+        </div>
       </div>
 
-      {/* Sort buttons */}
-      <div className="flex gap-2 flex-wrap">
-        {([
-          { value: "frequencia", label: "Ordenar por Frequência" },
-          { value: "atraso",     label: "Ordenar por Atraso" },
-          { value: "dezena",     label: "Ordenar por Dezena" },
-        ] as const).map(({ value, label }) => (
-          <Button
-            key={value}
-            variant={sort === value ? "default" : "outline"}
-            size="sm"
-            onClick={() => setSort(value)}
-            style={sort === value ? { backgroundColor: COR, color: "white" } : {}}
+      {/* Tab selector */}
+      <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
+        {TABS.map(t => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={cn(
+              "px-4 py-2 text-sm font-medium rounded-md transition-colors",
+              tab === t.id
+                ? "bg-background shadow text-foreground"
+                : "text-muted-foreground hover:text-foreground",
+            )}
           >
-            {label}
-          </Button>
+            {t.label}
+          </button>
         ))}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Ranking das 25 Dezenas</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50">
-                  <TableHead className="text-center w-12">#</TableHead>
-                  <TableHead className="text-center">Dezena</TableHead>
-                  <TableHead className="text-right">Frequência</TableHead>
-                  <TableHead className="text-right">% de Sorteios</TableHead>
-                  <TableHead className="text-right">Último Concurso</TableHead>
-                  <TableHead className="text-right">Atraso (concursos)</TableHead>
-                  <TableHead className="hidden md:table-cell">Frequência (barra)</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sorted.map((d, i) => {
-                  const freqPct = maxFreq > 0 ? (d.frequencia / maxFreq) * 100 : 0;
-                  const atrasoPct = maxAtraso > 0 ? (d.atraso / maxAtraso) * 100 : 0;
-                  const isHighFreq = sort === "frequencia" && i < 5;
-                  const isHighAtraso = sort === "atraso" && i < 5;
-
-                  return (
-                    <TableRow key={d.dezena} className={cn(isHighFreq || isHighAtraso ? "font-semibold" : "")}>
-                      <TableCell className="text-center text-muted-foreground text-sm">{i + 1}</TableCell>
-                      <TableCell className="text-center">
-                        <LotteryBall number={parseInt(d.dezena, 10)} size="sm" color={COR} />
-                      </TableCell>
-                      <TableCell className="text-right font-bold">{d.frequencia}</TableCell>
-                      <TableCell className="text-right">{d.percentual.toFixed(1)}%</TableCell>
-                      <TableCell className="text-right text-muted-foreground">
-                        {d.ultimoConcurso ?? "—"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <span className={cn(isHighAtraso ? "text-amber-600" : "")}>
-                          {d.atraso}
-                        </span>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
+      {/* Table + Ad sidebar */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <CardTitle>{cardTitle}</CardTitle>
+                  <CardDescription className="mt-1">{cardDesc}</CardDescription>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
+                  <span>Ordenar:</span>
+                  {isAtrasadas ? (
+                    <SortToggle options={SORT_ATR} value={sortAtr} onChange={(v) => setSortAtr(v)} />
+                  ) : (
+                    <SortToggle options={SORT_FREQ} value={sortFreq} onChange={(v) => setSortFreq(v)} />
+                  )}
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Table2 className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">Dezena</TableHead>
+                    {isAtrasadas ? (
+                      <>
+                        <TableHead className="text-center">Atraso</TableHead>
+                        <TableHead className="text-right">Última vez</TableHead>
+                      </>
+                    ) : (
+                      <>
+                        <TableHead className="text-center">Frequência</TableHead>
+                        <TableHead className="text-right">Última vez</TableHead>
+                      </>
+                    )}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rows.map((item, i) => (
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
                         <div className="flex items-center gap-2">
-                          <div className="flex-1 bg-muted rounded-full h-2 overflow-hidden">
-                            <div
-                              className="h-2 rounded-full"
-                              style={{
-                                width: `${sort === "atraso" ? atrasoPct : freqPct}%`,
-                                backgroundColor: sort === "atraso" ? "#f59e0b" : COR,
-                              }}
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          {isAtrasadas ? (
+                            <LotteryBall
+                              number={parseInt(item.dezena, 10)}
+                              size="sm"
+                              className="bg-amber-100 text-amber-800 border border-amber-200"
                             />
-                          </div>
+                          ) : tab === "mais" ? (
+                            <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
+                          ) : (
+                            <LotteryBall
+                              number={parseInt(item.dezena, 10)}
+                              size="sm"
+                              className="bg-muted text-muted-foreground"
+                            />
+                          )}
                         </div>
                       </TableCell>
+                      {isAtrasadas ? (
+                        <>
+                          <TableCell className="text-center font-medium tabular-nums text-amber-600">
+                            {item.atraso} sorteios
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
+                          </TableCell>
+                        </>
+                      ) : (
+                        <>
+                          <TableCell className="text-center font-medium tabular-nums">
+                            {item.frequencia.toLocaleString("pt-BR")} vezes
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <UltimaVezLink concurso={item.ultimoConcurso ?? null} />
+                          </TableCell>
+                        </>
+                      )}
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                  ))}
+                  <TableRow className="border-b">
+                    <TableCell className="py-0.5"> </TableCell>
+                    <TableCell className="py-0.5"> </TableCell>
+                    <TableCell className="py-0.5"> </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table2>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="flex flex-col gap-6">
+          <AdUnit slot="3322114455" format="rectangle" className="w-full" />
+        </div>
+      </div>
     </div>
   );
 }
