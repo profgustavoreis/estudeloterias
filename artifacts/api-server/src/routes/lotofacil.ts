@@ -423,8 +423,8 @@ router.get("/lotofacil/calendario", async (req, res) => {
       }
     }
 
-    // Lotofácil draws Mon–Sat (days 1–6 in JS getDay())
-    const drawDays = [1, 2, 3, 4, 5, 6];
+    // Lotofácil draws Mon/Wed/Fri (days 1, 3, 5 in JS getDay())
+    const drawDays = [1, 3, 5];
     let cursor = new Date();
     cursor.setHours(0, 0, 0, 0);
     let drawCount = 0;

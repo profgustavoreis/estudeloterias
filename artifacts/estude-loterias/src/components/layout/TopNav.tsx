@@ -41,9 +41,10 @@ const lotofacilTools = [
 ];
 
 const lotofacilInfo = [
-  { href: "/lotofacil/como-jogar",           label: "Como Jogar",            icon: BookOpen,   desc: "Regras e formas de apostar" },
-  { href: "/lotofacil/premiacao",            label: "Premiação",             icon: Trophy,     desc: "Faixas e percentuais de prêmio" },
-  { href: "/lotofacil/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+  { href: "/lotofacil/como-jogar",                   label: "Como Jogar",                    icon: BookOpen,   desc: "Regras e formas de apostar" },
+  { href: "/lotofacil/premiacao",                    label: "Premiação",                     icon: Trophy,     desc: "Faixas e percentuais de prêmio" },
+  { href: "/lotofacil/perguntas-frequentes",         label: "Perguntas Frequentes",          icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+  { href: "/lotofacil/lotofacil-da-independencia",   label: "Lotofácil da Independência",    icon: Gift,       desc: "O sorteio especial de 7 de setembro" },
 ];
 
 const lotofacilAll = [...lotofacilTools, ...lotofacilInfo];
