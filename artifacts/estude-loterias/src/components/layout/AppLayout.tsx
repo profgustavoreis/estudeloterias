@@ -53,10 +53,25 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </span>
               </Link>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Estatísticas, resultados e ferramentas gratuitas para as loterias da Caixa Econômica Federal.
-              </p>
-              <p className="text-xs text-muted-foreground">
-                CNPJ: 09.631.507/0001-18
+                O Estude Loterias é uma iniciativa do{" "}
+                <a
+                  href="https://estudematematica.com.br/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#009640] hover:underline"
+                >
+                  Estude Matemática
+                </a>{" "}
+                desenvolvida pelo{" "}
+                <a
+                  href="https://gustavoreis.com.br/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#009640] hover:underline"
+                >
+                  professor Gustavo Reis
+                </a>
+                . Aqui você encontra resultados, estatísticas e ferramentas gratuitas para as Loterias Caixa.
               </p>
             </div>
 
@@ -142,7 +157,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Bottom bar */}
         <div className="border-t border-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span>© {ano} Estude Loterias. Todos os direitos reservados.</span>
+            <span>© {ano} Mathematica Et Cetera Sociedade Educacional Ltda. · CNPJ 09.631.507/0001-18</span>
             <div className="flex items-center gap-3">
               <Link href="/privacidade" className="hover:text-foreground transition-colors">Privacidade</Link>
               <span>·</span>
