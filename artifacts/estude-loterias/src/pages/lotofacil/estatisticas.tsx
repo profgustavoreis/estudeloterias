@@ -2,18 +2,25 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useGetLotofacilEstatisticas } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList } from "recharts";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LabelList,
+} from "recharts";
+import {
+  Accordion, AccordionContent, AccordionItem, AccordionTrigger,
+} from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { cn } from "@/lib/utils";
-import { BarChart3, Table as TableIcon } from "lucide-react";
+import { BarChart3 } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#930089";
 
+// ── Dezena badge ──────────────────────────────────────────────────────────────
 function DezBadge({ n, active }: { n: number; active?: boolean }) {
   return (
     <span className={cn(
@@ -25,6 +32,7 @@ function DezBadge({ n, active }: { n: number; active?: boolean }) {
   );
 }
 
+// ── Skeleton card ─────────────────────────────────────────────────────────────
 function CardSkeleton({ h = 200 }: { h?: number }) {
   return (
     <Card>
@@ -36,7 +44,14 @@ function CardSkeleton({ h = 200 }: { h?: number }) {
   );
 }
 
-function CompactTable({ headers, rows }: { headers: string[]; rows: (string | number | React.ReactNode)[][] }) {
+// ── Compact data table below chart ───────────────────────────────────────────
+function CompactTable({
+  headers,
+  rows,
+}: {
+  headers: string[];
+  rows: (string | number | React.ReactNode)[][];
+}) {
   const lastIdx = headers.length - 1;
   return (
     <div className="mt-4 overflow-x-auto">
@@ -44,7 +59,13 @@ function CompactTable({ headers, rows }: { headers: string[]; rows: (string | nu
         <TableHeader>
           <TableRow className="border-b">
             {headers.map((h, idx) => (
-              <TableHead key={h} className={cn("py-1.5 text-xs h-auto font-semibold", idx === 0 ? "text-center" : idx === lastIdx ? "text-right" : "text-center")}>
+              <TableHead
+                key={h}
+                className={cn(
+                  "py-1.5 text-xs h-auto font-semibold",
+                  idx === 0 ? "text-center" : idx === lastIdx ? "text-right" : "text-center",
+                )}
+              >
                 {h}
               </TableHead>
             ))}
@@ -54,337 +75,864 @@ function CompactTable({ headers, rows }: { headers: string[]; rows: (string | nu
           {rows.map((row, i) => (
             <TableRow key={i} className="border-b odd:bg-muted/40">
               {row.map((cell, j) => (
-                <TableCell key={j} className={cn("py-1.5 text-xs", j === 0 ? "text-center" : j === row.length - 1 ? "text-right" : "text-center")}>
+                <TableCell
+                  key={j}
+                  className={cn(
+                    "py-1.5 text-xs",
+                    j === 0 ? "text-center" : j === row.length - 1 ? "text-right" : "text-center",
+                  )}
+                >
                   {cell}
                 </TableCell>
               ))}
             </TableRow>
           ))}
+          <TableRow className="border-b">
+            {headers.map((_, j) => (
+              <TableCell key={j} className="py-0.5"> </TableCell>
+            ))}
+          </TableRow>
         </TableBody>
       </Table>
     </div>
   );
 }
 
-type ViewMode = "frequencia" | "atraso";
+// Lotofácil 5×5 grid definitions
+const MOLDURA_SET = new Set([1, 2, 3, 4, 5, 6, 10, 11, 15, 16, 20, 21, 22, 23, 24, 25]);
+const RETRATO_SET = new Set(
+  Array.from({ length: 25 }, (_, i) => i + 1).filter(n => !MOLDURA_SET.has(n))
+);
 
+// ── Main component ────────────────────────────────────────────────────────────
 export default function LotofacilEstatisticas() {
-  const { data, isLoading } = useGetLotofacilEstatisticas();
-  const [view, setView] = useState<ViewMode>("frequencia");
+  const { data: stats, isLoading, isError } = useGetLotofacilEstatisticas();
+  const [tabEspecial, setTabEspecial] = useState(0);
 
-  if (isLoading || !data) {
+  if (isLoading) {
     return (
       <div className="space-y-6">
-        <Skeleton className="h-10 w-72" />
+        <div>
+          <Skeleton className="h-9 w-48 mb-2" />
+          <Skeleton className="h-4 w-72" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <CardSkeleton h={320} />
+          <CardSkeleton h={320} />
+          <CardSkeleton h={320} />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {Array.from({ length: 6 }).map((_, i) => <CardSkeleton key={i} h={220} />)}
+          <CardSkeleton h={260} />
+          <CardSkeleton h={260} />
         </div>
       </div>
     );
   }
 
-  const dezenasChart = view === "frequencia"
-    ? [...data.frequenciaDezenas].sort((a, b) => parseInt(a.dezena, 10) - parseInt(b.dezena, 10)).map(d => ({
-        dezena: d.dezena, valor: d.frequencia, label: d.frequencia,
-      }))
-    : [...data.frequenciaDezenas].sort((a, b) => parseInt(a.dezena, 10) - parseInt(b.dezena, 10)).map(d => ({
-        dezena: d.dezena, valor: d.atraso, label: d.atraso,
-      }));
+  if (isError || !stats) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Lotofácil · Resumo Estatístico</h1>
+        <Card>
+          <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
+            Erro ao carregar estatísticas. Tente novamente.
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
-  const top10Freq = [...data.frequenciaDezenas].sort((a, b) => b.frequencia - a.frequencia).slice(0, 10);
-  const top10Atraso = [...data.frequenciaDezenas].sort((a, b) => b.atraso - a.atraso).slice(0, 10);
+  const maisSorteadas = [...stats.frequenciaDezenas].sort((a, b) => b.frequencia - a.frequencia).slice(0, 10);
+  const menosSorteadas = [...stats.frequenciaDezenas].sort((a, b) => a.frequencia - b.frequencia).slice(0, 10);
+  const maisAtrasadas  = [...stats.frequenciaDezenas].sort((a, b) => b.atraso - a.atraso).slice(0, 10);
+
+  const especial    = stats.numerosEspeciais[tabEspecial];
+  const especialSet = new Set(especial?.dezenas ?? []);
+
+  const totalSorteios = stats.paresImpares.reduce((a, b) => a + b.sorteios, 0);
+  const totalMoldura  = (stats.molduraRetrato ?? []).reduce((a, b) => a + b.sorteios, 0);
+
+  const totalFreqLinha  = stats.frequenciaPorLinha.reduce((a, b) => a + b.sorteios, 0);
+  const totalFreqColuna = stats.frequenciaPorColuna.reduce((a, b) => a + b.sorteios, 0);
+  const totalSomaConcursos = stats.somaDezenas.intervalos.reduce((a, b) => a + b.sorteios, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <PageSEO
         title="Resumo Estatístico da Lotofácil — Frequência e Análise das Dezenas"
-        description="Análise estatística completa da Lotofácil: frequência e atraso das 25 dezenas, pares e ímpares, moldura e retrato, soma das dezenas, números especiais e muito mais."
+        description="Análise estatística completa da Lotofácil: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
         canonical="/lotofacil/resumo-estatistico"
       />
-      <div className="flex items-start justify-between gap-4 flex-wrap">
-        <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
-            <BarChart3 className="w-6 h-6" />
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Lotofácil · Resumo Estatístico</h1>
-            <p className="text-muted-foreground mt-1">Análise baseada em {data.totalConcursos} sorteios realizados.</p>
-          </div>
+
+      {/* ── Header ── */}
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+          <BarChart3 className="w-6 h-6" />
         </div>
-        <Link href="/lotofacil/tabela-de-dezenas">
-          <button className="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-md border border-border hover:bg-muted transition-colors">
-            <TableIcon className="w-4 h-4" /> Tabela Completa das 25 Dezenas
-          </button>
-        </Link>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Lotofácil · Resumo Estatístico</h1>
+          <p className="text-muted-foreground mt-1">
+            Análise completa de {stats.totalConcursos.toLocaleString("pt-BR")} concursos realizados.
+          </p>
+        </div>
       </div>
 
-      {/* Frequência chart */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <CardTitle>Frequência das 25 Dezenas</CardTitle>
-            <div className="flex gap-2">
-              {([
-                { value: "frequencia", label: "Frequência" },
-                { value: "atraso",     label: "Atraso" },
-              ] as const).map(({ value, label }) => (
-                <button
-                  key={value}
-                  onClick={() => setView(value)}
-                  className={cn("px-3 py-1 text-xs rounded-md font-medium border transition-colors",
-                    view === value ? "text-white border-transparent" : "bg-muted text-muted-foreground border-border hover:bg-muted/70"
-                  )}
-                  style={view === value ? { backgroundColor: COR } : {}}
+      <AdUnit slot="1122334455" format="horizontal" className="w-full" />
+
+      {/* ── Seção 1: Frequência de Dezenas ── */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Frequência de Dezenas
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+          {/* Mais Sorteadas */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Dezenas Mais Sorteadas</CardTitle>
+              <CardDescription>As 10 dezenas com maior frequência histórica</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">Dezena</TableHead>
+                    <TableHead className="text-center">Frequência</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {maisSorteadas.map((item, i) => (
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={COR} />
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center font-medium tabular-nums">
+                        {item.frequencia.toLocaleString("pt-BR")} vezes
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.ultimoConcurso ? (
+                          <Link
+                            href={`/lotofacil/resultado/${item.ultimoConcurso}`}
+                            className="text-xs font-semibold hover:underline whitespace-nowrap"
+                            style={{ color: COR }}
+                          >
+                            Concurso {item.ultimoConcurso} →
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">–</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                </TableBody>
+              </Table>
+              <div className="mt-3 flex justify-end">
+                <Link
+                  href="/lotofacil/tabela-de-dezenas?tab=mais"
+                  className="text-sm font-semibold hover:underline"
+                  style={{ color: COR }}
                 >
-                  {label}
-                </button>
-              ))}
-            </div>
-          </div>
-          <CardDescription>
-            {view === "frequencia"
-              ? "Quantas vezes cada dezena foi sorteada no histórico completo"
-              : "Há quantos concursos cada dezena não é sorteada"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={dezenasChart} margin={{ top: 20, right: 4, left: -28, bottom: 4 }}>
-              <XAxis dataKey="dezena" tick={{ fontSize: 10 }} interval={0} />
-              <YAxis tick={{ fontSize: 10 }} />
-              <Tooltip
-                formatter={(v: number) => [v, view === "frequencia" ? "Sorteios" : "Concursos de atraso"]}
-                labelFormatter={l => `Dezena ${l}`}
+                  Ver todas →
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Menos Sorteadas */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Dezenas Menos Sorteadas</CardTitle>
+              <CardDescription>As 10 dezenas com menor frequência histórica</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">Dezena</TableHead>
+                    <TableHead className="text-center">Frequência</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {menosSorteadas.map((item, i) => (
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          <LotteryBall
+                            number={parseInt(item.dezena, 10)}
+                            size="sm"
+                            className="bg-muted text-muted-foreground"
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center font-medium tabular-nums">
+                        {item.frequencia.toLocaleString("pt-BR")} vezes
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.ultimoConcurso ? (
+                          <Link
+                            href={`/lotofacil/resultado/${item.ultimoConcurso}`}
+                            className="text-xs font-semibold hover:underline whitespace-nowrap"
+                            style={{ color: COR }}
+                          >
+                            Concurso {item.ultimoConcurso} →
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">–</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                </TableBody>
+              </Table>
+              <div className="mt-3 flex justify-end">
+                <Link
+                  href="/lotofacil/tabela-de-dezenas?tab=menos"
+                  className="text-sm font-semibold hover:underline"
+                  style={{ color: COR }}
+                >
+                  Ver todas →
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Mais Atrasadas */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Dezenas Mais Atrasadas</CardTitle>
+              <CardDescription>Números que faz tempo que não saem!</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">Dezena</TableHead>
+                    <TableHead className="text-center">Atraso</TableHead>
+                    <TableHead className="text-right">Última vez</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {maisAtrasadas.map((item, i) => (
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
+                        <div className="flex items-center gap-2">
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          <LotteryBall
+                            number={parseInt(item.dezena, 10)}
+                            size="sm"
+                            className="bg-amber-100 text-amber-800 border border-amber-200"
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-center font-medium tabular-nums text-amber-600">
+                        {item.atraso} sorteios
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {item.ultimoConcurso ? (
+                          <Link
+                            href={`/lotofacil/resultado/${item.ultimoConcurso}`}
+                            className="text-xs font-semibold hover:underline whitespace-nowrap"
+                            style={{ color: COR }}
+                          >
+                            Concurso {item.ultimoConcurso} →
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-muted-foreground">–</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                </TableBody>
+              </Table>
+              <div className="mt-3 flex justify-end">
+                <Link
+                  href="/lotofacil/tabela-de-dezenas?tab=atrasadas"
+                  className="text-sm font-semibold hover:underline"
+                  style={{ color: COR }}
+                >
+                  Ver todas →
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* ── Seção 2: Distribuição por Concurso ── */}
+      <section className="space-y-6">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Distribuição por Concurso
+        </h2>
+
+        {/* Row 1: Pares × Ímpares | Moldura × Retrato */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Pares × Ímpares */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Pares × Ímpares</CardTitle>
+              <CardDescription>
+                Como dezenas pares e ímpares se distribuem ao longo dos sorteios?
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[200px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={stats.paresImpares} margin={{ top: 22, right: 8, left: -20, bottom: 0 }}>
+                    <XAxis
+                      dataKey="pares"
+                      tickLine={false}
+                      axisLine={false}
+                      tickFormatter={(v) => `${v}P/${15 - v}I`}
+                      tick={{ fontSize: 11 }}
+                    />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <Tooltip
+                      cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload as { pares: number; impares: number; sorteios: number };
+                        return (
+                          <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                            <p className="font-semibold mb-0.5">
+                              {d.pares} par{d.pares !== 1 ? "es" : ""} / {d.impares} impar{d.impares !== 1 ? "es" : ""}
+                            </p>
+                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} concursos</p>
+                            {totalSorteios > 0 && (
+                              <p className="text-muted-foreground">
+                                {((d.sorteios / totalSorteios) * 100).toFixed(1)}% do total
+                              </p>
+                            )}
+                          </div>
+                        );
+                      }}
+                    />
+                    <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 11, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <CompactTable
+                headers={["Pares", "Ímpares", "Concursos", "%", "Última vez"]}
+                rows={stats.paresImpares
+                  .filter(d => d.sorteios > 0)
+                  .map(d => [
+                    d.pares,
+                    d.impares,
+                    d.sorteios.toLocaleString("pt-BR"),
+                    totalSorteios > 0
+                      ? `${((d.sorteios / totalSorteios) * 100).toFixed(1)}%`
+                      : "–",
+                    d.ultimoConcurso
+                      ? <Link href={`/lotofacil/resultado/${d.ultimoConcurso}`} className="font-semibold hover:underline whitespace-nowrap" style={{ color: COR }}>Concurso {d.ultimoConcurso} →</Link>
+                      : "–",
+                  ])}
               />
-              <Bar dataKey="valor" fill={view === "atraso" ? "#f59e0b" : COR} radius={[3, 3, 0, 0]}>
-                <LabelList dataKey="label" position="top" style={{ fontSize: 8, fill: "currentColor" }} />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
 
-      {/* Tops side by side */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Top 10 Mais Frequentes</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {top10Freq.map(d => (
-                <div key={d.dezena} className="flex flex-col items-center gap-1">
-                  <LotteryBall number={parseInt(d.dezena, 10)} size="sm" color={COR} />
-                  <span className="text-xs text-muted-foreground">{d.frequencia}×</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base">Top 10 Mais Atrasadas</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {top10Atraso.map(d => (
-                <div key={d.dezena} className="flex flex-col items-center gap-1">
-                  <LotteryBall number={parseInt(d.dezena, 10)} size="sm" color="#f59e0b" />
-                  <span className="text-xs text-muted-foreground">{d.atraso} c.</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Accordion type="multiple" defaultValue={["pares", "moldura", "linhas", "soma", "especiais"]}>
-
-        {/* Pares / Ímpares */}
-        <AccordionItem value="pares">
-          <AccordionTrigger className="font-semibold">Pares e Ímpares</AccordionTrigger>
-          <AccordionContent>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+          {/* Moldura × Retrato */}
+          {(() => {
+            return (
               <Card>
-                <CardContent className="p-0">
-                  <ResponsiveContainer width="100%" height={220}>
-                    <BarChart data={data.paresImpares.filter(p => p.sorteios > 0)} margin={{ top: 20, right: 4, left: -28, bottom: 4 }}>
-                      <XAxis dataKey="pares" tickFormatter={v => `${v}P/${15 - v}I`} tick={{ fontSize: 9 }} />
-                      <YAxis tick={{ fontSize: 10 }} />
-                      <Tooltip formatter={(v: number) => [v, "Sorteios"]} labelFormatter={l => `${l} Pares / ${15 - Number(l)} Ímpares`} />
-                      <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 9 }} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                  <CompactTable
-                    headers={["Pares", "Ímpares", "Sorteios", "Último concurso"]}
-                    rows={data.paresImpares.filter(p => p.sorteios > 0).map(p => [p.pares, p.impares, p.sorteios, p.ultimoConcurso ?? "—"])}
-                  />
-                </CardContent>
-              </Card>
-              <AdUnit slot="5566778899" format="rectangle" className="w-full" />
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Moldura / Retrato */}
-        <AccordionItem value="moldura">
-          <AccordionTrigger className="font-semibold">Moldura e Retrato (grade 5×5)</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              <Card>
-                <CardContent className="p-4">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    <strong>Moldura</strong> = dezenas nas bordas do volante 5×5 (01–05, 21–25, 01/06/11/16/21, 05/10/15/20/25).
-                    São 16 números de borda e 9 dezenas internas (Retrato).
-                  </p>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={data.molduraRetrato.filter(m => m.sorteios > 0)} margin={{ top: 20, right: 4, left: -28, bottom: 4 }}>
-                      <XAxis dataKey="moldura" tickFormatter={v => `${v}M/${15 - v}R`} tick={{ fontSize: 9 }} />
-                      <YAxis tick={{ fontSize: 10 }} />
-                      <Tooltip formatter={(v: number) => [v, "Sorteios"]} labelFormatter={l => `${l} Moldura / ${15 - Number(l)} Retrato`} />
-                      <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 9 }} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                  <CompactTable
-                    headers={["Moldura", "Retrato", "Sorteios", "Último concurso"]}
-                    rows={data.molduraRetrato.filter(m => m.sorteios > 0).map(m => [m.moldura, m.retrato, m.sorteios, m.ultimoConcurso ?? "—"])}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Linhas e colunas */}
-        <AccordionItem value="linhas">
-          <AccordionTrigger className="font-semibold">Frequência por Linha e Coluna</AccordionTrigger>
-          <AccordionContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-sm">Por Linha (5 linhas de 5 números)</CardTitle></CardHeader>
+                <CardHeader className="pb-3">
+                  <CardTitle>Moldura × Retrato</CardTitle>
+                  <CardDescription>
+                    Quantas dezenas do sorteio caem na borda (moldura) ou no interior (retrato) do volante 5×5?
+                  </CardDescription>
+                </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={data.frequenciaPorLinha} margin={{ top: 20, right: 4, left: -28, bottom: 4 }}>
-                      <XAxis dataKey="faixa" tick={{ fontSize: 10 }} />
-                      <YAxis tick={{ fontSize: 10 }} />
-                      <Tooltip formatter={(v: number) => [v, "Aparições"]} />
-                      <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 9 }} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-2"><CardTitle className="text-sm">Por Coluna (5 colunas)</CardTitle></CardHeader>
-                <CardContent>
-                  <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={data.frequenciaPorColuna} margin={{ top: 20, right: 4, left: -28, bottom: 4 }}>
-                      <XAxis dataKey="coluna" tickFormatter={v => `Col ${v}`} tick={{ fontSize: 10 }} />
-                      <YAxis tick={{ fontSize: 10 }} />
-                      <Tooltip formatter={(v: number) => [v, "Aparições"]} labelFormatter={l => `Coluna ${l}`} />
-                      <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 9 }} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                </CardContent>
-              </Card>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Soma das dezenas */}
-        <AccordionItem value="soma">
-          <AccordionTrigger className="font-semibold">Soma das Dezenas</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-2">
-              {(data.somaDezenas.menor || data.somaDezenas.maior) && (
-                <div className="grid grid-cols-2 gap-4">
-                  {data.somaDezenas.menor && (
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Menor soma</div>
-                        <div className="text-2xl font-black">{data.somaDezenas.menor.valor}</div>
-                        <div className="text-xs text-muted-foreground">Concurso {data.somaDezenas.menor.concurso} ({data.somaDezenas.menor.data})</div>
-                      </CardContent>
-                    </Card>
-                  )}
-                  {data.somaDezenas.maior && (
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Maior soma</div>
-                        <div className="text-2xl font-black">{data.somaDezenas.maior.valor}</div>
-                        <div className="text-xs text-muted-foreground">Concurso {data.somaDezenas.maior.concurso} ({data.somaDezenas.maior.data})</div>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              )}
-              <Card>
-                <CardContent className="p-4">
-                  <ResponsiveContainer width="100%" height={200}>
-                    <BarChart data={data.somaDezenas.intervalos.filter(i => i.sorteios > 0)} margin={{ top: 20, right: 4, left: -28, bottom: 4 }}>
-                      <XAxis dataKey="faixa" tick={{ fontSize: 9 }} interval={0} angle={-25} textAnchor="end" height={40} />
-                      <YAxis tick={{ fontSize: 10 }} />
-                      <Tooltip formatter={(v: number) => [v, "Sorteios"]} />
-                      <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                        <LabelList dataKey="sorteios" position="top" style={{ fontSize: 9 }} />
-                      </Bar>
-                    </BarChart>
-                  </ResponsiveContainer>
-                  <CompactTable
-                    headers={["Intervalo", "Sorteios", "Último concurso"]}
-                    rows={data.somaDezenas.intervalos.filter(i => i.sorteios > 0).map(i => [i.faixa, i.sorteios, i.ultimoConcurso ?? "—"])}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        {/* Números especiais */}
-        <AccordionItem value="especiais">
-          <AccordionTrigger className="font-semibold">Números Especiais</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-6 pt-2">
-              {data.numerosEspeciais.map(ne => (
-                <Card key={ne.tipo}>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base">{ne.label}</CardTitle>
-                    <CardDescription>
-                      {ne.dezenas.length} número{ne.dezenas.length > 1 ? "s" : ""} no volante ·{" "}
-                      Média de <strong>{ne.media.toFixed(2)}</strong> por sorteio
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      {ne.dezenas.map(n => <DezBadge key={n} n={n} active />)}
-                    </div>
-                    <ResponsiveContainer width="100%" height={160}>
-                      <BarChart data={ne.distribuicao.filter(d => d.sorteios > 0)} margin={{ top: 16, right: 4, left: -28, bottom: 4 }}>
-                        <XAxis dataKey="count" tickFormatter={v => `${v} nº`} tick={{ fontSize: 10 }} />
-                        <YAxis tick={{ fontSize: 10 }} />
-                        <Tooltip formatter={(v: number) => [v, "Sorteios"]} labelFormatter={l => `${l} número(s) de ${ne.label}`} />
-                        <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                          <LabelList dataKey="sorteios" position="top" style={{ fontSize: 9 }} />
+                  <div className="h-[200px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={stats.molduraRetrato ?? []} margin={{ top: 22, right: 8, left: -20, bottom: 0 }}>
+                        <XAxis
+                          dataKey="moldura"
+                          tickLine={false}
+                          axisLine={false}
+                          tickFormatter={(v) => `${v}M/${15 - v}R`}
+                          tick={{ fontSize: 11 }}
+                        />
+                        <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                        <Tooltip
+                          cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                          content={({ active, payload }) => {
+                            if (!active || !payload?.length) return null;
+                            const d = payload[0].payload as { moldura: number; retrato: number; sorteios: number };
+                            return (
+                              <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                                <p className="font-semibold mb-0.5">
+                                  {d.moldura} moldura / {d.retrato} retrato
+                                </p>
+                                <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} concursos</p>
+                                {totalMoldura > 0 && (
+                                  <p className="text-muted-foreground">
+                                    {((d.sorteios / totalMoldura) * 100).toFixed(1)}% do total
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          }}
+                        />
+                        <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                          <LabelList dataKey="sorteios" position="top" style={{ fontSize: 11, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+                  </div>
 
-      </Accordion>
+                  <CompactTable
+                    headers={["Moldura", "Retrato", "Concursos", "%", "Última vez"]}
+                    rows={(stats.molduraRetrato ?? [])
+                      .filter(d => d.sorteios > 0)
+                      .map(d => [
+                        d.moldura,
+                        d.retrato,
+                        d.sorteios.toLocaleString("pt-BR"),
+                        totalMoldura > 0
+                          ? `${((d.sorteios / totalMoldura) * 100).toFixed(1)}%`
+                          : "–",
+                        d.ultimoConcurso
+                          ? <Link href={`/lotofacil/resultado/${d.ultimoConcurso}`} className="font-semibold hover:underline whitespace-nowrap" style={{ color: COR }}>Concurso {d.ultimoConcurso} →</Link>
+                          : "–",
+                      ])}
+                  />
+
+                  <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
+                    <AccordionItem value="moldura-retrato" className="border-b-0">
+                      <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
+                        Quais são as dezenas da moldura e do retrato?
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-2 text-xs text-muted-foreground">
+                          <div>
+                            <span className="font-semibold text-foreground">Moldura ({MOLDURA_SET.size} dezenas):{" "}</span>
+                            {Array.from(MOLDURA_SET).sort((a, b) => a - b).map(n => String(n).padStart(2, "0")).join(", ")}
+                          </div>
+                          <div>
+                            <span className="font-semibold text-foreground">Retrato ({RETRATO_SET.size} dezenas):{" "}</span>
+                            {Array.from(RETRATO_SET).sort((a, b) => a - b).map(n => String(n).padStart(2, "0")).join(", ")}
+                          </div>
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            );
+          })()}
+        </div>
+
+        {/* Row 2: Soma das Dezenas | Publicidade */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Soma das Dezenas */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Soma das Dezenas</CardTitle>
+              <CardDescription>
+                {stats.somaDezenas.menor && stats.somaDezenas.maior ? (
+                  <>
+                    Menor:{" "}
+                    {stats.somaDezenas.menor.valor}{" "}
+                    (
+                    <Link
+                      href={`/lotofacil/resultado/${stats.somaDezenas.menor.concurso}`}
+                      className="font-semibold hover:underline"
+                      style={{ color: COR }}
+                    >
+                      Concurso {stats.somaDezenas.menor.concurso} →
+                    </Link>
+                    )
+                    {" "}•{" "}
+                    Maior:{" "}
+                    {stats.somaDezenas.maior.valor}{" "}
+                    (
+                    <Link
+                      href={`/lotofacil/resultado/${stats.somaDezenas.maior.concurso}`}
+                      className="font-semibold hover:underline"
+                      style={{ color: COR }}
+                    >
+                      Concurso {stats.somaDezenas.maior.concurso} →
+                    </Link>
+                    )
+                  </>
+                ) : "Histograma de somas por sorteio"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[260px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={stats.somaDezenas.intervalos.map((d) => ({ ...d, _display: Math.max(d.sorteios, 1) }))}
+                    layout="vertical"
+                    margin={{ top: 4, right: 52, left: 4, bottom: 0 }}
+                  >
+                    <XAxis type="number" tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <YAxis
+                      type="category"
+                      dataKey="faixa"
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 11 }}
+                      width={68}
+                    />
+                    <Tooltip
+                      cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload as { faixa: string; sorteios: number };
+                        return (
+                          <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                            <p className="font-semibold mb-0.5">Soma de {d.faixa.replace("\u2013", " a ").replace("-", " a ")}</p>
+                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} concursos</p>
+                            {totalSomaConcursos > 0 && (
+                              <p className="text-muted-foreground">
+                                {((d.sorteios / totalSomaConcursos) * 100).toFixed(1)}%
+                              </p>
+                            )}
+                          </div>
+                        );
+                      }}
+                    />
+                    <Bar dataKey="_display" fill={COR} radius={[0, 3, 3, 0]}>
+                      <LabelList dataKey="sorteios" position="right" style={{ fontSize: 13, fill: "#333", fontWeight: "bold" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <CompactTable
+                headers={["Soma", "Concursos", "%", "Última vez"]}
+                rows={stats.somaDezenas.intervalos.map(d => [
+                  d.faixa.replace("\u2013", " a ").replace("-", " a "),
+                  d.sorteios.toLocaleString("pt-BR"),
+                  totalSomaConcursos > 0
+                    ? `${((d.sorteios / totalSomaConcursos) * 100).toFixed(1)}%`
+                    : "–",
+                  d.ultimoConcurso
+                    ? <Link href={`/lotofacil/resultado/${d.ultimoConcurso}`} className="font-semibold hover:underline whitespace-nowrap" style={{ color: COR }}>Concurso {d.ultimoConcurso} →</Link>
+                    : "–",
+                ])}
+              />
+            </CardContent>
+          </Card>
+
+          {/* Publicidade */}
+          <div className="flex flex-col gap-4">
+            <AdUnit slot="6677889900" format="rectangle" className="w-full" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Seção 3: Distribuição na Grade 5×5 ── */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Distribuição na Grade 5×5
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Frequência por Linha */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Frequência por Linha</CardTitle>
+              <CardDescription>
+                Ocorrências acumuladas por linha do volante (L1 = 01–05, L2 = 06–10…)
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[220px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={stats.frequenciaPorLinha}
+                    margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
+                  >
+                    <XAxis
+                      dataKey="faixa"
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 11 }}
+                    />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <Tooltip
+                      cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload as { faixa: string; sorteios: number };
+                        return (
+                          <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                            <p className="font-semibold mb-0.5">Linha {d.faixa}</p>
+                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} ocorrências</p>
+                          </div>
+                        );
+                      }}
+                    />
+                    <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <CompactTable
+                headers={["Linha", "Dezenas Sorteadas", "%"]}
+                rows={stats.frequenciaPorLinha.map((d, i) => [
+                  `Linha ${i + 1}`,
+                  d.sorteios.toLocaleString("pt-BR"),
+                  totalFreqLinha > 0
+                    ? `${((d.sorteios / totalFreqLinha) * 100).toFixed(1)}%`
+                    : "–",
+                ])}
+              />
+
+              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
+                <AccordionItem value="linhas" className="border-b-0">
+                  <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
+                    Quais são as dezenas em cada linha?
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-1 text-xs text-muted-foreground">
+                      {Array.from({ length: 5 }, (_, i) => (
+                        <div key={i}>
+                          <span className="font-semibold text-foreground">Linha {i + 1}:{" "}</span>
+                          {Array.from({ length: 5 }, (_, j) => i * 5 + j + 1)
+                            .map(n => String(n).padStart(2, "0"))
+                            .join(", ")}
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </CardContent>
+          </Card>
+
+          {/* Frequência por Coluna */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle>Frequência por Coluna</CardTitle>
+              <CardDescription>
+                Col. 1 = {"{"} 01,06,11,16,21 {"}"} … Col. 5 = {"{"} 05,10,15,20,25 {"}"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-[220px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={stats.frequenciaPorColuna}
+                    margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
+                  >
+                    <XAxis
+                      dataKey="coluna"
+                      tickLine={false}
+                      axisLine={false}
+                      tick={{ fontSize: 11 }}
+                      tickFormatter={(v) => `C${v}`}
+                    />
+                    <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                    <Tooltip
+                      cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                      content={({ active, payload }) => {
+                        if (!active || !payload?.length) return null;
+                        const d = payload[0].payload as { coluna: number; sorteios: number };
+                        const dezenas = Array.from({ length: 5 }, (_, i) => d.coluna + i * 5)
+                          .map(n => String(n).padStart(2, "0"))
+                          .join(", ");
+                        return (
+                          <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                            <p className="font-semibold mb-0.5">Coluna {d.coluna}</p>
+                            <p className="text-muted-foreground text-xs mb-0.5">{dezenas}</p>
+                            <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} ocorrências</p>
+                          </div>
+                        );
+                      }}
+                    />
+                    <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+
+              <CompactTable
+                headers={["Coluna", "Dezenas Sorteadas", "%"]}
+                rows={stats.frequenciaPorColuna.map(d => [
+                  `Coluna ${d.coluna}`,
+                  d.sorteios.toLocaleString("pt-BR"),
+                  totalFreqColuna > 0
+                    ? `${((d.sorteios / totalFreqColuna) * 100).toFixed(1)}%`
+                    : "–",
+                ])}
+              />
+
+              <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
+                <AccordionItem value="colunas" className="border-b-0">
+                  <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
+                    Quais são as dezenas em cada coluna?
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="space-y-1 text-xs text-muted-foreground">
+                      {Array.from({ length: 5 }, (_, i) => i + 1).map(col => {
+                        const dezenas = Array.from({ length: 5 }, (_, j) => col + j * 5)
+                          .map(n => String(n).padStart(2, "0"))
+                          .join(", ");
+                        return (
+                          <div key={col}>
+                            <span className="font-semibold text-foreground">Coluna {col}:{" "}</span>
+                            {dezenas}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* ── Seção 4: Números Especiais ── */}
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Números Especiais
+        </h2>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <div className="lg:col-span-2">
+            <Card>
+              <CardHeader className="pb-0">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div>
+                    <CardTitle>Sequências Matemáticas</CardTitle>
+                    <CardDescription className="mt-1">
+                      E mais uma vez fica provado que a Matemática é a melhor de todas!
+                    </CardDescription>
+                  </div>
+                  <div className="flex gap-1 bg-muted rounded-lg p-1">
+                    {stats.numerosEspeciais.map((item, i) => (
+                      <button
+                        key={item.tipo}
+                        onClick={() => setTabEspecial(i)}
+                        className={cn(
+                          "px-3 py-1.5 text-sm font-medium rounded-md transition-colors",
+                          tabEspecial === i
+                            ? "bg-background shadow text-foreground"
+                            : "text-muted-foreground hover:text-foreground",
+                        )}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </CardHeader>
+
+              {especial && (
+                <CardContent className="pt-5 space-y-5">
+                  <div className="flex flex-wrap gap-x-8 gap-y-1 text-sm">
+                    <div>
+                      <span className="text-muted-foreground">Total: </span>
+                      <span className="font-semibold">{especial.quantidadeNaFaixa} dezenas entre 01 e 25</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Média de ocorrências por sorteio: </span>
+                      <span className="font-semibold">
+                        {especial.media.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5">
+                    {Array.from({ length: 25 }, (_, i) => i + 1).map(n => (
+                      <DezBadge key={n} n={n} active={especialSet.has(n)} />
+                    ))}
+                  </div>
+
+                  {(() => {
+                    const titleMap: Record<string, string> = {
+                      primos:       "Distribuição da quantidade de números primos por sorteio",
+                      fibonacci:    "Distribuição da quantidade de números de Fibonacci por sorteio",
+                      triangulares: "Distribuição da quantidade de números triangulares por sorteio",
+                    };
+                    const totalEspecial = especial.distribuicao.reduce((a, d) => a + d.sorteios, 0);
+                    return (
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground mb-2">
+                          {titleMap[especial.tipo] ?? especial.label}
+                        </p>
+                        <div className="h-[180px]">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                              data={especial.distribuicao.filter(d => d.sorteios > 0)}
+                              margin={{ top: 22, right: 8, left: -20, bottom: 0 }}
+                            >
+                              <XAxis
+                                dataKey="count"
+                                tickLine={false}
+                                axisLine={false}
+                                tick={{ fontSize: 11 }}
+                                tickFormatter={(v) => `${v}`}
+                              />
+                              <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                              <Tooltip
+                                cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                                content={({ active, payload }) => {
+                                  if (!active || !payload?.length) return null;
+                                  const d = payload[0].payload as { count: number; sorteios: number };
+                                  return (
+                                    <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                                      <p className="font-semibold mb-0.5">
+                                        {d.count} {especial.label.toLowerCase()} no sorteio
+                                      </p>
+                                      <p className="text-muted-foreground">
+                                        {d.sorteios.toLocaleString("pt-BR")} concursos
+                                      </p>
+                                    </div>
+                                  );
+                                }}
+                              />
+                              <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
+                                <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                              </Bar>
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+
+                        <CompactTable
+                          headers={[especial.label, "Concursos", "%", "Última vez"]}
+                          rows={especial.distribuicao.map(d => [
+                            d.count,
+                            d.sorteios.toLocaleString("pt-BR"),
+                            totalEspecial > 0
+                              ? `${((d.sorteios / totalEspecial) * 100).toFixed(1)}%`
+                              : "–",
+                            d.ultimoConcurso
+                              ? <Link href={`/lotofacil/resultado/${d.ultimoConcurso}`} className="font-semibold hover:underline whitespace-nowrap" style={{ color: COR }}>Concurso {d.ultimoConcurso} →</Link>
+                              : "–",
+                          ])}
+                        />
+                      </div>
+                    );
+                  })()}
+                </CardContent>
+              )}
+            </Card>
+          </div>
+          <div className="flex flex-col gap-6">
+            <AdUnit slot="5544332211" format="rectangle" className="w-full" />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
