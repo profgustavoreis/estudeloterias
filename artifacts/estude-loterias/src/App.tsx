@@ -25,6 +25,8 @@ import LotofacilResultadosAnteriores from "@/pages/lotofacil/resultados";
 import LotofacilEstatisticas from "@/pages/lotofacil/estatisticas";
 import LotofacilEstatisticasTabela from "@/pages/lotofacil/estatisticas-tabela";
 import LotofacilGerador from "@/pages/lotofacil/gerador";
+import LotofacilCalendario from "@/pages/lotofacil/calendario";
+import LotofacilDaIndependencia from "@/pages/lotofacil/lotofacil-da-independencia";
 import LotofacilSimulador from "@/pages/lotofacil/simulador";
 import LotofacilConferidor from "@/pages/lotofacil/conferidor";
 import LotofacilComoJogar from "@/pages/lotofacil/como-jogar";
@@ -68,6 +70,8 @@ function Router() {
         <Route path="/lotofacil/tabela-de-dezenas" component={LotofacilEstatisticasTabela} />
         <Route path="/lotofacil/resumo-estatistico" component={LotofacilEstatisticas} />
         <Route path="/lotofacil/gerador" component={LotofacilGerador} />
+        <Route path="/lotofacil/calendario" component={LotofacilCalendario} />
+        <Route path="/lotofacil/lotofacil-da-independencia" component={LotofacilDaIndependencia} />
         <Route path="/lotofacil/simulador" component={LotofacilSimulador} />
         <Route path="/lotofacil/conferidor" component={LotofacilConferidor} />
         <Route path="/lotofacil/como-jogar" component={LotofacilComoJogar} />

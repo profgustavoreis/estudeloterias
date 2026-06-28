@@ -358,6 +358,19 @@ paths:
                 items:
                   $ref: "#/components/schemas/Sorteio"
 
+  /lotofacil/lotofacil-da-independencia:
+    get:
+      operationId: getLotofacilDaIndependencia
+      tags: [lotofacil]
+      summary: Informações e histórico da Lotofácil da Independência
+      responses:
+        "200":
+          description: Informações da Lotofácil da Independência
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LotofacilDaIndependencia"
+
   /lotofacil/simulador:
     post:
       operationId: simularLotofacil
@@ -1078,6 +1091,24 @@ components:
         - maiorPremioAno
         - totalGanhadores15
         - ultimoConcurso
+
+    LotofacilDaIndependencia:
+      type: object
+      properties:
+        anoAtual:
+          type: integer
+        dataProximaEdicao:
+          type: string
+        valorEstimado:
+          type: ["number", "null"]
+        historico:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoLotofacil"
+      required:
+        - anoAtual
+        - dataProximaEdicao
+        - historico
 
     SimuladorInputLotofacil:
       type: object

@@ -330,6 +330,14 @@ export interface ResumoLotofacil {
   ultimoConcurso: number;
 }
 
+export interface LotofacilDaIndependencia {
+  anoAtual: number;
+  dataProximaEdicao: string;
+  /** @nullable */
+  valorEstimado?: number | null;
+  historico: ResultadoLotofacil[];
+}
+
 export type SimuladorInputLotofacilFiltro = typeof SimuladorInputLotofacilFiltro[keyof typeof SimuladorInputLotofacilFiltro];
 
 

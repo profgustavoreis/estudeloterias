@@ -466,6 +466,33 @@ router.get("/lotofacil/calendario", async (req, res) => {
   }
 });
 
+// GET /api/lotofacil/lotofacil-da-independencia
+router.get("/lotofacil/lotofacil-da-independencia", async (req, res) => {
+  try {
+    const rows = await db
+      .select()
+      .from(lotteryResultsTable)
+      .where(eq(lotteryResultsTable.modalidade, MODALIDADE))
+      .orderBy(asc(lotteryResultsTable.concurso));
+
+    const independencia = rows.filter(r => {
+      const parts = r.data.split("/");
+      return parts[0] === "07" && parts[1] === "09";
+    });
+
+    const anoAtual = new Date().getFullYear();
+    res.json({
+      anoAtual,
+      dataProximaEdicao: `07/09/${anoAtual}`,
+      valorEstimado: null,
+      historico: independencia.reverse().map(toResultado),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get lotofacil da independencia");
+    res.status(500).json({ error: "Erro ao buscar Lotofácil da Independência" });
+  }
+});
+
 // POST /api/lotofacil/simulador
 router.post("/lotofacil/simulador", async (req, res) => {
   try {

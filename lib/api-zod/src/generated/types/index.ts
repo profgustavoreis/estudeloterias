@@ -22,6 +22,7 @@ export * from './getMegaSenaResultadosParams';
 export * from './healthStatus';
 export * from './jogoGerado';
 export * from './loteriaSummary';
+export * from './lotofacilDaIndependencia';
 export * from './megaDaVirada';
 export * from './molduraRetrato';
 export * from './numerosEspeciaisItem';

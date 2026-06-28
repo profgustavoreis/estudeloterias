@@ -30,6 +30,7 @@ import type {
   HealthStatus,
   JogoGerado,
   LoteriaSummary,
+  LotofacilDaIndependencia,
   MegaDaVirada,
   Resultado,
   ResultadoLotofacil,
@@ -1433,6 +1434,83 @@ export function useGetLotofacilCalendario<TData = Awaited<ReturnType<typeof getL
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetLotofacilCalendarioQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetLotofacilDaIndependenciaUrl = () => {
+
+
+
+
+  return `/api/lotofacil/lotofacil-da-independencia`
+}
+
+/**
+ * @summary Informações e histórico da Lotofácil da Independência
+ */
+export const getLotofacilDaIndependencia = async ( options?: RequestInit): Promise<LotofacilDaIndependencia> => {
+
+  return customFetch<LotofacilDaIndependencia>(getGetLotofacilDaIndependenciaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLotofacilDaIndependenciaQueryKey = () => {
+    return [
+    `/api/lotofacil/lotofacil-da-independencia`
+    ] as const;
+    }
+
+
+export const getGetLotofacilDaIndependenciaQueryOptions = <TData = Awaited<ReturnType<typeof getLotofacilDaIndependencia>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotofacilDaIndependencia>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLotofacilDaIndependenciaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotofacilDaIndependencia>>> = ({ signal }) => getLotofacilDaIndependencia({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotofacilDaIndependencia>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLotofacilDaIndependenciaQueryResult = NonNullable<Awaited<ReturnType<typeof getLotofacilDaIndependencia>>>
+export type GetLotofacilDaIndependenciaQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Informações e histórico da Lotofácil da Independência
+ */
+
+export function useGetLotofacilDaIndependencia<TData = Awaited<ReturnType<typeof getLotofacilDaIndependencia>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotofacilDaIndependencia>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLotofacilDaIndependenciaQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

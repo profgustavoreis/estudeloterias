@@ -552,6 +552,32 @@ export const GetLotofacilCalendarioResponse = zod.array(GetLotofacilCalendarioRe
 
 
 /**
+ * @summary Informações e histórico da Lotofácil da Independência
+ */
+export const GetLotofacilDaIndependenciaResponse = zod.object({
+  "anoAtual": zod.number(),
+  "dataProximaEdicao": zod.string(),
+  "valorEstimado": zod.number().nullish(),
+  "historico": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+}))
+})
+
+
+/**
  * @summary Simula uma aposta em todos os concursos anteriores da Lotofácil
  */
 export const simularLotofacilBodyDezenasMin = 15;

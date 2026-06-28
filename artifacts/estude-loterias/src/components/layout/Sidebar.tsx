@@ -37,6 +37,26 @@ export function Sidebar() {
         { href: "/mega-sena/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
         { href: "/mega-sena/mega-da-virada", label: "Mega da Virada", icon: Gift },
       ]
+    },
+    {
+      title: "Lotofácil",
+      items: [
+        { href: "/lotofacil", label: "Painel Principal", icon: Target },
+        { href: "/lotofacil/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/lotofacil/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/lotofacil/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/lotofacil/gerador", label: "Gerador de Jogos", icon: Sparkles },
+        { href: "/lotofacil/calendario", label: "Calendário", icon: CalendarDays },
+      ]
+    },
+    {
+      title: "Lotofácil — Info",
+      items: [
+        { href: "/lotofacil/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/lotofacil/premiacao", label: "Premiação", icon: Target },
+        { href: "/lotofacil/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+        { href: "/lotofacil/lotofacil-da-independencia", label: "Lotofácil da Independência", icon: Gift },
+      ]
     }
   ];
 
