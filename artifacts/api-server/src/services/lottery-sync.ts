@@ -225,6 +225,62 @@ export async function seedInitialData(modalidade: string): Promise<void> {
   }
 }
 
+export async function backfillGaps(modalidade: string): Promise<void> {
+  const raw = await fetchCaixa(modalidade);
+  if (!raw) {
+    logger.warn({ modalidade }, "backfillGaps: could not fetch latest");
+    return;
+  }
+  const latest = normalizeResult(raw, modalidade);
+  await upsertResult(latest);
+  const ceiling = latest.concurso;
+  if (!ceiling) return;
+
+  // Find all concursos in [1..ceiling] missing from DB using SQL gap detection
+  const missingRows = await db.execute(sql`
+    WITH existing AS (
+      SELECT concurso FROM ${lotteryResultsTable}
+      WHERE ${lotteryResultsTable.modalidade} = ${modalidade}
+    )
+    SELECT gs.n::integer AS concurso
+    FROM generate_series(1, ${ceiling}) AS gs(n)
+    WHERE NOT EXISTS (SELECT 1 FROM existing WHERE concurso = gs.n)
+    ORDER BY gs.n
+  `);
+
+  const missing = (missingRows.rows as { concurso: number }[]).map((r) => r.concurso);
+  logger.info({ modalidade, count: missing.length, ceiling }, "backfillGaps: missing concursos found");
+
+  if (missing.length === 0) {
+    logger.info({ modalidade }, "backfillGaps: no gaps, DB is complete");
+    return;
+  }
+
+  let succeeded = 0;
+  let failed = 0;
+  for (let i = 0; i < missing.length; i++) {
+    const concurso = missing[i];
+    try {
+      const rawItem = await fetchCaixa(modalidade, concurso);
+      if (rawItem) {
+        await upsertResult(normalizeResult(rawItem, modalidade));
+        succeeded++;
+      } else {
+        failed++;
+      }
+    } catch (err) {
+      logger.error({ err, modalidade, concurso }, "backfillGaps: fetch/upsert error");
+      failed++;
+    }
+    if ((i + 1) % 100 === 0) {
+      logger.info({ modalidade, progress: `${i + 1}/${missing.length}`, succeeded, failed }, "backfillGaps progress");
+    }
+    if (i < missing.length - 1) await sleep(150);
+  }
+
+  logger.info({ modalidade, succeeded, failed, total: missing.length }, "backfillGaps complete");
+}
+
 export async function runSync(): Promise<void> {
   logger.info("Running lottery sync");
   for (const modalidade of MODALIDADES) {
