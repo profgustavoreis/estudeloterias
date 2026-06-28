@@ -1,25 +1,59 @@
 import { Link } from "wouter";
 import { TopNav } from "./TopNav";
 
-const megaSenaLinks = [
-  { href: "/mega-sena", label: "Painel Principal" },
-  { href: "/mega-sena/resultado", label: "Último Resultado" },
-  { href: "/mega-sena/resultados", label: "Resultados Anteriores" },
-  { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico" },
-  { href: "/mega-sena/tabela-de-dezenas", label: "Tabela de Dezenas" },
-  { href: "/mega-sena/gerador", label: "Gerador de Jogos" },
-  { href: "/mega-sena/simulador", label: "Simulador Histórico" },
-  { href: "/mega-sena/conferidor", label: "Conferidor de Apostas" },
+const loterias = [
+  {
+    name: "Mega-Sena",
+    href: "/mega-sena",
+    active: true,
+    links: [
+      { href: "/mega-sena", label: "Painel Principal" },
+      { href: "/mega-sena/resultado", label: "Último Resultado" },
+      { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico" },
+      { href: "/mega-sena/gerador", label: "Gerador de Jogos" },
+      { href: "/mega-sena/como-jogar", label: "Como Jogar" },
+      { href: "/mega-sena/perguntas-frequentes", label: "Perguntas Frequentes" },
+    ],
+  },
+  {
+    name: "Lotofácil",
+    href: "#",
+    active: false,
+    soon: true,
+  },
+  {
+    name: "Quina",
+    href: "#",
+    active: false,
+    soon: true,
+  },
+  {
+    name: "Dupla Sena",
+    href: "#",
+    active: false,
+    soon: true,
+  },
+  {
+    name: "Lotomania",
+    href: "#",
+    active: false,
+    soon: true,
+  },
+  {
+    name: "Timemania",
+    href: "#",
+    active: false,
+    soon: true,
+  },
+  {
+    name: "Dia de Sorte",
+    href: "#",
+    active: false,
+    soon: true,
+  },
 ];
 
-const megaSenaInfoLinks = [
-  { href: "/mega-sena/como-jogar", label: "Como Jogar" },
-  { href: "/mega-sena/premiacao", label: "Premiação" },
-  { href: "/mega-sena/perguntas-frequentes", label: "Perguntas Frequentes" },
-  { href: "/mega-sena/mega-da-virada", label: "Mega da Virada" },
-];
-
-const institucionalLinks = [
+const institucional = [
   { href: "/sobre", label: "Sobre o Site" },
   { href: "/contato", label: "Contato" },
   { href: "/privacidade", label: "Política de Privacidade" },
@@ -75,48 +109,57 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </p>
             </div>
 
-            {/* Col 2 — Mega-Sena Ferramentas */}
+            {/* Col 2 — Loterias */}
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Mega-Sena — Ferramentas
+                Loterias
               </div>
-              <ul className="space-y-2">
-                {megaSenaLinks.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {l.label}
-                    </Link>
+              <ul className="space-y-2.5">
+                {loterias.map((l) => (
+                  <li key={l.name} className="space-y-1">
+                    {l.active ? (
+                      <Link
+                        href={l.href}
+                        className="text-xs font-semibold text-foreground hover:text-[#009640] transition-colors"
+                      >
+                        {l.name}
+                      </Link>
+                    ) : (
+                      <span className="text-xs font-semibold text-muted-foreground/60">
+                        {l.name}
+                      </span>
+                    )}
+                    {l.links && (
+                      <ul className="space-y-1 pl-3">
+                        {l.links.map((sl) => (
+                          <li key={sl.href}>
+                            <Link
+                              href={sl.href}
+                              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                              {sl.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {l.soon && (
+                      <span className="text-[10px] text-muted-foreground/50 block pl-3">
+                        em breve
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
 
-            {/* Col 3 — Mega-Sena Informações */}
+            {/* Col 3 — Institucional */}
             <div className="space-y-3">
               <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Mega-Sena — Informações
-              </div>
-              <ul className="space-y-2">
-                {megaSenaInfoLinks.map((l) => (
-                  <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="pt-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Institucional
               </div>
               <ul className="space-y-2">
-                {institucionalLinks.map((l) => (
+                {institucional.map((l) => (
                   <li key={l.href}>
                     <Link
                       href={l.href}
