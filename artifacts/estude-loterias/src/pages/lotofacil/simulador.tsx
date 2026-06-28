@@ -28,15 +28,43 @@ const FILTRO_LABELS: Record<Filtro, string> = {
 const PREMIADO_EMOJI = "⭐";
 const PAGE_SIZE = 20;
 
+// ── Combinatória ─────────────────────────────────────────────────────────────
+function comb(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  k = Math.min(k, n - k);
+  let r = 1;
+  for (let i = 0; i < k; i++) r = (r * (n - i)) / (i + 1);
+  return Math.round(r);
+}
+
+// "1 em X" para k acertos com N dezenas escolhidas na Lotofácil (25 números, sorteiam 15)
+function probLotofacil(k: number, N: number): string {
+  const total = comb(25, 15); // 3.268.760
+  const ways = comb(N, k) * comb(25 - N, 15 - k);
+  if (ways <= 0) return "—";
+  const x = total / ways;
+  if (x >= 100) return `1 em ${Math.round(x).toLocaleString("pt-BR")}`;
+  if (x >= 10)  return `1 em ${Math.round(x).toLocaleString("pt-BR")}`;
+  return `1 em ${x.toFixed(2).replace(".", ",")}`;
+}
+
 export default function LotofacilSimulador() {
   const [selecionadas, setSelecionadas] = useState<Set<number>>(new Set());
   const [filtro, setFiltro] = useState<Filtro>("premiados");
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
+  const [nSimulado, setNSimulado] = useState<number>(15);
   const [infoAberta, setInfoAberta] = useState(false);
   const [paginaTabela, setPaginaTabela] = useState(1);
 
   const simular = useSimularLotofacil({
-    mutation: { onSuccess: data => { setResultado(data); setPaginaTabela(1); } },
+    mutation: {
+      onSuccess: data => {
+        setResultado(data);
+        setNSimulado(selecionadas.size);
+        setPaginaTabela(1);
+      },
+    },
   });
 
   const toggleDezena = (n: number) => {
@@ -67,6 +95,13 @@ export default function LotofacilSimulador() {
   const totalPaginasTabela = Math.max(1, Math.ceil(totalConcursos / PAGE_SIZE));
   const paginaAtual = Math.min(paginaTabela, totalPaginasTabela);
   const concursosPagina = resultado?.concursos.slice((paginaAtual - 1) * PAGE_SIZE, paginaAtual * PAGE_SIZE) ?? [];
+
+  // Linhas da tabela de resumo: acertos 15 → 5
+  const resumoLinhas = resultado?.resumo.filter(r => r.acertos >= 5 && r.acertos <= 15) ?? [];
+
+  const rodapeProb = nSimulado === 15
+    ? "As probabilidades indicadas correspondem a uma aposta simples de 15 dezenas."
+    : `As probabilidades indicadas correspondem a uma aposta múltipla de ${nSimulado} dezenas.`;
 
   return (
     <div className="space-y-6">
@@ -205,36 +240,49 @@ export default function LotofacilSimulador() {
                   Resultado da Simulação
                 </CardTitle>
                 <CardDescription>
+                  {nSimulado} dezenas escolhidas •{" "}
                   {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
                   {acertosGanhadores > 0
                     ? <span className="font-semibold" style={{ color: COR }}>{acertosGanhadores} premiado{acertosGanhadores > 1 ? "s" : ""}</span>
                     : "nenhum premiado"}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pb-3">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="text-center">Acertos</TableHead>
-                      <TableHead className="text-center">Concursos</TableHead>
-                      <TableHead className="text-center">Situação</TableHead>
+                      <TableHead className="text-center w-20">Acertos</TableHead>
+                      <TableHead className="text-center">Probabilidade</TableHead>
+                      <TableHead className="text-center w-24">Concursos</TableHead>
+                      <TableHead className="text-center w-20">Situação</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {resultado.resumo.filter(r => r.acertos >= 11).map(r => {
+                    {resumoLinhas.map(r => {
                       const premiado = r.acertos >= 11;
+                      const prob = probLotofacil(r.acertos, nSimulado);
                       return (
-                        <TableRow key={r.acertos} className={cn(premiado && "font-semibold")} style={premiado ? { backgroundColor: COR + "0d" } : {}}>
+                        <TableRow
+                          key={r.acertos}
+                          className={cn(premiado && "font-semibold")}
+                          style={premiado ? { backgroundColor: COR + "0d" } : {}}
+                        >
                           <TableCell className="text-center font-bold">{r.acertos}</TableCell>
+                          <TableCell className="text-center text-sm tabular-nums text-muted-foreground">{prob}</TableCell>
                           <TableCell className="text-center">{r.contagem.toLocaleString("pt-BR")}</TableCell>
                           <TableCell className="text-center">
-                            {premiado ? <span>{PREMIADO_EMOJI}</span> : <span className="text-muted-foreground">—</span>}
+                            {premiado
+                              ? <span>{PREMIADO_EMOJI}</span>
+                              : <span className="text-muted-foreground text-xs">não premiado</span>}
                           </TableCell>
                         </TableRow>
                       );
                     })}
                   </TableBody>
                 </Table>
+                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">
+                  {rodapeProb}
+                </p>
               </CardContent>
             </Card>
           )}
