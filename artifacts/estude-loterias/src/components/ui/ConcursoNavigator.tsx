@@ -1,16 +1,16 @@
 import { useState, useRef } from "react";
 import { useLocation } from "wouter";
 
-const BRAND = "#009640";
-
 interface ConcursoNavigatorProps {
   concurso: number;
   isLatest: boolean;
   latestConcurso: number;
+  basePath: string;
+  color?: string;
   simple?: boolean;
 }
 
-export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple = false }: ConcursoNavigatorProps) {
+export function ConcursoNavigator({ concurso, isLatest, latestConcurso, basePath, color = "#009640", simple = false }: ConcursoNavigatorProps) {
   const [, navigate] = useLocation();
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple =
     if (n < 1) return;
     setError(null);
     setInput("");
-    navigate(`/mega-sena/resultado/${n}`);
+    navigate(`${basePath}/${n}`);
   }
 
   function handleSearch() {
@@ -66,7 +66,7 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple =
           <button
             onClick={handleSearch}
             className="px-3 py-1.5 text-sm font-semibold rounded-md border transition-colors whitespace-nowrap"
-            style={{ borderColor: BRAND, color: BRAND }}
+            style={{ borderColor: color, color }}
           >
             Buscar
           </button>
@@ -99,7 +99,7 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple =
           onClick={() => go(concurso - 1)}
           disabled={concurso <= 1}
           className="text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:underline whitespace-nowrap"
-          style={{ color: BRAND }}
+          style={{ color }}
         >
           &lt; Anterior
         </button>
@@ -107,7 +107,7 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso, simple =
           onClick={() => go(concurso + 1)}
           disabled={isLatest}
           className="text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:underline whitespace-nowrap"
-          style={{ color: BRAND }}
+          style={{ color }}
         >
           Próximo &gt;
         </button>

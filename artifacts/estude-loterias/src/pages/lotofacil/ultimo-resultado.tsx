@@ -242,7 +242,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoLoto
           </h1>
           <p className="text-muted-foreground mt-1 text-sm">Sorteio realizado dia {formatDateShort(resultado.data)}</p>
         </div>
-        <ConcursoNavigator concurso={resultado.concurso} isLatest={isLatest} latestConcurso={latestConcurso} />
+        <ConcursoNavigator concurso={resultado.concurso} isLatest={isLatest} latestConcurso={latestConcurso} basePath="/lotofacil/resultado" color={BRAND} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

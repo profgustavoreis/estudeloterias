@@ -78,6 +78,8 @@ export default function LotofacilHub() {
           concurso={resultado.concurso}
           isLatest={true}
           latestConcurso={resultado.concurso}
+          basePath="/lotofacil/resultado"
+          color="#930089"
           simple
         />
       </div>

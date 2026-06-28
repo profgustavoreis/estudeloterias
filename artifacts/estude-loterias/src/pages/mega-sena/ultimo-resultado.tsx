@@ -331,6 +331,8 @@ function ResultadoView({
           concurso={resultado.concurso}
           isLatest={isLatest}
           latestConcurso={latestConcurso}
+          basePath="/mega-sena/resultado"
+          color={BRAND}
         />
       </div>
 

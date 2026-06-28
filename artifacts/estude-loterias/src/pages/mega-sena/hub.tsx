@@ -78,6 +78,8 @@ export default function MegaSenaHub() {
           concurso={resultado.concurso}
           isLatest={true}
           latestConcurso={resultado.concurso}
+          basePath="/mega-sena/resultado"
+          color="#009640"
           simple
         />
       </div>
