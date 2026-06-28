@@ -7,7 +7,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Link } from "wouter";
-import { BarChart3, BookOpen, ClipboardCheck, Dices, FlaskConical, HelpCircle, List, Sparkles, Table as TableIcon, Target, Trophy } from "lucide-react";
+import { BarChart3, BookOpen, ClipboardCheck, Dices, Flag, FlaskConical, Gift, HelpCircle, List, Sparkles, Table as TableIcon, Target, Trophy, Wallet } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#930089";
@@ -26,6 +26,7 @@ export default function LotofacilHub() {
     { href: "/lotofacil/como-jogar", label: "Como Jogar", icon: BookOpen, desc: "Regras e formas de apostar" },
     { href: "/lotofacil/premiacao", label: "Premiação", icon: Trophy, desc: "Faixas e percentuais de prêmio" },
     { href: "/lotofacil/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+    { href: "/lotofacil/lotofacil-da-independencia", label: "Lotofácil da Independência", icon: Gift, desc: "Tudo sobre o sorteio especial" },
   ];
 
   if (isLoading) {
@@ -39,6 +40,8 @@ export default function LotofacilHub() {
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
           <Skeleton className="h-64" />
           <Skeleton className="h-64" />
         </div>
@@ -80,7 +83,8 @@ export default function LotofacilHub() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Card principal: dezenas */}
+
+        {/* ── Card principal: dezenas ── */}
         <Card className="lg:col-span-2 border-t-4" style={{ borderTopColor: COR }}>
           <CardHeader>
             <div className="flex justify-between items-start">
@@ -94,13 +98,16 @@ export default function LotofacilHub() {
             </div>
           </CardHeader>
           <CardContent className="space-y-6">
+            {/* Dezenas */}
             <div className="flex justify-center flex-wrap gap-2 py-6 bg-muted/30 rounded-xl border border-border/50">
               {resultado.dezenas.map((num, i) => (
                 <LotteryBall key={i} number={num} size="md" color={COR} />
               ))}
             </div>
 
+            {/* Resultado + próximo sorteio */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Resultado */}
               <div className="p-4 bg-muted/50 rounded-lg border border-border">
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                   Prêmio Principal
@@ -120,6 +127,7 @@ export default function LotofacilHub() {
                 )}
               </div>
 
+              {/* Próximo sorteio */}
               <div className="p-4 bg-muted/50 rounded-lg border border-border">
                 <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                   Próximo Sorteio
@@ -134,10 +142,10 @@ export default function LotofacilHub() {
           </CardContent>
         </Card>
 
-        {/* Publicidade */}
+        {/* ── Publicidade ── */}
         <AdUnit slot="5566778899" format="rectangle" className="w-full" />
 
-        {/* Rateio dos Prêmios */}
+        {/* ── Rateio dos Prêmios ── */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -177,23 +185,37 @@ export default function LotofacilHub() {
           </CardContent>
         </Card>
 
-        {/* Acesso rápido lado a lado com rateio */}
+        {/* ── Dados do Sorteio ── */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Sobre a Lotofácil</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Wallet className="w-5 h-5 text-primary" />
+              Dados do Sorteio
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-muted-foreground">
-            <div className="flex justify-between"><span>Números no volante</span><strong className="text-foreground">25 (01–25)</strong></div>
-            <div className="flex justify-between"><span>Dezenas sorteadas</span><strong className="text-foreground">15</strong></div>
-            <div className="flex justify-between"><span>Aposta mínima</span><strong className="text-foreground">15 números</strong></div>
-            <div className="flex justify-between"><span>Valor mínimo</span><strong className="text-foreground">R$ 3,00</strong></div>
-            <div className="flex justify-between"><span>Dias de sorteio</span><strong className="text-foreground">Seg / Qua / Sex</strong></div>
-            <div className="flex justify-between"><span>Premiado a partir de</span><strong className="text-foreground">11 acertos</strong></div>
+          <CardContent className="space-y-4">
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">Arrecadação Total</div>
+              <div className="text-2xl font-bold">{formatCurrency(resultado.arrecadacaoTotal)}</div>
+            </div>
+            <div>
+              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                <div className="flex items-center gap-1">
+                  <Flag className="w-3 h-3" />
+                  Sorteio Especial · 7 de Setembro
+                </div>
+              </div>
+              <Link href="/lotofacil/lotofacil-da-independencia">
+                <span className="text-sm font-semibold hover:underline" style={{ color: COR }}>
+                  Lotofácil da Independência →
+                </span>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Ferramentas */}
+      {/* ── Acesso Rápido ── */}
       <div>
         <h2 className="text-xl font-bold mb-4">Acesso Rápido</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -201,7 +223,7 @@ export default function LotofacilHub() {
             const Icon = link.icon;
             return (
               <Link key={link.href} href={link.href}>
-                <Card className="hover:border-[#930089]/50 hover:bg-muted/30 transition-colors cursor-pointer h-full">
+                <Card className="hover:bg-muted/30 transition-colors cursor-pointer h-full" style={{ ["--hover-border" as string]: COR }}>
                   <CardContent className="p-6 flex items-start gap-4">
                     <div className="p-3 rounded-lg" style={{ backgroundColor: COR + "20", color: COR }}>
                       <Icon className="w-5 h-5" />
