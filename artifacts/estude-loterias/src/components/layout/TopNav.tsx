@@ -215,10 +215,10 @@ export function TopNav() {
             onClick={() => { setOpenMenu(null); setMobileOpen(false); }}
             className="flex items-center gap-2.5 shrink-0"
           >
-            <div className="w-8 h-8 rounded-lg bg-[#009640] flex items-center justify-center text-white font-bold text-sm leading-none">EL</div>
-            <span className="font-bold text-lg tracking-tight hidden sm:block">
-              <span className="text-[#009640]">Estude</span>
-              <span className="text-foreground"> Loterias</span>
+            <img src="/logo.png" alt="Estude Loterias" className="w-8 h-8 rounded-lg" />
+            <span className="text-lg tracking-tight hidden sm:block" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              <span className="text-[#009640] font-normal">estude</span>
+              <span className="text-foreground font-bold">loterias</span>
             </span>
           </Link>
 
@@ -281,8 +281,11 @@ export function TopNav() {
         <div className="fixed inset-0 z-50 bg-background flex flex-col md:hidden">
           <div className="h-16 border-b border-border flex items-center justify-between px-4">
             <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#009640] flex items-center justify-center text-white font-bold text-sm">EL</div>
-              <span className="font-bold text-lg"><span className="text-[#009640]">Estude</span> Loterias</span>
+              <img src="/logo.png" alt="Estude Loterias" className="w-8 h-8 rounded-lg" />
+              <span className="text-lg" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                <span className="text-[#009640] font-normal">estude</span>
+                <span className="text-foreground font-bold">loterias</span>
+              </span>
             </Link>
             <button onClick={() => setMobileOpen(false)} className="p-2 rounded-md hover:bg-muted">
               <X className="w-5 h-5" />

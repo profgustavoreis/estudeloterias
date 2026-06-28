@@ -40,10 +40,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             {/* Col 1 — Brand */}
             <div className="space-y-3">
               <Link href="/" className="flex items-center gap-2.5 w-fit">
-                <div className="w-7 h-7 rounded-md bg-[#009640] flex items-center justify-center text-white font-bold text-xs leading-none">EL</div>
-                <span className="font-bold text-base">
-                  <span className="text-[#009640]">Estude</span>
-                  <span className="text-foreground"> Loterias</span>
+                <img src="/logo.png" alt="Estude Loterias" className="w-7 h-7 rounded-md" />
+                <span className="text-base" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                  <span className="text-[#009640] font-normal">estude</span>
+                  <span className="text-foreground font-bold">loterias</span>
                 </span>
               </Link>
               <p className="text-xs text-muted-foreground leading-relaxed">
