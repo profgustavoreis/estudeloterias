@@ -7,13 +7,13 @@ import {
   List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck,
 } from "lucide-react";
 
-// ── Mega-Sena items, grouped ──────────────────────────────────────────────────
+// ── Mega-Sena items ───────────────────────────────────────────────────────────
 const megaSenaTools = [
   { href: "/mega-sena",              label: "Painel Principal",       icon: Target,         desc: "Visão geral da Mega-Sena" },
   { href: "/mega-sena/resultado",    label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
   { href: "/mega-sena/resultados",   label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
-  { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3,    desc: "Frequência e análise das dezenas" },
-  { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas",  icon: Table,        desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3,   desc: "Frequência e análise das dezenas" },
+  { href: "/mega-sena/tabela-de-dezenas",  label: "Tabela de Dezenas", icon: Table,        desc: "Ranking detalhado de todas as dezenas" },
   { href: "/mega-sena/gerador",      label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
   { href: "/mega-sena/simulador",    label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
   { href: "/mega-sena/conferidor",   label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
@@ -28,16 +28,35 @@ const megaSenaInfo = [
 
 const megaSenaAll = [...megaSenaTools, ...megaSenaInfo];
 
-// ── Outras Loterias (placeholders) ───────────────────────────────────────────
+// ── Lotofácil items ───────────────────────────────────────────────────────────
+const lotofacilTools = [
+  { href: "/lotofacil",                     label: "Painel Principal",       icon: Target,         desc: "Visão geral da Lotofácil" },
+  { href: "/lotofacil/resultado",           label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/lotofacil/resultados",          label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/lotofacil/resumo-estatistico",  label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/lotofacil/tabela-de-dezenas",   label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/lotofacil/gerador",             label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/lotofacil/simulador",           label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/lotofacil/conferidor",          label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const lotofacilInfo = [
+  { href: "/lotofacil/como-jogar",           label: "Como Jogar",            icon: BookOpen,   desc: "Regras e formas de apostar" },
+  { href: "/lotofacil/premiacao",            label: "Premiação",             icon: Trophy,     desc: "Faixas e percentuais de prêmio" },
+  { href: "/lotofacil/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+];
+
+const lotofacilAll = [...lotofacilTools, ...lotofacilInfo];
+
+// ── Outras Loterias (em breve) ────────────────────────────────────────────────
 const outrasLoterias = [
-  { label: "Lotofácil",   cor: "#930089", soon: true },
-  { label: "Quina",       cor: "#260085", soon: true },
-  { label: "Dupla Sena",  cor: "#a8003c", soon: true },
-  { label: "Lotomania",   cor: "#f07d00", soon: true },
-  { label: "Timemania",   cor: "#00a650", soon: true },
-  { label: "Dia de Sorte", cor: "#f5a623", soon: true },
-  { label: "Super Sete",  cor: "#a8cf45", soon: true },
-  { label: "+Milionária",  cor: "#2c2c2c", soon: true },
+  { label: "Quina",       cor: "#260085" },
+  { label: "Dupla Sena",  cor: "#a8003c" },
+  { label: "Lotomania",   cor: "#f07d00" },
+  { label: "Timemania",   cor: "#00a650" },
+  { label: "Dia de Sorte", cor: "#f5a623" },
+  { label: "Super Sete",  cor: "#a8cf45" },
+  { label: "+Milionária",  cor: "#2c2c2c" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -60,10 +79,26 @@ function bestMatch(location: string, items: NavItem[]): NavItem | null {
   }, null);
 }
 
-// ── Mega-Sena grouped dropdown ────────────────────────────────────────────────
-function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
+// ── Grouped dropdown factory ──────────────────────────────────────────────────
+function LotteryDropdown({
+  label,
+  cor,
+  tools,
+  info,
+  allItems,
+  isOpen,
+  onToggle,
+}: {
+  label: string;
+  cor: string;
+  tools: NavItem[];
+  info: NavItem[];
+  allItems: NavItem[];
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
   const [location] = useLocation();
-  const activeItem = bestMatch(location, megaSenaAll);
+  const activeItem = bestMatch(location, allItems);
   const isActive = !!activeItem;
 
   return (
@@ -73,25 +108,26 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
         className={cn(
           "flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-md transition-colors",
           isActive
-            ? "text-[#009640]"
+            ? ""
             : "text-foreground/80 hover:text-foreground hover:bg-muted"
         )}
+        style={isActive ? { color: cor } : {}}
       >
-        Mega-Sena
+        {label}
         <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", isOpen && "rotate-180")} />
       </button>
 
       {isOpen && (
         <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
           <div className="flex">
-            {/* ── Ferramentas (8 itens) ── */}
+            {/* ── Ferramentas ── */}
             <div className="p-3 w-64">
               <div className="px-1.5 pt-1 pb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                   Ferramentas
                 </span>
               </div>
-              {megaSenaTools.map((item) => {
+              {tools.map((item) => {
                 const Icon = item.icon;
                 const active = activeItem?.href === item.href;
                 return (
@@ -101,8 +137,9 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
                     onClick={onToggle}
                     className={cn(
                       "flex items-start gap-3 px-2 py-2 rounded-lg transition-colors",
-                      active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
+                      active ? "" : "hover:bg-muted text-foreground"
                     )}
+                    style={active ? { backgroundColor: cor + "1a", color: cor } : {}}
                   >
                     <Icon className="w-4 h-4 mt-0.5 shrink-0" />
                     <div>
@@ -114,14 +151,14 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
               })}
             </div>
 
-            {/* ── Informações (4 itens) ── */}
+            {/* ── Informações ── */}
             <div className="p-3 w-56 bg-muted/40 border-l border-border">
               <div className="px-1.5 pt-1 pb-2">
                 <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                   Informações
                 </span>
               </div>
-              {megaSenaInfo.map((item) => {
+              {info.map((item) => {
                 const Icon = item.icon;
                 const active = activeItem?.href === item.href;
                 return (
@@ -131,8 +168,9 @@ function MegaSenaDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () 
                     onClick={onToggle}
                     className={cn(
                       "flex items-start gap-3 px-2 py-2 rounded-lg transition-colors",
-                      active ? "bg-[#009640]/10 text-[#009640]" : "hover:bg-muted text-foreground"
+                      active ? "" : "hover:bg-muted text-foreground"
                     )}
+                    style={active ? { backgroundColor: cor + "1a", color: cor } : {}}
                   >
                     <Icon className="w-4 h-4 mt-0.5 shrink-0" />
                     <div>
@@ -179,10 +217,7 @@ function OutrasLoteriasDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggl
                 className="flex items-center justify-between gap-3 p-2.5 rounded-lg opacity-50 cursor-not-allowed select-none"
               >
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-4 h-4 rounded-full shrink-0"
-                    style={{ backgroundColor: loteria.cor }}
-                  />
+                  <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: loteria.cor }} />
                   <span className="text-sm font-medium text-foreground">{loteria.label}</span>
                 </div>
                 <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
@@ -237,9 +272,24 @@ export function TopNav() {
               Início
             </Link>
 
-            <MegaSenaDropdown
+            <LotteryDropdown
+              label="Mega-Sena"
+              cor="#009640"
+              tools={megaSenaTools}
+              info={megaSenaInfo}
+              allItems={megaSenaAll}
               isOpen={openMenu === "megasena"}
               onToggle={() => toggle("megasena")}
+            />
+
+            <LotteryDropdown
+              label="Lotofácil"
+              cor="#930089"
+              tools={lotofacilTools}
+              info={lotofacilInfo}
+              allItems={lotofacilAll}
+              isOpen={openMenu === "lotofacil"}
+              onToggle={() => toggle("lotofacil")}
             />
 
             <OutrasLoteriasDropdown
@@ -324,10 +374,9 @@ export function TopNav() {
               </div>
             </div>
 
-            {/* Mega-Sena — info */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                Informações
+                Mega-Sena — Informações
               </div>
               <div className="space-y-1">
                 {megaSenaInfo.map(item => {
@@ -337,6 +386,47 @@ export function TopNav() {
                     <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                       className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                         active ? "bg-[#009640]/10 text-[#009640]" : "text-foreground hover:bg-muted")}>
+                      <Icon className="w-4 h-4" /> {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Lotofácil — tools */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#930089" }}>
+                Lotofácil
+              </div>
+              <div className="space-y-1">
+                {lotofacilTools.map(item => {
+                  const Icon = item.icon;
+                  const active = bestMatch(location, lotofacilAll)?.href === item.href;
+                  return (
+                    <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                      className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                        active ? "" : "text-foreground hover:bg-muted")}
+                      style={active ? { backgroundColor: "#9300891a", color: "#930089" } : {}}>
+                      <Icon className="w-4 h-4" /> {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                Lotofácil — Informações
+              </div>
+              <div className="space-y-1">
+                {lotofacilInfo.map(item => {
+                  const Icon = item.icon;
+                  const active = location === item.href;
+                  return (
+                    <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                      className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                        active ? "" : "text-foreground hover:bg-muted")}
+                      style={active ? { backgroundColor: "#9300891a", color: "#930089" } : {}}>
                       <Icon className="w-4 h-4" /> {item.label}
                     </Link>
                   );

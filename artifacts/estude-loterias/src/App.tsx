@@ -19,6 +19,18 @@ import MegaSenaFAQ from "@/pages/mega-sena/faq";
 import MegaSenaSimulador from "@/pages/mega-sena/simulador";
 import MegaSenaConferidor from "@/pages/mega-sena/conferidor";
 
+import LotofacilHub from "@/pages/lotofacil/hub";
+import LotofacilUltimoResultado from "@/pages/lotofacil/ultimo-resultado";
+import LotofacilResultadosAnteriores from "@/pages/lotofacil/resultados";
+import LotofacilEstatisticas from "@/pages/lotofacil/estatisticas";
+import LotofacilEstatisticasTabela from "@/pages/lotofacil/estatisticas-tabela";
+import LotofacilGerador from "@/pages/lotofacil/gerador";
+import LotofacilSimulador from "@/pages/lotofacil/simulador";
+import LotofacilConferidor from "@/pages/lotofacil/conferidor";
+import LotofacilComoJogar from "@/pages/lotofacil/como-jogar";
+import LotofacilPremiacao from "@/pages/lotofacil/premiacao";
+import LotofacilFAQ from "@/pages/lotofacil/faq";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -47,6 +59,21 @@ function Router() {
         <Route path="/mega-sena/faq" component={MegaSenaFAQ} />
         <Route path="/mega-sena/simulador" component={MegaSenaSimulador} />
         <Route path="/mega-sena/conferidor" component={MegaSenaConferidor} />
+
+        {/* Lotofácil Routes */}
+        <Route path="/lotofacil" component={LotofacilHub} />
+        <Route path="/lotofacil/resultado/:concurso" component={LotofacilUltimoResultado} />
+        <Route path="/lotofacil/resultado" component={LotofacilUltimoResultado} />
+        <Route path="/lotofacil/resultados" component={LotofacilResultadosAnteriores} />
+        <Route path="/lotofacil/tabela-de-dezenas" component={LotofacilEstatisticasTabela} />
+        <Route path="/lotofacil/resumo-estatistico" component={LotofacilEstatisticas} />
+        <Route path="/lotofacil/gerador" component={LotofacilGerador} />
+        <Route path="/lotofacil/simulador" component={LotofacilSimulador} />
+        <Route path="/lotofacil/conferidor" component={LotofacilConferidor} />
+        <Route path="/lotofacil/como-jogar" component={LotofacilComoJogar} />
+        <Route path="/lotofacil/premiacao" component={LotofacilPremiacao} />
+        <Route path="/lotofacil/perguntas-frequentes" component={LotofacilFAQ} />
+        <Route path="/lotofacil/faq" component={LotofacilFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

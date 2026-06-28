@@ -273,6 +273,98 @@ export interface JogoGerado {
   custo: number;
 }
 
+export interface ResultadoLotofacil {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+}
+
+export interface ResultadosPaginadosLotofacil {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoLotofacil[];
+}
+
+export interface EstatisticasLotofacil {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+}
+
+export interface ResumoLotofacil {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores15: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputLotofacilFiltro = typeof SimuladorInputLotofacilFiltro[keyof typeof SimuladorInputLotofacilFiltro];
+
+
+export const SimuladorInputLotofacilFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  quinze: 'quinze',
+  quatorze: 'quatorze',
+  treze: 'treze',
+  doze: 'doze',
+  onze: 'onze',
+} as const;
+
+export interface SimuladorInputLotofacil {
+  /**
+     * @minItems 15
+     * @maxItems 20
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputLotofacilFiltro;
+}
+
+export interface GeradorInputLotofacil {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+  /**
+     * @minimum 15
+     * @maximum 20
+     */
+  quantidadeDezenas: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -287,6 +379,24 @@ export type GetMegaSenaResultadosOrdem = typeof GetMegaSenaResultadosOrdem[keyof
 
 
 export const GetMegaSenaResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetLotofacilResultadosParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+ano?: number | null;
+ordem?: GetLotofacilResultadosOrdem;
+};
+
+export type GetLotofacilResultadosOrdem = typeof GetLotofacilResultadosOrdem[keyof typeof GetLotofacilResultadosOrdem];
+
+
+export const GetLotofacilResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;

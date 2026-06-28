@@ -7,12 +7,16 @@
  */
 
 export * from './apiError';
+export * from './estatisticasLotofacil';
 export * from './estatisticasMegaSena';
 export * from './faixaPremio';
 export * from './frequenciaColuna';
 export * from './frequenciaDezena';
 export * from './frequenciaFaixa';
 export * from './geradorInput';
+export * from './geradorInputLotofacil';
+export * from './getLotofacilResultadosOrdem';
+export * from './getLotofacilResultadosParams';
 export * from './getMegaSenaResultadosOrdem';
 export * from './getMegaSenaResultadosParams';
 export * from './healthStatus';
@@ -24,14 +28,19 @@ export * from './numerosEspeciaisItem';
 export * from './numerosEspeciaisItemDistribuicaoItem';
 export * from './paresImpares';
 export * from './resultado';
+export * from './resultadoLotofacil';
 export * from './resultadoMegaSena';
 export * from './resultadosPaginados';
+export * from './resultadosPaginadosLotofacil';
+export * from './resumoLotofacil';
 export * from './resumoMegaSena';
 export * from './simulacaoResultado';
 export * from './simulacaoResultadoConcursosItem';
 export * from './simulacaoResultadoResumoItem';
 export * from './simuladorInput';
 export * from './simuladorInputFiltro';
+export * from './simuladorInputLotofacil';
+export * from './simuladorInputLotofacilFiltro';
 export * from './somaDezenas';
 export * from './somaDezenasMaior';
 export * from './somaDezenasMenor';

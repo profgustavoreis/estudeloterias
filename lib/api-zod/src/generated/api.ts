@@ -359,3 +359,248 @@ export const GerarJogoResponse = zod.object({
 })
 
 
+/**
+ * @summary Último resultado da Lotofácil
+ */
+export const GetLotofacilUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Histórico de resultados da Lotofácil
+ */
+export const getLotofacilResultadosQueryPageDefault = 1;
+export const getLotofacilResultadosQueryLimitDefault = 20;
+export const getLotofacilResultadosQueryOrdemDefault = `desc`;
+
+export const GetLotofacilResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().default(getLotofacilResultadosQueryPageDefault),
+  "limit": zod.coerce.number().default(getLotofacilResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getLotofacilResultadosQueryOrdemDefault)
+})
+
+export const GetLotofacilResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da Lotofácil
+ */
+export const GetLotofacilResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const GetLotofacilResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Estatísticas da Lotofácil (frequência de dezenas, etc.)
+ */
+export const GetLotofacilEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+}))
+})
+
+
+/**
+ * @summary Resumo agregado da Lotofácil
+ */
+export const GetLotofacilResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores15": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Próximos sorteios da Lotofácil
+ */
+export const GetLotofacilCalendarioResponseItem = zod.object({
+  "data": zod.string(),
+  "diaSemana": zod.string(),
+  "concursoEstimado": zod.number().nullish(),
+  "valorEstimado": zod.number().nullish(),
+  "especial": zod.boolean(),
+  "descricao": zod.string().nullish()
+})
+export const GetLotofacilCalendarioResponse = zod.array(GetLotofacilCalendarioResponseItem)
+
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Lotofácil
+ */
+export const simularLotofacilBodyDezenasMin = 15;
+export const simularLotofacilBodyDezenasMax = 20;
+
+export const simularLotofacilBodyFiltroDefault = `premiados`;
+
+export const SimularLotofacilBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularLotofacilBodyDezenasMin).max(simularLotofacilBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'quinze', 'quatorze', 'treze', 'doze', 'onze']).default(simularLotofacilBodyFiltroDefault)
+})
+
+export const SimularLotofacilResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de Lotofácil
+ */
+export const gerarJogoLotofacilBodyQuantidadeJogosDefault = 1;
+export const gerarJogoLotofacilBodyQuantidadeJogosMax = 20;
+
+export const gerarJogoLotofacilBodyQuantidadeDezenasDefault = 15;
+export const gerarJogoLotofacilBodyQuantidadeDezenasMin = 15;
+export const gerarJogoLotofacilBodyQuantidadeDezenasMax = 20;
+
+
+
+export const GerarJogoLotofacilBody = zod.object({
+  "quantidadeJogos": zod.number().min(1).max(gerarJogoLotofacilBodyQuantidadeJogosMax).default(gerarJogoLotofacilBodyQuantidadeJogosDefault),
+  "quantidadeDezenas": zod.number().min(gerarJogoLotofacilBodyQuantidadeDezenasMin).max(gerarJogoLotofacilBodyQuantidadeDezenasMax).default(gerarJogoLotofacilBodyQuantidadeDezenasDefault)
+})
+
+export const GerarJogoLotofacilResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.number())),
+  "custo": zod.number()
+})
+
+
