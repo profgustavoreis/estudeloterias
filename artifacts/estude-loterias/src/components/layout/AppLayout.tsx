@@ -2,55 +2,15 @@ import { Link } from "wouter";
 import { TopNav } from "./TopNav";
 
 const loterias = [
-  {
-    name: "Mega-Sena",
-    href: "/mega-sena",
-    active: true,
-    links: [
-      { href: "/mega-sena", label: "Painel Principal" },
-      { href: "/mega-sena/resultado", label: "Último Resultado" },
-      { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico" },
-      { href: "/mega-sena/gerador", label: "Gerador de Jogos" },
-      { href: "/mega-sena/como-jogar", label: "Como Jogar" },
-      { href: "/mega-sena/perguntas-frequentes", label: "Perguntas Frequentes" },
-    ],
-  },
-  {
-    name: "Lotofácil",
-    href: "#",
-    active: false,
-    soon: true,
-  },
-  {
-    name: "Quina",
-    href: "#",
-    active: false,
-    soon: true,
-  },
-  {
-    name: "Dupla Sena",
-    href: "#",
-    active: false,
-    soon: true,
-  },
-  {
-    name: "Lotomania",
-    href: "#",
-    active: false,
-    soon: true,
-  },
-  {
-    name: "Timemania",
-    href: "#",
-    active: false,
-    soon: true,
-  },
-  {
-    name: "Dia de Sorte",
-    href: "#",
-    active: false,
-    soon: true,
-  },
+  { name: "Mega-Sena",   href: "/mega-sena",    active: true },
+  { name: "Lotofácil",   href: "#",            active: false, soon: true },
+  { name: "Quina",       href: "#",            active: false, soon: true },
+  { name: "Super Sete",  href: "#",            active: false, soon: true },
+  { name: "+Milionária",  href: "#",            active: false, soon: true },
+  { name: "Dupla Sena",  href: "#",            active: false, soon: true },
+  { name: "Lotomania",   href: "#",            active: false, soon: true },
+  { name: "Timemania",   href: "#",            active: false, soon: true },
+  { name: "Dia de Sorte", href: "#",            active: false, soon: true },
 ];
 
 const institucional = [
@@ -114,9 +74,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Loterias
               </div>
-              <ul className="space-y-2.5">
+              <ul className="space-y-2">
                 {loterias.map((l) => (
-                  <li key={l.name} className="space-y-1">
+                  <li key={l.name} className="flex items-center justify-between gap-3">
                     {l.active ? (
                       <Link
                         href={l.href}
@@ -129,22 +89,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         {l.name}
                       </span>
                     )}
-                    {l.links && (
-                      <ul className="space-y-1 pl-3">
-                        {l.links.map((sl) => (
-                          <li key={sl.href}>
-                            <Link
-                              href={sl.href}
-                              className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                              {sl.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
                     {l.soon && (
-                      <span className="text-[10px] text-muted-foreground/50 block pl-3">
+                      <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-muted text-muted-foreground border border-border">
                         em breve
                       </span>
                     )}

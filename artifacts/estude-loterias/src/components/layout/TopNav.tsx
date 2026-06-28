@@ -35,7 +35,9 @@ const outrasLoterias = [
   { label: "Dupla Sena",  cor: "#a8003c", soon: true },
   { label: "Lotomania",   cor: "#f07d00", soon: true },
   { label: "Timemania",   cor: "#00a650", soon: true },
-  { label: "Dia de Sorte",cor: "#f5a623", soon: true },
+  { label: "Dia de Sorte", cor: "#f5a623", soon: true },
+  { label: "Super Sete",  cor: "#a8cf45", soon: true },
+  { label: "+Milionária",  cor: "#2c2c2c", soon: true },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
