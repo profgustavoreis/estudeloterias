@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     q: "Quando ocorrem os sorteios da Lotofácil?",
-    a: "Os sorteios da Lotofácil são realizados de segunda a sábado, às 20h (horário de Brasília). São seis sorteios por semana.",
+    a: "Os sorteios da Lotofácil são realizados às segundas, quartas e sextas-feiras, às 20h (horário de Brasília). São três sorteios por semana.",
   },
   {
     q: "O prêmio da Lotofácil acumula?",

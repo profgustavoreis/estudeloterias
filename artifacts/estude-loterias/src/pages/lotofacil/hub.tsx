@@ -187,7 +187,7 @@ export default function LotofacilHub() {
             <div className="flex justify-between"><span>Dezenas sorteadas</span><strong className="text-foreground">15</strong></div>
             <div className="flex justify-between"><span>Aposta mínima</span><strong className="text-foreground">15 números</strong></div>
             <div className="flex justify-between"><span>Valor mínimo</span><strong className="text-foreground">R$ 3,00</strong></div>
-            <div className="flex justify-between"><span>Dias de sorteio</span><strong className="text-foreground">Seg a Sáb</strong></div>
+            <div className="flex justify-between"><span>Dias de sorteio</span><strong className="text-foreground">Seg / Qua / Sex</strong></div>
             <div className="flex justify-between"><span>Premiado a partir de</span><strong className="text-foreground">11 acertos</strong></div>
           </CardContent>
         </Card>
