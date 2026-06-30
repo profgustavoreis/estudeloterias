@@ -76,15 +76,52 @@ export default function MegaSenaPremiacao() {
 
       <Card>
         <CardHeader>
+          <CardTitle className="text-xl">Faixas de Premiação</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-muted/50">
+                  <th className="text-left py-3 px-4 font-semibold">Faixa</th>
+                  <th className="text-center py-3 px-4 font-semibold">Acertos</th>
+                  <th className="text-right py-3 px-4 font-semibold">% do Prêmio Bruto</th>
+                  <th className="text-right py-3 px-4 font-semibold">Probabilidade (aposta simples)</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                {[
+                  { faixa: "1ª", nome: "Sena",   acertos: 6, pct: "40%", prob: "1 em 50.063.860" },
+                  { faixa: "2ª", nome: "Quina",  acertos: 5, pct: "13%", prob: "1 em 154.518" },
+                  { faixa: "3ª", nome: "Quadra", acertos: 4, pct: "15%", prob: "1 em 2.332" },
+                ].map(({ faixa, nome, acertos, pct, prob }) => (
+                  <tr key={faixa} className="border-b">
+                    <td className="py-3 px-4 font-medium">{faixa} faixa ({nome})</td>
+                    <td className="py-3 px-4 text-center font-bold text-[#009640]">{acertos} acertos</td>
+                    <td className="py-3 px-4 text-right">{pct}</td>
+                    <td className="py-3 px-4 text-right font-mono">{prob}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle className="text-xl flex items-center gap-2">
             <Target className="w-5 h-5 text-[#009640]" />
-            Acumulação
+            Regras de Acumulação
           </CardTitle>
         </CardHeader>
         <CardContent className="text-muted-foreground space-y-4">
           <p>
             Não havendo acertador em qualquer faixa, o valor acumula para o concurso seguinte, na respectiva faixa de premiação.
-            Os prêmios prescrevem 90 dias após a data do sorteio.
+          </p>
+          <p>
+            Os prêmios prescrevem 90 dias após a data do sorteio. Após esse prazo, os valores são
+            repassados ao Tesouro Nacional para aplicação no FIES (Fundo de Financiamento Estudantil).
           </p>
         </CardContent>
       </Card>

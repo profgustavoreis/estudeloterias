@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { useGetMegaDaVirada } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate } from "@/lib/formatters";
+import { formatCurrency, formatLongDate, formatWeekday } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
@@ -40,30 +40,30 @@ export default function MegaDaVirada() {
         canonical="/mega-sena/mega-da-virada"
       />
       <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-xl bg-amber-500 flex items-center justify-center text-white shadow-lg">
+        <div className="w-16 h-16 rounded-xl bg-[#009640] flex items-center justify-center text-white shadow-lg">
           <Gift className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-amber-500 uppercase">Mega da Virada</h1>
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#009640] uppercase">Mega da Virada</h1>
           <p className="text-muted-foreground mt-1 text-lg">O sorteio mais aguardado do ano que não acumula.</p>
         </div>
       </div>
 
       {/* Row 1: Próximo Sorteio + AdUnit */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-t-4 border-amber-500 bg-amber-500/5">
+        <Card className="border-t-4 border-[#009640] bg-[#009640]/5">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-amber-500" />
-              Próximo Sorteio
+              <Calendar className="w-5 h-5 text-[#009640]" />
+              Próxima Edição
             </CardTitle>
             <CardDescription className="text-base font-medium text-foreground">
-              {formatLongDate(megaDaVirada.dataProximaVirada)}
+              {formatLongDate(megaDaVirada.dataProximaVirada)} ({formatWeekday(megaDaVirada.dataProximaVirada)})
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-sm text-muted-foreground mb-1 uppercase font-semibold">Prêmio Estimado</div>
-            <div className="text-4xl font-black text-amber-500">
+            <div className="text-4xl font-black text-[#009640]">
               {megaDaVirada.valorEstimado ? formatCurrency(megaDaVirada.valorEstimado) : "A definir"}
             </div>
             <p className="text-sm text-muted-foreground mt-4">
@@ -79,7 +79,7 @@ export default function MegaDaVirada() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-amber-500" />
+            <Trophy className="w-5 h-5 text-[#009640]" />
             Histórico de Sorteios
           </CardTitle>
           <CardDescription>Todos os resultados da Mega da Virada desde 2009.</CardDescription>
@@ -117,7 +117,7 @@ export default function MegaDaVirada() {
                         <TableCell>
                           <div className="flex justify-center gap-1.5 flex-wrap">
                             {sorteio.dezenas.map((num, i) => (
-                              <LotteryBall key={i} number={num} size="sm" className="bg-amber-500 text-white border-amber-600" />
+                              <LotteryBall key={i} number={num} size="sm" color="#009640" />
                             ))}
                           </div>
                         </TableCell>
@@ -131,7 +131,7 @@ export default function MegaDaVirada() {
                         <TableCell className="text-center font-medium">
                           {premioSena?.ganhadores ?? 0}
                         </TableCell>
-                        <TableCell className="text-center font-bold text-amber-600">
+                        <TableCell className="text-center font-bold text-[#009640]">
                           {formatCurrency(premioSena?.valorPremio)}
                         </TableCell>
                         <TableCell className="text-center">

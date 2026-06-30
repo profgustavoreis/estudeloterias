@@ -1,10 +1,11 @@
 import { Link } from "wouter";
 import { useGetLotofacilDaIndependencia } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate } from "@/lib/formatters";
+import { formatCurrency, formatLongDate, formatWeekday } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { Badge } from "@/components/ui/badge";
 import { Flag, Calendar, Trophy } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
@@ -29,7 +30,7 @@ export default function LotofacilDaIndependencia() {
         canonical="/lotofacil/lotofacil-da-independencia"
       />
       <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg" style={{ backgroundColor: "#009C3B" }}>
+        <div className="w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg" style={{ backgroundColor: COR }}>
           <Flag className="w-8 h-8" />
         </div>
         <div>
@@ -41,19 +42,20 @@ export default function LotofacilDaIndependencia() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-t-4" style={{ borderColor: "#009C3B" }}>
+        <Card className="border-t-4 bg-[#930089]/5" style={{ borderColor: COR }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" style={{ color: "#009C3B" }} />
+              <Calendar className="w-5 h-5" style={{ color: COR }} />
               Próxima Edição
             </CardTitle>
-            <CardDescription className="text-base font-medium text-foreground">
-              {formatLongDate(data.dataProximaEdicao)}
+            <CardDescription className="text-base font-medium text-foreground flex items-center gap-2 flex-wrap">
+              {formatLongDate(data.dataProximaEdicao)} ({formatWeekday(data.dataProximaEdicao)})
+              <Badge className="bg-amber-100 text-amber-800 border border-amber-200">a confirmar</Badge>
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-sm text-muted-foreground mb-1 uppercase font-semibold">Prêmio Estimado</div>
-            <div className="text-4xl font-black" style={{ color: "#009C3B" }}>
+            <div className="text-4xl font-black" style={{ color: COR }}>
               {data.valorEstimado ? formatCurrency(data.valorEstimado) : "A definir"}
             </div>
             <p className="text-sm text-muted-foreground mt-4">
@@ -106,7 +108,7 @@ export default function LotofacilDaIndependencia() {
                         <TableCell>
                           <div className="flex justify-center gap-1 flex-wrap">
                             {sorteio.dezenas.map((num, i) => (
-                              <LotteryBall key={i} number={parseInt(num, 10)} size="sm" className="text-white border-0" style={{ backgroundColor: COR } as React.CSSProperties} />
+                              <LotteryBall key={i} number={parseInt(num, 10)} size="sm" color={COR} />
                             ))}
                           </div>
                         </TableCell>

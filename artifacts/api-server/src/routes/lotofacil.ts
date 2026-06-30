@@ -9,6 +9,34 @@ const router = Router();
 
 const MODALIDADE = "lotofacil";
 
+// Desde 2020, a Lotofácil da Independência é um concurso especial (final 0) realizado
+// no sábado da semana (segunda a domingo) que contém o dia 7 de setembro — exceto quando
+// o próprio dia 7 cai num sábado, caso em que o sorteio passa para a segunda-feira seguinte
+// (foi o que aconteceu em 2024: 07/09/2024 era sábado, e o sorteio saiu em 09/09/2024).
+function dataIndependencia(ano: number): Date {
+  const sete = new Date(Date.UTC(ano, 8, 7));
+  const diaSemana = sete.getUTCDay(); // 0=domingo..6=sábado
+  const indiceSegunda = (diaSemana + 6) % 7; // 0=segunda..6=domingo
+  if (indiceSegunda === 5) {
+    // 7 de setembro é sábado: sorteio passa para a segunda-feira seguinte (dia 9)
+    return new Date(Date.UTC(ano, 8, 9));
+  }
+  const offset = 5 - indiceSegunda;
+  return new Date(Date.UTC(ano, 8, 7 + offset));
+}
+
+function proximaDataIndependencia(hoje: Date): string {
+  let ano = hoje.getUTCFullYear();
+  let data = dataIndependencia(ano);
+  if (data < hoje) {
+    ano += 1;
+    data = dataIndependencia(ano);
+  }
+  const dd = String(data.getUTCDate()).padStart(2, "0");
+  const mm = String(data.getUTCMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}/${data.getUTCFullYear()}`;
+}
+
 function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
   return {
     concurso: row.concurso,
@@ -477,15 +505,48 @@ router.get("/lotofacil/lotofacil-da-independencia", async (req, res) => {
       .where(eq(lotteryResultsTable.modalidade, MODALIDADE))
       .orderBy(asc(lotteryResultsTable.concurso));
 
-    const independencia = rows.filter(r => {
-      const parts = r.data.split("/");
-      return parts[0] === "07" && parts[1] === "09";
-    });
+    // A Lotofácil da Independência não tem dia fixo (não cai sempre em 7/9):
+    // é o concurso especial de setembro de cada ano cujo prêmio da faixa 1 (15 acertos)
+    // é muito maior que o de um sorteio normal (rateio de um pool acumulado à parte).
+    // Identificamos o concurso especial de cada ano como o sorteio de setembro com o
+    // maior total pago na faixa 1, desde que ultrapasse um patamar muito acima do normal.
+    const LIMIAR_PREMIO_ESPECIAL = 15_000_000;
+    const setembro = rows.filter(r => r.data.split("/")[1] === "09");
+
+    const melhorPorAno = new Map<string, (typeof rows)[number]>();
+    for (const r of setembro) {
+      const ano = r.data.split("/")[2];
+      if (!ano) continue;
+      const premios = r.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }> | null;
+      const faixa1 = premios?.find(p => p.faixa === 1);
+      const total = faixa1 ? faixa1.valorPremio * faixa1.ganhadores : 0;
+
+      const atual = melhorPorAno.get(ano);
+      const totalAtual = atual
+        ? (() => {
+            const p = (atual.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }> | null)?.find(
+              p => p.faixa === 1
+            );
+            return p ? p.valorPremio * p.ganhadores : 0;
+          })()
+        : -1;
+
+      if (total > totalAtual) melhorPorAno.set(ano, r);
+    }
+
+    const independencia = Array.from(melhorPorAno.values())
+      .filter(r => {
+        const premios = r.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }> | null;
+        const faixa1 = premios?.find(p => p.faixa === 1);
+        const total = faixa1 ? faixa1.valorPremio * faixa1.ganhadores : 0;
+        return total >= LIMIAR_PREMIO_ESPECIAL;
+      })
+      .sort((a, b) => a.concurso - b.concurso);
 
     const anoAtual = new Date().getFullYear();
     res.json({
       anoAtual,
-      dataProximaEdicao: `07/09/${anoAtual}`,
+      dataProximaEdicao: proximaDataIndependencia(new Date()),
       valorEstimado: null,
       historico: independencia.reverse().map(toResultado),
     });

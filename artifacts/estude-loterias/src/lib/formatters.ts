@@ -21,13 +21,30 @@ export function formatDate(dateString: string | null | undefined): string {
 export function formatLongDate(dateString: string | null | undefined): string {
   if (!dateString) return "";
   try {
-    const date = new Date(dateString);
+    const [dd, mm, yyyy] = dateString.split("/").map(Number);
+    if (!dd || !mm || !yyyy) return dateString;
+    const date = new Date(Date.UTC(yyyy, mm - 1, dd));
     return new Intl.DateTimeFormat("pt-BR", {
       dateStyle: "long",
       timeZone: "UTC",
     }).format(date);
   } catch (e) {
     return dateString;
+  }
+}
+
+export function formatWeekday(dateString: string | null | undefined): string {
+  if (!dateString) return "";
+  try {
+    const [dd, mm, yyyy] = dateString.split("/").map(Number);
+    if (!dd || !mm || !yyyy) return "";
+    const date = new Date(Date.UTC(yyyy, mm - 1, dd));
+    return new Intl.DateTimeFormat("pt-BR", {
+      weekday: "long",
+      timeZone: "UTC",
+    }).format(date);
+  } catch (e) {
+    return "";
   }
 }
 
