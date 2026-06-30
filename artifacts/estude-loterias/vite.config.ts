@@ -66,6 +66,13 @@ export default defineConfig({
     fs: {
       strict: true,
     },
+    // --- ADICIONADO: Redireciona chamadas da API local para o backend na porta 5000 ---
+    proxy: {
+      "/api": {
+        target: "http://localhost:5000",
+        changeOrigin: true,
+      },
+    },
   },
   preview: {
     port,

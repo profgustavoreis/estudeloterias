@@ -1,3 +1,16 @@
+import path from "path";
+import fs from "fs";
+
+// Carrega as variáveis da raiz do projeto tanto local quanto em prod
+const rootEnvPath = path.resolve(process.cwd(), ".env");
+const workspaceEnvPath = path.resolve(process.cwd(), "../../.env");
+
+if (fs.existsSync(rootEnvPath)) {
+  process.loadEnvFile(rootEnvPath);
+} else if (fs.existsSync(workspaceEnvPath)) {
+  process.loadEnvFile(workspaceEnvPath);
+}
+
 import app from "./app";
 import { logger } from "./lib/logger";
 import cron from "node-cron";
