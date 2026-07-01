@@ -45,6 +45,18 @@ import QuinaComoJogar from "@/pages/quina/como-jogar";
 import QuinaPremiacao from "@/pages/quina/premiacao";
 import QuinaFAQ from "@/pages/quina/faq";
 
+import LotomaniaHub from "@/pages/lotomania/hub";
+import LotomaniaUltimoResultado from "@/pages/lotomania/ultimo-resultado";
+import LotomaniaResultadosAnteriores from "@/pages/lotomania/resultados";
+import LotomaniaEstatisticas from "@/pages/lotomania/estatisticas";
+import LotomaniaEstatisticasTabela from "@/pages/lotomania/estatisticas-tabela";
+import LotomaniaGerador from "@/pages/lotomania/gerador";
+import LotomaniaSimulador from "@/pages/lotomania/simulador";
+import LotomaniaConferidor from "@/pages/lotomania/conferidor";
+import LotomaniaComoJogar from "@/pages/lotomania/como-jogar";
+import LotomaniaPremiacao from "@/pages/lotomania/premiacao";
+import LotomaniaFAQ from "@/pages/lotomania/faq";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -105,6 +117,21 @@ function Router() {
         <Route path="/quina/premiacao" component={QuinaPremiacao} />
         <Route path="/quina/perguntas-frequentes" component={QuinaFAQ} />
         <Route path="/quina/faq" component={QuinaFAQ} />
+
+        {/* Lotomania Routes */}
+        <Route path="/lotomania" component={LotomaniaHub} />
+        <Route path="/lotomania/resultado/:concurso" component={LotomaniaUltimoResultado} />
+        <Route path="/lotomania/resultado" component={LotomaniaUltimoResultado} />
+        <Route path="/lotomania/resultados" component={LotomaniaResultadosAnteriores} />
+        <Route path="/lotomania/tabela-de-dezenas" component={LotomaniaEstatisticasTabela} />
+        <Route path="/lotomania/resumo-estatistico" component={LotomaniaEstatisticas} />
+        <Route path="/lotomania/gerador" component={LotomaniaGerador} />
+        <Route path="/lotomania/simulador" component={LotomaniaSimulador} />
+        <Route path="/lotomania/conferidor" component={LotomaniaConferidor} />
+        <Route path="/lotomania/como-jogar" component={LotomaniaComoJogar} />
+        <Route path="/lotomania/premiacao" component={LotomaniaPremiacao} />
+        <Route path="/lotomania/perguntas-frequentes" component={LotomaniaFAQ} />
+        <Route path="/lotomania/faq" component={LotomaniaFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

@@ -18,6 +18,8 @@ tags:
     description: Lotofácil específico
   - name: quina
     description: Quina específico
+  - name: lotomania
+    description: Lotomania específico
 paths:
   /healthz:
     get:
@@ -522,6 +524,142 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GeradorInputQuina"
+      responses:
+        "200":
+          description: Jogo(s) gerado(s)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JogoGerado"
+
+  /lotomania/resultado/ultimo:
+    get:
+      operationId: getLotomaniaUltimoResultado
+      tags: [lotomania]
+      summary: Último resultado da Lotomania
+      responses:
+        "200":
+          description: Último resultado da Lotomania
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoLotomania"
+
+  /lotomania/resultados:
+    get:
+      operationId: getLotomaniaResultados
+      tags: [lotomania]
+      summary: Histórico de resultados da Lotomania
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: ano
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        "200":
+          description: Lista paginada de resultados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadosPaginadosLotomania"
+
+  /lotomania/resultados/{concurso}:
+    get:
+      operationId: getLotomaniaResultadoConcurso
+      tags: [lotomania]
+      summary: Resultado de um concurso específico da Lotomania
+      parameters:
+        - name: concurso
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado do concurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoLotomania"
+        "404":
+          description: Concurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /lotomania/estatisticas:
+    get:
+      operationId: getLotomaniaEstatisticas
+      tags: [lotomania]
+      summary: Estatísticas da Lotomania (frequência de dezenas, etc.)
+      responses:
+        "200":
+          description: Estatísticas completas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstatisticasLotomania"
+
+  /lotomania/resumo:
+    get:
+      operationId: getLotomaniaResumo
+      tags: [lotomania]
+      summary: Resumo agregado da Lotomania
+      responses:
+        "200":
+          description: Resumo da Lotomania
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumoLotomania"
+
+  /lotomania/simulador:
+    post:
+      operationId: simularLotomania
+      tags: [lotomania]
+      summary: Simula uma aposta em todos os concursos anteriores da Lotomania
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInputLotomania"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
+  /lotomania/gerador:
+    post:
+      operationId: gerarJogoLotomania
+      tags: [lotomania]
+      summary: Gera um jogo aleatório de Lotomania (50 dezenas)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeradorInputLotomania"
       responses:
         "200":
           description: Jogo(s) gerado(s)
@@ -1446,3 +1584,176 @@ components:
       required:
         - quantidadeJogos
         - quantidadeDezenas
+
+    ResultadoLotomania:
+      type: object
+      properties:
+        concurso:
+          type: integer
+        data:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: string
+        premios:
+          type: array
+          items:
+            $ref: "#/components/schemas/FaixaPremio"
+        acumulado:
+          type: boolean
+        valorAcumulado:
+          type: ["number", "null"]
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
+        arrecadacaoTotal:
+          type: ["number", "null"]
+      required:
+        - concurso
+        - data
+        - dezenas
+        - premios
+        - acumulado
+
+    ResultadosPaginadosLotomania:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoLotomania"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    EstatisticasLotomania:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        frequenciaDezenas:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        atrasoMaiores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        totalAcumulados:
+          type: integer
+        percentualAcumulado:
+          type: number
+        maiorPremio:
+          type: number
+        maiorPremioData:
+          type: string
+        maiorPremioConcurso:
+          type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        molduraRetrato:
+          type: array
+          items:
+            $ref: "#/components/schemas/MolduraRetrato"
+        frequenciaPorLinha:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        frequenciaPorColuna:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaColuna"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
+      required:
+        - totalConcursos
+        - frequenciaDezenas
+        - atrasoMaiores
+        - totalAcumulados
+        - percentualAcumulado
+        - maiorPremio
+        - maiorPremioData
+        - maiorPremioConcurso
+        - paresImpares
+        - molduraRetrato
+        - frequenciaPorLinha
+        - frequenciaPorColuna
+        - somaDezenas
+        - numerosEspeciais
+
+    ResumoLotomania:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        acumulado:
+          type: boolean
+        valorAtualAcumulado:
+          type: ["number", "null"]
+        valorEstimadoProximo:
+          type: ["number", "null"]
+        maiorPremio:
+          type: number
+        maiorPremioConcurso:
+          type: integer
+        maiorPremioAno:
+          type: integer
+        totalGanhadores20:
+          type: integer
+        proximoSorteio:
+          type: ["string", "null"]
+        ultimoConcurso:
+          type: integer
+      required:
+        - totalConcursos
+        - acumulado
+        - maiorPremio
+        - maiorPremioConcurso
+        - maiorPremioAno
+        - totalGanhadores20
+        - ultimoConcurso
+
+    SimuladorInputLotomania:
+      type: object
+      required: [dezenas]
+      properties:
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 50
+          maxItems: 50
+        filtro:
+          type: string
+          enum: [todos, premiados, vinte, dezenove, dezoito, dezessete, dezesseis, quinze, zero]
+          default: premiados
+
+    GeradorInputLotomania:
+      type: object
+      properties:
+        quantidadeJogos:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 1
+      required:
+        - quantidadeJogos

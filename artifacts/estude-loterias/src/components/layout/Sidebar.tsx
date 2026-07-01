@@ -73,6 +73,24 @@ export function Sidebar() {
         { href: "/quina/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
         { href: "/quina/quina-de-sao-joao", label: "Quina de São João", icon: Gift },
       ]
+    },
+    {
+      title: "Lotomania",
+      items: [
+        { href: "/lotomania", label: "Painel Principal", icon: Target },
+        { href: "/lotomania/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/lotomania/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/lotomania/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/lotomania/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "Lotomania — Info",
+      items: [
+        { href: "/lotomania/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/lotomania/premiacao", label: "Premiação", icon: Target },
+        { href: "/lotomania/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+      ]
     }
   ];
 

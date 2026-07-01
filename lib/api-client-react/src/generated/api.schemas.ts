@@ -469,6 +469,95 @@ export interface GeradorInputQuina {
   quantidadeDezenas: number;
 }
 
+export interface ResultadoLotomania {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+}
+
+export interface ResultadosPaginadosLotomania {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoLotomania[];
+}
+
+export interface EstatisticasLotomania {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+}
+
+export interface ResumoLotomania {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores20: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputLotomaniaFiltro = typeof SimuladorInputLotomaniaFiltro[keyof typeof SimuladorInputLotomaniaFiltro];
+
+
+export const SimuladorInputLotomaniaFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  vinte: 'vinte',
+  dezenove: 'dezenove',
+  dezoito: 'dezoito',
+  dezessete: 'dezessete',
+  dezesseis: 'dezesseis',
+  quinze: 'quinze',
+  zero: 'zero',
+} as const;
+
+export interface SimuladorInputLotomania {
+  /**
+     * @minItems 50
+     * @maxItems 50
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputLotomaniaFiltro;
+}
+
+export interface GeradorInputLotomania {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -519,6 +608,24 @@ export type GetQuinaResultadosOrdem = typeof GetQuinaResultadosOrdem[keyof typeo
 
 
 export const GetQuinaResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetLotomaniaResultadosParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+ano?: number | null;
+ordem?: GetLotomaniaResultadosOrdem;
+};
+
+export type GetLotomaniaResultadosOrdem = typeof GetLotomaniaResultadosOrdem[keyof typeof GetLotomaniaResultadosOrdem];
+
+
+export const GetLotomaniaResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;

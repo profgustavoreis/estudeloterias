@@ -70,12 +70,32 @@ const quinaInfo = [
 
 const quinaAll = [...quinaTools, ...quinaInfo];
 
+// ── Lotomania items ──────────────────────────────────────────────────────────
+const lotomaniaTools = [
+  { href: "/lotomania",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da Lotomania" },
+  { href: "/lotomania/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/lotomania/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/lotomania/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/lotomania/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/lotomania/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/lotomania/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/lotomania/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const lotomaniaInfo = [
+  { href: "/lotomania/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/lotomania/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/lotomania/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+];
+
+const lotomaniaAll = [...lotomaniaTools, ...lotomaniaInfo];
+
 // ── Outras Loterias ───────────────────────────────────────────────────────────
 // Items with an `href` are live and link out; items without one are still "em breve".
 const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
   { label: "Quina",       cor: "#260085", href: "/quina" },
   { label: "Dupla Sena",  cor: "#a8003c" },
-  { label: "Lotomania",   cor: "#f07d00" },
+  { label: "Lotomania",   cor: "#f8901c", href: "/lotomania" },
   { label: "Timemania",   cor: "#00a650" },
   { label: "Dia de Sorte", cor: "#f5a623" },
   { label: "Super Sete",  cor: "#a8cf45" },
@@ -280,12 +300,14 @@ export function TopNav() {
 
   const toggle = (name: string) => setOpenMenu(o => o === name ? null : name);
 
-  // Quina gets its own top-level dropdown only while a Quina page is active;
-  // otherwise it stays reachable via "Outras Loterias" (unlike the still-unbuilt lotteries).
+  // Quina and Lotomania get their own top-level dropdown only while one of their pages is active;
+  // otherwise they stay reachable via "Outras Loterias" (unlike the still-unbuilt lotteries).
   const quinaActive = !!bestMatch(location, quinaAll);
-  const visibleOutrasLoterias = quinaActive
-    ? outrasLoterias.filter(l => l.label !== "Quina")
-    : outrasLoterias;
+  const lotomaniaActive = !!bestMatch(location, lotomaniaAll);
+  const visibleOutrasLoterias = outrasLoterias.filter(l =>
+    (l.label !== "Quina" || !quinaActive) &&
+    (l.label !== "Lotomania" || !lotomaniaActive)
+  );
 
   return (
     <>
@@ -348,6 +370,18 @@ export function TopNav() {
                 allItems={quinaAll}
                 isOpen={openMenu === "quina"}
                 onToggle={() => toggle("quina")}
+              />
+            )}
+
+            {lotomaniaActive && (
+              <LotteryDropdown
+                label="Lotomania"
+                cor="#f8901c"
+                tools={lotomaniaTools}
+                info={lotomaniaInfo}
+                allItems={lotomaniaAll}
+                isOpen={openMenu === "lotomania"}
+                onToggle={() => toggle("lotomania")}
               />
             )}
 
@@ -545,7 +579,52 @@ export function TopNav() {
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
                 Outras Loterias
               </div>
-              <div className="space-y-1">
+              {/* Lotomania — tools (only shown when a Lotomania page is active) */}
+            {lotomaniaActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#f8901c" }}>
+                    Lotomania
+                  </div>
+                  <div className="space-y-1">
+                    {lotomaniaTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, lotomaniaAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#f8901c1a", color: "#f8901c" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    Lotomania — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {lotomaniaInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#f8901c1a", color: "#f8901c" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="space-y-1">
                 {visibleOutrasLoterias.map(loteria =>
                   loteria.href ? (
                     <Link

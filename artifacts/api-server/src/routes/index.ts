@@ -4,6 +4,7 @@ import loteriasRouter from "./loterias";
 import megaSenaRouter from "./mega-sena";
 import lotofacilRouter from "./lotofacil";
 import quinaRouter from "./quina";
+import lotomaniaRouter from "./lotomania";
 import adminRouter from "./admin";
 
 const router: IRouter = Router();
@@ -13,6 +14,7 @@ router.use(loteriasRouter);
 router.use(megaSenaRouter);
 router.use(lotofacilRouter);
 router.use(quinaRouter);
+router.use(lotomaniaRouter);
 router.use(adminRouter);
 
 export default router;

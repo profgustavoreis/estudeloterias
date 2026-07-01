@@ -22,12 +22,15 @@ import type {
 import type {
   ApiError,
   EstatisticasLotofacil,
+  EstatisticasLotomania,
   EstatisticasMegaSena,
   EstatisticasQuina,
   GeradorInput,
   GeradorInputLotofacil,
+  GeradorInputLotomania,
   GeradorInputQuina,
   GetLotofacilResultadosParams,
+  GetLotomaniaResultadosParams,
   GetMegaSenaResultadosParams,
   GetQuinaResultadosParams,
   HealthStatus,
@@ -38,17 +41,21 @@ import type {
   QuinaDeSaoJoao,
   Resultado,
   ResultadoLotofacil,
+  ResultadoLotomania,
   ResultadoMegaSena,
   ResultadoQuina,
   ResultadosPaginados,
   ResultadosPaginadosLotofacil,
+  ResultadosPaginadosLotomania,
   ResultadosPaginadosQuina,
   ResumoLotofacil,
+  ResumoLotomania,
   ResumoMegaSena,
   ResumoQuina,
   SimulacaoResultado,
   SimuladorInput,
   SimuladorInputLotofacil,
+  SimuladorInputLotomania,
   SimuladorInputQuina
 } from './api.schemas';
 
@@ -2127,5 +2134,539 @@ export const useGerarJogoQuina = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoQuinaMutationOptions(options));
+    }
+
+export const getGetLotomaniaUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/lotomania/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da Lotomania
+ */
+export const getLotomaniaUltimoResultado = async ( options?: RequestInit): Promise<ResultadoLotomania> => {
+
+  return customFetch<ResultadoLotomania>(getGetLotomaniaUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLotomaniaUltimoResultadoQueryKey = () => {
+    return [
+    `/api/lotomania/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetLotomaniaUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLotomaniaUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>> = ({ signal }) => getLotomaniaUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLotomaniaUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>>
+export type GetLotomaniaUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da Lotomania
+ */
+
+export function useGetLotomaniaUltimoResultado<TData = Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLotomaniaUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetLotomaniaResultadosUrl = (params?: GetLotomaniaResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/lotomania/resultados?${stringifiedParams}` : `/api/lotomania/resultados`
+}
+
+/**
+ * @summary Histórico de resultados da Lotomania
+ */
+export const getLotomaniaResultados = async (params?: GetLotomaniaResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosLotomania> => {
+
+  return customFetch<ResultadosPaginadosLotomania>(getGetLotomaniaResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLotomaniaResultadosQueryKey = (params?: GetLotomaniaResultadosParams,) => {
+    return [
+    `/api/lotomania/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetLotomaniaResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getLotomaniaResultados>>, TError = ErrorType<unknown>>(params?: GetLotomaniaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLotomaniaResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotomaniaResultados>>> = ({ signal }) => getLotomaniaResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLotomaniaResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getLotomaniaResultados>>>
+export type GetLotomaniaResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Histórico de resultados da Lotomania
+ */
+
+export function useGetLotomaniaResultados<TData = Awaited<ReturnType<typeof getLotomaniaResultados>>, TError = ErrorType<unknown>>(
+ params?: GetLotomaniaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLotomaniaResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetLotomaniaResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/lotomania/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da Lotomania
+ */
+export const getLotomaniaResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoLotomania> => {
+
+  return customFetch<ResultadoLotomania>(getGetLotomaniaResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLotomaniaResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/lotomania/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetLotomaniaResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>, TError = ErrorType<ApiError>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLotomaniaResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>> = ({ signal }) => getLotomaniaResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLotomaniaResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>>
+export type GetLotomaniaResultadoConcursoQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary Resultado de um concurso específico da Lotomania
+ */
+
+export function useGetLotomaniaResultadoConcurso<TData = Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>, TError = ErrorType<ApiError>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLotomaniaResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetLotomaniaEstatisticasUrl = () => {
+
+
+
+
+  return `/api/lotomania/estatisticas`
+}
+
+/**
+ * @summary Estatísticas da Lotomania (frequência de dezenas, etc.)
+ */
+export const getLotomaniaEstatisticas = async ( options?: RequestInit): Promise<EstatisticasLotomania> => {
+
+  return customFetch<EstatisticasLotomania>(getGetLotomaniaEstatisticasUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLotomaniaEstatisticasQueryKey = () => {
+    return [
+    `/api/lotomania/estatisticas`
+    ] as const;
+    }
+
+
+export const getGetLotomaniaEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getLotomaniaEstatisticas>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLotomaniaEstatisticasQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotomaniaEstatisticas>>> = ({ signal }) => getLotomaniaEstatisticas({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLotomaniaEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getLotomaniaEstatisticas>>>
+export type GetLotomaniaEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas da Lotomania (frequência de dezenas, etc.)
+ */
+
+export function useGetLotomaniaEstatisticas<TData = Awaited<ReturnType<typeof getLotomaniaEstatisticas>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLotomaniaEstatisticasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetLotomaniaResumoUrl = () => {
+
+
+
+
+  return `/api/lotomania/resumo`
+}
+
+/**
+ * @summary Resumo agregado da Lotomania
+ */
+export const getLotomaniaResumo = async ( options?: RequestInit): Promise<ResumoLotomania> => {
+
+  return customFetch<ResumoLotomania>(getGetLotomaniaResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetLotomaniaResumoQueryKey = () => {
+    return [
+    `/api/lotomania/resumo`
+    ] as const;
+    }
+
+
+export const getGetLotomaniaResumoQueryOptions = <TData = Awaited<ReturnType<typeof getLotomaniaResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetLotomaniaResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotomaniaResumo>>> = ({ signal }) => getLotomaniaResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetLotomaniaResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getLotomaniaResumo>>>
+export type GetLotomaniaResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo agregado da Lotomania
+ */
+
+export function useGetLotomaniaResumo<TData = Awaited<ReturnType<typeof getLotomaniaResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotomaniaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetLotomaniaResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularLotomaniaUrl = () => {
+
+
+
+
+  return `/api/lotomania/simulador`
+}
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Lotomania
+ */
+export const simularLotomania = async (simuladorInputLotomania: SimuladorInputLotomania, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularLotomaniaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputLotomania,)
+  }
+);}
+
+
+
+
+export const getSimularLotomaniaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularLotomania>>, TError,{data: BodyType<SimuladorInputLotomania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularLotomania>>, TError,{data: BodyType<SimuladorInputLotomania>}, TContext> => {
+
+const mutationKey = ['simularLotomania'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularLotomania>>, {data: BodyType<SimuladorInputLotomania>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularLotomania(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularLotomaniaMutationResult = NonNullable<Awaited<ReturnType<typeof simularLotomania>>>
+    export type SimularLotomaniaMutationBody = BodyType<SimuladorInputLotomania>
+    export type SimularLotomaniaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Lotomania
+ */
+export const useSimularLotomania = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularLotomania>>, TError,{data: BodyType<SimuladorInputLotomania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularLotomania>>,
+        TError,
+        {data: BodyType<SimuladorInputLotomania>},
+        TContext
+      > => {
+      return useMutation(getSimularLotomaniaMutationOptions(options));
+    }
+
+export const getGerarJogoLotomaniaUrl = () => {
+
+
+
+
+  return `/api/lotomania/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de Lotomania (50 dezenas)
+ */
+export const gerarJogoLotomania = async (geradorInputLotomania: GeradorInputLotomania, options?: RequestInit): Promise<JogoGerado> => {
+
+  return customFetch<JogoGerado>(getGerarJogoLotomaniaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputLotomania,)
+  }
+);}
+
+
+
+
+export const getGerarJogoLotomaniaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoLotomania>>, TError,{data: BodyType<GeradorInputLotomania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoLotomania>>, TError,{data: BodyType<GeradorInputLotomania>}, TContext> => {
+
+const mutationKey = ['gerarJogoLotomania'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoLotomania>>, {data: BodyType<GeradorInputLotomania>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoLotomania(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoLotomaniaMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoLotomania>>>
+    export type GerarJogoLotomaniaMutationBody = BodyType<GeradorInputLotomania>
+    export type GerarJogoLotomaniaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de Lotomania (50 dezenas)
+ */
+export const useGerarJogoLotomania = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoLotomania>>, TError,{data: BodyType<GeradorInputLotomania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoLotomania>>,
+        TError,
+        {data: BodyType<GeradorInputLotomania>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoLotomaniaMutationOptions(options));
     }
 
