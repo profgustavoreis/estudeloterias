@@ -245,20 +245,6 @@ export const GetMegaSenaEstatisticasResponse = zod.object({
 
 
 /**
- * @summary Próximos sorteios da Mega-Sena
- */
-export const GetMegaSenaCalendarioResponseItem = zod.object({
-  "data": zod.string(),
-  "diaSemana": zod.string(),
-  "concursoEstimado": zod.number().nullish(),
-  "valorEstimado": zod.number().nullish(),
-  "especial": zod.boolean(),
-  "descricao": zod.string().nullish()
-})
-export const GetMegaSenaCalendarioResponse = zod.array(GetMegaSenaCalendarioResponseItem)
-
-
-/**
  * @summary Informações e histórico da Mega da Virada
  */
 export const GetMegaDaViradaResponse = zod.object({
@@ -544,20 +530,6 @@ export const GetLotofacilResumoResponse = zod.object({
 
 
 /**
- * @summary Próximos sorteios da Lotofácil
- */
-export const GetLotofacilCalendarioResponseItem = zod.object({
-  "data": zod.string(),
-  "diaSemana": zod.string(),
-  "concursoEstimado": zod.number().nullish(),
-  "valorEstimado": zod.number().nullish(),
-  "especial": zod.boolean(),
-  "descricao": zod.string().nullish()
-})
-export const GetLotofacilCalendarioResponse = zod.array(GetLotofacilCalendarioResponseItem)
-
-
-/**
  * @summary Informações e histórico da Lotofácil da Independência
  */
 export const GetLotofacilDaIndependenciaResponse = zod.object({
@@ -633,6 +605,271 @@ export const GerarJogoLotofacilBody = zod.object({
 })
 
 export const GerarJogoLotofacilResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.number())),
+  "custo": zod.number()
+})
+
+
+/**
+ * @summary Último resultado da Quina
+ */
+export const GetQuinaUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcursoFinal5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
+})
+
+
+/**
+ * @summary Histórico de resultados da Quina
+ */
+export const getQuinaResultadosQueryPageDefault = 1;
+export const getQuinaResultadosQueryLimitDefault = 20;
+export const getQuinaResultadosQueryOrdemDefault = `desc`;
+
+export const GetQuinaResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().default(getQuinaResultadosQueryPageDefault),
+  "limit": zod.coerce.number().default(getQuinaResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getQuinaResultadosQueryOrdemDefault)
+})
+
+export const GetQuinaResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcursoFinal5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da Quina
+ */
+export const GetQuinaResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const GetQuinaResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcursoFinal5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
+})
+
+
+/**
+ * @summary Estatísticas da Quina (frequência de dezenas, etc.)
+ */
+export const GetQuinaEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+}))
+})
+
+
+/**
+ * @summary Resumo agregado da Quina
+ */
+export const GetQuinaResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores5": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Informações e histórico da Quina de São João
+ */
+export const GetQuinaDeSaoJoaoResponse = zod.object({
+  "anoAtual": zod.number(),
+  "dataProximaEdicao": zod.string().nullish(),
+  "valorEstimado": zod.number().nullish(),
+  "historico": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "valorAcumuladoConcursoFinal5": zod.number().nullish(),
+  "valorAcumuladoConcursoEspecial": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Quina
+ */
+export const simularQuinaBodyDezenasMin = 5;
+export const simularQuinaBodyDezenasMax = 15;
+
+export const simularQuinaBodyFiltroDefault = `premiados`;
+
+export const SimularQuinaBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularQuinaBodyDezenasMin).max(simularQuinaBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'quina', 'quadra', 'terno', 'duque']).default(simularQuinaBodyFiltroDefault)
+})
+
+export const SimularQuinaResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de Quina
+ */
+export const gerarJogoQuinaBodyQuantidadeJogosDefault = 1;
+export const gerarJogoQuinaBodyQuantidadeJogosMax = 20;
+
+export const gerarJogoQuinaBodyQuantidadeDezenasDefault = 5;
+export const gerarJogoQuinaBodyQuantidadeDezenasMin = 5;
+export const gerarJogoQuinaBodyQuantidadeDezenasMax = 15;
+
+
+
+export const GerarJogoQuinaBody = zod.object({
+  "quantidadeJogos": zod.number().min(1).max(gerarJogoQuinaBodyQuantidadeJogosMax).default(gerarJogoQuinaBodyQuantidadeJogosDefault),
+  "quantidadeDezenas": zod.number().min(gerarJogoQuinaBodyQuantidadeDezenasMin).max(gerarJogoQuinaBodyQuantidadeDezenasMax).default(gerarJogoQuinaBodyQuantidadeDezenasDefault)
+})
+
+export const GerarJogoQuinaResponse = zod.object({
   "jogos": zod.array(zod.array(zod.number())),
   "custo": zod.number()
 })

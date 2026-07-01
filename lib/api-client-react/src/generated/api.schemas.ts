@@ -179,18 +179,6 @@ export interface EstatisticasMegaSena {
   numerosEspeciais: NumerosEspeciaisItem[];
 }
 
-export interface Sorteio {
-  data: string;
-  diaSemana: string;
-  /** @nullable */
-  concursoEstimado?: number | null;
-  /** @nullable */
-  valorEstimado?: number | null;
-  especial: boolean;
-  /** @nullable */
-  descricao?: string | null;
-}
-
 export interface MegaDaVirada {
   anoAtual: number;
   dataProximaVirada: string;
@@ -377,6 +365,110 @@ export interface GeradorInputLotofacil {
   quantidadeDezenas: number;
 }
 
+export interface ResultadoQuina {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+  /** @nullable */
+  valorAcumuladoConcursoFinal5?: number | null;
+  /** @nullable */
+  valorAcumuladoConcursoEspecial?: number | null;
+}
+
+export interface ResultadosPaginadosQuina {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoQuina[];
+}
+
+export interface EstatisticasQuina {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+}
+
+export interface ResumoQuina {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores5: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export interface QuinaDeSaoJoao {
+  anoAtual: number;
+  /** @nullable */
+  dataProximaEdicao?: string | null;
+  /** @nullable */
+  valorEstimado?: number | null;
+  historico: ResultadoQuina[];
+}
+
+export type SimuladorInputQuinaFiltro = typeof SimuladorInputQuinaFiltro[keyof typeof SimuladorInputQuinaFiltro];
+
+
+export const SimuladorInputQuinaFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  quina: 'quina',
+  quadra: 'quadra',
+  terno: 'terno',
+  duque: 'duque',
+} as const;
+
+export interface SimuladorInputQuina {
+  /**
+     * @minItems 5
+     * @maxItems 15
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputQuinaFiltro;
+}
+
+export interface GeradorInputQuina {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+  /**
+     * @minimum 5
+     * @maximum 15
+     */
+  quantidadeDezenas: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -409,6 +501,24 @@ export type GetLotofacilResultadosOrdem = typeof GetLotofacilResultadosOrdem[key
 
 
 export const GetLotofacilResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetQuinaResultadosParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+ano?: number | null;
+ordem?: GetQuinaResultadosOrdem;
+};
+
+export type GetQuinaResultadosOrdem = typeof GetQuinaResultadosOrdem[keyof typeof GetQuinaResultadosOrdem];
+
+
+export const GetQuinaResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;

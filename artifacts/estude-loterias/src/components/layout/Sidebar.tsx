@@ -5,7 +5,6 @@ import {
   Target, 
   BarChart3, 
   List, 
-  CalendarDays, 
   Sparkles,
   HelpCircle,
   Info,
@@ -26,7 +25,6 @@ export function Sidebar() {
         { href: "/mega-sena/resultados", label: "Resultados Anteriores", icon: List },
         { href: "/mega-sena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
         { href: "/mega-sena/gerador", label: "Gerador de Jogos", icon: Sparkles },
-        { href: "/mega-sena/calendario", label: "Calendário", icon: CalendarDays },
       ]
     },
     {
@@ -46,7 +44,6 @@ export function Sidebar() {
         { href: "/lotofacil/resultados", label: "Resultados Anteriores", icon: List },
         { href: "/lotofacil/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
         { href: "/lotofacil/gerador", label: "Gerador de Jogos", icon: Sparkles },
-        { href: "/lotofacil/calendario", label: "Calendário", icon: CalendarDays },
       ]
     },
     {
@@ -56,6 +53,25 @@ export function Sidebar() {
         { href: "/lotofacil/premiacao", label: "Premiação", icon: Target },
         { href: "/lotofacil/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
         { href: "/lotofacil/lotofacil-da-independencia", label: "Lotofácil da Independência", icon: Gift },
+      ]
+    },
+    {
+      title: "Quina",
+      items: [
+        { href: "/quina", label: "Painel Principal", icon: Target },
+        { href: "/quina/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/quina/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/quina/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/quina/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "Quina — Info",
+      items: [
+        { href: "/quina/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/quina/premiacao", label: "Premiação", icon: Target },
+        { href: "/quina/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+        { href: "/quina/quina-de-sao-joao", label: "Quina de São João", icon: Gift },
       ]
     }
   ];

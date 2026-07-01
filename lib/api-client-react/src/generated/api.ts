@@ -23,26 +23,33 @@ import type {
   ApiError,
   EstatisticasLotofacil,
   EstatisticasMegaSena,
+  EstatisticasQuina,
   GeradorInput,
   GeradorInputLotofacil,
+  GeradorInputQuina,
   GetLotofacilResultadosParams,
   GetMegaSenaResultadosParams,
+  GetQuinaResultadosParams,
   HealthStatus,
   JogoGerado,
   LoteriaSummary,
   LotofacilDaIndependencia,
   MegaDaVirada,
+  QuinaDeSaoJoao,
   Resultado,
   ResultadoLotofacil,
   ResultadoMegaSena,
+  ResultadoQuina,
   ResultadosPaginados,
   ResultadosPaginadosLotofacil,
+  ResultadosPaginadosQuina,
   ResumoLotofacil,
   ResumoMegaSena,
+  ResumoQuina,
   SimulacaoResultado,
   SimuladorInput,
   SimuladorInputLotofacil,
-  Sorteio
+  SimuladorInputQuina
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -592,83 +599,6 @@ export function useGetMegaSenaEstatisticas<TData = Awaited<ReturnType<typeof get
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetMegaSenaEstatisticasQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  return { ...query, queryKey: queryOptions.queryKey };
-}
-
-
-
-
-
-
-
-export const getGetMegaSenaCalendarioUrl = () => {
-
-
-
-
-  return `/api/mega-sena/calendario`
-}
-
-/**
- * @summary Próximos sorteios da Mega-Sena
- */
-export const getMegaSenaCalendario = async ( options?: RequestInit): Promise<Sorteio[]> => {
-
-  return customFetch<Sorteio[]>(getGetMegaSenaCalendarioUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
-
-
-export const getGetMegaSenaCalendarioQueryKey = () => {
-    return [
-    `/api/mega-sena/calendario`
-    ] as const;
-    }
-
-
-export const getGetMegaSenaCalendarioQueryOptions = <TData = Awaited<ReturnType<typeof getMegaSenaCalendario>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMegaSenaCalendario>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-) => {
-
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetMegaSenaCalendarioQueryKey();
-
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMegaSenaCalendario>>> = ({ signal }) => getMegaSenaCalendario({ signal, ...requestOptions });
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMegaSenaCalendario>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetMegaSenaCalendarioQueryResult = NonNullable<Awaited<ReturnType<typeof getMegaSenaCalendario>>>
-export type GetMegaSenaCalendarioQueryError = ErrorType<unknown>
-
-
-/**
- * @summary Próximos sorteios da Mega-Sena
- */
-
-export function useGetMegaSenaCalendario<TData = Awaited<ReturnType<typeof getMegaSenaCalendario>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMegaSenaCalendario>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-
-  const queryOptions = getGetMegaSenaCalendarioQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1369,83 +1299,6 @@ export function useGetLotofacilResumo<TData = Awaited<ReturnType<typeof getLotof
 
 
 
-export const getGetLotofacilCalendarioUrl = () => {
-
-
-
-
-  return `/api/lotofacil/calendario`
-}
-
-/**
- * @summary Próximos sorteios da Lotofácil
- */
-export const getLotofacilCalendario = async ( options?: RequestInit): Promise<Sorteio[]> => {
-
-  return customFetch<Sorteio[]>(getGetLotofacilCalendarioUrl(),
-  {
-    ...options,
-    method: 'GET'
-
-
-  }
-);}
-
-
-
-
-
-export const getGetLotofacilCalendarioQueryKey = () => {
-    return [
-    `/api/lotofacil/calendario`
-    ] as const;
-    }
-
-
-export const getGetLotofacilCalendarioQueryOptions = <TData = Awaited<ReturnType<typeof getLotofacilCalendario>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotofacilCalendario>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-) => {
-
-const {query: queryOptions, request: requestOptions} = options ?? {};
-
-  const queryKey =  queryOptions?.queryKey ?? getGetLotofacilCalendarioQueryKey();
-
-
-
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getLotofacilCalendario>>> = ({ signal }) => getLotofacilCalendario({ signal, ...requestOptions });
-
-
-
-
-
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getLotofacilCalendario>>, TError, TData> & { queryKey: QueryKey }
-}
-
-export type GetLotofacilCalendarioQueryResult = NonNullable<Awaited<ReturnType<typeof getLotofacilCalendario>>>
-export type GetLotofacilCalendarioQueryError = ErrorType<unknown>
-
-
-/**
- * @summary Próximos sorteios da Lotofácil
- */
-
-export function useGetLotofacilCalendario<TData = Awaited<ReturnType<typeof getLotofacilCalendario>>, TError = ErrorType<unknown>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getLotofacilCalendario>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
-
- ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-
-  const queryOptions = getGetLotofacilCalendarioQueryOptions(options)
-
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
-
-  return { ...query, queryKey: queryOptions.queryKey };
-}
-
-
-
-
-
-
-
 export const getGetLotofacilDaIndependenciaUrl = () => {
 
 
@@ -1663,5 +1516,616 @@ export const useGerarJogoLotofacil = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoLotofacilMutationOptions(options));
+    }
+
+export const getGetQuinaUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/quina/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da Quina
+ */
+export const getQuinaUltimoResultado = async ( options?: RequestInit): Promise<ResultadoQuina> => {
+
+  return customFetch<ResultadoQuina>(getGetQuinaUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetQuinaUltimoResultadoQueryKey = () => {
+    return [
+    `/api/quina/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetQuinaUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getQuinaUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuinaUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuinaUltimoResultado>>> = ({ signal }) => getQuinaUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuinaUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetQuinaUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getQuinaUltimoResultado>>>
+export type GetQuinaUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da Quina
+ */
+
+export function useGetQuinaUltimoResultado<TData = Awaited<ReturnType<typeof getQuinaUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetQuinaUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetQuinaResultadosUrl = (params?: GetQuinaResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/quina/resultados?${stringifiedParams}` : `/api/quina/resultados`
+}
+
+/**
+ * @summary Histórico de resultados da Quina
+ */
+export const getQuinaResultados = async (params?: GetQuinaResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosQuina> => {
+
+  return customFetch<ResultadosPaginadosQuina>(getGetQuinaResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetQuinaResultadosQueryKey = (params?: GetQuinaResultadosParams,) => {
+    return [
+    `/api/quina/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetQuinaResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getQuinaResultados>>, TError = ErrorType<unknown>>(params?: GetQuinaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuinaResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuinaResultados>>> = ({ signal }) => getQuinaResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuinaResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetQuinaResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getQuinaResultados>>>
+export type GetQuinaResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Histórico de resultados da Quina
+ */
+
+export function useGetQuinaResultados<TData = Awaited<ReturnType<typeof getQuinaResultados>>, TError = ErrorType<unknown>>(
+ params?: GetQuinaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetQuinaResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetQuinaResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/quina/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da Quina
+ */
+export const getQuinaResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoQuina> => {
+
+  return customFetch<ResultadoQuina>(getGetQuinaResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetQuinaResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/quina/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetQuinaResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getQuinaResultadoConcurso>>, TError = ErrorType<ApiError>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuinaResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuinaResultadoConcurso>>> = ({ signal }) => getQuinaResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuinaResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetQuinaResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getQuinaResultadoConcurso>>>
+export type GetQuinaResultadoConcursoQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary Resultado de um concurso específico da Quina
+ */
+
+export function useGetQuinaResultadoConcurso<TData = Awaited<ReturnType<typeof getQuinaResultadoConcurso>>, TError = ErrorType<ApiError>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetQuinaResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetQuinaEstatisticasUrl = () => {
+
+
+
+
+  return `/api/quina/estatisticas`
+}
+
+/**
+ * @summary Estatísticas da Quina (frequência de dezenas, etc.)
+ */
+export const getQuinaEstatisticas = async ( options?: RequestInit): Promise<EstatisticasQuina> => {
+
+  return customFetch<EstatisticasQuina>(getGetQuinaEstatisticasUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetQuinaEstatisticasQueryKey = () => {
+    return [
+    `/api/quina/estatisticas`
+    ] as const;
+    }
+
+
+export const getGetQuinaEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getQuinaEstatisticas>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuinaEstatisticasQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuinaEstatisticas>>> = ({ signal }) => getQuinaEstatisticas({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuinaEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetQuinaEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getQuinaEstatisticas>>>
+export type GetQuinaEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas da Quina (frequência de dezenas, etc.)
+ */
+
+export function useGetQuinaEstatisticas<TData = Awaited<ReturnType<typeof getQuinaEstatisticas>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetQuinaEstatisticasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetQuinaResumoUrl = () => {
+
+
+
+
+  return `/api/quina/resumo`
+}
+
+/**
+ * @summary Resumo agregado da Quina
+ */
+export const getQuinaResumo = async ( options?: RequestInit): Promise<ResumoQuina> => {
+
+  return customFetch<ResumoQuina>(getGetQuinaResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetQuinaResumoQueryKey = () => {
+    return [
+    `/api/quina/resumo`
+    ] as const;
+    }
+
+
+export const getGetQuinaResumoQueryOptions = <TData = Awaited<ReturnType<typeof getQuinaResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuinaResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuinaResumo>>> = ({ signal }) => getQuinaResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuinaResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetQuinaResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getQuinaResumo>>>
+export type GetQuinaResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo agregado da Quina
+ */
+
+export function useGetQuinaResumo<TData = Awaited<ReturnType<typeof getQuinaResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetQuinaResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetQuinaDeSaoJoaoUrl = () => {
+
+
+
+
+  return `/api/quina/quina-de-sao-joao`
+}
+
+/**
+ * @summary Informações e histórico da Quina de São João
+ */
+export const getQuinaDeSaoJoao = async ( options?: RequestInit): Promise<QuinaDeSaoJoao> => {
+
+  return customFetch<QuinaDeSaoJoao>(getGetQuinaDeSaoJoaoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetQuinaDeSaoJoaoQueryKey = () => {
+    return [
+    `/api/quina/quina-de-sao-joao`
+    ] as const;
+    }
+
+
+export const getGetQuinaDeSaoJoaoQueryOptions = <TData = Awaited<ReturnType<typeof getQuinaDeSaoJoao>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaDeSaoJoao>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetQuinaDeSaoJoaoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getQuinaDeSaoJoao>>> = ({ signal }) => getQuinaDeSaoJoao({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getQuinaDeSaoJoao>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetQuinaDeSaoJoaoQueryResult = NonNullable<Awaited<ReturnType<typeof getQuinaDeSaoJoao>>>
+export type GetQuinaDeSaoJoaoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Informações e histórico da Quina de São João
+ */
+
+export function useGetQuinaDeSaoJoao<TData = Awaited<ReturnType<typeof getQuinaDeSaoJoao>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getQuinaDeSaoJoao>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetQuinaDeSaoJoaoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularQuinaUrl = () => {
+
+
+
+
+  return `/api/quina/simulador`
+}
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Quina
+ */
+export const simularQuina = async (simuladorInputQuina: SimuladorInputQuina, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularQuinaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputQuina,)
+  }
+);}
+
+
+
+
+export const getSimularQuinaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularQuina>>, TError,{data: BodyType<SimuladorInputQuina>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularQuina>>, TError,{data: BodyType<SimuladorInputQuina>}, TContext> => {
+
+const mutationKey = ['simularQuina'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularQuina>>, {data: BodyType<SimuladorInputQuina>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularQuina(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularQuinaMutationResult = NonNullable<Awaited<ReturnType<typeof simularQuina>>>
+    export type SimularQuinaMutationBody = BodyType<SimuladorInputQuina>
+    export type SimularQuinaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Quina
+ */
+export const useSimularQuina = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularQuina>>, TError,{data: BodyType<SimuladorInputQuina>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularQuina>>,
+        TError,
+        {data: BodyType<SimuladorInputQuina>},
+        TContext
+      > => {
+      return useMutation(getSimularQuinaMutationOptions(options));
+    }
+
+export const getGerarJogoQuinaUrl = () => {
+
+
+
+
+  return `/api/quina/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de Quina
+ */
+export const gerarJogoQuina = async (geradorInputQuina: GeradorInputQuina, options?: RequestInit): Promise<JogoGerado> => {
+
+  return customFetch<JogoGerado>(getGerarJogoQuinaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputQuina,)
+  }
+);}
+
+
+
+
+export const getGerarJogoQuinaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoQuina>>, TError,{data: BodyType<GeradorInputQuina>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoQuina>>, TError,{data: BodyType<GeradorInputQuina>}, TContext> => {
+
+const mutationKey = ['gerarJogoQuina'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoQuina>>, {data: BodyType<GeradorInputQuina>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoQuina(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoQuinaMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoQuina>>>
+    export type GerarJogoQuinaMutationBody = BodyType<GeradorInputQuina>
+    export type GerarJogoQuinaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de Quina
+ */
+export const useGerarJogoQuina = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoQuina>>, TError,{data: BodyType<GeradorInputQuina>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoQuina>>,
+        TError,
+        {data: BodyType<GeradorInputQuina>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoQuinaMutationOptions(options));
     }
 

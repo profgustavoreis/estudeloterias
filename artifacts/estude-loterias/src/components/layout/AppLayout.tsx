@@ -4,7 +4,7 @@ import { TopNav } from "./TopNav";
 const loterias = [
   { name: "Mega-Sena",   href: "/mega-sena",    active: true },
   { name: "Lotofácil",   href: "/lotofacil",   active: true },
-  { name: "Quina",       href: "#",            active: false, soon: true },
+  { name: "Quina",       href: "/quina",        active: true },
   { name: "Super Sete",  href: "#",            active: false, soon: true },
   { name: "+Milionária",  href: "#",            active: false, soon: true },
   { name: "Dupla Sena",  href: "#",            active: false, soon: true },

@@ -7,35 +7,7 @@ import { getLatest } from "./loterias";
 
 const router = Router();
 
-const MODALIDADE = "lotofacil";
-
-// Desde 2020, a Lotofácil da Independência é um concurso especial (final 0) realizado
-// no sábado da semana (segunda a domingo) que contém o dia 7 de setembro — exceto quando
-// o próprio dia 7 cai num sábado, caso em que o sorteio passa para a segunda-feira seguinte
-// (foi o que aconteceu em 2024: 07/09/2024 era sábado, e o sorteio saiu em 09/09/2024).
-function dataIndependencia(ano: number): Date {
-  const sete = new Date(Date.UTC(ano, 8, 7));
-  const diaSemana = sete.getUTCDay(); // 0=domingo..6=sábado
-  const indiceSegunda = (diaSemana + 6) % 7; // 0=segunda..6=domingo
-  if (indiceSegunda === 5) {
-    // 7 de setembro é sábado: sorteio passa para a segunda-feira seguinte (dia 9)
-    return new Date(Date.UTC(ano, 8, 9));
-  }
-  const offset = 5 - indiceSegunda;
-  return new Date(Date.UTC(ano, 8, 7 + offset));
-}
-
-function proximaDataIndependencia(hoje: Date): string {
-  let ano = hoje.getUTCFullYear();
-  let data = dataIndependencia(ano);
-  if (data < hoje) {
-    ano += 1;
-    data = dataIndependencia(ano);
-  }
-  const dd = String(data.getUTCDate()).padStart(2, "0");
-  const mm = String(data.getUTCMonth() + 1).padStart(2, "0");
-  return `${dd}/${mm}/${data.getUTCFullYear()}`;
-}
+const MODALIDADE = "quina";
 
 function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
   return {
@@ -48,25 +20,25 @@ function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
     dataProximoConcurso: row.dataProximoConcurso ?? null,
     valorEstimadoProximoConcurso: row.valorEstimadoProximo ? Number(row.valorEstimadoProximo) : null,
     arrecadacaoTotal: row.arrecadacaoTotal ? Number(row.arrecadacaoTotal) : null,
-    valorAcumuladoConcurso_0: row.valorAcumuladoConcurso_0_5 ? Number(row.valorAcumuladoConcurso_0_5) : null,
+    valorAcumuladoConcursoFinal5: row.valorAcumuladoConcurso_0_5 ? Number(row.valorAcumuladoConcurso_0_5) : null,
     valorAcumuladoConcursoEspecial: row.valorAcumuladoConcursoEspecial ? Number(row.valorAcumuladoConcursoEspecial) : null,
   };
 }
 
-// GET /api/lotofacil/resultado/ultimo
-router.get("/lotofacil/resultado/ultimo", async (req, res) => {
+// GET /api/quina/resultado/ultimo
+router.get("/quina/resultado/ultimo", async (req, res) => {
   try {
     const row = await getLatest(MODALIDADE);
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil ultimo resultado");
+    req.log.error({ err }, "Failed to get quina ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
 
-// GET /api/lotofacil/resultados
-router.get("/lotofacil/resultados", async (req, res) => {
+// GET /api/quina/resultados
+router.get("/quina/resultados", async (req, res) => {
   try {
     const page = Math.max(1, parseInt(String(req.query.page ?? "1"), 10));
     const limit = Math.min(50, Math.max(1, parseInt(String(req.query.limit ?? "20"), 10)));
@@ -102,13 +74,13 @@ router.get("/lotofacil/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil resultados");
+    req.log.error({ err }, "Failed to get quina resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
 
-// GET /api/lotofacil/resultados/:concurso
-router.get("/lotofacil/resultados/:concurso", async (req, res) => {
+// GET /api/quina/resultados/:concurso
+router.get("/quina/resultados/:concurso", async (req, res) => {
   const concurso = parseInt(req.params.concurso, 10);
   if (isNaN(concurso) || concurso < 1) { res.status(400).json({ error: "Concurso inválido" }); return; }
 
@@ -134,13 +106,13 @@ router.get("/lotofacil/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get lotofacil concurso");
+    req.log.error({ err, concurso }, "Failed to get quina concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
 
-// GET /api/lotofacil/estatisticas
-router.get("/lotofacil/estatisticas", async (req, res) => {
+// GET /api/quina/estatisticas
+router.get("/quina/estatisticas", async (req, res) => {
   try {
     const rows = await db
       .select()
@@ -156,35 +128,32 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
     const total = rows.length;
     const latestConcurso = rows[0].concurso;
 
-    // Soma buckets for Lotofácil (min=120, max=270)
+    // Soma buckets for Quina: soma de 5 dezenas entre 1 e 80 (min=15, max=390)
     const SOMA_BUCKETS = [
-      { min: 120, max: 134, faixa: "120–134" },
-      { min: 135, max: 149, faixa: "135–149" },
-      { min: 150, max: 164, faixa: "150–164" },
-      { min: 165, max: 179, faixa: "165–179" },
-      { min: 180, max: 194, faixa: "180–194" },
-      { min: 195, max: 209, faixa: "195–209" },
-      { min: 210, max: 224, faixa: "210–224" },
-      { min: 225, max: 239, faixa: "225–239" },
-      { min: 240, max: 270, faixa: "240–270" },
+      { min: 15,  max: 56,  faixa: "15–56"   },
+      { min: 57,  max: 98,  faixa: "57–98"   },
+      { min: 99,  max: 140, faixa: "99–140"  },
+      { min: 141, max: 182, faixa: "141–182" },
+      { min: 183, max: 224, faixa: "183–224" },
+      { min: 225, max: 266, faixa: "225–266" },
+      { min: 267, max: 308, faixa: "267–308" },
+      { min: 309, max: 350, faixa: "309–350" },
+      { min: 351, max: 390, faixa: "351–390" },
     ];
 
-    const PRIMOS    = new Set([2, 3, 5, 7, 11, 13, 17, 19, 23]);
-    const FIBONACCI = new Set([1, 2, 3, 5, 8, 13, 21]);
-    const TRIANGULARES = new Set([1, 3, 6, 10, 15, 21]);
+    const PRIMOS = new Set([2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79]);
+    const FIBONACCI = new Set([1,2,3,5,8,13,21,34,55]);
+    const TRIANGULARES = new Set([1,3,6,10,15,21,28,36,45,55,66,78]);
 
-    // Moldura (border of 5×5 grid): rows 1,5 and cols 1,5
-    // Row 1: 01-05, Row 5: 21-25
-    // Col 1: 01,06,11,16,21  Col 5: 05,10,15,20,25
+    // Moldura = outer border of 8×10 grid (row1 + row8 + leftmost/rightmost of rows 2–7)
     const MOLDURA = new Set<number>([
-      1, 2, 3, 4, 5,        // row 1
-      21, 22, 23, 24, 25,   // row 5
-      6, 11, 16,             // col 1 (middle rows)
-      10, 15, 20,            // col 5 (middle rows)
+      ...Array.from({ length: 10 }, (_, i) => i + 1),      // row 1: 01–10
+      ...Array.from({ length: 10 }, (_, i) => i + 71),     // row 8: 71–80
+      11, 20, 21, 30, 31, 40, 41, 50, 51, 60, 61, 70,      // left/right of rows 2–7
     ]);
 
     const freq: Record<string, { count: number; lastSeenIdx: number | null }> = {};
-    for (let i = 1; i <= 25; i++) {
+    for (let i = 1; i <= 80; i++) {
       freq[String(i).padStart(2, "0")] = { count: 0, lastSeenIdx: null };
     }
 
@@ -192,8 +161,8 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
     const lastConcursoForPares: Record<number, number> = {};
     const molduraDistrib: Record<number, number> = {};
     const lastConcursoForMoldura: Record<number, number> = {};
-    const freqLinha = [0, 0, 0, 0, 0];  // 5 rows
-    const freqColuna = Array(5).fill(0); // 5 cols
+    const freqLinha = [0, 0, 0, 0, 0, 0, 0, 0];   // 8 rows
+    const freqColuna = Array(10).fill(0);          // 10 cols
     const somaHist: Record<string, number> = {};
     const lastConcursoForBucket: Record<string, number> = {};
     let menorSoma = { valor: Infinity, concurso: 0, data: "" };
@@ -229,15 +198,16 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
       molduraDistrib[moldura] = (molduraDistrib[moldura] ?? 0) + 1;
       if (!(moldura in lastConcursoForMoldura)) lastConcursoForMoldura[moldura] = row.concurso;
 
-      // Linhas (5 rows of 5×5 grid)
+      // Linha (row in 10-col grid)
       for (const d of dezenas) {
-        const linhaIdx = Math.floor((d - 1) / 5);
+        const linhaIdx = Math.min(Math.floor((d - 1) / 10), 7);
         freqLinha[linhaIdx]++;
       }
 
-      // Colunas (5 cols of 5×5 grid): col index = (d-1) % 5
+      // Coluna (column in 8-row grid)
       for (const d of dezenas) {
-        freqColuna[(d - 1) % 5]++;
+        const colIdx = d % 10 === 0 ? 9 : (d % 10) - 1;
+        freqColuna[colIdx]++;
       }
 
       const soma = dezenas.reduce((a, b) => a + b, 0);
@@ -281,27 +251,27 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
 
     const atrasoMaiores = [...frequenciaDezenas].sort((a, b) => b.atraso - a.atraso).slice(0, 15);
 
-    const paresImpares = Array.from({ length: 16 }, (_, p) => ({
+    const paresImpares = [0, 1, 2, 3, 4, 5].map(p => ({
       pares: p,
-      impares: 15 - p,
+      impares: 5 - p,
       sorteios: paresDistrib[p] ?? 0,
       ultimoConcurso: lastConcursoForPares[p] ?? null,
-    })).filter(item => item.sorteios > 0 || (item.pares >= 3 && item.pares <= 12));
+    }));
 
-    const molduraRetrato = Array.from({ length: 16 }, (_, m) => ({
+    const molduraRetrato = [0, 1, 2, 3, 4, 5].map(m => ({
       moldura: m,
-      retrato: 15 - m,
+      retrato: 5 - m,
       sorteios: molduraDistrib[m] ?? 0,
       ultimoConcurso: lastConcursoForMoldura[m] ?? null,
-    })).filter(item => item.sorteios > 0 || (item.moldura >= 5 && item.moldura <= 12));
+    }));
 
-    const FAIXAS_LINHAS = ["01–05", "06–10", "11–15", "16–20", "21–25"];
+    const FAIXAS_LINHAS = ["01–10","11–20","21–30","31–40","41–50","51–60","61–70","71–80"];
     const frequenciaPorLinha = FAIXAS_LINHAS.map((faixa, i) => ({
       faixa,
       sorteios: freqLinha[i],
     }));
 
-    const frequenciaPorColuna = Array.from({ length: 5 }, (_, i) => ({
+    const frequenciaPorColuna = Array.from({ length: 10 }, (_, i) => ({
       coluna: i + 1,
       sorteios: freqColuna[i],
     }));
@@ -316,8 +286,8 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
       maior: maiorSoma.valor === -Infinity ? null : maiorSoma,
     };
 
-    const makeDistrib = (distrib: Record<number, number>, lastConcurso: Record<number, number>, max: number) =>
-      Array.from({ length: max + 1 }, (_, i) => ({ count: i, sorteios: distrib[i] ?? 0, ultimoConcurso: lastConcurso[i] ?? null }));
+    const makeDistrib = (distrib: Record<number, number>, lastConcurso: Record<number, number>) =>
+      Array.from({ length: 6 }, (_, i) => ({ count: i, sorteios: distrib[i] ?? 0, ultimoConcurso: lastConcurso[i] ?? null }));
 
     const numerosEspeciais = [
       {
@@ -326,7 +296,7 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
         dezenas: [...PRIMOS].sort((a, b) => a - b),
         quantidadeNaFaixa: PRIMOS.size,
         media: total > 0 ? Math.round(primosTotal / total * 100) / 100 : 0,
-        distribuicao: makeDistrib(primosDistrib, lastConcursoForPrimos, 9),
+        distribuicao: makeDistrib(primosDistrib, lastConcursoForPrimos),
       },
       {
         tipo: "fibonacci",
@@ -334,7 +304,7 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
         dezenas: [...FIBONACCI].sort((a, b) => a - b),
         quantidadeNaFaixa: FIBONACCI.size,
         media: total > 0 ? Math.round(fibTotal / total * 100) / 100 : 0,
-        distribuicao: makeDistrib(fibDistrib, lastConcursoForFib, 7),
+        distribuicao: makeDistrib(fibDistrib, lastConcursoForFib),
       },
       {
         tipo: "triangulares",
@@ -342,7 +312,7 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
         dezenas: [...TRIANGULARES].sort((a, b) => a - b),
         quantidadeNaFaixa: TRIANGULARES.size,
         media: total > 0 ? Math.round(triTotal / total * 100) / 100 : 0,
-        distribuicao: makeDistrib(triDistrib, lastConcursoForTri, 6),
+        distribuicao: makeDistrib(triDistrib, lastConcursoForTri),
       },
     ];
 
@@ -368,13 +338,13 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute lotofacil estatisticas");
+    req.log.error({ err }, "Failed to compute quina estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
 
-// GET /api/lotofacil/resumo
-router.get("/lotofacil/resumo", async (req, res) => {
+// GET /api/quina/resumo
+router.get("/quina/resumo", async (req, res) => {
   try {
     const [maxRow] = await db
       .select({ maxConcurso: max(lotteryResultsTable.concurso), total: count() })
@@ -392,13 +362,13 @@ router.get("/lotofacil/resumo", async (req, res) => {
     let maiorPremio = 0;
     let maiorPremioConcurso = 0;
     let maiorPremioAno = 0;
-    let totalGanhadores15 = 0;
+    let totalGanhadores5 = 0;
 
     rows.forEach(row => {
       const premios = row.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }>;
       const faixa1 = premios[0];
       if (faixa1) {
-        totalGanhadores15 += faixa1.ganhadores ?? 0;
+        totalGanhadores5 += faixa1.ganhadores ?? 0;
         if (faixa1.valorPremio > maiorPremio && faixa1.ganhadores > 0) {
           maiorPremio = faixa1.valorPremio;
           maiorPremioConcurso = row.concurso;
@@ -418,18 +388,62 @@ router.get("/lotofacil/resumo", async (req, res) => {
       maiorPremio,
       maiorPremioConcurso,
       maiorPremioAno,
-      totalGanhadores15,
+      totalGanhadores5,
       proximoSorteio: latest?.dataProximoConcurso ?? null,
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil resumo");
+    req.log.error({ err }, "Failed to get quina resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
 
-// GET /api/lotofacil/lotofacil-da-independencia
-router.get("/lotofacil/lotofacil-da-independencia", async (req, res) => {
+// GET /api/quina/quina-de-sao-joao
+// A Quina de São João é o concurso especial realizado anualmente em data próxima
+// ao dia 24 de junho. Desde 2020, o sorteio acontece no sábado da semana (domingo a
+// sábado) que contém o dia 24 de junho — mesmo quando o próprio 24 cai num sábado
+// (ficando na mesma data). Há exceções pontuais (ex.: 2024 saiu no sábado anterior;
+// 2026 saiu num domingo), então tratamos a data calculada apenas como uma estimativa
+// para a próxima edição, não como regra absoluta.
+//
+// Assim como a Mega da Virada e a Lotofácil da Independência, é um concurso especial
+// que NÃO acumula: se ninguém acerta a quina (5 números), o prêmio garantido é
+// repassado, no mesmo concurso, aos acertadores da quadra (faixa 2) — foi o que
+// aconteceu em 2019 (concurso 5002).
+const LIMIAR_PREMIO_ESPECIAL_QUINA = 50_000_000;
+
+type Premio = { faixa: number; valorPremio: number; ganhadores: number };
+
+function premioEfetivoSaoJoao(premios: Premio[] | null | undefined): number {
+  const faixa1 = premios?.find(p => p.faixa === 1);
+  if (faixa1 && faixa1.ganhadores > 0) return faixa1.valorPremio * faixa1.ganhadores;
+  // Sem acertador da quina: o prêmio garantido desce para a faixa da quadra.
+  const faixa2 = premios?.find(p => p.faixa === 2);
+  if (faixa2 && faixa2.ganhadores > 0) return faixa2.valorPremio * faixa2.ganhadores;
+  return 0;
+}
+
+function dataSaoJoao(ano: number): Date {
+  const data = new Date(Date.UTC(ano, 5, 24)); // mês 5 = junho (0-indexed)
+  const diaSemana = data.getUTCDay(); // 0=domingo..6=sábado
+  const offset = 6 - diaSemana; // dias até o sábado da mesma semana domingo-sábado
+  data.setUTCDate(data.getUTCDate() + offset);
+  return data;
+}
+
+function proximaDataSaoJoao(hoje: Date): string {
+  let ano = hoje.getUTCFullYear();
+  let data = dataSaoJoao(ano);
+  if (data < hoje) {
+    ano += 1;
+    data = dataSaoJoao(ano);
+  }
+  const dd = String(data.getUTCDate()).padStart(2, "0");
+  const mm = String(data.getUTCMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}/${data.getUTCFullYear()}`;
+}
+
+router.get("/quina/quina-de-sao-joao", async (req, res) => {
   try {
     const rows = await db
       .select()
@@ -437,64 +451,48 @@ router.get("/lotofacil/lotofacil-da-independencia", async (req, res) => {
       .where(eq(lotteryResultsTable.modalidade, MODALIDADE))
       .orderBy(asc(lotteryResultsTable.concurso));
 
-    // A Lotofácil da Independência não tem dia fixo (não cai sempre em 7/9):
-    // é o concurso especial de setembro de cada ano cujo prêmio da faixa 1 (15 acertos)
-    // é muito maior que o de um sorteio normal (rateio de um pool acumulado à parte).
-    // Identificamos o concurso especial de cada ano como o sorteio de setembro com o
-    // maior total pago na faixa 1, desde que ultrapasse um patamar muito acima do normal.
-    const LIMIAR_PREMIO_ESPECIAL = 15_000_000;
-    const setembro = rows.filter(r => r.data.split("/")[1] === "09");
+    const junho = rows.filter(r => {
+      const partes = r.data.split("/");
+      const ano = partes[2] ? parseInt(partes[2], 10) : 0;
+      return partes[1] === "06" && ano >= 2011;
+    });
 
     const melhorPorAno = new Map<string, (typeof rows)[number]>();
-    for (const r of setembro) {
+    for (const r of junho) {
       const ano = r.data.split("/")[2];
       if (!ano) continue;
-      const premios = r.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }> | null;
-      const faixa1 = premios?.find(p => p.faixa === 1);
-      const total = faixa1 ? faixa1.valorPremio * faixa1.ganhadores : 0;
+      const total = premioEfetivoSaoJoao(r.premios as Premio[] | null);
 
       const atual = melhorPorAno.get(ano);
-      const totalAtual = atual
-        ? (() => {
-            const p = (atual.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }> | null)?.find(
-              p => p.faixa === 1
-            );
-            return p ? p.valorPremio * p.ganhadores : 0;
-          })()
-        : -1;
+      const totalAtual = atual ? premioEfetivoSaoJoao(atual.premios as Premio[] | null) : -1;
 
       if (total > totalAtual) melhorPorAno.set(ano, r);
     }
 
-    const independencia = Array.from(melhorPorAno.values())
-      .filter(r => {
-        const premios = r.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }> | null;
-        const faixa1 = premios?.find(p => p.faixa === 1);
-        const total = faixa1 ? faixa1.valorPremio * faixa1.ganhadores : 0;
-        return total >= LIMIAR_PREMIO_ESPECIAL;
-      })
+    const saoJoao = Array.from(melhorPorAno.values())
+      .filter(r => premioEfetivoSaoJoao(r.premios as Premio[] | null) >= LIMIAR_PREMIO_ESPECIAL_QUINA)
       .sort((a, b) => a.concurso - b.concurso);
 
     const anoAtual = new Date().getFullYear();
     res.json({
       anoAtual,
-      dataProximaEdicao: proximaDataIndependencia(new Date()),
+      dataProximaEdicao: proximaDataSaoJoao(new Date()),
       valorEstimado: null,
-      historico: independencia.reverse().map(toResultado),
+      historico: saoJoao.reverse().map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil da independencia");
-    res.status(500).json({ error: "Erro ao buscar Lotofácil da Independência" });
+    req.log.error({ err }, "Failed to get quina de sao joao");
+    res.status(500).json({ error: "Erro ao buscar Quina de São João" });
   }
 });
 
-// POST /api/lotofacil/simulador
-router.post("/lotofacil/simulador", async (req, res) => {
+// POST /api/quina/simulador
+router.post("/quina/simulador", async (req, res) => {
   try {
     const { dezenas, filtro = "premiados" } = req.body ?? {};
 
-    if (!Array.isArray(dezenas) || dezenas.length < 15 || dezenas.length > 20) {
-      res.status(400).json({ error: "Selecione entre 15 e 20 dezenas" });
+    if (!Array.isArray(dezenas) || dezenas.length < 5 || dezenas.length > 15) {
+      res.status(400).json({ error: "Selecione entre 5 e 15 dezenas" });
       return;
     }
 
@@ -511,7 +509,7 @@ router.post("/lotofacil/simulador", async (req, res) => {
           WHERE dval = ANY(${anyArray}::text[])
         ) AS acertos
       FROM lottery_results
-      WHERE modalidade = 'lotofacil'
+      WHERE modalidade = 'quina'
       ORDER BY concurso DESC
     `);
 
@@ -522,7 +520,7 @@ router.post("/lotofacil/simulador", async (req, res) => {
 
     const allRows = rows.rows as ResultRow[];
     const contagemPorAcertos: Record<number, number> = {};
-    for (let i = 0; i <= 15; i++) contagemPorAcertos[i] = 0;
+    for (let i = 0; i <= 5; i++) contagemPorAcertos[i] = 0;
 
     let totalPremio = 0;
     const concursosFiltrados: {
@@ -535,22 +533,20 @@ router.post("/lotofacil/simulador", async (req, res) => {
 
       const premios = row.premios as PremioRow[];
       let premioGanho = 0;
-      if (acertos === 15) premioGanho = premios.find(p => p.faixa === 1)?.valorPremio ?? 0;
-      else if (acertos === 14) premioGanho = premios.find(p => p.faixa === 2)?.valorPremio ?? 0;
-      else if (acertos === 13) premioGanho = premios.find(p => p.faixa === 3)?.valorPremio ?? 0;
-      else if (acertos === 12) premioGanho = premios.find(p => p.faixa === 4)?.valorPremio ?? 0;
-      else if (acertos === 11) premioGanho = premios.find(p => p.faixa === 5)?.valorPremio ?? 0;
+      if (acertos === 5) premioGanho = premios.find(p => p.faixa === 1)?.valorPremio ?? 0;
+      else if (acertos === 4) premioGanho = premios.find(p => p.faixa === 2)?.valorPremio ?? 0;
+      else if (acertos === 3) premioGanho = premios.find(p => p.faixa === 3)?.valorPremio ?? 0;
+      else if (acertos === 2) premioGanho = premios.find(p => p.faixa === 4)?.valorPremio ?? 0;
 
       totalPremio += premioGanho;
 
       const incluir =
         filtro === "todos" ||
-        (filtro === "premiados" && acertos >= 11) ||
-        (filtro === "quinze"   && acertos === 15) ||
-        (filtro === "quatorze" && acertos === 14) ||
-        (filtro === "treze"    && acertos === 13) ||
-        (filtro === "doze"     && acertos === 12) ||
-        (filtro === "onze"     && acertos === 11);
+        (filtro === "premiados" && acertos >= 2) ||
+        (filtro === "quina"  && acertos === 5) ||
+        (filtro === "quadra" && acertos === 4) ||
+        (filtro === "terno"  && acertos === 3) ||
+        (filtro === "duque"  && acertos === 2);
 
       if (incluir) {
         concursosFiltrados.push({
@@ -563,7 +559,7 @@ router.post("/lotofacil/simulador", async (req, res) => {
       }
     }
 
-    const resumo = Array.from({ length: 16 }, (_, i) => ({
+    const resumo = Array.from({ length: 6 }, (_, i) => ({
       acertos: i,
       contagem: contagemPorAcertos[i] ?? 0,
     })).reverse();
@@ -575,18 +571,18 @@ router.post("/lotofacil/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate lotofacil");
+    req.log.error({ err }, "Failed to simulate quina");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
 
-// POST /api/lotofacil/gerador
-router.post("/lotofacil/gerador", async (req, res) => {
+// POST /api/quina/gerador
+router.post("/quina/gerador", async (req, res) => {
   try {
-    const { quantidadeJogos = 1, quantidadeDezenas = 15 } = req.body ?? {};
+    const { quantidadeJogos = 1, quantidadeDezenas = 5 } = req.body ?? {};
 
     const qtdJogos = Math.min(20, Math.max(1, parseInt(String(quantidadeJogos), 10)));
-    const qtdDezenas = Math.min(20, Math.max(15, parseInt(String(quantidadeDezenas), 10)));
+    const qtdDezenas = Math.min(15, Math.max(5, parseInt(String(quantidadeDezenas), 10)));
 
     function C(n: number, k: number): number {
       if (k < 0 || k > n) return 0;
@@ -596,12 +592,12 @@ router.post("/lotofacil/gerador", async (req, res) => {
       return Math.round(r);
     }
 
-    const apostasSimples = C(qtdDezenas, 15);
-    const custoPorJogo = apostasSimples * 3.50;
+    const apostasSimples = C(qtdDezenas, 5);
+    const custoPorJogo = apostasSimples * 3.0;
 
     const jogos: number[][] = [];
     for (let j = 0; j < qtdJogos; j++) {
-      const pool = Array.from({ length: 25 }, (_, i) => i + 1);
+      const pool = Array.from({ length: 80 }, (_, i) => i + 1);
       for (let i = pool.length - 1; i > 0; i--) {
         const r = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[r]] = [pool[r], pool[i]];
@@ -614,7 +610,7 @@ router.post("/lotofacil/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate lotofacil jogo");
+    req.log.error({ err }, "Failed to generate quina jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

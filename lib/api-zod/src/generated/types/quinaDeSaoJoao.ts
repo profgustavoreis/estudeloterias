@@ -5,15 +5,13 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { ResultadoQuina } from './resultadoQuina';
 
-export interface Sorteio {
-  data: string;
-  diaSemana: string;
+export interface QuinaDeSaoJoao {
+  anoAtual: number;
   /** @nullable */
-  concursoEstimado?: number | null;
+  dataProximaEdicao?: string | null;
   /** @nullable */
   valorEstimado?: number | null;
-  especial: boolean;
-  /** @nullable */
-  descricao?: string | null;
+  historico: ResultadoQuina[];
 }

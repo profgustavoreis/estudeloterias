@@ -16,6 +16,8 @@ tags:
     description: Mega-Sena específico
   - name: lotofacil
     description: Lotofácil específico
+  - name: quina
+    description: Quina específico
 paths:
   /healthz:
     get:
@@ -165,21 +167,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EstatisticasMegaSena"
-
-  /mega-sena/calendario:
-    get:
-      operationId: getMegaSenaCalendario
-      tags: [mega-sena]
-      summary: Próximos sorteios da Mega-Sena
-      responses:
-        "200":
-          description: Calendário de sorteios
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Sorteio"
 
   /mega-sena/mega-da-virada:
     get:
@@ -343,21 +330,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/ResumoLotofacil"
 
-  /lotofacil/calendario:
-    get:
-      operationId: getLotofacilCalendario
-      tags: [lotofacil]
-      summary: Próximos sorteios da Lotofácil
-      responses:
-        "200":
-          description: Calendário de sorteios
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Sorteio"
-
   /lotofacil/lotofacil-da-independencia:
     get:
       operationId: getLotofacilDaIndependencia
@@ -401,6 +373,155 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GeradorInputLotofacil"
+      responses:
+        "200":
+          description: Jogo(s) gerado(s)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JogoGerado"
+
+  /quina/resultado/ultimo:
+    get:
+      operationId: getQuinaUltimoResultado
+      tags: [quina]
+      summary: Último resultado da Quina
+      responses:
+        "200":
+          description: Último resultado da Quina
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoQuina"
+
+  /quina/resultados:
+    get:
+      operationId: getQuinaResultados
+      tags: [quina]
+      summary: Histórico de resultados da Quina
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: ano
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        "200":
+          description: Lista paginada de resultados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadosPaginadosQuina"
+
+  /quina/resultados/{concurso}:
+    get:
+      operationId: getQuinaResultadoConcurso
+      tags: [quina]
+      summary: Resultado de um concurso específico da Quina
+      parameters:
+        - name: concurso
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado do concurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoQuina"
+        "404":
+          description: Concurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /quina/estatisticas:
+    get:
+      operationId: getQuinaEstatisticas
+      tags: [quina]
+      summary: Estatísticas da Quina (frequência de dezenas, etc.)
+      responses:
+        "200":
+          description: Estatísticas completas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstatisticasQuina"
+
+  /quina/resumo:
+    get:
+      operationId: getQuinaResumo
+      tags: [quina]
+      summary: Resumo agregado da Quina
+      responses:
+        "200":
+          description: Resumo da Quina
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumoQuina"
+
+  /quina/quina-de-sao-joao:
+    get:
+      operationId: getQuinaDeSaoJoao
+      tags: [quina]
+      summary: Informações e histórico da Quina de São João
+      responses:
+        "200":
+          description: Informações da Quina de São João
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuinaDeSaoJoao"
+
+  /quina/simulador:
+    post:
+      operationId: simularQuina
+      tags: [quina]
+      summary: Simula uma aposta em todos os concursos anteriores da Quina
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInputQuina"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
+  /quina/gerador:
+    post:
+      operationId: gerarJogoQuina
+      tags: [quina]
+      summary: Gera um jogo aleatório de Quina
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeradorInputQuina"
       responses:
         "200":
           description: Jogo(s) gerado(s)
@@ -791,26 +912,6 @@ components:
         - percentual
         - atraso
 
-    Sorteio:
-      type: object
-      properties:
-        data:
-          type: string
-        diaSemana:
-          type: string
-        concursoEstimado:
-          type: ["integer", "null"]
-        valorEstimado:
-          type: ["number", "null"]
-        especial:
-          type: boolean
-        descricao:
-          type: ["string", "null"]
-      required:
-        - data
-        - diaSemana
-        - especial
-
     MegaDaVirada:
       type: object
       properties:
@@ -1142,6 +1243,206 @@ components:
           minimum: 15
           maximum: 20
           default: 15
+      required:
+        - quantidadeJogos
+        - quantidadeDezenas
+
+    ResultadoQuina:
+      type: object
+      properties:
+        concurso:
+          type: integer
+        data:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: string
+        premios:
+          type: array
+          items:
+            $ref: "#/components/schemas/FaixaPremio"
+        acumulado:
+          type: boolean
+        valorAcumulado:
+          type: ["number", "null"]
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
+        arrecadacaoTotal:
+          type: ["number", "null"]
+        valorAcumuladoConcursoFinal5:
+          type: ["number", "null"]
+        valorAcumuladoConcursoEspecial:
+          type: ["number", "null"]
+      required:
+        - concurso
+        - data
+        - dezenas
+        - premios
+        - acumulado
+
+    ResultadosPaginadosQuina:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoQuina"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    EstatisticasQuina:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        frequenciaDezenas:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        atrasoMaiores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        totalAcumulados:
+          type: integer
+        percentualAcumulado:
+          type: number
+        maiorPremio:
+          type: number
+        maiorPremioData:
+          type: string
+        maiorPremioConcurso:
+          type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        molduraRetrato:
+          type: array
+          items:
+            $ref: "#/components/schemas/MolduraRetrato"
+        frequenciaPorLinha:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        frequenciaPorColuna:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaColuna"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
+      required:
+        - totalConcursos
+        - frequenciaDezenas
+        - atrasoMaiores
+        - totalAcumulados
+        - percentualAcumulado
+        - maiorPremio
+        - maiorPremioData
+        - maiorPremioConcurso
+        - paresImpares
+        - molduraRetrato
+        - frequenciaPorLinha
+        - frequenciaPorColuna
+        - somaDezenas
+        - numerosEspeciais
+
+    ResumoQuina:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        acumulado:
+          type: boolean
+        valorAtualAcumulado:
+          type: ["number", "null"]
+        valorEstimadoProximo:
+          type: ["number", "null"]
+        maiorPremio:
+          type: number
+        maiorPremioConcurso:
+          type: integer
+        maiorPremioAno:
+          type: integer
+        totalGanhadores5:
+          type: integer
+        proximoSorteio:
+          type: ["string", "null"]
+        ultimoConcurso:
+          type: integer
+      required:
+        - totalConcursos
+        - acumulado
+        - maiorPremio
+        - maiorPremioConcurso
+        - maiorPremioAno
+        - totalGanhadores5
+        - ultimoConcurso
+
+    QuinaDeSaoJoao:
+      type: object
+      properties:
+        anoAtual:
+          type: integer
+        dataProximaEdicao:
+          type: ["string", "null"]
+        valorEstimado:
+          type: ["number", "null"]
+        historico:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoQuina"
+      required:
+        - anoAtual
+        - historico
+
+    SimuladorInputQuina:
+      type: object
+      required: [dezenas]
+      properties:
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 5
+          maxItems: 15
+        filtro:
+          type: string
+          enum: [todos, premiados, quina, quadra, terno, duque]
+          default: premiados
+
+    GeradorInputQuina:
+      type: object
+      properties:
+        quantidadeJogos:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 1
+        quantidadeDezenas:
+          type: integer
+          minimum: 5
+          maximum: 15
+          default: 5
       required:
         - quantidadeJogos
         - quantidadeDezenas

@@ -25,13 +25,25 @@ import LotofacilResultadosAnteriores from "@/pages/lotofacil/resultados";
 import LotofacilEstatisticas from "@/pages/lotofacil/estatisticas";
 import LotofacilEstatisticasTabela from "@/pages/lotofacil/estatisticas-tabela";
 import LotofacilGerador from "@/pages/lotofacil/gerador";
-import LotofacilCalendario from "@/pages/lotofacil/calendario";
 import LotofacilDaIndependencia from "@/pages/lotofacil/lotofacil-da-independencia";
 import LotofacilSimulador from "@/pages/lotofacil/simulador";
 import LotofacilConferidor from "@/pages/lotofacil/conferidor";
 import LotofacilComoJogar from "@/pages/lotofacil/como-jogar";
 import LotofacilPremiacao from "@/pages/lotofacil/premiacao";
 import LotofacilFAQ from "@/pages/lotofacil/faq";
+
+import QuinaHub from "@/pages/quina/hub";
+import QuinaUltimoResultado from "@/pages/quina/ultimo-resultado";
+import QuinaResultadosAnteriores from "@/pages/quina/resultados";
+import QuinaEstatisticas from "@/pages/quina/estatisticas";
+import QuinaEstatisticasTabela from "@/pages/quina/estatisticas-tabela";
+import QuinaGerador from "@/pages/quina/gerador";
+import QuinaDeSaoJoao from "@/pages/quina/quina-de-sao-joao";
+import QuinaSimulador from "@/pages/quina/simulador";
+import QuinaConferidor from "@/pages/quina/conferidor";
+import QuinaComoJogar from "@/pages/quina/como-jogar";
+import QuinaPremiacao from "@/pages/quina/premiacao";
+import QuinaFAQ from "@/pages/quina/faq";
 
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
@@ -70,7 +82,6 @@ function Router() {
         <Route path="/lotofacil/tabela-de-dezenas" component={LotofacilEstatisticasTabela} />
         <Route path="/lotofacil/resumo-estatistico" component={LotofacilEstatisticas} />
         <Route path="/lotofacil/gerador" component={LotofacilGerador} />
-        <Route path="/lotofacil/calendario" component={LotofacilCalendario} />
         <Route path="/lotofacil/lotofacil-da-independencia" component={LotofacilDaIndependencia} />
         <Route path="/lotofacil/simulador" component={LotofacilSimulador} />
         <Route path="/lotofacil/conferidor" component={LotofacilConferidor} />
@@ -78,6 +89,22 @@ function Router() {
         <Route path="/lotofacil/premiacao" component={LotofacilPremiacao} />
         <Route path="/lotofacil/perguntas-frequentes" component={LotofacilFAQ} />
         <Route path="/lotofacil/faq" component={LotofacilFAQ} />
+
+        {/* Quina Routes */}
+        <Route path="/quina" component={QuinaHub} />
+        <Route path="/quina/resultado/:concurso" component={QuinaUltimoResultado} />
+        <Route path="/quina/resultado" component={QuinaUltimoResultado} />
+        <Route path="/quina/resultados" component={QuinaResultadosAnteriores} />
+        <Route path="/quina/tabela-de-dezenas" component={QuinaEstatisticasTabela} />
+        <Route path="/quina/resumo-estatistico" component={QuinaEstatisticas} />
+        <Route path="/quina/gerador" component={QuinaGerador} />
+        <Route path="/quina/quina-de-sao-joao" component={QuinaDeSaoJoao} />
+        <Route path="/quina/simulador" component={QuinaSimulador} />
+        <Route path="/quina/conferidor" component={QuinaConferidor} />
+        <Route path="/quina/como-jogar" component={QuinaComoJogar} />
+        <Route path="/quina/premiacao" component={QuinaPremiacao} />
+        <Route path="/quina/perguntas-frequentes" component={QuinaFAQ} />
+        <Route path="/quina/faq" component={QuinaFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

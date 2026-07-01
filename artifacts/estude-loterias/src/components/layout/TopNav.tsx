@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   ChevronDown, Menu, X,
   BarChart3, Dices, Gift, HelpCircle, Home,
-  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck,
+  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck, PartyPopper,
 } from "lucide-react";
 
 // ── Mega-Sena items ───────────────────────────────────────────────────────────
@@ -49,9 +49,31 @@ const lotofacilInfo = [
 
 const lotofacilAll = [...lotofacilTools, ...lotofacilInfo];
 
-// ── Outras Loterias (em breve) ────────────────────────────────────────────────
-const outrasLoterias = [
-  { label: "Quina",       cor: "#260085" },
+// ── Quina items ────────────────────────────────────────────────────────────
+const quinaTools = [
+  { href: "/quina",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da Quina" },
+  { href: "/quina/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/quina/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/quina/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/quina/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/quina/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/quina/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/quina/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const quinaInfo = [
+  { href: "/quina/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/quina/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/quina/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+  { href: "/quina/quina-de-sao-joao",    label: "Quina de São João",     icon: PartyPopper,  desc: "O sorteio especial de junho" },
+];
+
+const quinaAll = [...quinaTools, ...quinaInfo];
+
+// ── Outras Loterias ───────────────────────────────────────────────────────────
+// Items with an `href` are live and link out; items without one are still "em breve".
+const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
+  { label: "Quina",       cor: "#260085", href: "/quina" },
   { label: "Dupla Sena",  cor: "#a8003c" },
   { label: "Lotomania",   cor: "#f07d00" },
   { label: "Timemania",   cor: "#00a650" },
@@ -190,7 +212,17 @@ function LotteryDropdown({
 }
 
 // ── Outras Loterias dropdown ──────────────────────────────────────────────────
-function OutrasLoteriasDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggle: () => void }) {
+function OutrasLoteriasDropdown({
+  items,
+  isOpen,
+  onToggle,
+  onNavigate,
+}: {
+  items: Array<{ label: string; cor: string; href?: string }>;
+  isOpen: boolean;
+  onToggle: () => void;
+  onNavigate: () => void;
+}) {
   return (
     <div className="relative">
       <button
@@ -207,25 +239,32 @@ function OutrasLoteriasDropdown({ isOpen, onToggle }: { isOpen: boolean; onToggl
       {isOpen && (
         <div className="absolute top-full left-0 mt-1 w-64 bg-card border border-border rounded-xl shadow-xl z-50 overflow-hidden">
           <div className="p-2">
-            <div className="px-2 pt-1 pb-2">
-              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-                Em breve
-              </span>
-            </div>
-            {outrasLoterias.map((loteria) => (
-              <div
-                key={loteria.label}
-                className="flex items-center justify-between gap-3 p-2.5 rounded-lg opacity-50 cursor-not-allowed select-none"
-              >
-                <div className="flex items-center gap-3">
+            {items.map((loteria) =>
+              loteria.href ? (
+                <Link
+                  key={loteria.label}
+                  href={loteria.href}
+                  onClick={onNavigate}
+                  className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted transition-colors"
+                >
                   <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: loteria.cor }} />
                   <span className="text-sm font-medium text-foreground">{loteria.label}</span>
+                </Link>
+              ) : (
+                <div
+                  key={loteria.label}
+                  className="flex items-center justify-between gap-3 p-2.5 rounded-lg opacity-50 cursor-not-allowed select-none"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: loteria.cor }} />
+                    <span className="text-sm font-medium text-foreground">{loteria.label}</span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
+                    em breve
+                  </span>
                 </div>
-                <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
-                  em breve
-                </span>
-              </div>
-            ))}
+              )
+            )}
           </div>
         </div>
       )}
@@ -240,6 +279,13 @@ export function TopNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const toggle = (name: string) => setOpenMenu(o => o === name ? null : name);
+
+  // Quina gets its own top-level dropdown only while a Quina page is active;
+  // otherwise it stays reachable via "Outras Loterias" (unlike the still-unbuilt lotteries).
+  const quinaActive = !!bestMatch(location, quinaAll);
+  const visibleOutrasLoterias = quinaActive
+    ? outrasLoterias.filter(l => l.label !== "Quina")
+    : outrasLoterias;
 
   return (
     <>
@@ -293,9 +339,23 @@ export function TopNav() {
               onToggle={() => toggle("lotofacil")}
             />
 
+            {quinaActive && (
+              <LotteryDropdown
+                label="Quina"
+                cor="#260085"
+                tools={quinaTools}
+                info={quinaInfo}
+                allItems={quinaAll}
+                isOpen={openMenu === "quina"}
+                onToggle={() => toggle("quina")}
+              />
+            )}
+
             <OutrasLoteriasDropdown
+              items={visibleOutrasLoterias}
               isOpen={openMenu === "outras"}
               onToggle={() => toggle("outras")}
+              onNavigate={() => setOpenMenu(null)}
             />
           </nav>
 
@@ -435,24 +495,81 @@ export function TopNav() {
               </div>
             </div>
 
+            {/* Quina — tools (only shown when a Quina page is active) */}
+            {quinaActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#260085" }}>
+                    Quina
+                  </div>
+                  <div className="space-y-1">
+                    {quinaTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, quinaAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    Quina — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {quinaInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
             {/* Outras Loterias */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
                 Outras Loterias
               </div>
               <div className="space-y-1">
-                {outrasLoterias.map(loteria => (
-                  <div
-                    key={loteria.label}
-                    className="flex items-center justify-between gap-3 p-3 rounded-lg text-sm font-medium opacity-40 cursor-not-allowed"
-                  >
-                    <div className="flex items-center gap-3">
+                {visibleOutrasLoterias.map(loteria =>
+                  loteria.href ? (
+                    <Link
+                      key={loteria.label}
+                      href={loteria.href}
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-3 p-3 rounded-lg text-sm font-medium text-foreground hover:bg-muted"
+                    >
                       <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: loteria.cor }} />
                       {loteria.label}
+                    </Link>
+                  ) : (
+                    <div
+                      key={loteria.label}
+                      className="flex items-center justify-between gap-3 p-3 rounded-lg text-sm font-medium opacity-40 cursor-not-allowed"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-4 h-4 rounded-full shrink-0" style={{ backgroundColor: loteria.cor }} />
+                        {loteria.label}
+                      </div>
+                      <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">em breve</span>
                     </div>
-                    <span className="text-[10px] font-semibold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">em breve</span>
-                  </div>
-                ))}
+                  )
+                )}
               </div>
             </div>
 
