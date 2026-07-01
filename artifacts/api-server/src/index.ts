@@ -14,7 +14,7 @@ if (fs.existsSync(rootEnvPath)) {
 import app from "./app";
 import { logger } from "./lib/logger";
 import cron from "node-cron";
-import { runSync, runInitialSeed } from "./services/lottery-sync";
+import { runSync, runInitialSeed, runGapAudit } from "./services/lottery-sync";
 
 const rawPort = process.env["PORT"];
 
@@ -60,5 +60,13 @@ app.listen(port, (err) => {
   cron.schedule("0 */4 * * *", () => {
     logger.info("Cron: periodic lottery sync (4h)");
     runSync().catch((err) => logger.error({ err }, "Periodic sync failed"));
+  });
+
+  // Daily self-healing gap audit — scans every modalidade for internal gaps
+  // (concursos missing between 1 and the latest known contest) and fetches
+  // whatever is missing. Runs at 06:00 UTC (03:00 BR time), outside draw windows.
+  cron.schedule("0 6 * * *", () => {
+    logger.info("Cron: daily gap audit (all modalidades)");
+    runGapAudit().catch((err) => logger.error({ err }, "Daily gap audit failed"));
   });
 });

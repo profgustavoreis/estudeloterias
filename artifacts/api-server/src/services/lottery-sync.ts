@@ -221,7 +221,10 @@ export async function seedInitialData(modalidade: string): Promise<void> {
   }
 
   if (minStored <= 1 && maxStored >= latestConcurso - 1) {
-    logger.info({ modalidade }, "DB fully seeded, skipping");
+    logger.info(
+      { modalidade },
+      "Boundaries (min/max) already covered — internal gaps, if any, are handled separately by backfillGaps",
+    );
   }
 }
 
@@ -279,6 +282,24 @@ export async function backfillGaps(modalidade: string): Promise<void> {
   }
 
   logger.info({ modalidade, succeeded, failed, total: missing.length }, "backfillGaps complete");
+}
+
+// Varredura robusta de lacunas internas para todas as modalidades: para cada uma,
+// descobre o último concurso realizado na Caixa e preenche qualquer concurso
+// faltante entre 1 e esse teto (não apenas os extremos min/max, como o seed inicial
+// faz). Roda as modalidades sequencialmente (não em paralelo) para reduzir a chance
+// de bloqueio 403 por excesso de requisições simultâneas à API da Caixa.
+export async function runGapAudit(): Promise<void> {
+  logger.info({ modalidades: MODALIDADES }, "Starting gap audit for all modalidades");
+  for (const modalidade of MODALIDADES) {
+    try {
+      await backfillGaps(modalidade);
+    } catch (err) {
+      logger.error({ err, modalidade }, "Gap audit failed for modalidade");
+    }
+    await sleep(1000);
+  }
+  logger.info("Gap audit complete for all modalidades");
 }
 
 export async function runSync(): Promise<void> {
@@ -347,13 +368,24 @@ export async function runInitialSeed(): Promise<void> {
   } catch (err) {
     logger.error({ err }, "Mega-Sena seed failed");
   }
-  // Seed other lotteries in background
+  // Seed other lotteries concurrently in the background (staggered kickoff)
+  const backgroundSeeds: Promise<void>[] = [];
   for (const m of MODALIDADES.filter((x) => x !== "megasena")) {
-    seedInitialData(m)
-      .then(() => logger.info({ modalidade: m }, "Background seed complete"))
-      .catch((err) => logger.error({ err, modalidade: m }, "Background seed failed"));
+    backgroundSeeds.push(
+      seedInitialData(m)
+        .then(() => logger.info({ modalidade: m }, "Background seed complete"))
+        .catch((err) => logger.error({ err, modalidade: m }, "Background seed failed")),
+    );
     await sleep(2000);
   }
+
+  // Seed inicial só cobre os extremos (min/max) de cada modalidade — não detecta
+  // lacunas internas (concursos específicos que falharam em sincronizações
+  // anteriores). Espera todas as modalidades terminarem de semear e então roda,
+  // em segundo plano, uma varredura completa de lacunas para autocorrigir o banco
+  // a cada início do servidor.
+  await Promise.allSettled(backgroundSeeds);
+  runGapAudit().catch((err) => logger.error({ err }, "Startup gap audit failed"));
 }
 
 export { fetchCaixa as fetchGuidi };
