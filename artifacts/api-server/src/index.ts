@@ -38,35 +38,47 @@ app.listen(port, (err) => {
   // Seed initial data in background (non-blocking)
   runInitialSeed().catch((err) => logger.error({ err }, "Initial seed error"));
 
-  // Cron: sync after each draw day — Tue/Thu/Sat at 22:30 and 23:30 BR time (UTC-3)
-  // UTC: 01:30 and 02:30 Wed/Fri/Sun
-  cron.schedule("30 1 * * 3,5,0", () => {
-    logger.info("Cron: running lottery sync (first attempt)");
-    runSync().catch((err) => logger.error({ err }, "Cron sync failed"));
-  });
-  cron.schedule("30 2 * * 3,5,0", () => {
-    logger.info("Cron: running lottery sync (second attempt)");
-    runSync().catch((err) => logger.error({ err }, "Cron sync failed"));
-  });
+  // IMPORTANT: node-cron evaluates schedules using the system's local timezone
+  // unless an explicit `timezone` option is passed — it does NOT default to UTC.
+  // All schedules below pass `timezone: "America/Sao_Paulo"` explicitly so the
+  // expressions below are plain BR wall-clock time, and behave identically on any
+  // host (local dev machine, Replit, etc.) regardless of that host's system TZ.
+  const BR_TZ = "America/Sao_Paulo";
 
-  // During draw window (21:00–21:59 BR time = 00:00–00:59 UTC), sync every 1 minute
-  // Mon–Sat: draws happen every day except Sunday
-  cron.schedule("*/1 0 * * 1,2,3,4,5,6", () => {
-    logger.info("Cron: draw-window lottery sync (1 min)");
-    runSync().catch((err) => logger.error({ err }, "Draw-window sync failed"));
-  });
+  // Draw-window sync — every 1 minute, 21:00–23:59 BR time, Monday–Saturday (some
+  // lottery draws every day except Sunday). Caixa usually publishes results
+  // between ~20:30 and ~22:00 BRT, but publication can lag; keeping the window
+  // open until midnight catches late results without extra one-off jobs.
+  cron.schedule(
+    "*/1 21-23 * * 1,2,3,4,5,6",
+    () => {
+      logger.info("Cron: draw-window lottery sync (1 min)");
+      runSync().catch((err) => logger.error({ err }, "Draw-window sync failed"));
+    },
+    { timezone: BR_TZ },
+  );
 
-  // After draw window, back to periodic every 4 hours
-  cron.schedule("0 */4 * * *", () => {
-    logger.info("Cron: periodic lottery sync (4h)");
-    runSync().catch((err) => logger.error({ err }, "Periodic sync failed"));
-  });
+  // Periodic safety net every 4 hours, every day — catches anything missed
+  // outside the draw window (e.g. a very late-published result, a temporary
+  // Caixa API outage during the draw window).
+  cron.schedule(
+    "0 */4 * * *",
+    () => {
+      logger.info("Cron: periodic lottery sync (4h)");
+      runSync().catch((err) => logger.error({ err }, "Periodic sync failed"));
+    },
+    { timezone: BR_TZ },
+  );
 
   // Daily self-healing gap audit — scans every modalidade for internal gaps
   // (concursos missing between 1 and the latest known contest) and fetches
-  // whatever is missing. Runs at 06:00 UTC (03:00 BR time), outside draw windows.
-  cron.schedule("0 6 * * *", () => {
-    logger.info("Cron: daily gap audit (all modalidades)");
-    runGapAudit().catch((err) => logger.error({ err }, "Daily gap audit failed"));
-  });
+  // whatever is missing. Runs at 03:00 BR time, well outside draw windows.
+  cron.schedule(
+    "0 3 * * *",
+    () => {
+      logger.info("Cron: daily gap audit (all modalidades)");
+      runGapAudit().catch((err) => logger.error({ err }, "Daily gap audit failed"));
+    },
+    { timezone: BR_TZ },
+  );
 });
