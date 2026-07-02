@@ -22,6 +22,8 @@ tags:
     description: Lotomania específico
   - name: timemania
     description: Timemania específico
+  - name: diadesorte
+    description: Dia de Sorte específico
 paths:
   /healthz:
     get:
@@ -798,6 +800,140 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GeradorInputTimemania"
+      responses:
+        "200":
+          description: Jogo(s) gerado(s)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JogoGerado"
+
+  /diadesorte/resultado/ultimo:
+    get:
+      operationId: getDiadesorteUltimoResultado
+      tags: [diadesorte]
+      summary: Último resultado da Dia de Sorte
+      responses:
+        "200":
+          description: Resultado da Dia de Sorte
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoDiadesorte"
+
+  /diadesorte/resultados:
+    get:
+      operationId: getDiadesorteResultados
+      tags: [diadesorte]
+      summary: Resultados paginados da Dia de Sorte
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+        - name: ano
+          in: query
+          schema:
+            type: integer
+            nullable: true
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        "200":
+          description: Resultados paginados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadosPaginadosDiadesorte"
+
+  /diadesorte/resultados/{concurso}:
+    get:
+      operationId: getDiadesorteResultadoConcurso
+      tags: [diadesorte]
+      summary: Resultado de um concurso específico da Dia de Sorte
+      parameters:
+        - name: concurso
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado do concurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoDiadesorte"
+
+  /diadesorte/estatisticas:
+    get:
+      operationId: getDiadesorteEstatisticas
+      tags: [diadesorte]
+      summary: Estatísticas completas da Dia de Sorte
+      responses:
+        "200":
+          description: Estatísticas da Dia de Sorte
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstatisticasDiadesorte"
+
+  /diadesorte/resumo:
+    get:
+      operationId: getDiadesorteResumo
+      tags: [diadesorte]
+      summary: Resumo da Dia de Sorte
+      responses:
+        "200":
+          description: Resumo da Dia de Sorte
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumoDiadesorte"
+
+  /diadesorte/simulador:
+    post:
+      operationId: simularDiadesorte
+      tags: [diadesorte]
+      summary: Simula uma aposta no histórico da Dia de Sorte
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInputDiadesorte"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
+  /diadesorte/gerador:
+    post:
+      operationId: gerarJogoDiadesorte
+      tags: [diadesorte]
+      summary: Gera um jogo aleatório de Dia de Sorte (7 a 15 dezenas)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeradorInputDiadesorte"
       responses:
         "200":
           description: Jogo(s) gerado(s)
@@ -2068,5 +2204,193 @@ components:
           minimum: 1
           maximum: 20
           default: 1
+      required:
+        - quantidadeJogos
+
+    ResultadoDiadesorte:
+      type: object
+      properties:
+        concurso:
+          type: integer
+        data:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: string
+        premios:
+          type: array
+          items:
+            $ref: "#/components/schemas/FaixaPremio"
+        acumulado:
+          type: boolean
+        valorAcumulado:
+          type: ["number", "null"]
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
+        arrecadacaoTotal:
+          type: ["number", "null"]
+        mesSorte:
+          type: ["string", "null"]
+      required:
+        - concurso
+        - data
+        - dezenas
+        - premios
+        - acumulado
+
+    ResultadosPaginadosDiadesorte:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoDiadesorte"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    EstatisticasDiadesorte:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        frequenciaDezenas:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        atrasoMaiores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        totalAcumulados:
+          type: integer
+        percentualAcumulado:
+          type: number
+        maiorPremio:
+          type: number
+        maiorPremioData:
+          type: string
+        maiorPremioConcurso:
+          type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        molduraRetrato:
+          type: array
+          items:
+            $ref: "#/components/schemas/MolduraRetrato"
+        frequenciaPorLinha:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        frequenciaPorColuna:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaColuna"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
+      required:
+        - totalConcursos
+        - frequenciaDezenas
+        - atrasoMaiores
+        - totalAcumulados
+        - percentualAcumulado
+        - maiorPremio
+        - maiorPremioData
+        - maiorPremioConcurso
+        - paresImpares
+        - molduraRetrato
+        - frequenciaPorLinha
+        - frequenciaPorColuna
+        - somaDezenas
+        - numerosEspeciais
+
+    ResumoDiadesorte:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        acumulado:
+          type: boolean
+        valorAtualAcumulado:
+          type: ["number", "null"]
+        valorEstimadoProximo:
+          type: ["number", "null"]
+        maiorPremio:
+          type: number
+        maiorPremioConcurso:
+          type: integer
+        maiorPremioAno:
+          type: integer
+        totalGanhadores7:
+          type: integer
+        proximoSorteio:
+          type: ["string", "null"]
+        ultimoConcurso:
+          type: integer
+      required:
+        - totalConcursos
+        - acumulado
+        - maiorPremio
+        - maiorPremioConcurso
+        - maiorPremioAno
+        - totalGanhadores7
+        - ultimoConcurso
+
+    SimuladorInputDiadesorte:
+      type: object
+      required:
+        - dezenas
+      properties:
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 7
+          maxItems: 7
+        filtro:
+          type: string
+          enum:
+            - todos
+            - premiados
+            - sete
+            - seis
+            - cinco
+            - quatro
+            - tres
+          default: premiados
+
+    GeradorInputDiadesorte:
+      type: object
+      properties:
+        quantidadeJogos:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 1
+        quantidadeDezenas:
+          type: integer
+          minimum: 7
+          maximum: 15
+          default: 7
       required:
         - quantidadeJogos

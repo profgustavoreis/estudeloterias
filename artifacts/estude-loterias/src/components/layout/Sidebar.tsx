@@ -109,6 +109,24 @@ export function Sidebar() {
         { href: "/timemania/premiacao", label: "Premiação", icon: Target },
         { href: "/timemania/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
       ]
+    },
+    {
+      title: "Dia de Sorte",
+      items: [
+        { href: "/diadesorte", label: "Painel Principal", icon: Target },
+        { href: "/diadesorte/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/diadesorte/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/diadesorte/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/diadesorte/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "Dia de Sorte — Info",
+      items: [
+        { href: "/diadesorte/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/diadesorte/premiacao", label: "Premiação", icon: Target },
+        { href: "/diadesorte/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+      ]
     }
   ];
 

@@ -69,6 +69,18 @@ import TimemaniaComoJogar from "@/pages/timemania/como-jogar";
 import TimemaniaPremiacao from "@/pages/timemania/premiacao";
 import TimemaniaFAQ from "@/pages/timemania/faq";
 
+import DiaDeSorteHub from "@/pages/diadesorte/hub";
+import DiaDeSorteUltimoResultado from "@/pages/diadesorte/ultimo-resultado";
+import DiaDeSorteResultadosAnteriores from "@/pages/diadesorte/resultados";
+import DiaDeSorteEstatisticas from "@/pages/diadesorte/estatisticas";
+import DiaDeSorteEstatisticasTabela from "@/pages/diadesorte/estatisticas-tabela";
+import DiaDeSorteGerador from "@/pages/diadesorte/gerador";
+import DiaDeSorteSimulador from "@/pages/diadesorte/simulador";
+import DiaDeSorteConferidor from "@/pages/diadesorte/conferidor";
+import DiaDeSorteComoJogar from "@/pages/diadesorte/como-jogar";
+import DiaDeSortePremiacao from "@/pages/diadesorte/premiacao";
+import DiaDeSorteFAQ from "@/pages/diadesorte/faq";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -159,6 +171,21 @@ function Router() {
         <Route path="/timemania/premiacao" component={TimemaniaPremiacao} />
         <Route path="/timemania/perguntas-frequentes" component={TimemaniaFAQ} />
         <Route path="/timemania/faq" component={TimemaniaFAQ} />
+
+        {/* Dia de Sorte Routes */}
+        <Route path="/diadesorte" component={DiaDeSorteHub} />
+        <Route path="/diadesorte/resultado/:concurso" component={DiaDeSorteUltimoResultado} />
+        <Route path="/diadesorte/resultado" component={DiaDeSorteUltimoResultado} />
+        <Route path="/diadesorte/resultados" component={DiaDeSorteResultadosAnteriores} />
+        <Route path="/diadesorte/tabela-de-dezenas" component={DiaDeSorteEstatisticasTabela} />
+        <Route path="/diadesorte/resumo-estatistico" component={DiaDeSorteEstatisticas} />
+        <Route path="/diadesorte/gerador" component={DiaDeSorteGerador} />
+        <Route path="/diadesorte/simulador" component={DiaDeSorteSimulador} />
+        <Route path="/diadesorte/conferidor" component={DiaDeSorteConferidor} />
+        <Route path="/diadesorte/como-jogar" component={DiaDeSorteComoJogar} />
+        <Route path="/diadesorte/premiacao" component={DiaDeSortePremiacao} />
+        <Route path="/diadesorte/perguntas-frequentes" component={DiaDeSorteFAQ} />
+        <Route path="/diadesorte/faq" component={DiaDeSorteFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

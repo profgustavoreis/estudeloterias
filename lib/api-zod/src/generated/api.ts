@@ -1330,3 +1330,240 @@ export const GerarJogoTimemaniaResponse = zod.object({
 })
 
 
+/**
+ * @summary Último resultado da Dia de Sorte
+ */
+export const GetDiadesorteUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "mesSorte": zod.string().nullish()
+})
+
+
+/**
+ * @summary Resultados paginados da Dia de Sorte
+ */
+export const getDiadesorteResultadosQueryPageDefault = 1;
+
+export const getDiadesorteResultadosQueryLimitDefault = 20;
+export const getDiadesorteResultadosQueryLimitMax = 50;
+
+export const getDiadesorteResultadosQueryOrdemDefault = `desc`;
+
+export const GetDiadesorteResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().min(1).default(getDiadesorteResultadosQueryPageDefault),
+  "limit": zod.coerce.number().min(1).max(getDiadesorteResultadosQueryLimitMax).default(getDiadesorteResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getDiadesorteResultadosQueryOrdemDefault)
+})
+
+export const GetDiadesorteResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "mesSorte": zod.string().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da Dia de Sorte
+ */
+export const GetDiadesorteResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const GetDiadesorteResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish(),
+  "mesSorte": zod.string().nullish()
+})
+
+
+/**
+ * @summary Estatísticas completas da Dia de Sorte
+ */
+export const GetDiadesorteEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+}))
+})
+
+
+/**
+ * @summary Resumo da Dia de Sorte
+ */
+export const GetDiadesorteResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores7": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Simula uma aposta no histórico da Dia de Sorte
+ */
+export const simularDiadesorteBodyDezenasMin = 7;
+export const simularDiadesorteBodyDezenasMax = 7;
+
+export const simularDiadesorteBodyFiltroDefault = `premiados`;
+
+export const SimularDiadesorteBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularDiadesorteBodyDezenasMin).max(simularDiadesorteBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'sete', 'seis', 'cinco', 'quatro', 'tres']).default(simularDiadesorteBodyFiltroDefault)
+})
+
+export const SimularDiadesorteResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de Dia de Sorte (7 a 15 dezenas)
+ */
+export const gerarJogoDiadesorteBodyQuantidadeJogosDefault = 1;
+export const gerarJogoDiadesorteBodyQuantidadeJogosMax = 20;
+
+export const gerarJogoDiadesorteBodyQuantidadeDezenasDefault = 7;
+export const gerarJogoDiadesorteBodyQuantidadeDezenasMin = 7;
+export const gerarJogoDiadesorteBodyQuantidadeDezenasMax = 15;
+
+
+
+export const GerarJogoDiadesorteBody = zod.object({
+  "quantidadeJogos": zod.number().min(1).max(gerarJogoDiadesorteBodyQuantidadeJogosMax).default(gerarJogoDiadesorteBodyQuantidadeJogosDefault),
+  "quantidadeDezenas": zod.number().min(gerarJogoDiadesorteBodyQuantidadeDezenasMin).max(gerarJogoDiadesorteBodyQuantidadeDezenasMax).default(gerarJogoDiadesorteBodyQuantidadeDezenasDefault)
+})
+
+export const GerarJogoDiadesorteResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.number())),
+  "custo": zod.number()
+})
+
+

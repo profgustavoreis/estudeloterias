@@ -647,6 +647,100 @@ export interface GeradorInputTimemania {
   quantidadeJogos: number;
 }
 
+export interface ResultadoDiadesorte {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+  /** @nullable */
+  mesSorte?: string | null;
+}
+
+export interface ResultadosPaginadosDiadesorte {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoDiadesorte[];
+}
+
+export interface EstatisticasDiadesorte {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+}
+
+export interface ResumoDiadesorte {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores7: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputDiadesorteFiltro = typeof SimuladorInputDiadesorteFiltro[keyof typeof SimuladorInputDiadesorteFiltro];
+
+
+export const SimuladorInputDiadesorteFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  sete: 'sete',
+  seis: 'seis',
+  cinco: 'cinco',
+  quatro: 'quatro',
+  tres: 'tres',
+} as const;
+
+export interface SimuladorInputDiadesorte {
+  /**
+     * @minItems 7
+     * @maxItems 7
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputDiadesorteFiltro;
+}
+
+export interface GeradorInputDiadesorte {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+  /**
+     * @minimum 7
+     * @maximum 15
+     */
+  quantidadeDezenas?: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -733,6 +827,28 @@ export type GetTimemaniaResultadosOrdem = typeof GetTimemaniaResultadosOrdem[key
 
 
 export const GetTimemaniaResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetDiadesorteResultadosParams = {
+/**
+ * @minimum 1
+ */
+page?: number;
+/**
+ * @minimum 1
+ * @maximum 50
+ */
+limit?: number;
+ano?: number | null;
+ordem?: GetDiadesorteResultadosOrdem;
+};
+
+export type GetDiadesorteResultadosOrdem = typeof GetDiadesorteResultadosOrdem[keyof typeof GetDiadesorteResultadosOrdem];
+
+
+export const GetDiadesorteResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;

@@ -10,7 +10,7 @@ const loterias = [
   { name: "Dupla Sena",  href: "#",            active: false, soon: true },
   { name: "Super Sete",  href: "#",            active: false, soon: true },
   { name: "+Milionária",  href: "#",            active: false, soon: true },
-  { name: "Dia de Sorte", href: "#",            active: false, soon: true },
+  { name: "Dia de Sorte", href: "/diadesorte",  active: true },
 ];
 
 const institucional = [

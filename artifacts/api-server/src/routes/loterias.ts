@@ -12,7 +12,7 @@ const MODALIDADES_META = [
   { modalidade: "lotofacil",     nome: "Lotofácil",    descricao: "Escolha de 15 a 20 números entre 01 e 25", cor: "#930089", icone: "lotofacil" },
   { modalidade: "quina",         nome: "Quina",        descricao: "Escolha de 5 a 15 números entre 01 e 80", cor: "#260085", icone: "quina" },
   { modalidade: "duplasena",     nome: "Dupla Sena",   descricao: "Escolha de 6 a 15 números entre 01 e 50", cor: "#a41024", icone: "duplasena" },
-  { modalidade: "diadesorte",    nome: "Dia de Sorte", descricao: "Escolha de 7 a 15 números entre 01 e 31", cor: "#f5a623", icone: "diadesorte" },
+  { modalidade: "diadesorte",    nome: "Dia de Sorte", descricao: "Escolha de 7 a 15 números entre 01 e 31", cor: "#cb852b", icone: "diadesorte" },
   { modalidade: "supersete",     nome: "Super Sete",   descricao: "Escolha 7 números, um por coluna (0 a 9)", cor: "#a8cf45", icone: "supersete" },
   { modalidade: "lotomania",     nome: "Lotomania",    descricao: "Escolha de 50 números entre 00 e 99", cor: "#f8901c", icone: "lotomania" },
   { modalidade: "timemania",     nome: "Timemania",    descricao: "Escolha 10 números entre 01 e 80 e um time", cor: "#049645", icone: "timemania" },

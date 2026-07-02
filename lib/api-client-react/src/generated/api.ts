@@ -21,16 +21,19 @@ import type {
 
 import type {
   ApiError,
+  EstatisticasDiadesorte,
   EstatisticasLotofacil,
   EstatisticasLotomania,
   EstatisticasMegaSena,
   EstatisticasQuina,
   EstatisticasTimemania,
   GeradorInput,
+  GeradorInputDiadesorte,
   GeradorInputLotofacil,
   GeradorInputLotomania,
   GeradorInputQuina,
   GeradorInputTimemania,
+  GetDiadesorteResultadosParams,
   GetLotofacilResultadosParams,
   GetLotomaniaResultadosParams,
   GetMegaSenaResultadosParams,
@@ -43,16 +46,19 @@ import type {
   MegaDaVirada,
   QuinaDeSaoJoao,
   Resultado,
+  ResultadoDiadesorte,
   ResultadoLotofacil,
   ResultadoLotomania,
   ResultadoMegaSena,
   ResultadoQuina,
   ResultadoTimemania,
   ResultadosPaginados,
+  ResultadosPaginadosDiadesorte,
   ResultadosPaginadosLotofacil,
   ResultadosPaginadosLotomania,
   ResultadosPaginadosQuina,
   ResultadosPaginadosTimemania,
+  ResumoDiadesorte,
   ResumoLotofacil,
   ResumoLotomania,
   ResumoMegaSena,
@@ -60,6 +66,7 @@ import type {
   ResumoTimemania,
   SimulacaoResultado,
   SimuladorInput,
+  SimuladorInputDiadesorte,
   SimuladorInputLotofacil,
   SimuladorInputLotomania,
   SimuladorInputQuina,
@@ -3209,5 +3216,539 @@ export const useGerarJogoTimemania = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoTimemaniaMutationOptions(options));
+    }
+
+export const getGetDiadesorteUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/diadesorte/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da Dia de Sorte
+ */
+export const getDiadesorteUltimoResultado = async ( options?: RequestInit): Promise<ResultadoDiadesorte> => {
+
+  return customFetch<ResultadoDiadesorte>(getGetDiadesorteUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDiadesorteUltimoResultadoQueryKey = () => {
+    return [
+    `/api/diadesorte/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetDiadesorteUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDiadesorteUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>> = ({ signal }) => getDiadesorteUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDiadesorteUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>>
+export type GetDiadesorteUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da Dia de Sorte
+ */
+
+export function useGetDiadesorteUltimoResultado<TData = Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDiadesorteUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDiadesorteResultadosUrl = (params?: GetDiadesorteResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/diadesorte/resultados?${stringifiedParams}` : `/api/diadesorte/resultados`
+}
+
+/**
+ * @summary Resultados paginados da Dia de Sorte
+ */
+export const getDiadesorteResultados = async (params?: GetDiadesorteResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosDiadesorte> => {
+
+  return customFetch<ResultadosPaginadosDiadesorte>(getGetDiadesorteResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDiadesorteResultadosQueryKey = (params?: GetDiadesorteResultadosParams,) => {
+    return [
+    `/api/diadesorte/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetDiadesorteResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getDiadesorteResultados>>, TError = ErrorType<unknown>>(params?: GetDiadesorteResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDiadesorteResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDiadesorteResultados>>> = ({ signal }) => getDiadesorteResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDiadesorteResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getDiadesorteResultados>>>
+export type GetDiadesorteResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resultados paginados da Dia de Sorte
+ */
+
+export function useGetDiadesorteResultados<TData = Awaited<ReturnType<typeof getDiadesorteResultados>>, TError = ErrorType<unknown>>(
+ params?: GetDiadesorteResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDiadesorteResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDiadesorteResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/diadesorte/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da Dia de Sorte
+ */
+export const getDiadesorteResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoDiadesorte> => {
+
+  return customFetch<ResultadoDiadesorte>(getGetDiadesorteResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDiadesorteResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/diadesorte/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetDiadesorteResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>, TError = ErrorType<unknown>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDiadesorteResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>> = ({ signal }) => getDiadesorteResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDiadesorteResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>>
+export type GetDiadesorteResultadoConcursoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resultado de um concurso específico da Dia de Sorte
+ */
+
+export function useGetDiadesorteResultadoConcurso<TData = Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>, TError = ErrorType<unknown>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDiadesorteResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDiadesorteEstatisticasUrl = () => {
+
+
+
+
+  return `/api/diadesorte/estatisticas`
+}
+
+/**
+ * @summary Estatísticas completas da Dia de Sorte
+ */
+export const getDiadesorteEstatisticas = async ( options?: RequestInit): Promise<EstatisticasDiadesorte> => {
+
+  return customFetch<EstatisticasDiadesorte>(getGetDiadesorteEstatisticasUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDiadesorteEstatisticasQueryKey = () => {
+    return [
+    `/api/diadesorte/estatisticas`
+    ] as const;
+    }
+
+
+export const getGetDiadesorteEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getDiadesorteEstatisticas>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDiadesorteEstatisticasQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDiadesorteEstatisticas>>> = ({ signal }) => getDiadesorteEstatisticas({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDiadesorteEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getDiadesorteEstatisticas>>>
+export type GetDiadesorteEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas completas da Dia de Sorte
+ */
+
+export function useGetDiadesorteEstatisticas<TData = Awaited<ReturnType<typeof getDiadesorteEstatisticas>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDiadesorteEstatisticasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDiadesorteResumoUrl = () => {
+
+
+
+
+  return `/api/diadesorte/resumo`
+}
+
+/**
+ * @summary Resumo da Dia de Sorte
+ */
+export const getDiadesorteResumo = async ( options?: RequestInit): Promise<ResumoDiadesorte> => {
+
+  return customFetch<ResumoDiadesorte>(getGetDiadesorteResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDiadesorteResumoQueryKey = () => {
+    return [
+    `/api/diadesorte/resumo`
+    ] as const;
+    }
+
+
+export const getGetDiadesorteResumoQueryOptions = <TData = Awaited<ReturnType<typeof getDiadesorteResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDiadesorteResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDiadesorteResumo>>> = ({ signal }) => getDiadesorteResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDiadesorteResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getDiadesorteResumo>>>
+export type GetDiadesorteResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo da Dia de Sorte
+ */
+
+export function useGetDiadesorteResumo<TData = Awaited<ReturnType<typeof getDiadesorteResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDiadesorteResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDiadesorteResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularDiadesorteUrl = () => {
+
+
+
+
+  return `/api/diadesorte/simulador`
+}
+
+/**
+ * @summary Simula uma aposta no histórico da Dia de Sorte
+ */
+export const simularDiadesorte = async (simuladorInputDiadesorte: SimuladorInputDiadesorte, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularDiadesorteUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputDiadesorte,)
+  }
+);}
+
+
+
+
+export const getSimularDiadesorteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularDiadesorte>>, TError,{data: BodyType<SimuladorInputDiadesorte>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularDiadesorte>>, TError,{data: BodyType<SimuladorInputDiadesorte>}, TContext> => {
+
+const mutationKey = ['simularDiadesorte'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularDiadesorte>>, {data: BodyType<SimuladorInputDiadesorte>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularDiadesorte(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularDiadesorteMutationResult = NonNullable<Awaited<ReturnType<typeof simularDiadesorte>>>
+    export type SimularDiadesorteMutationBody = BodyType<SimuladorInputDiadesorte>
+    export type SimularDiadesorteMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta no histórico da Dia de Sorte
+ */
+export const useSimularDiadesorte = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularDiadesorte>>, TError,{data: BodyType<SimuladorInputDiadesorte>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularDiadesorte>>,
+        TError,
+        {data: BodyType<SimuladorInputDiadesorte>},
+        TContext
+      > => {
+      return useMutation(getSimularDiadesorteMutationOptions(options));
+    }
+
+export const getGerarJogoDiadesorteUrl = () => {
+
+
+
+
+  return `/api/diadesorte/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de Dia de Sorte (7 a 15 dezenas)
+ */
+export const gerarJogoDiadesorte = async (geradorInputDiadesorte: GeradorInputDiadesorte, options?: RequestInit): Promise<JogoGerado> => {
+
+  return customFetch<JogoGerado>(getGerarJogoDiadesorteUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputDiadesorte,)
+  }
+);}
+
+
+
+
+export const getGerarJogoDiadesorteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoDiadesorte>>, TError,{data: BodyType<GeradorInputDiadesorte>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoDiadesorte>>, TError,{data: BodyType<GeradorInputDiadesorte>}, TContext> => {
+
+const mutationKey = ['gerarJogoDiadesorte'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoDiadesorte>>, {data: BodyType<GeradorInputDiadesorte>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoDiadesorte(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoDiadesorteMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoDiadesorte>>>
+    export type GerarJogoDiadesorteMutationBody = BodyType<GeradorInputDiadesorte>
+    export type GerarJogoDiadesorteMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de Dia de Sorte (7 a 15 dezenas)
+ */
+export const useGerarJogoDiadesorte = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoDiadesorte>>, TError,{data: BodyType<GeradorInputDiadesorte>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoDiadesorte>>,
+        TError,
+        {data: BodyType<GeradorInputDiadesorte>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoDiadesorteMutationOptions(options));
     }
 

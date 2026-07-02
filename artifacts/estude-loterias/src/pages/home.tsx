@@ -17,7 +17,9 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
 
   // Timemania uses yellow balls with green text
   const isTimemania = loteria.modalidade === "timemania";
-  const ballColor = isTimemania ? "#FFF600" : loteria.cor;
+  // Dia de Sorte uses orange balls with white text
+  const isDiaDeSorte = loteria.modalidade === "diadesorte";
+  const ballColor = isTimemania ? "#FFF600" : isDiaDeSorte ? "#cb852b" : loteria.cor;
   const ballTextColor = isTimemania ? "#049645" : undefined;
 
   if (loteria.modalidade === "duplasena") {
