@@ -20,6 +20,8 @@ tags:
     description: Quina específico
   - name: lotomania
     description: Lotomania específico
+  - name: timemania
+    description: Timemania específico
 paths:
   /healthz:
     get:
@@ -660,6 +662,142 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GeradorInputLotomania"
+      responses:
+        "200":
+          description: Jogo(s) gerado(s)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JogoGerado"
+
+  /timemania/resultado/ultimo:
+    get:
+      operationId: getTimemaniaUltimoResultado
+      tags: [timemania]
+      summary: Último resultado da Timemania
+      responses:
+        "200":
+          description: Último resultado da Timemania
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoTimemania"
+
+  /timemania/resultados:
+    get:
+      operationId: getTimemaniaResultados
+      tags: [timemania]
+      summary: Histórico de resultados da Timemania
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: ano
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        "200":
+          description: Lista paginada de resultados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadosPaginadosTimemania"
+
+  /timemania/resultados/{concurso}:
+    get:
+      operationId: getTimemaniaResultadoConcurso
+      tags: [timemania]
+      summary: Resultado de um concurso específico da Timemania
+      parameters:
+        - name: concurso
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado do concurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoTimemania"
+        "404":
+          description: Concurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /timemania/estatisticas:
+    get:
+      operationId: getTimemaniaEstatisticas
+      tags: [timemania]
+      summary: Estatísticas da Timemania (frequência de dezenas, etc.)
+      responses:
+        "200":
+          description: Estatísticas completas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstatisticasTimemania"
+
+  /timemania/resumo:
+    get:
+      operationId: getTimemaniaResumo
+      tags: [timemania]
+      summary: Resumo agregado da Timemania
+      responses:
+        "200":
+          description: Resumo da Timemania
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumoTimemania"
+
+  /timemania/simulador:
+    post:
+      operationId: simularTimemania
+      tags: [timemania]
+      summary: Simula uma aposta em todos os concursos anteriores da Timemania
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInputTimemania"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
+  /timemania/gerador:
+    post:
+      operationId: gerarJogoTimemania
+      tags: [timemania]
+      summary: Gera um jogo aleatório de Timemania (10 dezenas)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeradorInputTimemania"
       responses:
         "200":
           description: Jogo(s) gerado(s)
@@ -1748,6 +1886,180 @@ components:
           default: premiados
 
     GeradorInputLotomania:
+      type: object
+      properties:
+        quantidadeJogos:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 1
+      required:
+        - quantidadeJogos
+
+    ResultadoTimemania:
+      type: object
+      properties:
+        concurso:
+          type: integer
+        data:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: string
+        premios:
+          type: array
+          items:
+            $ref: "#/components/schemas/FaixaPremio"
+        acumulado:
+          type: boolean
+        valorAcumulado:
+          type: ["number", "null"]
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
+        arrecadacaoTotal:
+          type: ["number", "null"]
+      required:
+        - concurso
+        - data
+        - dezenas
+        - premios
+        - acumulado
+
+    ResultadosPaginadosTimemania:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoTimemania"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    EstatisticasTimemania:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        frequenciaDezenas:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        atrasoMaiores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        totalAcumulados:
+          type: integer
+        percentualAcumulado:
+          type: number
+        maiorPremio:
+          type: number
+        maiorPremioData:
+          type: string
+        maiorPremioConcurso:
+          type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
+        timesRanking:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimeRankingItem"
+      required:
+        - totalConcursos
+        - frequenciaDezenas
+        - atrasoMaiores
+        - totalAcumulados
+        - percentualAcumulado
+        - maiorPremio
+        - maiorPremioData
+        - maiorPremioConcurso
+        - paresImpares
+        - somaDezenas
+        - numerosEspeciais
+        - timesRanking
+
+    TimeRankingItem:
+      type: object
+      properties:
+        time:
+          type: string
+        sorteios:
+          type: integer
+      required:
+        - time
+        - sorteios
+
+    ResumoTimemania:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        acumulado:
+          type: boolean
+        valorAtualAcumulado:
+          type: ["number", "null"]
+        valorEstimadoProximo:
+          type: ["number", "null"]
+        maiorPremio:
+          type: number
+        maiorPremioConcurso:
+          type: integer
+        maiorPremioAno:
+          type: integer
+        totalGanhadores7:
+          type: integer
+        proximoSorteio:
+          type: ["string", "null"]
+        ultimoConcurso:
+          type: integer
+      required:
+        - totalConcursos
+        - acumulado
+        - maiorPremio
+        - maiorPremioConcurso
+        - maiorPremioAno
+        - totalGanhadores7
+        - ultimoConcurso
+
+    SimuladorInputTimemania:
+      type: object
+      required: [dezenas]
+      properties:
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 10
+          maxItems: 10
+        filtro:
+          type: string
+          enum: [todos, premiados, sete, seis, cinco, quatro, tres]
+          default: premiados
+
+    GeradorInputTimemania:
       type: object
       properties:
         quantidadeJogos:

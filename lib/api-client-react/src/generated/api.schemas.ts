@@ -558,6 +558,96 @@ export interface GeradorInputLotomania {
   quantidadeJogos: number;
 }
 
+export interface ResultadoTimemania {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+}
+
+export interface ResultadosPaginadosTimemania {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoTimemania[];
+}
+
+export interface TimeRankingItem {
+  time: string;
+  sorteios: number;
+}
+
+export interface EstatisticasTimemania {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+  timesRanking: TimeRankingItem[];
+}
+
+export interface ResumoTimemania {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores7: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputTimemaniaFiltro = typeof SimuladorInputTimemaniaFiltro[keyof typeof SimuladorInputTimemaniaFiltro];
+
+
+export const SimuladorInputTimemaniaFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  sete: 'sete',
+  seis: 'seis',
+  cinco: 'cinco',
+  quatro: 'quatro',
+  tres: 'tres',
+} as const;
+
+export interface SimuladorInputTimemania {
+  /**
+     * @minItems 10
+     * @maxItems 10
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputTimemaniaFiltro;
+}
+
+export interface GeradorInputTimemania {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -626,6 +716,24 @@ export type GetLotomaniaResultadosOrdem = typeof GetLotomaniaResultadosOrdem[key
 
 
 export const GetLotomaniaResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetTimemaniaResultadosParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+ano?: number | null;
+ordem?: GetTimemaniaResultadosOrdem;
+};
+
+export type GetTimemaniaResultadosOrdem = typeof GetTimemaniaResultadosOrdem[keyof typeof GetTimemaniaResultadosOrdem];
+
+
+export const GetTimemaniaResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;

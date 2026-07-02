@@ -15,6 +15,11 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
   const trevos = loteria.trevos ?? null;
   const size = "sm";
 
+  // Timemania uses yellow balls with green text
+  const isTimemania = loteria.modalidade === "timemania";
+  const ballColor = isTimemania ? "#FFF600" : loteria.cor;
+  const ballTextColor = isTimemania ? "#049645" : undefined;
+
   if (loteria.modalidade === "duplasena") {
     return (
       <div className="space-y-2.5">
@@ -22,7 +27,7 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
           <div className="text-xs text-muted-foreground mb-1.5 font-medium">1° Sorteio</div>
           <div className="flex flex-wrap gap-1.5">
             {dezenas.map((num, i) => (
-              <LotteryBall key={i} number={num} size={size} color={loteria.cor} />
+              <LotteryBall key={i} number={num} size={size} color={ballColor} textColor={ballTextColor} />
             ))}
           </div>
         </div>
@@ -31,7 +36,7 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
             <div className="text-xs text-muted-foreground mb-1.5 font-medium">2° Sorteio</div>
             <div className="flex flex-wrap gap-1.5">
               {dezenas2.map((num, i) => (
-                <LotteryBall key={i} number={num} size={size} color={loteria.cor} />
+                <LotteryBall key={i} number={num} size={size} color={ballColor} textColor={ballTextColor} />
               ))}
             </div>
           </div>
@@ -44,7 +49,7 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
     <div className="space-y-2">
       <div className="flex flex-wrap gap-1.5">
         {dezenas.map((num, i) => (
-          <LotteryBall key={i} number={num} size={size} color={loteria.cor} />
+          <LotteryBall key={i} number={num} size={size} color={ballColor} textColor={ballTextColor} />
         ))}
       </div>
       {trevos && trevos.length > 0 && (

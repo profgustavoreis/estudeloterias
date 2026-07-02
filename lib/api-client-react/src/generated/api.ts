@@ -25,14 +25,17 @@ import type {
   EstatisticasLotomania,
   EstatisticasMegaSena,
   EstatisticasQuina,
+  EstatisticasTimemania,
   GeradorInput,
   GeradorInputLotofacil,
   GeradorInputLotomania,
   GeradorInputQuina,
+  GeradorInputTimemania,
   GetLotofacilResultadosParams,
   GetLotomaniaResultadosParams,
   GetMegaSenaResultadosParams,
   GetQuinaResultadosParams,
+  GetTimemaniaResultadosParams,
   HealthStatus,
   JogoGerado,
   LoteriaSummary,
@@ -44,19 +47,23 @@ import type {
   ResultadoLotomania,
   ResultadoMegaSena,
   ResultadoQuina,
+  ResultadoTimemania,
   ResultadosPaginados,
   ResultadosPaginadosLotofacil,
   ResultadosPaginadosLotomania,
   ResultadosPaginadosQuina,
+  ResultadosPaginadosTimemania,
   ResumoLotofacil,
   ResumoLotomania,
   ResumoMegaSena,
   ResumoQuina,
+  ResumoTimemania,
   SimulacaoResultado,
   SimuladorInput,
   SimuladorInputLotofacil,
   SimuladorInputLotomania,
-  SimuladorInputQuina
+  SimuladorInputQuina,
+  SimuladorInputTimemania
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -2668,5 +2675,539 @@ export const useGerarJogoLotomania = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoLotomaniaMutationOptions(options));
+    }
+
+export const getGetTimemaniaUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/timemania/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da Timemania
+ */
+export const getTimemaniaUltimoResultado = async ( options?: RequestInit): Promise<ResultadoTimemania> => {
+
+  return customFetch<ResultadoTimemania>(getGetTimemaniaUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTimemaniaUltimoResultadoQueryKey = () => {
+    return [
+    `/api/timemania/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetTimemaniaUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimemaniaUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>> = ({ signal }) => getTimemaniaUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTimemaniaUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>>
+export type GetTimemaniaUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da Timemania
+ */
+
+export function useGetTimemaniaUltimoResultado<TData = Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTimemaniaUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetTimemaniaResultadosUrl = (params?: GetTimemaniaResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/timemania/resultados?${stringifiedParams}` : `/api/timemania/resultados`
+}
+
+/**
+ * @summary Histórico de resultados da Timemania
+ */
+export const getTimemaniaResultados = async (params?: GetTimemaniaResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosTimemania> => {
+
+  return customFetch<ResultadosPaginadosTimemania>(getGetTimemaniaResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTimemaniaResultadosQueryKey = (params?: GetTimemaniaResultadosParams,) => {
+    return [
+    `/api/timemania/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetTimemaniaResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getTimemaniaResultados>>, TError = ErrorType<unknown>>(params?: GetTimemaniaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimemaniaResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimemaniaResultados>>> = ({ signal }) => getTimemaniaResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTimemaniaResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getTimemaniaResultados>>>
+export type GetTimemaniaResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Histórico de resultados da Timemania
+ */
+
+export function useGetTimemaniaResultados<TData = Awaited<ReturnType<typeof getTimemaniaResultados>>, TError = ErrorType<unknown>>(
+ params?: GetTimemaniaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTimemaniaResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetTimemaniaResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/timemania/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da Timemania
+ */
+export const getTimemaniaResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoTimemania> => {
+
+  return customFetch<ResultadoTimemania>(getGetTimemaniaResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTimemaniaResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/timemania/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetTimemaniaResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>, TError = ErrorType<ApiError>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimemaniaResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>> = ({ signal }) => getTimemaniaResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTimemaniaResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>>
+export type GetTimemaniaResultadoConcursoQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary Resultado de um concurso específico da Timemania
+ */
+
+export function useGetTimemaniaResultadoConcurso<TData = Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>, TError = ErrorType<ApiError>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTimemaniaResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetTimemaniaEstatisticasUrl = () => {
+
+
+
+
+  return `/api/timemania/estatisticas`
+}
+
+/**
+ * @summary Estatísticas da Timemania (frequência de dezenas, etc.)
+ */
+export const getTimemaniaEstatisticas = async ( options?: RequestInit): Promise<EstatisticasTimemania> => {
+
+  return customFetch<EstatisticasTimemania>(getGetTimemaniaEstatisticasUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTimemaniaEstatisticasQueryKey = () => {
+    return [
+    `/api/timemania/estatisticas`
+    ] as const;
+    }
+
+
+export const getGetTimemaniaEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getTimemaniaEstatisticas>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimemaniaEstatisticasQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimemaniaEstatisticas>>> = ({ signal }) => getTimemaniaEstatisticas({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTimemaniaEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getTimemaniaEstatisticas>>>
+export type GetTimemaniaEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas da Timemania (frequência de dezenas, etc.)
+ */
+
+export function useGetTimemaniaEstatisticas<TData = Awaited<ReturnType<typeof getTimemaniaEstatisticas>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTimemaniaEstatisticasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetTimemaniaResumoUrl = () => {
+
+
+
+
+  return `/api/timemania/resumo`
+}
+
+/**
+ * @summary Resumo agregado da Timemania
+ */
+export const getTimemaniaResumo = async ( options?: RequestInit): Promise<ResumoTimemania> => {
+
+  return customFetch<ResumoTimemania>(getGetTimemaniaResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTimemaniaResumoQueryKey = () => {
+    return [
+    `/api/timemania/resumo`
+    ] as const;
+    }
+
+
+export const getGetTimemaniaResumoQueryOptions = <TData = Awaited<ReturnType<typeof getTimemaniaResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTimemaniaResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTimemaniaResumo>>> = ({ signal }) => getTimemaniaResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTimemaniaResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getTimemaniaResumo>>>
+export type GetTimemaniaResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo agregado da Timemania
+ */
+
+export function useGetTimemaniaResumo<TData = Awaited<ReturnType<typeof getTimemaniaResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTimemaniaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTimemaniaResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularTimemaniaUrl = () => {
+
+
+
+
+  return `/api/timemania/simulador`
+}
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Timemania
+ */
+export const simularTimemania = async (simuladorInputTimemania: SimuladorInputTimemania, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularTimemaniaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputTimemania,)
+  }
+);}
+
+
+
+
+export const getSimularTimemaniaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularTimemania>>, TError,{data: BodyType<SimuladorInputTimemania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularTimemania>>, TError,{data: BodyType<SimuladorInputTimemania>}, TContext> => {
+
+const mutationKey = ['simularTimemania'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularTimemania>>, {data: BodyType<SimuladorInputTimemania>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularTimemania(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularTimemaniaMutationResult = NonNullable<Awaited<ReturnType<typeof simularTimemania>>>
+    export type SimularTimemaniaMutationBody = BodyType<SimuladorInputTimemania>
+    export type SimularTimemaniaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Timemania
+ */
+export const useSimularTimemania = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularTimemania>>, TError,{data: BodyType<SimuladorInputTimemania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularTimemania>>,
+        TError,
+        {data: BodyType<SimuladorInputTimemania>},
+        TContext
+      > => {
+      return useMutation(getSimularTimemaniaMutationOptions(options));
+    }
+
+export const getGerarJogoTimemaniaUrl = () => {
+
+
+
+
+  return `/api/timemania/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de Timemania (10 dezenas)
+ */
+export const gerarJogoTimemania = async (geradorInputTimemania: GeradorInputTimemania, options?: RequestInit): Promise<JogoGerado> => {
+
+  return customFetch<JogoGerado>(getGerarJogoTimemaniaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputTimemania,)
+  }
+);}
+
+
+
+
+export const getGerarJogoTimemaniaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoTimemania>>, TError,{data: BodyType<GeradorInputTimemania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoTimemania>>, TError,{data: BodyType<GeradorInputTimemania>}, TContext> => {
+
+const mutationKey = ['gerarJogoTimemania'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoTimemania>>, {data: BodyType<GeradorInputTimemania>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoTimemania(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoTimemaniaMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoTimemania>>>
+    export type GerarJogoTimemaniaMutationBody = BodyType<GeradorInputTimemania>
+    export type GerarJogoTimemaniaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de Timemania (10 dezenas)
+ */
+export const useGerarJogoTimemania = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoTimemania>>, TError,{data: BodyType<GeradorInputTimemania>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoTimemania>>,
+        TError,
+        {data: BodyType<GeradorInputTimemania>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoTimemaniaMutationOptions(options));
     }
 

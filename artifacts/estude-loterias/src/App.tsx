@@ -57,6 +57,18 @@ import LotomaniaComoJogar from "@/pages/lotomania/como-jogar";
 import LotomaniaPremiacao from "@/pages/lotomania/premiacao";
 import LotomaniaFAQ from "@/pages/lotomania/faq";
 
+import TimemaniaHub from "@/pages/timemania/hub";
+import TimemaniaUltimoResultado from "@/pages/timemania/ultimo-resultado";
+import TimemaniaResultadosAnteriores from "@/pages/timemania/resultados";
+import TimemaniaEstatisticas from "@/pages/timemania/estatisticas";
+import TimemaniaEstatisticasTabela from "@/pages/timemania/estatisticas-tabela";
+import TimemaniaGerador from "@/pages/timemania/gerador";
+import TimemaniaSimulador from "@/pages/timemania/simulador";
+import TimemaniaConferidor from "@/pages/timemania/conferidor";
+import TimemaniaComoJogar from "@/pages/timemania/como-jogar";
+import TimemaniaPremiacao from "@/pages/timemania/premiacao";
+import TimemaniaFAQ from "@/pages/timemania/faq";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -132,6 +144,21 @@ function Router() {
         <Route path="/lotomania/premiacao" component={LotomaniaPremiacao} />
         <Route path="/lotomania/perguntas-frequentes" component={LotomaniaFAQ} />
         <Route path="/lotomania/faq" component={LotomaniaFAQ} />
+
+        {/* Timemania Routes */}
+        <Route path="/timemania" component={TimemaniaHub} />
+        <Route path="/timemania/resultado/:concurso" component={TimemaniaUltimoResultado} />
+        <Route path="/timemania/resultado" component={TimemaniaUltimoResultado} />
+        <Route path="/timemania/resultados" component={TimemaniaResultadosAnteriores} />
+        <Route path="/timemania/tabela-de-dezenas" component={TimemaniaEstatisticasTabela} />
+        <Route path="/timemania/resumo-estatistico" component={TimemaniaEstatisticas} />
+        <Route path="/timemania/gerador" component={TimemaniaGerador} />
+        <Route path="/timemania/simulador" component={TimemaniaSimulador} />
+        <Route path="/timemania/conferidor" component={TimemaniaConferidor} />
+        <Route path="/timemania/como-jogar" component={TimemaniaComoJogar} />
+        <Route path="/timemania/premiacao" component={TimemaniaPremiacao} />
+        <Route path="/timemania/perguntas-frequentes" component={TimemaniaFAQ} />
+        <Route path="/timemania/faq" component={TimemaniaFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

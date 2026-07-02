@@ -4,6 +4,7 @@ interface LotteryBallProps extends React.HTMLAttributes<HTMLDivElement> {
   number: string | number;
   size?: "sm" | "md" | "lg" | "xl";
   color?: string; // Optional hex or custom class
+  textColor?: string; // Optional hex for text color (defaults to #fff when color is set)
   intensity?: number; // 0-1 for heatmap coloring
 }
 
@@ -11,6 +12,7 @@ export function LotteryBall({
   number, 
   size = "md", 
   color, 
+  textColor,
   className,
   intensity,
   ...props 
@@ -26,7 +28,7 @@ export function LotteryBall({
   
   // Base style is typical white ball with dark text, or colored ball with white text
   const baseStyle = color 
-    ? { backgroundColor: color, color: "#fff", borderColor: "rgba(0,0,0,0.1)" }
+    ? { backgroundColor: color, color: textColor ?? "#fff", borderColor: "rgba(0,0,0,0.1)" }
     : { backgroundColor: "#fff", color: "#111", borderColor: "#e5e7eb" };
 
   // If intensity is provided (for heatmaps), interpolate color

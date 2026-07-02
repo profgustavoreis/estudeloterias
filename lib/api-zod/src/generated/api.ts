@@ -1101,3 +1101,218 @@ export const GerarJogoLotomaniaResponse = zod.object({
 })
 
 
+/**
+ * @summary Último resultado da Timemania
+ */
+export const GetTimemaniaUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Histórico de resultados da Timemania
+ */
+export const getTimemaniaResultadosQueryPageDefault = 1;
+export const getTimemaniaResultadosQueryLimitDefault = 20;
+export const getTimemaniaResultadosQueryOrdemDefault = `desc`;
+
+export const GetTimemaniaResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().default(getTimemaniaResultadosQueryPageDefault),
+  "limit": zod.coerce.number().default(getTimemaniaResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getTimemaniaResultadosQueryOrdemDefault)
+})
+
+export const GetTimemaniaResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da Timemania
+ */
+export const GetTimemaniaResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const GetTimemaniaResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Estatísticas da Timemania (frequência de dezenas, etc.)
+ */
+export const GetTimemaniaEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+})),
+  "timesRanking": zod.array(zod.object({
+  "time": zod.string(),
+  "sorteios": zod.number()
+}))
+})
+
+
+/**
+ * @summary Resumo agregado da Timemania
+ */
+export const GetTimemaniaResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores7": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Timemania
+ */
+export const simularTimemaniaBodyDezenasMin = 10;
+export const simularTimemaniaBodyDezenasMax = 10;
+
+export const simularTimemaniaBodyFiltroDefault = `premiados`;
+
+export const SimularTimemaniaBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularTimemaniaBodyDezenasMin).max(simularTimemaniaBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'sete', 'seis', 'cinco', 'quatro', 'tres']).default(simularTimemaniaBodyFiltroDefault)
+})
+
+export const SimularTimemaniaResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de Timemania (10 dezenas)
+ */
+export const gerarJogoTimemaniaBodyQuantidadeJogosDefault = 1;
+export const gerarJogoTimemaniaBodyQuantidadeJogosMax = 20;
+
+
+
+export const GerarJogoTimemaniaBody = zod.object({
+  "quantidadeJogos": zod.number().min(1).max(gerarJogoTimemaniaBodyQuantidadeJogosMax).default(gerarJogoTimemaniaBodyQuantidadeJogosDefault)
+})
+
+export const GerarJogoTimemaniaResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.number())),
+  "custo": zod.number()
+})
+
+

@@ -91,6 +91,24 @@ export function Sidebar() {
         { href: "/lotomania/premiacao", label: "Premiação", icon: Target },
         { href: "/lotomania/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
       ]
+    },
+    {
+      title: "Timemania",
+      items: [
+        { href: "/timemania", label: "Painel Principal", icon: Target },
+        { href: "/timemania/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/timemania/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/timemania/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/timemania/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "Timemania — Info",
+      items: [
+        { href: "/timemania/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/timemania/premiacao", label: "Premiação", icon: Target },
+        { href: "/timemania/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+      ]
     }
   ];
 
