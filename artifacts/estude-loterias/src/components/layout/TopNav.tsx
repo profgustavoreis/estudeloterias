@@ -94,8 +94,8 @@ const lotomaniaAll = [...lotomaniaTools, ...lotomaniaInfo];
 // Items with an `href` are live and link out; items without one are still "em breve".
 const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
   { label: "Quina",       cor: "#260085", href: "/quina" },
-  { label: "Dupla Sena",  cor: "#a8003c" },
   { label: "Lotomania",   cor: "#f8901c", href: "/lotomania" },
+  { label: "Dupla Sena",  cor: "#a8003c" },
   { label: "Timemania",   cor: "#00a650" },
   { label: "Dia de Sorte", cor: "#f5a623" },
   { label: "Super Sete",  cor: "#a8cf45" },
