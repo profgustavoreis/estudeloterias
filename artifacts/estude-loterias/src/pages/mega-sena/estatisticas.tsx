@@ -414,7 +414,7 @@ export default function MegaSenaEstatisticas() {
                       }}
                     />
                     <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
-                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                      <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -483,7 +483,7 @@ export default function MegaSenaEstatisticas() {
                           }}
                         />
                         <Bar dataKey="sorteios" fill={COR} radius={[4, 4, 0, 0]}>
-                          <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v > 0 ? v.toLocaleString("pt-BR") : ""} />
+                          <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
