@@ -10,6 +10,7 @@ const router = Router();
 const MODALIDADE = "timemania";
 
 function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
+  const meta = row.metadata as { nomeEspecial?: string } | null;
   return {
     concurso: row.concurso,
     data: row.data,
@@ -20,6 +21,7 @@ function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
     dataProximoConcurso: row.dataProximoConcurso ?? null,
     valorEstimadoProximoConcurso: row.valorEstimadoProximo ? Number(row.valorEstimadoProximo) : null,
     arrecadacaoTotal: row.arrecadacaoTotal ? Number(row.arrecadacaoTotal) : null,
+    timeDoCoracao: meta?.nomeEspecial ?? null,
   };
 }
 
@@ -144,6 +146,13 @@ router.get("/timemania/estatisticas", async (req, res) => {
     const FIBONACCI = new Set([1,2,3,5,8,13,21,34,55]);
     const TRIANGULARES = new Set([1,3,6,10,15,21,28,36,45,55,66,78]);
 
+    // Grid 8×10: moldura = border (row1 + row8 + left/right of rows 2–7)
+    const MOLDURA = new Set<number>([
+      ...Array.from({ length: 10 }, (_, i) => i + 1),      // row 1: 01–10
+      ...Array.from({ length: 10 }, (_, i) => i + 71),     // row 8: 71–80
+      11, 20, 21, 30, 31, 40, 41, 50, 51, 60, 61, 70,     // left/right of rows 2–7
+    ]);
+
     const freq: Record<string, { count: number; lastSeenIdx: number | null }> = {};
     for (let i = 1; i <= 80; i++) {
       freq[String(i).padStart(2, "0")] = { count: 0, lastSeenIdx: null };
@@ -151,6 +160,10 @@ router.get("/timemania/estatisticas", async (req, res) => {
 
     const paresDistrib: Record<number, number> = {};
     const lastConcursoForPares: Record<number, number> = {};
+    const molduraDistrib: Record<number, number> = {};
+    const lastConcursoForMoldura: Record<number, number> = {};
+    const freqLinha = Array(8).fill(0);    // 8 rows
+    const freqColuna = Array(10).fill(0);  // 10 cols
     const somaHist: Record<string, number> = {};
     const lastConcursoForBucket: Record<string, number> = {};
     let menorSoma = { valor: Infinity, concurso: 0, data: "" };
@@ -166,9 +179,6 @@ router.get("/timemania/estatisticas", async (req, res) => {
     let maiorPremioRow = rows[0];
     let acumulados = 0;
 
-    // Time do Coração frequency
-    const timeFreq: Record<string, number> = {};
-
     rows.forEach((row, idx) => {
       const dezenasStr = row.dezenas as string[];
       const dezenas = dezenasStr.map(d => parseInt(d, 10));
@@ -183,6 +193,23 @@ router.get("/timemania/estatisticas", async (req, res) => {
       const pares = dezenas.filter(d => d % 2 === 0).length;
       paresDistrib[pares] = (paresDistrib[pares] ?? 0) + 1;
       if (!(pares in lastConcursoForPares)) lastConcursoForPares[pares] = row.concurso;
+
+      // Moldura x Retrato
+      const moldura = dezenas.filter(d => MOLDURA.has(d)).length;
+      molduraDistrib[moldura] = (molduraDistrib[moldura] ?? 0) + 1;
+      if (!(moldura in lastConcursoForMoldura)) lastConcursoForMoldura[moldura] = row.concurso;
+
+      // Linha (row in 10-col grid)
+      for (const d of dezenas) {
+        const linhaIdx = Math.floor((d - 1) / 10);
+        freqLinha[linhaIdx]++;
+      }
+
+      // Coluna (column in 8-row grid)
+      for (const d of dezenas) {
+        const colIdx = d % 10 === 0 ? 9 : (d % 10) - 1;
+        freqColuna[colIdx]++;
+      }
 
       const soma = dezenas.reduce((a, b) => a + b, 0);
       if (soma < menorSoma.valor) menorSoma = { valor: soma, concurso: row.concurso, data: row.data };
@@ -203,13 +230,6 @@ router.get("/timemania/estatisticas", async (req, res) => {
       if (!(fc in lastConcursoForFib))    lastConcursoForFib[fc]    = row.concurso;
       if (!(tc in lastConcursoForTri))    lastConcursoForTri[tc]    = row.concurso;
       primosTotal += pc; fibTotal += fc; triTotal += tc;
-
-      // Time do Coração
-      const meta = row.metadata as { nomeEspecial?: string } | null;
-      const time = meta?.nomeEspecial;
-      if (time) {
-        timeFreq[time] = (timeFreq[time] ?? 0) + 1;
-      }
 
       if (row.acumulado) acumulados++;
       const premios = row.premios as Array<{ faixa: number; valorPremio: number; ganhadores: number }>;
@@ -237,6 +257,24 @@ router.get("/timemania/estatisticas", async (req, res) => {
       impares: 7 - p,
       sorteios: paresDistrib[p] ?? 0,
       ultimoConcurso: lastConcursoForPares[p] ?? null,
+    }));
+
+    const molduraRetrato = Array.from({ length: 8 }, (_, m) => ({
+      moldura: m,
+      retrato: 7 - m,
+      sorteios: molduraDistrib[m] ?? 0,
+      ultimoConcurso: lastConcursoForMoldura[m] ?? null,
+    }));
+
+    const FAIXAS_LINHAS = ["01–10","11–20","21–30","31–40","41–50","51–60","61–70","71–80"];
+    const frequenciaPorLinha = FAIXAS_LINHAS.map((faixa, i) => ({
+      faixa,
+      sorteios: freqLinha[i],
+    }));
+
+    const frequenciaPorColuna = Array.from({ length: 10 }, (_, i) => ({
+      coluna: i + 1,
+      sorteios: freqColuna[i],
     }));
 
     const somaDezenas = {
@@ -279,12 +317,7 @@ router.get("/timemania/estatisticas", async (req, res) => {
       },
     ];
 
-    // Time do Coração ranking
-    const timesRanking = Object.entries(timeFreq)
-      .map(([time, count]) => ({ time, sorteios: count }))
-      .sort((a, b) => b.sorteios - a.sorteios)
-      .slice(0, 20);
-
+    // Total concursos (from DB max)
     const [maxRow] = await db
       .select({ maxConcurso: max(lotteryResultsTable.concurso) })
       .from(lotteryResultsTable)
@@ -300,9 +333,11 @@ router.get("/timemania/estatisticas", async (req, res) => {
       maiorPremioData: maiorPremioRow.data,
       maiorPremioConcurso: maiorPremioRow.concurso,
       paresImpares,
+      molduraRetrato,
+      frequenciaPorLinha,
+      frequenciaPorColuna,
       somaDezenas,
       numerosEspeciais,
-      timesRanking,
     });
   } catch (err) {
     req.log.error({ err }, "Failed to compute timemania estatisticas");

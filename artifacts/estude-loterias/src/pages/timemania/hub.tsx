@@ -108,6 +108,14 @@ export default function TimemaniaHub() {
               ))}
             </div>
 
+            {/* Time do Coração */}
+            {resultado.timeDoCoracao && (
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Time do Coração:</span>
+                <span className="text-sm font-bold px-3 py-1 rounded-full text-white" style={{ backgroundColor: COR }}>{resultado.timeDoCoracao}</span>
+              </div>
+            )}
+
             {/* Resultado + próximo sorteio */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {/* Resultado */}

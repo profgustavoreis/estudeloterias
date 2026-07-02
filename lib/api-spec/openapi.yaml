@@ -1921,6 +1921,8 @@ components:
           type: ["number", "null"]
         arrecadacaoTotal:
           type: ["number", "null"]
+        timeDoCoracao:
+          type: ["string", "null"]
       required:
         - concurso
         - data
@@ -1977,16 +1979,24 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ParesImpares"
+        molduraRetrato:
+          type: array
+          items:
+            $ref: "#/components/schemas/MolduraRetrato"
+        frequenciaPorLinha:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        frequenciaPorColuna:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaColuna"
         somaDezenas:
           $ref: "#/components/schemas/SomaDezenas"
         numerosEspeciais:
           type: array
           items:
             $ref: "#/components/schemas/NumerosEspeciaisItem"
-        timesRanking:
-          type: array
-          items:
-            $ref: "#/components/schemas/TimeRankingItem"
       required:
         - totalConcursos
         - frequenciaDezenas
@@ -1997,20 +2007,11 @@ components:
         - maiorPremioData
         - maiorPremioConcurso
         - paresImpares
+        - molduraRetrato
+        - frequenciaPorLinha
+        - frequenciaPorColuna
         - somaDezenas
         - numerosEspeciais
-        - timesRanking
-
-    TimeRankingItem:
-      type: object
-      properties:
-        time:
-          type: string
-        sorteios:
-          type: integer
-      required:
-        - time
-        - sorteios
 
     ResumoTimemania:
       type: object

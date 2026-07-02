@@ -3,7 +3,9 @@ import { Link, useSearch } from "wouter";
 import { useGetTimemaniaEstatisticas } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table as Table2, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -16,59 +18,38 @@ const BALL_TEXT = "#049645";
 
 type Tab = "mais" | "menos" | "atrasadas";
 type SortFreq = "frequencia" | "dezena";
-type SortAtr = "atraso" | "dezena";
+type SortAtr  = "atraso"     | "dezena";
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: "mais", label: "Mais Sorteadas" },
-  { id: "menos", label: "Menos Sorteadas" },
-  { id: "atrasadas", label: "Mais Atrasadas" },
+  { id: "mais",      label: "Mais Sorteadas"  },
+  { id: "menos",     label: "Menos Sorteadas" },
+  { id: "atrasadas", label: "Mais Atrasadas"  },
 ];
 
 const SORT_FREQ: { id: SortFreq; label: string }[] = [
   { id: "frequencia", label: "Por Frequência" },
-  { id: "dezena", label: "Por Dezena" },
+  { id: "dezena",     label: "Por Dezena"     },
 ];
 
 const SORT_ATR: { id: SortAtr; label: string }[] = [
-  { id: "atraso", label: "Por Atraso" },
-  { id: "dezena", label: "Por Dezena" },
+  { id: "atraso",  label: "Por Atraso"  },
+  { id: "dezena",  label: "Por Dezena"  },
 ];
 
-function UltimaVezLink({ concurso }: { concurso: number | null | undefined }) {
+function UltimaVezLink({ concurso }: { concurso: number | null }) {
   if (!concurso) return <span className="text-muted-foreground">–</span>;
   return (
-    <Link
-      href={`/timemania/resultado/${concurso}`}
-      className="font-semibold hover:underline whitespace-nowrap"
-      style={{ color: COR }}
-    >
+    <Link href={`/timemania/resultado/${concurso}`} className="font-semibold hover:underline whitespace-nowrap" style={{ color: COR }}>
       Concurso {concurso} →
     </Link>
   );
 }
 
-function SortToggle<T extends string>({
-  options,
-  value,
-  onChange,
-}: {
-  options: { id: T; label: string }[];
-  value: T;
-  onChange: (v: T) => void;
-}) {
+function SortToggle<T extends string>({ options, value, onChange }: { options: { id: T; label: string }[]; value: T; onChange: (v: T) => void }) {
   return (
     <div className="flex gap-1 bg-muted rounded-md p-0.5 w-fit">
       {options.map(opt => (
-        <button
-          key={opt.id}
-          onClick={() => onChange(opt.id)}
-          className={cn(
-            "px-3 py-1 text-xs font-medium rounded transition-colors",
-            value === opt.id
-              ? "bg-background shadow text-foreground"
-              : "text-muted-foreground hover:text-foreground",
-          )}
-        >
+        <button key={opt.id} onClick={() => onChange(opt.id)} className={cn("px-3 py-1 text-xs font-medium rounded transition-colors", value === opt.id ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")}>
           {opt.label}
         </button>
       ))}
@@ -81,21 +62,16 @@ export default function TimemaniaEstatisticasTabela() {
   const params = new URLSearchParams(search);
   const initialTab = (params.get("tab") as Tab | null) ?? "mais";
 
-  const [tab, setTab] = useState<Tab>(
-    TABS.some(t => t.id === initialTab) ? initialTab : "mais",
-  );
+  const [tab, setTab] = useState<Tab>(TABS.some(t => t.id === initialTab) ? initialTab : "mais");
   const [sortFreq, setSortFreq] = useState<SortFreq>("frequencia");
-  const [sortAtr, setSortAtr] = useState<SortAtr>("atraso");
+  const [sortAtr,  setSortAtr]  = useState<SortAtr>("atraso");
 
   const { data: stats, isLoading, isError } = useGetTimemaniaEstatisticas();
 
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div>
-          <Skeleton className="h-9 w-64 mb-2" />
-          <Skeleton className="h-4 w-80" />
-        </div>
+        <div><Skeleton className="h-9 w-64 mb-2" /><Skeleton className="h-4 w-80" /></div>
         <Skeleton className="h-10 w-72" />
         <Skeleton className="h-[600px] w-full" />
       </div>
@@ -105,47 +81,34 @@ export default function TimemaniaEstatisticasTabela() {
   if (isError || !stats) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>
-          Timemania · Tabela de Dezenas
-        </h1>
-        <Card>
-          <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
-            Erro ao carregar estatísticas. Tente novamente.
-          </CardContent>
-        </Card>
+        <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Timemania · Tabela de Dezenas</h1>
+        <Card><CardContent className="flex items-center justify-center py-16 text-muted-foreground">Erro ao carregar estatísticas. Tente novamente.</CardContent></Card>
       </div>
     );
   }
 
-  const todas = stats.frequenciaDezenas;
+  const base = [...stats.frequenciaDezenas];
 
-  const maisSorteadas = [...todas].sort((a, b) => {
-    if (sortFreq === "dezena") return parseInt(a.dezena) - parseInt(b.dezena);
-    return b.frequencia - a.frequencia || parseInt(a.dezena) - parseInt(b.dezena);
-  });
+  const rows = (() => {
+    if (tab === "atrasadas") {
+      if (sortAtr === "dezena") return base.sort((a, b) => parseInt(a.dezena) - parseInt(b.dezena));
+      return base.sort((a, b) => b.atraso - a.atraso);
+    }
+    if (sortFreq === "dezena") return base.sort((a, b) => parseInt(a.dezena) - parseInt(b.dezena));
+    if (tab === "menos") return base.sort((a, b) => a.frequencia - b.frequencia);
+    return base.sort((a, b) => b.frequencia - a.frequencia);
+  })();
 
-  const menosSorteadas = [...todas].sort((a, b) => {
-    if (sortFreq === "dezena") return parseInt(a.dezena) - parseInt(b.dezena);
-    return a.frequencia - b.frequencia || parseInt(a.dezena) - parseInt(b.dezena);
-  });
+  const isAtrasadas = tab === "atrasadas";
 
-  const atrasadas = [...todas].sort((a, b) => {
-    if (sortAtr === "dezena") return parseInt(a.dezena) - parseInt(b.dezena);
-    return b.atraso - a.atraso || parseInt(a.dezena) - parseInt(b.dezena);
-  });
-
-  const list =
-    tab === "mais" ? maisSorteadas :
-    tab === "menos" ? menosSorteadas :
-    atrasadas;
-
-  const maxFreq = Math.max(...todas.map(d => d.frequencia), 1);
+  const cardTitle = { mais: "Dezenas Mais Sorteadas", menos: "Dezenas Menos Sorteadas", atrasadas: "Dezenas Mais Atrasadas" }[tab];
+  const cardDesc = { mais: "Ranking de todas as dezenas por frequência histórica (maior → menor)", menos: "Ranking de todas as dezenas por frequência histórica (menor → maior)", atrasadas: "Ranking de todas as dezenas por atraso (mais ausente → mais recente)" }[tab];
 
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Timemania"
-        description="Ranking completo das 80 dezenas da Timemania: frequência, percentual de aparição e atraso. Filtre por mais sorteadas, menos sorteadas ou mais atrasadas."
+        title="Tabela de Dezenas da Timemania — Frequência e Atraso"
+        description="Ranking completo das 80 dezenas da Timemania: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/timemania/tabela-de-dezenas"
       />
       <div className="flex items-center gap-4">
@@ -154,87 +117,75 @@ export default function TimemaniaEstatisticasTabela() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Timemania · Tabela de Dezenas</h1>
-          <p className="text-muted-foreground mt-1">Ranking detalhado das 80 dezenas: frequência, percentual e atraso.</p>
+          <p className="text-muted-foreground mt-1">Todas as 80 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
         </div>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardDescription>{stats.totalConcursos} concursos analisados</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Abas */}
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex gap-1 bg-muted rounded-md p-0.5">
-              {TABS.map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setTab(t.id)}
-                  className={cn(
-                    "px-4 py-1.5 text-sm font-medium rounded transition-colors",
-                    tab === t.id
-                      ? "bg-background shadow text-foreground"
-                      : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {t.label}
-                </button>
-              ))}
-            </div>
-            <SortToggle
-              options={tab === "atrasadas" ? SORT_ATR : SORT_FREQ}
-              value={tab === "atrasadas" ? sortAtr : sortFreq}
-              onChange={v => tab === "atrasadas" ? setSortAtr(v as SortAtr) : setSortFreq(v as SortFreq)}
-            />
-          </div>
+      <div className="flex gap-1 bg-muted rounded-lg p-1 w-fit">
+        {TABS.map(t => (
+          <button key={t.id} onClick={() => setTab(t.id)} className={cn("px-4 py-2 text-sm font-medium rounded-md transition-colors", tab === t.id ? "bg-background shadow text-foreground" : "text-muted-foreground hover:text-foreground")}>
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-          {/* Tabela */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/50 hover:bg-muted/50">
-                  <TableHead className="w-16 text-center">#</TableHead>
-                  <TableHead className="w-20 text-center">Dezena</TableHead>
-                  <TableHead>Frequência</TableHead>
-                  <TableHead className="text-right">Percentual</TableHead>
-                  <TableHead className="text-right">Atraso</TableHead>
-                  <TableHead className="text-right">Última vez</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {list.map((d, i) => {
-                  const pct = Math.round((d.frequencia / maxFreq) * 100);
-                  return (
-                    <TableRow key={d.dezena} className="group">
-                      <TableCell className="text-center text-muted-foreground text-sm font-mono">{i + 1}</TableCell>
-                      <TableCell className="text-center">
-                        <LotteryBall number={d.dezena} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
-                      </TableCell>
-                      <TableCell>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <CardTitle>{cardTitle}</CardTitle>
+                  <CardDescription className="mt-1">{cardDesc}</CardDescription>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground shrink-0">
+                  <span>Ordenar:</span>
+                  {isAtrasadas ? <SortToggle options={SORT_ATR} value={sortAtr} onChange={(v) => setSortAtr(v)} /> : <SortToggle options={SORT_FREQ} value={sortFreq} onChange={(v) => setSortFreq(v)} />}
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Table2 className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-left">Dezena</TableHead>
+                    {isAtrasadas ? (<><TableHead className="text-center">Atraso</TableHead><TableHead className="text-right">Última vez</TableHead></>) : (<><TableHead className="text-center">Frequência</TableHead><TableHead className="text-right">Última vez</TableHead></>)}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rows.map((item, i) => (
+                    <TableRow key={item.dezena} className="odd:bg-muted/40">
+                      <TableCell className="text-left">
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-sm tabular-nums min-w-[3ch]">{d.frequencia}</span>
-                          <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden max-w-[120px]">
-                            <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: COR }} />
-                          </div>
+                          <span className="text-muted-foreground font-mono text-xs">{i + 1}º</span>
+                          {isAtrasadas ? (
+                            <LotteryBall number={parseInt(item.dezena, 10)} size="sm" className="bg-amber-100 text-amber-800 border border-amber-200" />
+                          ) : tab === "mais" ? (
+                            <LotteryBall number={parseInt(item.dezena, 10)} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
+                          ) : (
+                            <LotteryBall number={parseInt(item.dezena, 10)} size="sm" className="bg-muted text-muted-foreground" />
+                          )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-right font-mono text-sm">{d.percentual}%</TableCell>
-                      <TableCell className="text-right font-mono text-sm">
-                        {d.atraso === stats.totalConcursos ? "Nunca" : d.atraso}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <UltimaVezLink concurso={d.ultimoConcurso} />
-                      </TableCell>
+                      {isAtrasadas ? (<>
+                        <TableCell className="text-center font-medium tabular-nums text-amber-600">{item.atraso} sorteios</TableCell>
+                        <TableCell className="text-right"><UltimaVezLink concurso={item.ultimoConcurso ?? null} /></TableCell>
+                      </>) : (<>
+                        <TableCell className="text-center font-medium tabular-nums">{item.frequencia.toLocaleString("pt-BR")} vezes</TableCell>
+                        <TableCell className="text-right"><UltimaVezLink concurso={item.ultimoConcurso ?? null} /></TableCell>
+                      </>)}
                     </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
-
-      <AdUnit slot="9988776655" format="horizontal" className="w-full" />
+                  ))}
+                  <TableRow className="border-b"><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell><TableCell className="py-0.5"> </TableCell></TableRow>
+                </TableBody>
+              </Table2>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="flex flex-col gap-6">
+          <AdUnit slot="3322114455" format="rectangle" className="w-full" />
+        </div>
+      </div>
     </div>
   );
 }

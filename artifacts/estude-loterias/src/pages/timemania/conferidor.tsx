@@ -15,17 +15,15 @@ const BALL_BG = "#FFF600";
 const BALL_TEXT = "#049645";
 const TOTAL_DEZENAS = 10;
 
-// Faixas premiadas da Timemania: 3→faixa5, 4→faixa4, 5→faixa3, 6→faixa2, 7→faixa1
-const FAIXA_FOR_ACERTOS: Record<number, number> = {
-  7: 1, 6: 2, 5: 3, 4: 4, 3: 5,
-};
+// Faixas premiadas da Timemania: 7→faixa1, 6→faixa2, 5→faixa3, 4→faixa4, 3→faixa5
+const FAIXA_FOR_ACERTOS: Record<number, number> = { 7: 1, 6: 2, 5: 3, 4: 4, 3: 5 };
 const FAIXAS_PREMIADAS = new Set([7, 6, 5, 4, 3]);
 
 function Legenda() {
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-1.5 pt-2 border-t text-xs text-muted-foreground">
       {[
-        { bg: COR,         text: "text-white", icon: <CheckCircle2 className="w-3 h-3" />, label: "Acerto" },
+        { bg: COR, text: "text-white", icon: <CheckCircle2 className="w-3 h-3" />, label: "Acerto" },
         { bg: "bg-destructive", text: "text-white", icon: <XCircle className="w-3 h-3" />, label: "Erro" },
         { bg: null, text: null, icon: null, label: "Sorteada (não marcada)" },
       ].map(({ bg, text, icon, label }) => (
@@ -56,9 +54,7 @@ function ResultadoCard({ resultado, selecionadas }: { resultado: ResultadoTimema
     <Card className="border-t-4" style={{ borderTopColor: COR }}>
       <CardHeader className="pb-3">
         <CardTitle className="text-base font-semibold">Resultado da conferência</CardTitle>
-        <CardDescription>
-          Aposta de 10 dezenas • {formatCurrency(3.5)}
-        </CardDescription>
+        <CardDescription>Aposta de 10 dezenas • {formatCurrency(3.5)}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
@@ -67,9 +63,7 @@ function ResultadoCard({ resultado, selecionadas }: { resultado: ResultadoTimema
             <div className="flex flex-wrap gap-1.5">
               {K === 0 ? <span className="text-sm text-muted-foreground">—</span> : (
                 Array.from(acertadas).sort((a, b) => a - b).map(d => (
-                  <span key={d} className="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold text-white" style={{ backgroundColor: COR }}>
-                    {String(d).padStart(2, "0")}
-                  </span>
+                  <span key={d} className="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold text-white" style={{ backgroundColor: COR }}>{String(d).padStart(2, "0")}</span>
                 ))
               )}
             </div>
@@ -79,9 +73,7 @@ function ResultadoCard({ resultado, selecionadas }: { resultado: ResultadoTimema
             <div className="flex flex-wrap gap-1.5">
               {TOTAL_DEZENAS - K === 0 ? <span className="text-sm text-muted-foreground">—</span> : (
                 Array.from(selecionadas).sort((a, b) => a - b).filter(d => !acertadas.has(d)).map(d => (
-                  <span key={d} className="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold text-white bg-destructive">
-                    {String(d).padStart(2, "0")}
-                  </span>
+                  <span key={d} className="inline-flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold text-white bg-destructive">{String(d).padStart(2, "0")}</span>
                 ))
               )}
             </div>
@@ -89,75 +81,59 @@ function ResultadoCard({ resultado, selecionadas }: { resultado: ResultadoTimema
         </div>
 
         {temPremio && premio ? (
-          <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-            <div className="text-xs font-semibold uppercase tracking-wider text-amber-600 mb-1">
-              Parabéns! Você teria ganhado um prêmio!
-            </div>
-            <div className="text-2xl font-bold">{formatCurrency(premio.valorPremio)}</div>
-            <div className="text-sm text-muted-foreground mt-1">
-              {faixaLabel} — {premio.descricao}
-            </div>
-          </div>
-        ) : K > 0 ? (
-          <div className="p-4 bg-muted/50 border border-border rounded-lg">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-              {K} acerto{K > 1 ? "s" : ""}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Infelizmente esta faixa não é premiada na Timemania (somente 3 a 7 acertos).
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2 flex items-center gap-1.5">
+              <Trophy className="w-3.5 h-3.5" style={{ color: COR }} /> Premiação
+            </p>
+            <div className="rounded-lg border overflow-hidden">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-muted/30">
+                    <TableHead className="py-2">Faixa</TableHead>
+                    <TableHead className="text-center py-2">Apostas premiadas</TableHead>
+                    <TableHead className="text-right py-2">Prêmio</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-medium py-2">{faixaLabel}</TableCell>
+                    <TableCell className="text-center py-2 font-bold" style={{ color: COR }}>1</TableCell>
+                    <TableCell className="text-right py-2 font-black" style={{ color: COR }}>{premio.valorPremio ? formatCurrency(premio.valorPremio) : "—"}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </div>
           </div>
         ) : (
-          <div className="p-4 bg-muted/50 border border-border rounded-lg">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">
-              Sem acertos
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Nenhum dos seus números foi sorteado neste concurso.
-            </div>
-          </div>
+          <p className="text-sm text-muted-foreground">Nenhuma faixa de premiação atingida. Na Timemania, os prêmios são para 7, 6, 5, 4 ou 3 acertos.</p>
         )}
-
-        <Legenda />
-
-        {/* Volante com dezenas sorteadas */}
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Dezenas Sorteadas</p>
-          <div className="flex flex-wrap gap-1.5">
-            {sorteadasNums.sort((a, b) => a - b).map(d => (
-              <span key={d} className={cn(
-                "inline-flex items-center justify-center w-10 h-10 rounded-full text-xs font-bold border-2",
-                acertadas.has(d)
-                  ? "text-white"
-                  : "text-foreground/50 bg-muted/20"
-              )} style={acertadas.has(d) ? { backgroundColor: COR, borderColor: COR } : { borderColor: "var(--border)" }}>
-                {String(d).padStart(2, "0")}
-              </span>
-            ))}
-          </div>
-        </div>
       </CardContent>
     </Card>
   );
 }
 
 export default function TimemaniaConferidor() {
-  const [concurso, setConcurso] = useState("");
-  const [concursoBusca, setConcursoBusca] = useState<number | null>(null);
   const [selecionadas, setSelecionadas] = useState<Set<number>>(new Set());
-  const [resultadoConferido, setResultadoConferido] = useState(false);
+  const [concursoSelected, setConcursoSelected] = useState<number | null>(null);
+  const [concursoQuery, setConcursoQuery] = useState<number | null>(null);
+  const [infoAberta, setInfoAberta] = useState(false);
 
-  const { data: ultimo, isLoading: carregandoUltimo } = useGetTimemaniaUltimoResultado();
-  const { data: resultado, isLoading: carregando } = useGetTimemaniaResultadoConcurso(
-    concursoBusca && concursoBusca > 0 ? concursoBusca : 0,
-  );
+  const ultimo = useGetTimemaniaUltimoResultado();
+  const latestConcurso = ultimo.data?.concurso ?? null;
 
   useEffect(() => {
-    if (ultimo && !concursoBusca) {
-      setConcursoBusca(ultimo.concurso);
-      setResultadoConferido(false);
-    }
-  }, [ultimo]);
+    if (latestConcurso != null && concursoSelected === null) setConcursoSelected(latestConcurso);
+  }, [latestConcurso]);
+
+  const effectiveConcurso = concursoSelected ?? latestConcurso;
+  const concursoOptions = useMemo(() => latestConcurso ? Array.from({ length: Math.min(latestConcurso, 500) }, (_, i) => latestConcurso - i) : [], [latestConcurso]);
+
+  const concursoResult = useGetTimemaniaResultadoConcurso(concursoQuery ?? 0);
+  const sorteadasSet = useMemo(() => new Set(concursoResult.data?.dezenas?.map(d => parseInt(d, 10)) ?? []), [concursoResult.data]);
+
+  const count = selecionadas.size;
+  const podeConferir = count === TOTAL_DEZENAS;
+  const hasResult = concursoResult.isSuccess && concursoResult.data != null && count === TOTAL_DEZENAS;
 
   const toggleDezena = (n: number) => {
     setSelecionadas(prev => {
@@ -166,150 +142,140 @@ export default function TimemaniaConferidor() {
       else if (next.size < TOTAL_DEZENAS) next.add(n);
       return next;
     });
-    setResultadoConferido(false);
   };
 
-  const handleBuscar = () => {
-    const n = parseInt(concurso, 10);
-    if (n > 0) {
-      setConcursoBusca(n);
-      setResultadoConferido(false);
-    }
-  };
-
-  const handleConferir = () => setResultadoConferido(true);
-  const handleLimpar = () => {
-    setSelecionadas(new Set());
-    setResultadoConferido(false);
-  };
-
-  const isLoading = (concursoBusca === null) ? carregandoUltimo : carregando;
+  const handleConferir = () => { if (!effectiveConcurso) return; setConcursoQuery(effectiveConcurso); };
+  const handleLimpar = () => { setSelecionadas(new Set()); setConcursoSelected(null); setConcursoQuery(null); };
 
   return (
     <div className="space-y-6">
       <PageSEO
         title="Conferidor de Apostas da Timemania"
-        description="Confira se suas dezenas da Timemania foram sorteadas em qualquer concurso. Verificação rápida e gratuita."
+        description="Confira se sua aposta da Timemania ganhou! Escolha suas 10 dezenas, selecione o concurso e veja seus acertos e o prêmio correspondente."
         canonical="/timemania/conferidor"
       />
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: COR }}>
           <ClipboardCheck className="w-6 h-6" />
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Timemania · Conferidor de Apostas</h1>
-          <p className="text-muted-foreground mt-1">Verifique se suas 10 dezenas foram premiadas em qualquer concurso.</p>
+          <p className="text-muted-foreground mt-1">Selecione 10 dezenas e confira se sua aposta ganhou.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Seletor de concurso + volante */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Selecione o Concurso e as Dezenas</CardTitle>
+        {/* Volante 8×10 */}
+        <Card className="border-t-4" style={{ borderTopColor: COR }}>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle>Escolha suas dezenas</CardTitle>
+              <span className={cn("text-sm font-semibold tabular-nums", count < TOTAL_DEZENAS ? "text-muted-foreground" : "")} style={count >= TOTAL_DEZENAS ? { color: COR } : {}}>{count}/{TOTAL_DEZENAS}</span>
+            </div>
             <CardDescription>
-              {isLoading ? "Carregando..." : ultimo ? `Último concurso: ${ultimo.concurso}` : ""}
+              Marque exatamente 10 dezenas (01 a 80)
+              {count >= TOTAL_DEZENAS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
-              <input
-                type="number"
-                className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm"
-                placeholder="Nº do concurso"
-                value={concurso}
-                onChange={e => setConcurso(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleBuscar()}
-              />
-              <Button variant="outline" onClick={handleBuscar}>Buscar</Button>
-            </div>
-
-            <p className="text-sm font-medium">Marque suas 10 dezenas:</p>
+          <CardContent className="space-y-3">
             <div className="grid grid-cols-10 gap-1">
               {Array.from({ length: 80 }, (_, i) => i + 1).map(n => {
-                const selecionado = selecionadas.has(n);
+                const sel = selecionadas.has(n);
+                const drawn = hasResult && sorteadasSet.has(n);
+                const hit   = drawn && sel;
+                const miss  = hasResult && sel && !drawn;
+                const sorteadaNaoSel = drawn && !sel;
+
                 return (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => toggleDezena(n)}
-                    disabled={!selecionado && selecionadas.size >= TOTAL_DEZENAS}
-                    className={cn(
-                      "w-8 h-8 text-[11px] font-bold rounded-full border transition-all",
-                      selecionado
-                        ? "text-white border-transparent"
-                        : "text-foreground/70 border-border hover:border-foreground/30",
-                      !selecionado && selecionadas.size >= TOTAL_DEZENAS && "opacity-30 cursor-not-allowed"
-                    )}
-                    style={selecionado ? { backgroundColor: COR } : {}}
-                  >
+                  <button key={n} onClick={() => toggleDezena(n)} disabled={!sel && count >= TOTAL_DEZENAS}
+                    className={cn("relative aspect-square rounded text-[10px] font-bold transition-all duration-150 select-none",
+                      hit ? "text-white shadow-sm ring-1 scale-105" : miss ? "bg-destructive text-white scale-105" : sel ? "text-white shadow-sm ring-1 scale-105" :
+                      count >= TOTAL_DEZENAS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
+                    style={hit || sel ? { backgroundColor: COR, "--tw-ring-color": COR + "4d" } as React.CSSProperties : sorteadaNaoSel ? { backgroundColor: COR + "26", color: COR, border: `1px solid ${COR}66` } : {}}>
                     {String(n).padStart(2, "0")}
+                    {hit && (<span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center pointer-events-none"><CheckCircle2 className="w-3 h-3" style={{ color: COR }} /></span>)}
+                    {miss && (<span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white rounded-full flex items-center justify-center pointer-events-none"><XCircle className="w-3 h-3 text-destructive" /></span>)}
                   </button>
                 );
               })}
             </div>
 
-            <div className="flex gap-2">
-              <Button
-                onClick={handleConferir}
-                disabled={selecionadas.size !== TOTAL_DEZENAS || isLoading || !resultado}
-                className="flex-1 text-white"
-                style={{ backgroundColor: selecionadas.size === TOTAL_DEZENAS ? COR : undefined }}
-              >
-                <ClipboardCheck className="w-4 h-4 mr-2" /> Conferir
-              </Button>
-              <Button variant="outline" onClick={handleLimpar}>
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-            </div>
-            {selecionadas.size !== TOTAL_DEZENAS && (
-              <p className="text-xs text-muted-foreground">
-                Selecione exatamente {TOTAL_DEZENAS} dezenas ({selecionadas.size}/{TOTAL_DEZENAS}).
-              </p>
+            {hasResult && <Legenda />}
+
+            {count > 0 && (
+              <div className="pt-2 border-t space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">Dezenas escolhidas ({count}):</p>
+                <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto">
+                  {Array.from(selecionadas).sort((a, b) => a - b).map(n => (
+                    <LotteryBall key={n} number={n} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
+                  ))}
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>
 
-        {/* Resultado */}
-        <div>
-          {isLoading ? (
-            <Card>
-              <CardContent className="p-8 flex items-center justify-center">
-                <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
-              </CardContent>
-            </Card>
-          ) : resultado && resultadoConferido ? (
-            <ResultadoCard resultado={resultado} selecionadas={selecionadas} />
-          ) : resultado ? (
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">
-                  Concurso {resultado.concurso} • {formatDateShort(resultado.data)}
-                </CardTitle>
-                <CardDescription>
-                  {resultado.acumulado ? "Acumulou!" : "Saiu!"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">Dezenas Sorteadas</p>
-                <div className="flex flex-wrap gap-2">
-                  {resultado.dezenas.map((d, i) => (
-                    <LotteryBall key={i} number={d} size="md" color={BALL_BG} textColor={BALL_TEXT} />
-                  ))}
-                </div>
-                <p className="text-xs text-muted-foreground mt-4">
-                  Selecione suas dezenas e clique em Conferir para verificar.
-                </p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="border-2 border-dashed border-border rounded-xl p-8 text-center h-full flex flex-col items-center justify-center min-h-[300px]">
-              <ClipboardCheck className="w-12 h-12 text-muted-foreground mb-3" />
-              <h3 className="font-semibold text-lg">Conferidor de Apostas</h3>
-              <p className="text-muted-foreground text-sm mt-1 max-w-xs">
-                Selecione o concurso e marque suas 10 dezenas para conferir.
-              </p>
-            </div>
+        {/* Controles */}
+        <div className="space-y-4">
+          <Card className="bg-muted/20">
+            <CardContent className="pt-5 text-sm text-muted-foreground">
+              <button className="flex w-full items-center justify-between" onClick={() => setInfoAberta(v => !v)}>
+                <span className="font-semibold text-foreground">Como usar o conferidor?</span>
+                <ChevronDown className={cn("w-4 h-4 transition-transform shrink-0", infoAberta ? "rotate-180" : "")} />
+              </button>
+              {infoAberta && (
+                <ol className="mt-3 space-y-1.5 list-decimal list-inside">
+                  <li>Marque exatamente 10 números no volante à esquerda (01 a 80).</li>
+                  <li>Selecione o concurso que deseja conferir.</li>
+                  <li>Clique em <strong>Conferir Aposta</strong>.</li>
+                  <li>Acertos aparecem em verde, erros em vermelho e dezenas sorteadas não marcadas em verde claro.</li>
+                </ol>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-5 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Concurso:</label>
+                {ultimo.isLoading ? (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="w-4 h-4 animate-spin" /> Carregando concursos…</div>
+                ) : (
+                  <select value={effectiveConcurso ?? ""} onChange={e => setConcursoSelected(parseInt(e.target.value, 10))} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2">
+                    {concursoOptions.map((c, idx) => (<option key={c} value={c}>{c}{idx === 0 ? " (último concurso)" : ""}</option>))}
+                  </select>
+                )}
+                <p className="text-xs text-muted-foreground">Na Timemania, apostas são premiadas com 7, 6, 5, 4 ou 3 acertos.</p>
+              </div>
+
+              <div className="flex gap-3">
+                <Button onClick={handleConferir} disabled={!podeConferir || concursoResult.isFetching || !effectiveConcurso} className="flex-1 text-white font-semibold" style={{ backgroundColor: COR }}>
+                  {concursoResult.isFetching ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Conferindo…</> : <><ClipboardCheck className="w-4 h-4 mr-2" />Conferir Aposta</>}
+                </Button>
+                <Button variant="outline" onClick={handleLimpar} disabled={concursoResult.isFetching}><RotateCcw className="w-4 h-4 mr-2" />Limpar</Button>
+              </div>
+
+              {!podeConferir && count > 0 && <p className="text-sm text-amber-600 text-center">Selecione mais {TOTAL_DEZENAS - count} dezena{TOTAL_DEZENAS - count > 1 ? "s" : ""} para conferir.</p>}
+            </CardContent>
+          </Card>
+
+          {hasResult && concursoResult.data && (
+            <>
+              <Card>
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Dezenas sorteadas</CardTitle>
+                  <CardDescription>Concurso {concursoResult.data.concurso} · {formatDateShort(concursoResult.data.data)}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-1">
+                    {concursoResult.data.dezenas.map(d => (
+                      <LotteryBall key={d} number={parseInt(d, 10)} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+              <ResultadoCard resultado={concursoResult.data} selecionadas={selecionadas} />
+            </>
           )}
         </div>
       </div>

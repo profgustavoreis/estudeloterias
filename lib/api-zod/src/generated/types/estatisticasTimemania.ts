@@ -5,11 +5,13 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { FrequenciaColuna } from './frequenciaColuna';
 import type { FrequenciaDezena } from './frequenciaDezena';
+import type { FrequenciaFaixa } from './frequenciaFaixa';
+import type { MolduraRetrato } from './molduraRetrato';
 import type { NumerosEspeciaisItem } from './numerosEspeciaisItem';
 import type { ParesImpares } from './paresImpares';
 import type { SomaDezenas } from './somaDezenas';
-import type { TimeRankingItem } from './timeRankingItem';
 
 export interface EstatisticasTimemania {
   totalConcursos: number;
@@ -21,7 +23,9 @@ export interface EstatisticasTimemania {
   maiorPremioData: string;
   maiorPremioConcurso: number;
   paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
   somaDezenas: SomaDezenas;
   numerosEspeciais: NumerosEspeciaisItem[];
-  timesRanking: TimeRankingItem[];
 }

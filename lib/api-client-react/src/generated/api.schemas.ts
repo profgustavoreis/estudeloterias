@@ -572,6 +572,8 @@ export interface ResultadoTimemania {
   valorEstimadoProximoConcurso?: number | null;
   /** @nullable */
   arrecadacaoTotal?: number | null;
+  /** @nullable */
+  timeDoCoracao?: string | null;
 }
 
 export interface ResultadosPaginadosTimemania {
@@ -580,11 +582,6 @@ export interface ResultadosPaginadosTimemania {
   limite: number;
   totalPaginas: number;
   resultados: ResultadoTimemania[];
-}
-
-export interface TimeRankingItem {
-  time: string;
-  sorteios: number;
 }
 
 export interface EstatisticasTimemania {
@@ -597,9 +594,11 @@ export interface EstatisticasTimemania {
   maiorPremioData: string;
   maiorPremioConcurso: number;
   paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
   somaDezenas: SomaDezenas;
   numerosEspeciais: NumerosEspeciaisItem[];
-  timesRanking: TimeRankingItem[];
 }
 
 export interface ResumoTimemania {

@@ -73,4 +73,3 @@ export * from './simuladorInputTimemaniaFiltro';
 export * from './somaDezenas';
 export * from './somaDezenasMaior';
 export * from './somaDezenasMenor';
-export * from './timeRankingItem';

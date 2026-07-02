@@ -72,6 +72,7 @@ export default function TimemaniaResultadosAnteriores() {
                   <TableHead className="w-[100px]">Concurso</TableHead>
                   <TableHead className="w-[110px]">Data</TableHead>
                   <TableHead className="text-center">Dezenas Sorteadas</TableHead>
+                  <TableHead className="text-center">Time do Coração</TableHead>
                   <TableHead className="text-right">Prêmio 7 acertos</TableHead>
                   <TableHead>Situação</TableHead>
                   <TableHead className="w-[130px]"></TableHead>
@@ -84,15 +85,16 @@ export default function TimemaniaResultadosAnteriores() {
                       <TableCell><Skeleton className="h-5 w-12" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-20" /></TableCell>
                       <TableCell><div className="flex justify-center gap-0.5 flex-wrap">{Array.from({ length: 7 }).map((_, j) => <Skeleton key={j} className="h-6 w-6 rounded-full" />)}</div></TableCell>
+                      <TableCell><Skeleton className="h-5 w-24 mx-auto" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-24" /></TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   ))
                 ) : isError || !data ? (
-                  <TableRow><TableCell colSpan={6} className="h-24 text-center">Erro ao carregar dados.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={7} className="h-24 text-center">Erro ao carregar dados.</TableCell></TableRow>
                 ) : data.resultados.length === 0 ? (
-                  <TableRow><TableCell colSpan={6} className="h-24 text-center">Nenhum resultado encontrado.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={7} className="h-24 text-center">Nenhum resultado encontrado.</TableCell></TableRow>
                 ) : (
                   data.resultados.map(res => (
                     <TableRow key={res.concurso}>
@@ -104,6 +106,11 @@ export default function TimemaniaResultadosAnteriores() {
                             <LotteryBall key={i} number={d} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
                           ))}
                         </div>
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {res.timeDoCoracao ? (
+                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full text-white whitespace-nowrap" style={{ backgroundColor: COR }}>{res.timeDoCoracao}</span>
+                        ) : <span className="text-muted-foreground">—</span>}
                       </TableCell>
                       <TableCell className="text-right font-semibold">
                         {res.premios[0]?.ganhadores > 0 ? formatCurrency(res.premios[0].valorPremio) : <span className="text-destructive font-semibold text-sm">Acumulou!</span>}

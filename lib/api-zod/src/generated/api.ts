@@ -1118,7 +1118,8 @@ export const GetTimemaniaUltimoResultadoResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "timeDoCoracao": zod.string().nullish()
 })
 
 
@@ -1155,7 +1156,8 @@ export const GetTimemaniaResultadosResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "timeDoCoracao": zod.string().nullish()
 }))
 })
 
@@ -1181,7 +1183,8 @@ export const GetTimemaniaResultadoConcursoResponse = zod.object({
   "valorAcumulado": zod.number().nullish(),
   "dataProximoConcurso": zod.string().nullish(),
   "valorEstimadoProximoConcurso": zod.number().nullish(),
-  "arrecadacaoTotal": zod.number().nullish()
+  "arrecadacaoTotal": zod.number().nullish(),
+  "timeDoCoracao": zod.string().nullish()
 })
 
 
@@ -1215,6 +1218,21 @@ export const GetTimemaniaEstatisticasResponse = zod.object({
   "sorteios": zod.number(),
   "ultimoConcurso": zod.number().nullable()
 })),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
   "somaDezenas": zod.object({
   "intervalos": zod.array(zod.object({
   "faixa": zod.string(),
@@ -1243,10 +1261,6 @@ export const GetTimemaniaEstatisticasResponse = zod.object({
   "sorteios": zod.number(),
   "ultimoConcurso": zod.number().nullable()
 }))
-})),
-  "timesRanking": zod.array(zod.object({
-  "time": zod.string(),
-  "sorteios": zod.number()
 }))
 })
 

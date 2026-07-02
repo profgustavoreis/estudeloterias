@@ -30,8 +30,6 @@ const FILTRO_LABELS: Record<Filtro, string> = {
 };
 
 const PREMIADO_EMOJI = "⭐";
-
-// Faixas premiadas da Timemania: 7, 6, 5, 4, 3
 const FAIXAS_PREMIADAS = new Set([7, 6, 5, 4, 3]);
 
 export default function TimemaniaSimulador() {
@@ -41,14 +39,7 @@ export default function TimemaniaSimulador() {
   const [infoAberta, setInfoAberta] = useState(false);
   const [paginaTabela, setPaginaTabela] = useState(1);
 
-  const simular = useSimularTimemania({
-    mutation: {
-      onSuccess: data => {
-        setResultado(data);
-        setPaginaTabela(1);
-      },
-    },
-  });
+  const simular = useSimularTimemania({ mutation: { onSuccess: data => { setResultado(data); setPaginaTabela(1); } } });
 
   const toggleDezena = (n: number) => {
     setSelecionadas(prev => {
@@ -64,276 +55,233 @@ export default function TimemaniaSimulador() {
     simular.mutate({ data: { dezenas, filtro } });
   };
 
-  const handleLimpar = () => {
-    setSelecionadas(new Set());
-    setResultado(null);
-    simular.reset();
-  };
+  const handleLimpar = () => { setSelecionadas(new Set()); setResultado(null); simular.reset(); };
 
   const podeSimular = selecionadas.size === TOTAL_DEZENAS;
+  const count = selecionadas.size;
+
+  const acertosGanhadores = resultado?.resumo.filter(r => FAIXAS_PREMIADAS.has(r.acertos)).reduce((acc, r) => acc + r.contagem, 0) ?? 0;
+  const totalConcursos = resultado?.concursos.length ?? 0;
+  const totalPaginasTabela = Math.max(1, Math.ceil(totalConcursos / PAGE_SIZE));
+  const paginaAtual = Math.min(paginaTabela, totalPaginasTabela);
+  const concursosPagina = resultado?.concursos.slice((paginaAtual - 1) * PAGE_SIZE, paginaAtual * PAGE_SIZE) ?? [];
+  const resumoLinhas = resultado?.resumo.filter(r => r.acertos >= 0 && r.acertos <= 7) ?? [];
 
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico da Timemania"
-        description="Teste suas 10 dezenas da Timemania contra todos os concursos anteriores e veja quantos prêmios você teria ganhado."
+        title="Simulador Histórico da Timemania — Teste sua Aposta no Histórico"
+        description="Escolha suas 10 dezenas e descubra em quantos sorteios da Timemania você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/timemania/simulador"
       />
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white" style={{ backgroundColor: COR }}>
+        <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ backgroundColor: COR }}>
           <FlaskConical className="w-6 h-6" />
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Timemania · Simulador Histórico</h1>
-          <p className="text-muted-foreground mt-1">Escolha 10 dezenas e confira o desempenho em todos os concursos passados.</p>
+          <p className="text-muted-foreground mt-1">Selecione exatamente 10 dezenas e descubra em quantos sorteios anteriores você teria acertado.</p>
         </div>
       </div>
 
-      <AdUnit slot="9988776611" format="horizontal" className="w-full" />
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Painel de seleção */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Escolha 10 dezenas</CardTitle>
-            <CardDescription>Marque exatamente 10 números de 01 a 80</CardDescription>
+        {/* Volante 8×10 */}
+        <Card className="border-t-4" style={{ borderTopColor: COR }}>
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle>Escolha suas dezenas</CardTitle>
+              <span className={cn("text-sm font-semibold tabular-nums", count < TOTAL_DEZENAS ? "text-muted-foreground" : "")} style={count >= TOTAL_DEZENAS ? { color: COR } : {}}>{count}/{TOTAL_DEZENAS}</span>
+            </div>
+            <CardDescription>
+              Marque exatamente 10 dezenas (01 a 80)
+              {count >= TOTAL_DEZENAS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             <div className="grid grid-cols-10 gap-1">
               {Array.from({ length: 80 }, (_, i) => i + 1).map(n => {
-                const selecionado = selecionadas.has(n);
+                const sel = selecionadas.has(n);
                 return (
-                  <button
-                    key={n}
-                    type="button"
-                    onClick={() => toggleDezena(n)}
-                    disabled={!selecionado && selecionadas.size >= TOTAL_DEZENAS}
-                    className={cn(
-                      "w-8 h-8 text-[11px] font-bold rounded-full border transition-all",
-                      selecionado
-                        ? "text-white border-transparent"
-                        : "text-foreground/70 border-border hover:border-foreground/30",
-                      !selecionado && selecionadas.size >= TOTAL_DEZENAS && "opacity-30 cursor-not-allowed"
-                    )}
-                    style={selecionado ? { backgroundColor: COR } : {}}
-                  >
+                  <button key={n} onClick={() => toggleDezena(n)} disabled={!sel && count >= TOTAL_DEZENAS}
+                    className={cn("aspect-square rounded text-[10px] font-bold transition-all duration-150 select-none",
+                      sel ? "text-white shadow-sm ring-1 scale-105" : count >= TOTAL_DEZENAS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
+                    style={sel ? { backgroundColor: COR } : {}}
+                    onMouseEnter={e => { if (!sel && count < TOTAL_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
+                    onMouseLeave={e => { if (!sel && count < TOTAL_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
                     {String(n).padStart(2, "0")}
                   </button>
                 );
               })}
             </div>
-
-            {/* Filtro */}
-            <div className="space-y-2 pt-4 border-t">
-              <label className="text-sm font-medium">Filtrar resultados:</label>
-              <select
-                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
-                value={filtro}
-                onChange={e => setFiltro(e.target.value as Filtro)}
-              >
-                {(Object.keys(FILTRO_LABELS) as Filtro[]).map(key => (
-                  <option key={key} value={key}>{FILTRO_LABELS[key]}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex gap-2">
-              <Button
-                onClick={handleSimular}
-                disabled={!podeSimular || simular.isPending}
-                style={{ backgroundColor: podeSimular ? COR : undefined }}
-                className="flex-1 text-white"
-              >
-                {simular.isPending ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Simulando...</> : "Simular"}
-              </Button>
-              <Button variant="outline" onClick={handleLimpar}>
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-            </div>
-            {!podeSimular && (
-              <p className="text-xs text-muted-foreground">
-                Marque exatamente {TOTAL_DEZENAS} dezenas ({selecionadas.size}/{TOTAL_DEZENAS} selecionadas).
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Seção de resultados pré-seleção ou pós */}
-        <div className="space-y-4">
-          {!resultado ? (
-            <div className="border-2 border-dashed border-border rounded-xl p-8 text-center h-full flex flex-col items-center justify-center min-h-[300px]">
-              <FlaskConical className="w-12 h-12 text-muted-foreground mb-3" />
-              <h3 className="font-semibold text-lg">Pronto para simular</h3>
-              <p className="text-muted-foreground text-sm mt-1 max-w-xs">
-                Selecione suas 10 dezenas e clique em Simular para ver o resultado.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {/* Resumo */}
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-amber-500" />
-                    Resumo da Simulação
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="text-sm text-muted-foreground">
-                    {resultado.totalConcursos} concursos analisados
-                  </div>
-                  {/* Tabela de acertos */}
-                  <div className="rounded-md border">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-muted/50">
-                          <TableHead className="text-center">Acertos</TableHead>
-                          <TableHead className="text-right">Ocorrências</TableHead>
-                          <TableHead className="text-right">%</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {resultado.resumo.map(({ acertos, contagem }) => (
-                          <TableRow key={acertos}>
-                            <TableCell className="text-center font-bold" style={FAIXAS_PREMIADAS.has(acertos) ? { color: COR } : {}}>
-                              {acertos} {FAIXAS_PREMIADAS.has(acertos) ? PREMIADO_EMOJI : ""}
-                            </TableCell>
-                            <TableCell className="text-right font-mono">{contagem}</TableCell>
-                            <TableCell className="text-right text-muted-foreground">
-                              {resultado.totalConcursos > 0 ? ((contagem / resultado.totalConcursos) * 100).toFixed(2) : "0.00"}%
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Tabela de concursos filtrados */}
-      {resultado && resultado.concursos.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">
-              Concursos {filtro !== "todos" ? `com ${FILTRO_LABELS[filtro].toLowerCase()}` : ""}
-              <span className="text-sm font-normal text-muted-foreground ml-2">
-                ({resultado.concursos.length} encontrados)
-              </span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead className="w-16">Concurso</TableHead>
-                    <TableHead className="w-24">Data</TableHead>
-                    <TableHead>Dezenas</TableHead>
-                    <TableHead className="text-center w-16">Acertos</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {resultado.concursos
-                    .slice((paginaTabela - 1) * PAGE_SIZE, paginaTabela * PAGE_SIZE)
-                    .map((c) => (
-                      <TableRow key={c.concurso}>
-                        <TableCell>
-                          <Link href={`/timemania/resultado/${c.concurso}`} className="font-medium hover:underline" style={{ color: COR }}>
-                            {c.concurso}
-                          </Link>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground text-sm">{formatDateShort(c.data)}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {c.dezenas.map((d, i) => (
-                              <LotteryBall key={i} number={d} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
-                            ))}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-center font-bold" style={FAIXAS_PREMIADAS.has(c.acertos) ? { color: COR } : {}}>
-                          {c.acertos}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            </div>
-
-            {/* Paginação */}
-            {resultado.concursos.length > PAGE_SIZE && (
-              <div className="flex items-center justify-between mt-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={paginaTabela <= 1}
-                  onClick={() => setPaginaTabela(p => Math.max(1, p - 1))}
-                >
-                  <ChevronLeft className="w-4 h-4 mr-1" /> Anterior
-                </Button>
-                <span className="text-sm text-muted-foreground">
-                  Página {paginaTabela} de {Math.ceil(resultado.concursos.length / PAGE_SIZE)}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={paginaTabela >= Math.ceil(resultado.concursos.length / PAGE_SIZE)}
-                  onClick={() => setPaginaTabela(p => p + 1)}
-                >
-                  Próxima <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
+            {count > 0 && (
+              <div className="pt-2 border-t space-y-1.5">
+                <p className="text-xs font-medium text-muted-foreground">Dezenas escolhidas ({count}):</p>
+                <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto">
+                  {Array.from(selecionadas).sort((a, b) => a - b).map(n => (
+                    <LotteryBall key={n} number={n} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
+                  ))}
+                </div>
               </div>
             )}
           </CardContent>
         </Card>
-      )}
 
-      {/* Info Probabilidades */}
-      <Card>
-        <CardHeader
-          className="cursor-pointer select-none"
-          onClick={() => setInfoAberta(!infoAberta)}
-        >
-          <CardTitle className="text-base flex items-center justify-between">
-            Probabilidades de acerto na Timemania
-            <ChevronDown className={cn("w-5 h-5 transition-transform", infoAberta && "rotate-180")} />
-          </CardTitle>
-        </CardHeader>
-        {infoAberta && (
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-muted/50">
-                    <TableHead>Faixa</TableHead>
-                    <TableHead className="text-right">Probabilidade (1 em)</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {[
-                    { k: 7, p: "26.472.637" },
-                    { k: 6, p: "216.103" },
-                    { k: 5, p: "5.220" },
-                    { k: 4, p: "276" },
-                    { k: 3, p: "29" },
-                  ].map(({ k, p }) => (
-                    <TableRow key={k}>
-                      <TableCell className="font-medium">{k} acertos</TableCell>
-                      <TableCell className="text-right font-mono">{p}</TableCell>
+        {/* Controles */}
+        <div className="space-y-4">
+          <Card className="bg-muted/20">
+            <CardContent className="pt-5 text-sm text-muted-foreground">
+              <button className="flex w-full items-center justify-between" onClick={() => setInfoAberta(v => !v)}>
+                <span className="font-semibold text-foreground">Como usar o simulador?</span>
+                <ChevronDown className={cn("w-4 h-4 transition-transform shrink-0", infoAberta ? "rotate-180" : "")} />
+              </button>
+              {infoAberta && (
+                <ol className="mt-3 space-y-1.5 list-decimal list-inside">
+                  <li>Marque exatamente 10 números no volante à esquerda (01 a 80).</li>
+                  <li>Defina quais concursos quer ver na tabela de resultados.</li>
+                  <li>Clique em <strong>Simular</strong>.</li>
+                  <li>O sistema varre todos os sorteios anteriores e indica em quantos você teria acertado cada faixa de premiação (7, 6, 5, 4 ou 3 acertos).</li>
+                </ol>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="pt-5 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">Mostrar na tabela:</label>
+                <select value={filtro} onChange={e => setFiltro(e.target.value as Filtro)} className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2" style={{ "--tw-ring-color": COR } as React.CSSProperties}>
+                  {Object.entries(FILTRO_LABELS).map(([value, label]) => (<option key={value} value={value}>{label}</option>))}
+                </select>
+                <p className="text-xs text-muted-foreground">Na Timemania, apostas são premiadas com 7, 6, 5, 4 ou 3 acertos.</p>
+              </div>
+
+              <div className="flex gap-3">
+                <Button onClick={handleSimular} disabled={!podeSimular || simular.isPending} className="flex-1 text-white font-semibold" style={{ backgroundColor: COR }}>
+                  {simular.isPending ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Simulando…</> : <><FlaskConical className="w-4 h-4 mr-2" />Simular</>}
+                </Button>
+                <Button variant="outline" onClick={handleLimpar} disabled={simular.isPending}><RotateCcw className="w-4 h-4 mr-2" />Limpar</Button>
+              </div>
+
+              {!podeSimular && count > 0 && <p className="text-sm text-amber-600 text-center">Selecione mais {TOTAL_DEZENAS - count} dezena{TOTAL_DEZENAS - count > 1 ? "s" : ""} para simular.</p>}
+              {count === 0 && <p className="text-sm text-muted-foreground text-center">Selecione 10 números e clique em Simular.</p>}
+            </CardContent>
+          </Card>
+
+          {resultado && (
+            <Card className="border-t-4" style={{ borderTopColor: COR }}>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2 text-base"><Trophy className="w-4 h-4" style={{ color: COR }} />Resultado da Simulação</CardTitle>
+                <CardDescription>
+                  10 dezenas escolhidas • {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
+                  {acertosGanhadores > 0 ? <span className="font-semibold" style={{ color: COR }}>{acertosGanhadores} premiado{acertosGanhadores > 1 ? "s" : ""}</span> : "nenhum premiado"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pb-3">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="text-center w-20">Acertos</TableHead>
+                      <TableHead className="text-center">Probabilidade</TableHead>
+                      <TableHead className="text-center w-24">Concursos</TableHead>
+                      <TableHead className="text-center w-20">Situação</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              Probabilidades para uma aposta de 10 dezenas (aposta simples).
-            </p>
-          </CardContent>
-        )}
-      </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {resumoLinhas.map(r => {
+                      const premiado = FAIXAS_PREMIADAS.has(r.acertos);
+                      return (
+                        <TableRow key={r.acertos} className={cn(premiado && "font-semibold")} style={premiado ? { backgroundColor: COR + "0d" } : {}}>
+                          <TableCell className="text-center font-bold">{r.acertos}</TableCell>
+                          <TableCell className="text-center text-sm tabular-nums text-muted-foreground">
+                            {r.acertos === 7 ? "1 em 26.472.637" : r.acertos === 6 ? "1 em 216.103" : r.acertos === 5 ? "1 em 5.220" : r.acertos === 4 ? "1 em 276" : r.acertos === 3 ? "1 em 29" : "—"}
+                          </TableCell>
+                          <TableCell className="text-center">{r.contagem.toLocaleString("pt-BR")}</TableCell>
+                          <TableCell className="text-center">{premiado ? <span>{PREMIADO_EMOJI}</span> : <span className="text-muted-foreground text-xs">—</span>}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">As probabilidades indicadas correspondem a uma aposta de 10 dezenas na Timemania.</p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
+
+      {resultado && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+          <div className="lg:col-span-2">
+            {totalConcursos > 0 ? (
+              <>
+                <Card>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base">Concursos — {FILTRO_LABELS[filtro]}</CardTitle>
+                    <CardDescription>{totalConcursos.toLocaleString("pt-BR")} concurso{totalConcursos !== 1 ? "s" : ""} encontrado{totalConcursos !== 1 ? "s" : ""}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <div className="overflow-x-auto">
+                      <Table className="w-full">
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead className="text-center pl-4 whitespace-nowrap">Concurso</TableHead>
+                            <TableHead className="text-center whitespace-nowrap">Data</TableHead>
+                            <TableHead className="text-center">Dezenas Sorteadas</TableHead>
+                            <TableHead className="text-center whitespace-nowrap">Acertos</TableHead>
+                            <TableHead className="text-right pr-4 whitespace-nowrap"></TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {concursosPagina.map(c => {
+                            const premiado = FAIXAS_PREMIADAS.has(c.acertos);
+                            return (
+                              <TableRow key={c.concurso}>
+                                <TableCell className="text-center font-semibold pl-4 whitespace-nowrap">{c.concurso}</TableCell>
+                                <TableCell className="text-center text-muted-foreground whitespace-nowrap">{formatDateShort(c.data)}</TableCell>
+                                <TableCell className="text-center">
+                                  <div className="flex flex-wrap justify-center gap-0.5 py-0.5">
+                                    {c.dezenas.map(d => {
+                                      const acertou = selecionadas.has(parseInt(d, 10));
+                                      return (
+                                        <span key={d} className="inline-flex items-center justify-center w-5 h-5 rounded-full text-[9px] font-bold"
+                                          style={acertou ? { backgroundColor: COR, color: "white" } : { backgroundColor: "var(--muted)", color: "var(--muted-foreground)" }}>{d}</span>
+                                      );
+                                    })}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="text-center whitespace-nowrap">
+                                  <span className={cn("font-semibold tabular-nums", !premiado && "text-muted-foreground font-normal")}>{c.acertos}{premiado ? ` ${PREMIADO_EMOJI}` : ""}</span>
+                                </TableCell>
+                                <TableCell className="text-right pr-4 whitespace-nowrap">
+                                  <Link href={`/timemania/resultado/${c.concurso}`} className="text-sm font-semibold hover:underline" style={{ color: COR }}>Ver detalhes →</Link>
+                                </TableCell>
+                              </TableRow>
+                            );
+                          })}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </CardContent>
+                </Card>
+                {totalPaginasTabela > 1 && (
+                  <div className="flex items-center justify-between px-2 mt-2">
+                    <div className="text-sm text-muted-foreground">Página {paginaAtual} de {totalPaginasTabela}</div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" onClick={() => setPaginaTabela(p => Math.max(1, p - 1))} disabled={paginaAtual === 1}><ChevronLeft className="w-4 h-4 mr-1" /> Anterior</Button>
+                      <Button variant="outline" size="sm" onClick={() => setPaginaTabela(p => Math.min(totalPaginasTabela, p + 1))} disabled={paginaAtual === totalPaginasTabela}><ChevronRight className="w-4 h-4 ml-1" /> Próxima</Button>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <Card><CardContent className="flex items-center justify-center py-16 text-muted-foreground">Nenhum concurso encontrado para o filtro selecionado.</CardContent></Card>
+            )}
+          </div>
+          <div className="flex flex-col gap-4">
+            <AdUnit slot="8899001133" format="rectangle" className="w-full" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

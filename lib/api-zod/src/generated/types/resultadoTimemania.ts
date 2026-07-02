@@ -21,4 +21,6 @@ export interface ResultadoTimemania {
   valorEstimadoProximoConcurso?: number | null;
   /** @nullable */
   arrecadacaoTotal?: number | null;
+  /** @nullable */
+  timeDoCoracao?: string | null;
 }
