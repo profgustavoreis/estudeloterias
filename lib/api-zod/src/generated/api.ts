@@ -1567,3 +1567,245 @@ export const GerarJogoDiadesorteResponse = zod.object({
 })
 
 
+/**
+ * @summary Último resultado da +Milionária
+ */
+export const GetMaismilionariaUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Resultados paginados da +Milionária
+ */
+export const getMaismilionariaResultadosQueryPageDefault = 1;
+
+export const getMaismilionariaResultadosQueryLimitDefault = 20;
+export const getMaismilionariaResultadosQueryLimitMax = 50;
+
+export const getMaismilionariaResultadosQueryOrdemDefault = `desc`;
+
+export const GetMaismilionariaResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().min(1).default(getMaismilionariaResultadosQueryPageDefault),
+  "limit": zod.coerce.number().min(1).max(getMaismilionariaResultadosQueryLimitMax).default(getMaismilionariaResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getMaismilionariaResultadosQueryOrdemDefault)
+})
+
+export const GetMaismilionariaResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da +Milionária
+ */
+export const GetMaismilionariaResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const GetMaismilionariaResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Estatísticas completas da +Milionária
+ */
+export const GetMaismilionariaEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+}))
+})
+
+
+/**
+ * @summary Resumo da +Milionária
+ */
+export const GetMaismilionariaResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores6": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Simula uma aposta no histórico da +Milionária
+ */
+export const simularMaismilionariaBodyDezenasMin = 6;
+export const simularMaismilionariaBodyDezenasMax = 6;
+
+export const simularMaismilionariaBodyFiltroDefault = `premiados`;
+
+export const SimularMaismilionariaBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularMaismilionariaBodyDezenasMin).max(simularMaismilionariaBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'seis', 'cinco', 'quatro', 'tres']).default(simularMaismilionariaBodyFiltroDefault)
+})
+
+export const SimularMaismilionariaResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de +Milionária
+ */
+export const gerarJogoMaismilionariaBodyQuantidadeJogosDefault = 1;
+export const gerarJogoMaismilionariaBodyQuantidadeJogosMax = 20;
+
+export const gerarJogoMaismilionariaBodyQuantidadeDezenasDefault = 6;
+export const gerarJogoMaismilionariaBodyQuantidadeDezenasMin = 6;
+export const gerarJogoMaismilionariaBodyQuantidadeDezenasMax = 12;
+
+export const gerarJogoMaismilionariaBodyQuantidadeTrevosDefault = 2;
+export const gerarJogoMaismilionariaBodyQuantidadeTrevosMin = 2;
+export const gerarJogoMaismilionariaBodyQuantidadeTrevosMax = 6;
+
+
+
+export const GerarJogoMaismilionariaBody = zod.object({
+  "quantidadeJogos": zod.number().min(1).max(gerarJogoMaismilionariaBodyQuantidadeJogosMax).default(gerarJogoMaismilionariaBodyQuantidadeJogosDefault),
+  "quantidadeDezenas": zod.number().min(gerarJogoMaismilionariaBodyQuantidadeDezenasMin).max(gerarJogoMaismilionariaBodyQuantidadeDezenasMax).default(gerarJogoMaismilionariaBodyQuantidadeDezenasDefault),
+  "quantidadeTrevos": zod.number().min(gerarJogoMaismilionariaBodyQuantidadeTrevosMin).max(gerarJogoMaismilionariaBodyQuantidadeTrevosMax).default(gerarJogoMaismilionariaBodyQuantidadeTrevosDefault)
+})
+
+export const GerarJogoMaismilionariaResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.number())),
+  "custo": zod.number()
+})
+
+

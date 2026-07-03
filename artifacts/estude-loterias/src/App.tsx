@@ -81,6 +81,18 @@ import DiaDeSorteComoJogar from "@/pages/diadesorte/como-jogar";
 import DiaDeSortePremiacao from "@/pages/diadesorte/premiacao";
 import DiaDeSorteFAQ from "@/pages/diadesorte/faq";
 
+import MaisMilionariaHub from "@/pages/maismilionaria/hub";
+import MaisMilionariaUltimoResultado from "@/pages/maismilionaria/ultimo-resultado";
+import MaisMilionariaResultadosAnteriores from "@/pages/maismilionaria/resultados";
+import MaisMilionariaEstatisticas from "@/pages/maismilionaria/estatisticas";
+import MaisMilionariaEstatisticasTabela from "@/pages/maismilionaria/estatisticas-tabela";
+import MaisMilionariaGerador from "@/pages/maismilionaria/gerador";
+import MaisMilionariaSimulador from "@/pages/maismilionaria/simulador";
+import MaisMilionariaConferidor from "@/pages/maismilionaria/conferidor";
+import MaisMilionariaComoJogar from "@/pages/maismilionaria/como-jogar";
+import MaisMilionariaPremiacao from "@/pages/maismilionaria/premiacao";
+import MaisMilionariaFAQ from "@/pages/maismilionaria/faq";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -186,6 +198,21 @@ function Router() {
         <Route path="/diadesorte/premiacao" component={DiaDeSortePremiacao} />
         <Route path="/diadesorte/perguntas-frequentes" component={DiaDeSorteFAQ} />
         <Route path="/diadesorte/faq" component={DiaDeSorteFAQ} />
+
+        {/* +Milionária Routes */}
+        <Route path="/maismilionaria" component={MaisMilionariaHub} />
+        <Route path="/maismilionaria/resultado/:concurso" component={MaisMilionariaUltimoResultado} />
+        <Route path="/maismilionaria/resultado" component={MaisMilionariaUltimoResultado} />
+        <Route path="/maismilionaria/resultados" component={MaisMilionariaResultadosAnteriores} />
+        <Route path="/maismilionaria/tabela-de-dezenas" component={MaisMilionariaEstatisticasTabela} />
+        <Route path="/maismilionaria/resumo-estatistico" component={MaisMilionariaEstatisticas} />
+        <Route path="/maismilionaria/gerador" component={MaisMilionariaGerador} />
+        <Route path="/maismilionaria/simulador" component={MaisMilionariaSimulador} />
+        <Route path="/maismilionaria/conferidor" component={MaisMilionariaConferidor} />
+        <Route path="/maismilionaria/como-jogar" component={MaisMilionariaComoJogar} />
+        <Route path="/maismilionaria/premiacao" component={MaisMilionariaPremiacao} />
+        <Route path="/maismilionaria/perguntas-frequentes" component={MaisMilionariaFAQ} />
+        <Route path="/maismilionaria/faq" component={MaisMilionariaFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

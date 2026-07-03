@@ -7,6 +7,7 @@ import quinaRouter from "./quina";
 import lotomaniaRouter from "./lotomania";
 import timemaniaRouter from "./timemania";
 import diadesorteRouter from "./diadesorte";
+import maismilionariaRouter from "./maismilionaria";
 import adminRouter from "./admin";
 
 const router: IRouter = Router();
@@ -19,6 +20,7 @@ router.use(quinaRouter);
 router.use(lotomaniaRouter);
 router.use(timemaniaRouter);
 router.use(diadesorteRouter);
+router.use(maismilionariaRouter);
 router.use(adminRouter);
 
 export default router;

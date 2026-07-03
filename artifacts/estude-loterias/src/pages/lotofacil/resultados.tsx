@@ -108,7 +108,7 @@ export default function LotofacilResultadosAnteriores() {
                           if (res.acumulado) return formatCurrency(res.valorAcumulado);
                           const p1 = res.premios.find(p => p.faixa === 1);
                           if (!p1) return "–";
-                          return formatCurrency(p1.valorPremio);
+                          return formatCurrency(p1.valorPremio * p1.ganhadores);
                         })()}
                       </TableCell>
                       <TableCell>

@@ -130,6 +130,26 @@ const diaDeSorteInfo = [
 
 const diaDeSorteAll = [...diaDeSorteTools, ...diaDeSorteInfo];
 
+// ── +Milionária items ──────────────────────────────────────────────────────
+const maisMilionariaTools = [
+  { href: "/maismilionaria",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da +Milionária" },
+  { href: "/maismilionaria/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/maismilionaria/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/maismilionaria/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/maismilionaria/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/maismilionaria/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/maismilionaria/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/maismilionaria/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const maisMilionariaInfo = [
+  { href: "/maismilionaria/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/maismilionaria/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/maismilionaria/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+];
+
+const maisMilionariaAll = [...maisMilionariaTools, ...maisMilionariaInfo];
+
 // ── Outras Loterias ───────────────────────────────────────────────────────────
 // Items with an `href` are live and link out; items without one are still "em breve".
 const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
@@ -139,7 +159,7 @@ const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
   { label: "Dupla Sena",  cor: "#a8003c" },
   { label: "Dia de Sorte", cor: "#cb852b", href: "/diadesorte" },
   { label: "Super Sete",  cor: "#a8cf45" },
-  { label: "+Milionária",  cor: "#2c2c2c" },
+  { label: "+Milionária",  cor: "#2E3078", href: "/maismilionaria" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -346,11 +366,13 @@ export function TopNav() {
   const lotomaniaActive = !!bestMatch(location, lotomaniaAll);
   const timemaniaActive = !!bestMatch(location, timemaniaAll);
   const diaDeSorteActive = !!bestMatch(location, diaDeSorteAll);
+  const maisMilionariaActive = !!bestMatch(location, maisMilionariaAll);
   const visibleOutrasLoterias = outrasLoterias.filter(l =>
     (l.label !== "Quina" || !quinaActive) &&
     (l.label !== "Lotomania" || !lotomaniaActive) &&
     (l.label !== "Timemania" || !timemaniaActive) &&
-    (l.label !== "Dia de Sorte" || !diaDeSorteActive)
+    (l.label !== "Dia de Sorte" || !diaDeSorteActive) &&
+    (l.label !== "+Milionária" || !maisMilionariaActive)
   );
 
   return (
@@ -450,6 +472,18 @@ export function TopNav() {
                 allItems={diaDeSorteAll}
                 isOpen={openMenu === "diadesorte"}
                 onToggle={() => toggle("diadesorte")}
+              />
+            )}
+
+            {maisMilionariaActive && (
+              <LotteryDropdown
+                label="+Milionária"
+                cor="#2E3078"
+                tools={maisMilionariaTools}
+                info={maisMilionariaInfo}
+                allItems={maisMilionariaAll}
+                isOpen={openMenu === "maismilionaria"}
+                onToggle={() => toggle("maismilionaria")}
               />
             )}
 
@@ -633,6 +667,51 @@ export function TopNav() {
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
                           style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* +Milionária — tools (only shown when a +Milionária page is active) */}
+            {maisMilionariaActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#2E3078" }}>
+                    +Milionária
+                  </div>
+                  <div className="space-y-1">
+                    {maisMilionariaTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, maisMilionariaAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#2E30781a", color: "#2E3078" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    +Milionária — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {maisMilionariaInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#2E30781a", color: "#2E3078" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );

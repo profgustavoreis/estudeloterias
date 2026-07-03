@@ -112,14 +112,19 @@ export default function TimemaniaResultadosAnteriores() {
                           <span className="text-xs font-semibold px-2 py-0.5 rounded-full text-white whitespace-nowrap" style={{ backgroundColor: COR }}>{res.timeDoCoracao}</span>
                         ) : <span className="text-muted-foreground">—</span>}
                       </TableCell>
-                      <TableCell className="text-right font-semibold">
-                        {res.premios[0]?.ganhadores > 0 ? formatCurrency(res.premios[0].valorPremio) : <span className="text-destructive font-semibold text-sm">Acumulou!</span>}
+                      <TableCell className="text-right font-medium">
+                        {(() => {
+                          if (res.acumulado) return formatCurrency(res.valorAcumulado);
+                          const p1 = res.premios.find(p => p.faixa === 1);
+                          if (!p1) return "–";
+                          return formatCurrency(p1.valorPremio * p1.ganhadores);
+                        })()}
                       </TableCell>
                       <TableCell>
                         {res.acumulado ? (
-                          <span className="text-xs font-semibold text-destructive bg-destructive/10 px-2 py-0.5 rounded">ACUMULOU</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">Acumulou!</span>
                         ) : (
-                          <span className="text-xs font-semibold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded">SAIU!</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium border" style={{ backgroundColor: COR + "1a", color: COR, borderColor: COR + "33" }}>Saiu!</span>
                         )}
                       </TableCell>
                       <TableCell>

@@ -24,6 +24,7 @@ import type {
   EstatisticasDiadesorte,
   EstatisticasLotofacil,
   EstatisticasLotomania,
+  EstatisticasMaismilionaria,
   EstatisticasMegaSena,
   EstatisticasQuina,
   EstatisticasTimemania,
@@ -31,11 +32,13 @@ import type {
   GeradorInputDiadesorte,
   GeradorInputLotofacil,
   GeradorInputLotomania,
+  GeradorInputMaismilionaria,
   GeradorInputQuina,
   GeradorInputTimemania,
   GetDiadesorteResultadosParams,
   GetLotofacilResultadosParams,
   GetLotomaniaResultadosParams,
+  GetMaismilionariaResultadosParams,
   GetMegaSenaResultadosParams,
   GetQuinaResultadosParams,
   GetTimemaniaResultadosParams,
@@ -49,6 +52,7 @@ import type {
   ResultadoDiadesorte,
   ResultadoLotofacil,
   ResultadoLotomania,
+  ResultadoMaismilionaria,
   ResultadoMegaSena,
   ResultadoQuina,
   ResultadoTimemania,
@@ -56,11 +60,13 @@ import type {
   ResultadosPaginadosDiadesorte,
   ResultadosPaginadosLotofacil,
   ResultadosPaginadosLotomania,
+  ResultadosPaginadosMaismilionaria,
   ResultadosPaginadosQuina,
   ResultadosPaginadosTimemania,
   ResumoDiadesorte,
   ResumoLotofacil,
   ResumoLotomania,
+  ResumoMaismilionaria,
   ResumoMegaSena,
   ResumoQuina,
   ResumoTimemania,
@@ -69,6 +75,7 @@ import type {
   SimuladorInputDiadesorte,
   SimuladorInputLotofacil,
   SimuladorInputLotomania,
+  SimuladorInputMaismilionaria,
   SimuladorInputQuina,
   SimuladorInputTimemania
 } from './api.schemas';
@@ -3750,5 +3757,539 @@ export const useGerarJogoDiadesorte = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoDiadesorteMutationOptions(options));
+    }
+
+export const getGetMaismilionariaUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/maismilionaria/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da +Milionária
+ */
+export const getMaismilionariaUltimoResultado = async ( options?: RequestInit): Promise<ResultadoMaismilionaria> => {
+
+  return customFetch<ResultadoMaismilionaria>(getGetMaismilionariaUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMaismilionariaUltimoResultadoQueryKey = () => {
+    return [
+    `/api/maismilionaria/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetMaismilionariaUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaismilionariaUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>> = ({ signal }) => getMaismilionariaUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMaismilionariaUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>>
+export type GetMaismilionariaUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da +Milionária
+ */
+
+export function useGetMaismilionariaUltimoResultado<TData = Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMaismilionariaUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetMaismilionariaResultadosUrl = (params?: GetMaismilionariaResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/maismilionaria/resultados?${stringifiedParams}` : `/api/maismilionaria/resultados`
+}
+
+/**
+ * @summary Resultados paginados da +Milionária
+ */
+export const getMaismilionariaResultados = async (params?: GetMaismilionariaResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosMaismilionaria> => {
+
+  return customFetch<ResultadosPaginadosMaismilionaria>(getGetMaismilionariaResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMaismilionariaResultadosQueryKey = (params?: GetMaismilionariaResultadosParams,) => {
+    return [
+    `/api/maismilionaria/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetMaismilionariaResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getMaismilionariaResultados>>, TError = ErrorType<unknown>>(params?: GetMaismilionariaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaismilionariaResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaismilionariaResultados>>> = ({ signal }) => getMaismilionariaResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMaismilionariaResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getMaismilionariaResultados>>>
+export type GetMaismilionariaResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resultados paginados da +Milionária
+ */
+
+export function useGetMaismilionariaResultados<TData = Awaited<ReturnType<typeof getMaismilionariaResultados>>, TError = ErrorType<unknown>>(
+ params?: GetMaismilionariaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMaismilionariaResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetMaismilionariaResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/maismilionaria/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da +Milionária
+ */
+export const getMaismilionariaResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoMaismilionaria> => {
+
+  return customFetch<ResultadoMaismilionaria>(getGetMaismilionariaResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMaismilionariaResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/maismilionaria/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetMaismilionariaResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>, TError = ErrorType<ApiError>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaismilionariaResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>> = ({ signal }) => getMaismilionariaResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMaismilionariaResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>>
+export type GetMaismilionariaResultadoConcursoQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary Resultado de um concurso específico da +Milionária
+ */
+
+export function useGetMaismilionariaResultadoConcurso<TData = Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>, TError = ErrorType<ApiError>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMaismilionariaResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetMaismilionariaEstatisticasUrl = () => {
+
+
+
+
+  return `/api/maismilionaria/estatisticas`
+}
+
+/**
+ * @summary Estatísticas completas da +Milionária
+ */
+export const getMaismilionariaEstatisticas = async ( options?: RequestInit): Promise<EstatisticasMaismilionaria> => {
+
+  return customFetch<EstatisticasMaismilionaria>(getGetMaismilionariaEstatisticasUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMaismilionariaEstatisticasQueryKey = () => {
+    return [
+    `/api/maismilionaria/estatisticas`
+    ] as const;
+    }
+
+
+export const getGetMaismilionariaEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaismilionariaEstatisticasQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>> = ({ signal }) => getMaismilionariaEstatisticas({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMaismilionariaEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>>
+export type GetMaismilionariaEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas completas da +Milionária
+ */
+
+export function useGetMaismilionariaEstatisticas<TData = Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMaismilionariaEstatisticasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetMaismilionariaResumoUrl = () => {
+
+
+
+
+  return `/api/maismilionaria/resumo`
+}
+
+/**
+ * @summary Resumo da +Milionária
+ */
+export const getMaismilionariaResumo = async ( options?: RequestInit): Promise<ResumoMaismilionaria> => {
+
+  return customFetch<ResumoMaismilionaria>(getGetMaismilionariaResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetMaismilionariaResumoQueryKey = () => {
+    return [
+    `/api/maismilionaria/resumo`
+    ] as const;
+    }
+
+
+export const getGetMaismilionariaResumoQueryOptions = <TData = Awaited<ReturnType<typeof getMaismilionariaResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetMaismilionariaResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMaismilionariaResumo>>> = ({ signal }) => getMaismilionariaResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetMaismilionariaResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getMaismilionariaResumo>>>
+export type GetMaismilionariaResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo da +Milionária
+ */
+
+export function useGetMaismilionariaResumo<TData = Awaited<ReturnType<typeof getMaismilionariaResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMaismilionariaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetMaismilionariaResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularMaismilionariaUrl = () => {
+
+
+
+
+  return `/api/maismilionaria/simulador`
+}
+
+/**
+ * @summary Simula uma aposta no histórico da +Milionária
+ */
+export const simularMaismilionaria = async (simuladorInputMaismilionaria: SimuladorInputMaismilionaria, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularMaismilionariaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputMaismilionaria,)
+  }
+);}
+
+
+
+
+export const getSimularMaismilionariaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularMaismilionaria>>, TError,{data: BodyType<SimuladorInputMaismilionaria>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularMaismilionaria>>, TError,{data: BodyType<SimuladorInputMaismilionaria>}, TContext> => {
+
+const mutationKey = ['simularMaismilionaria'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularMaismilionaria>>, {data: BodyType<SimuladorInputMaismilionaria>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularMaismilionaria(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularMaismilionariaMutationResult = NonNullable<Awaited<ReturnType<typeof simularMaismilionaria>>>
+    export type SimularMaismilionariaMutationBody = BodyType<SimuladorInputMaismilionaria>
+    export type SimularMaismilionariaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta no histórico da +Milionária
+ */
+export const useSimularMaismilionaria = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularMaismilionaria>>, TError,{data: BodyType<SimuladorInputMaismilionaria>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularMaismilionaria>>,
+        TError,
+        {data: BodyType<SimuladorInputMaismilionaria>},
+        TContext
+      > => {
+      return useMutation(getSimularMaismilionariaMutationOptions(options));
+    }
+
+export const getGerarJogoMaismilionariaUrl = () => {
+
+
+
+
+  return `/api/maismilionaria/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de +Milionária
+ */
+export const gerarJogoMaismilionaria = async (geradorInputMaismilionaria: GeradorInputMaismilionaria, options?: RequestInit): Promise<JogoGerado> => {
+
+  return customFetch<JogoGerado>(getGerarJogoMaismilionariaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputMaismilionaria,)
+  }
+);}
+
+
+
+
+export const getGerarJogoMaismilionariaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoMaismilionaria>>, TError,{data: BodyType<GeradorInputMaismilionaria>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoMaismilionaria>>, TError,{data: BodyType<GeradorInputMaismilionaria>}, TContext> => {
+
+const mutationKey = ['gerarJogoMaismilionaria'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoMaismilionaria>>, {data: BodyType<GeradorInputMaismilionaria>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoMaismilionaria(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoMaismilionariaMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoMaismilionaria>>>
+    export type GerarJogoMaismilionariaMutationBody = BodyType<GeradorInputMaismilionaria>
+    export type GerarJogoMaismilionariaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de +Milionária
+ */
+export const useGerarJogoMaismilionaria = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoMaismilionaria>>, TError,{data: BodyType<GeradorInputMaismilionaria>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoMaismilionaria>>,
+        TError,
+        {data: BodyType<GeradorInputMaismilionaria>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoMaismilionariaMutationOptions(options));
     }
 

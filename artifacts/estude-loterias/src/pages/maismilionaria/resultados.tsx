@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { useGetDiadesorteResultados } from "@workspace/api-client-react";
+import { useGetMaismilionariaResultados } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
@@ -11,23 +11,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChevronLeft, ChevronRight, List } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
-const COR = "#cb852b";
+const COR = "#2E3078";
+const BALL_BG = "#2E3078";
+const BALL_TEXT = "#ffffff";
 
-export default function DiaDeSorteResultadosAnteriores() {
+export default function MaismilionariaResultadosAnteriores() {
   const [page, setPage] = useState(1);
   const [ano, setAno] = useState<number | null>(null);
   const [ordem, setOrdem] = useState<"asc" | "desc">("desc");
 
-  const { data, isLoading, isError } = useGetDiadesorteResultados({ page, limit: 20, ano, ordem });
+  const { data, isLoading, isError } = useGetMaismilionariaResultados({ page, limit: 20, ano, ordem });
 
-  const years = Array.from({ length: new Date().getFullYear() - 2011 }, (_, i) => new Date().getFullYear() - i);
+  const years = Array.from({ length: new Date().getFullYear() - 2022 }, (_, i) => new Date().getFullYear() - i);
 
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Todos os Resultados do Dia de Sorte"
-        description="Consulte o histórico completo de todos os resultados do Dia de Sorte. Filtre por ano, veja dezenas sorteadas e prêmios de cada concurso."
-        canonical="/diadesorte/resultados"
+        title="Todos os Resultados da +Milionária"
+        description="Consulte o histórico completo de todos os resultados da +Milionária. Filtre por ano, veja dezenas sorteadas e prêmios de cada concurso."
+        canonical="/maismilionaria/resultados"
       />
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
@@ -35,8 +37,8 @@ export default function DiaDeSorteResultadosAnteriores() {
             <List className="w-6 h-6" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Dia de Sorte · Resultados Anteriores</h1>
-            <p className="text-muted-foreground mt-1">Busque e analise os concursos passados do Dia de Sorte.</p>
+            <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>+Milionária · Resultados Anteriores</h1>
+            <p className="text-muted-foreground mt-1">Busque e analise os concursos passados da +Milionária.</p>
           </div>
         </div>
 
@@ -70,8 +72,8 @@ export default function DiaDeSorteResultadosAnteriores() {
                   <TableHead className="w-[100px]">Concurso</TableHead>
                   <TableHead className="w-[110px]">Data</TableHead>
                   <TableHead className="text-center">Dezenas Sorteadas</TableHead>
-                  <TableHead className="text-center">Mês da Sorte</TableHead>
-                  <TableHead className="text-right">Prêmio 7 acertos</TableHead>
+                  <TableHead className="text-center">Trevos</TableHead>
+                  <TableHead className="text-right">Prêmio 6 acertos</TableHead>
                   <TableHead>Situação</TableHead>
                   <TableHead className="w-[130px]"></TableHead>
                 </TableRow>
@@ -82,8 +84,8 @@ export default function DiaDeSorteResultadosAnteriores() {
                     <TableRow key={i}>
                       <TableCell><Skeleton className="h-5 w-12" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-20" /></TableCell>
-                      <TableCell><div className="flex justify-center gap-0.5 flex-wrap">{Array.from({ length: 7 }).map((_, j) => <Skeleton key={j} className="h-6 w-6 rounded-full" />)}</div></TableCell>
-                      <TableCell><Skeleton className="h-5 w-24 mx-auto" /></TableCell>
+                      <TableCell><div className="flex justify-center gap-0.5 flex-wrap">{Array.from({ length: 6 }).map((_, j) => <Skeleton key={j} className="h-6 w-6 rounded-full" />)}</div></TableCell>
+                      <TableCell><Skeleton className="h-5 w-12 mx-auto" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-24" /></TableCell>
                       <TableCell></TableCell>
@@ -101,13 +103,17 @@ export default function DiaDeSorteResultadosAnteriores() {
                       <TableCell>
                         <div className="flex justify-center gap-1 flex-wrap">
                           {res.dezenas.map((d, i) => (
-                            <LotteryBall key={i} number={d} size="sm" color={COR} />
+                            <LotteryBall key={i} number={d} size="sm" color={BALL_BG} textColor={BALL_TEXT} />
                           ))}
                         </div>
                       </TableCell>
                       <TableCell className="text-center">
-                        {res.mesSorte ? (
-                          <span className="text-xs font-semibold px-2 py-0.5 rounded-full text-white whitespace-nowrap" style={{ backgroundColor: COR }}>{res.mesSorte}</span>
+                        {res.trevos ? (
+                          <div className="flex justify-center gap-1 flex-wrap">
+                            {res.trevos.map((t, i) => (
+                              <LotteryBall key={i} number={t} size="sm" color={COR} textColor={BALL_TEXT} />
+                            ))}
+                          </div>
                         ) : <span className="text-muted-foreground">—</span>}
                       </TableCell>
                       <TableCell className="text-right font-medium">
@@ -126,7 +132,7 @@ export default function DiaDeSorteResultadosAnteriores() {
                         )}
                       </TableCell>
                       <TableCell>
-                        <Link href={`/diadesorte/resultado/${res.concurso}`}>
+                        <Link href={`/maismilionaria/resultado/${res.concurso}`}>
                           <Button variant="ghost" size="sm" style={{ color: COR }}>Ver detalhes →</Button>
                         </Link>
                       </TableCell>

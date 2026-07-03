@@ -741,6 +741,103 @@ export interface GeradorInputDiadesorte {
   quantidadeDezenas?: number;
 }
 
+export interface ResultadoMaismilionaria {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  trevos?: string[] | null;
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+}
+
+export interface ResultadosPaginadosMaismilionaria {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoMaismilionaria[];
+}
+
+export interface EstatisticasMaismilionaria {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+}
+
+export interface ResumoMaismilionaria {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores6: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputMaismilionariaFiltro = typeof SimuladorInputMaismilionariaFiltro[keyof typeof SimuladorInputMaismilionariaFiltro];
+
+
+export const SimuladorInputMaismilionariaFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  seis: 'seis',
+  cinco: 'cinco',
+  quatro: 'quatro',
+  tres: 'tres',
+} as const;
+
+export interface SimuladorInputMaismilionaria {
+  /**
+     * @minItems 6
+     * @maxItems 6
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputMaismilionariaFiltro;
+}
+
+export interface GeradorInputMaismilionaria {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+  /**
+     * @minimum 6
+     * @maximum 12
+     */
+  quantidadeDezenas?: number;
+  /**
+     * @minimum 2
+     * @maximum 6
+     */
+  quantidadeTrevos?: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -849,6 +946,28 @@ export type GetDiadesorteResultadosOrdem = typeof GetDiadesorteResultadosOrdem[k
 
 
 export const GetDiadesorteResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetMaismilionariaResultadosParams = {
+/**
+ * @minimum 1
+ */
+page?: number;
+/**
+ * @minimum 1
+ * @maximum 50
+ */
+limit?: number;
+ano?: number | null;
+ordem?: GetMaismilionariaResultadosOrdem;
+};
+
+export type GetMaismilionariaResultadosOrdem = typeof GetMaismilionariaResultadosOrdem[keyof typeof GetMaismilionariaResultadosOrdem];
+
+
+export const GetMaismilionariaResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;

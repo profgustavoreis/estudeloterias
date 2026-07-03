@@ -127,6 +127,24 @@ export function Sidebar() {
         { href: "/diadesorte/premiacao", label: "Premiação", icon: Target },
         { href: "/diadesorte/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
       ]
+    },
+    {
+      title: "+Milionária",
+      items: [
+        { href: "/maismilionaria", label: "Painel Principal", icon: Target },
+        { href: "/maismilionaria/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/maismilionaria/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/maismilionaria/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/maismilionaria/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "+Milionária — Info",
+      items: [
+        { href: "/maismilionaria/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/maismilionaria/premiacao", label: "Premiação", icon: Target },
+        { href: "/maismilionaria/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+      ]
     }
   ];
 

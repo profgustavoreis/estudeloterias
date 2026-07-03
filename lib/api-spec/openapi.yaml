@@ -24,6 +24,8 @@ tags:
     description: Timemania específico
   - name: diadesorte
     description: Dia de Sorte específico
+  - name: maismilionaria
+    description: +Milionária específico
 paths:
   /healthz:
     get:
@@ -934,6 +936,146 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GeradorInputDiadesorte"
+      responses:
+        "200":
+          description: Jogo(s) gerado(s)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JogoGerado"
+
+  /maismilionaria/resultado/ultimo:
+    get:
+      operationId: getMaismilionariaUltimoResultado
+      tags: [maismilionaria]
+      summary: Último resultado da +Milionária
+      responses:
+        "200":
+          description: Resultado da +Milionária
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoMaismilionaria"
+
+  /maismilionaria/resultados:
+    get:
+      operationId: getMaismilionariaResultados
+      tags: [maismilionaria]
+      summary: Resultados paginados da +Milionária
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50
+            default: 20
+        - name: ano
+          in: query
+          schema:
+            type: integer
+            nullable: true
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        "200":
+          description: Resultados paginados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadosPaginadosMaismilionaria"
+
+  /maismilionaria/resultados/{concurso}:
+    get:
+      operationId: getMaismilionariaResultadoConcurso
+      tags: [maismilionaria]
+      summary: Resultado de um concurso específico da +Milionária
+      parameters:
+        - name: concurso
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado do concurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoMaismilionaria"
+        "404":
+          description: Concurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /maismilionaria/estatisticas:
+    get:
+      operationId: getMaismilionariaEstatisticas
+      tags: [maismilionaria]
+      summary: Estatísticas completas da +Milionária
+      responses:
+        "200":
+          description: Estatísticas da +Milionária
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstatisticasMaismilionaria"
+
+  /maismilionaria/resumo:
+    get:
+      operationId: getMaismilionariaResumo
+      tags: [maismilionaria]
+      summary: Resumo da +Milionária
+      responses:
+        "200":
+          description: Resumo da +Milionária
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumoMaismilionaria"
+
+  /maismilionaria/simulador:
+    post:
+      operationId: simularMaismilionaria
+      tags: [maismilionaria]
+      summary: Simula uma aposta no histórico da +Milionária
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInputMaismilionaria"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
+  /maismilionaria/gerador:
+    post:
+      operationId: gerarJogoMaismilionaria
+      tags: [maismilionaria]
+      summary: Gera um jogo aleatório de +Milionária
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeradorInputMaismilionaria"
       responses:
         "200":
           description: Jogo(s) gerado(s)
@@ -2392,5 +2534,200 @@ components:
           minimum: 7
           maximum: 15
           default: 7
+      required:
+        - quantidadeJogos
+
+    ResultadoMaismilionaria:
+      type: object
+      properties:
+        concurso:
+          type: integer
+        data:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: string
+        trevos:
+          type: array
+          nullable: true
+          items:
+            type: string
+        premios:
+          type: array
+          items:
+            $ref: "#/components/schemas/FaixaPremio"
+        acumulado:
+          type: boolean
+        valorAcumulado:
+          type: ["number", "null"]
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
+        arrecadacaoTotal:
+          type: ["number", "null"]
+      required:
+        - concurso
+        - data
+        - dezenas
+        - premios
+        - acumulado
+
+    ResultadosPaginadosMaismilionaria:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoMaismilionaria"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    EstatisticasMaismilionaria:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        frequenciaDezenas:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        atrasoMaiores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        totalAcumulados:
+          type: integer
+        percentualAcumulado:
+          type: number
+        maiorPremio:
+          type: number
+        maiorPremioData:
+          type: string
+        maiorPremioConcurso:
+          type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        molduraRetrato:
+          type: array
+          items:
+            $ref: "#/components/schemas/MolduraRetrato"
+        frequenciaPorLinha:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaFaixa"
+        frequenciaPorColuna:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaColuna"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
+      required:
+        - totalConcursos
+        - frequenciaDezenas
+        - atrasoMaiores
+        - totalAcumulados
+        - percentualAcumulado
+        - maiorPremio
+        - maiorPremioData
+        - maiorPremioConcurso
+        - paresImpares
+        - molduraRetrato
+        - frequenciaPorLinha
+        - frequenciaPorColuna
+        - somaDezenas
+        - numerosEspeciais
+
+    ResumoMaismilionaria:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        acumulado:
+          type: boolean
+        valorAtualAcumulado:
+          type: ["number", "null"]
+        valorEstimadoProximo:
+          type: ["number", "null"]
+        maiorPremio:
+          type: number
+        maiorPremioConcurso:
+          type: integer
+        maiorPremioAno:
+          type: integer
+        totalGanhadores6:
+          type: integer
+        proximoSorteio:
+          type: ["string", "null"]
+        ultimoConcurso:
+          type: integer
+      required:
+        - totalConcursos
+        - acumulado
+        - maiorPremio
+        - maiorPremioConcurso
+        - maiorPremioAno
+        - totalGanhadores6
+        - ultimoConcurso
+
+    SimuladorInputMaismilionaria:
+      type: object
+      required:
+        - dezenas
+      properties:
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 6
+          maxItems: 6
+        filtro:
+          type: string
+          enum:
+            - todos
+            - premiados
+            - seis
+            - cinco
+            - quatro
+            - tres
+          default: premiados
+
+    GeradorInputMaismilionaria:
+      type: object
+      properties:
+        quantidadeJogos:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 1
+        quantidadeDezenas:
+          type: integer
+          minimum: 6
+          maximum: 12
+          default: 6
+        quantidadeTrevos:
+          type: integer
+          minimum: 2
+          maximum: 6
+          default: 2
       required:
         - quantidadeJogos
