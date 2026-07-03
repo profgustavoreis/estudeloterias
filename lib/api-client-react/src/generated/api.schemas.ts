@@ -228,16 +228,31 @@ export type SimulacaoResultadoResumoItem = {
   contagem: number;
 };
 
+export type SimulacaoResultadoResumoTrevosItem = {
+  acertos: number;
+  contagem: number;
+};
+
+export type SimulacaoResultadoFaixasItem = {
+  label: string;
+  contagem: number;
+  probabilidade: string;
+};
+
 export type SimulacaoResultadoConcursosItem = {
   concurso: number;
   data: string;
   dezenas: string[];
+  trevos?: string[];
   acertos: number;
+  acertosTrevos?: number;
   premioGanho: number;
 };
 
 export interface SimulacaoResultado {
   resumo: SimulacaoResultadoResumoItem[];
+  resumoTrevos?: SimulacaoResultadoResumoTrevosItem[];
+  faixas?: SimulacaoResultadoFaixasItem[];
   concursos: SimulacaoResultadoConcursosItem[];
   totalPremio: number;
   totalConcursos: number;
@@ -817,6 +832,11 @@ export interface SimuladorInputMaismilionaria {
      * @maxItems 6
      */
   dezenas: string[];
+  /**
+     * @minItems 2
+     * @maxItems 2
+     */
+  trevos: string[];
   filtro?: SimuladorInputMaismilionariaFiltro;
 }
 

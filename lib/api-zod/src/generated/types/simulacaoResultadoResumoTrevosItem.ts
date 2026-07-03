@@ -6,12 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type SimulacaoResultadoConcursosItem = {
-  concurso: number;
-  data: string;
-  dezenas: string[];
-  trevos?: string[];
+export type SimulacaoResultadoResumoTrevosItem = {
   acertos: number;
-  acertosTrevos?: number;
-  premioGanho: number;
+  contagem: number;
 };

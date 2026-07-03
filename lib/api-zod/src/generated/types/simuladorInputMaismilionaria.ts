@@ -13,5 +13,10 @@ export interface SimuladorInputMaismilionaria {
      * @maxItems 6
      */
   dezenas: string[];
+  /**
+     * @minItems 2
+     * @maxItems 2
+     */
+  trevos: string[];
   filtro?: SimuladorInputMaismilionariaFiltro;
 }

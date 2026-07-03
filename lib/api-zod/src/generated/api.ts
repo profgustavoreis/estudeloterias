@@ -310,11 +310,22 @@ export const SimularMegaSenaResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),
@@ -575,11 +586,22 @@ export const SimularLotofacilResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),
@@ -840,11 +862,22 @@ export const SimularQuinaResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),
@@ -1071,11 +1104,22 @@ export const SimularLotomaniaResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),
@@ -1300,11 +1344,22 @@ export const SimularTimemaniaResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),
@@ -1532,11 +1587,22 @@ export const SimularDiadesorteResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),
@@ -1757,10 +1823,14 @@ export const GetMaismilionariaResumoResponse = zod.object({
 export const simularMaismilionariaBodyDezenasMin = 6;
 export const simularMaismilionariaBodyDezenasMax = 6;
 
+export const simularMaismilionariaBodyTrevosMin = 2;
+export const simularMaismilionariaBodyTrevosMax = 2;
+
 export const simularMaismilionariaBodyFiltroDefault = `premiados`;
 
 export const SimularMaismilionariaBody = zod.object({
   "dezenas": zod.array(zod.string()).min(simularMaismilionariaBodyDezenasMin).max(simularMaismilionariaBodyDezenasMax),
+  "trevos": zod.array(zod.string()).min(simularMaismilionariaBodyTrevosMin).max(simularMaismilionariaBodyTrevosMax),
   "filtro": zod.enum(['todos', 'premiados', 'seis', 'cinco', 'quatro', 'tres']).default(simularMaismilionariaBodyFiltroDefault)
 })
 
@@ -1769,11 +1839,22 @@ export const SimularMaismilionariaResponse = zod.object({
   "acertos": zod.number(),
   "contagem": zod.number()
 })),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
   "concursos": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
   "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
   "premioGanho": zod.number()
 })),
   "totalPremio": zod.number(),

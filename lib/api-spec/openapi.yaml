@@ -1545,6 +1545,28 @@ components:
                 type: integer
               contagem:
                 type: integer
+        resumoTrevos:
+          type: array
+          items:
+            type: object
+            required: [acertos, contagem]
+            properties:
+              acertos:
+                type: integer
+              contagem:
+                type: integer
+        faixas:
+          type: array
+          items:
+            type: object
+            required: [label, contagem, probabilidade]
+            properties:
+              label:
+                type: string
+              contagem:
+                type: integer
+              probabilidade:
+                type: string
         concursos:
           type: array
           items:
@@ -1559,7 +1581,13 @@ components:
                 type: array
                 items:
                   type: string
+              trevos:
+                type: array
+                items:
+                  type: string
               acertos:
+                type: integer
+              acertosTrevos:
                 type: integer
               premioGanho:
                 type: number
@@ -2693,6 +2721,7 @@ components:
       type: object
       required:
         - dezenas
+        - trevos
       properties:
         dezenas:
           type: array
@@ -2700,6 +2729,12 @@ components:
             type: string
           minItems: 6
           maxItems: 6
+        trevos:
+          type: array
+          items:
+            type: string
+          minItems: 2
+          maxItems: 2
         filtro:
           type: string
           enum:

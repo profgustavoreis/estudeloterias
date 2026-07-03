@@ -390,25 +390,37 @@ router.get("/maismilionaria/resumo", async (req, res) => {
 
 router.post("/maismilionaria/simulador", async (req, res) => {
   try {
-    const { dezenas, filtro = "premiados" } = req.body ?? {};
+    const { dezenas, trevos, filtro = "premiados" } = req.body ?? {};
 
     if (!Array.isArray(dezenas) || dezenas.length !== 6) {
       res.status(400).json({ error: "Selecione exatamente 6 dezenas" });
       return;
     }
+    if (!Array.isArray(trevos) || trevos.length !== 2) {
+      res.status(400).json({ error: "Selecione exatamente 2 trevos" });
+      return;
+    }
 
     const selecionadas = (dezenas as unknown[]).map(d => String(d).padStart(2, "0"));
+    const trevosSelecionados = (trevos as unknown[]).map(t => String(t));
     const selecionadasParams = selecionadas.map(d => sql`${d}`);
+    const trevosParams = trevosSelecionados.map(t => sql`${t}`);
     const anyArray = sql`ARRAY[${sql.join(selecionadasParams, sql`, `)}]`;
+    const trevosArray = sql`ARRAY[${sql.join(trevosParams, sql`, `)}]`;
 
     const rows = await db.execute(sql`
       SELECT
-        concurso, data, dezenas, premios,
+        concurso, data, dezenas, premios, metadata,
         (
           SELECT COUNT(*)::integer
           FROM jsonb_array_elements_text(dezenas) AS dval
           WHERE dval = ANY(${anyArray}::text[])
-        ) AS acertos
+        ) AS acertos,
+        (
+          SELECT COUNT(*)::integer
+          FROM jsonb_array_elements_text(metadata->'trevos') AS tval
+          WHERE tval = ANY(${trevosArray}::text[])
+        ) AS acertos_trevos
       FROM lottery_results
       WHERE modalidade = 'maismilionaria'
       ORDER BY concurso DESC
@@ -416,57 +428,104 @@ router.post("/maismilionaria/simulador", async (req, res) => {
 
     type PremioRow = { faixa: number; ganhadores: number; valorPremio: number };
     type ResultRow = {
-      concurso: number; data: string; dezenas: string[]; premios: PremioRow[]; acertos: number;
+      concurso: number; data: string; dezenas: string[]; premios: PremioRow[]; metadata: { trevos?: string[] } | null; acertos: number; acertos_trevos: number;
     };
 
     const allRows = rows.rows as ResultRow[];
-    const contagemPorAcertos: Record<number, number> = {};
-    for (let i = 0; i <= 6; i++) contagemPorAcertos[i] = 0;
 
-    let totalPremio = 0;
-    const concursosFiltrados: {
-      concurso: number; data: string; dezenas: string[]; acertos: number; premioGanho: number;
-    }[] = [];
+    const FAIXAS = [
+      { label: "6+2",         acertosNeeded: 6, trevosMin: 2, trevosMax: 2 },
+      { label: "6+1 ou 6+0",  acertosNeeded: 6, trevosMin: 0, trevosMax: 1 },
+      { label: "5+2",         acertosNeeded: 5, trevosMin: 2, trevosMax: 2 },
+      { label: "5+1 ou 5+0",  acertosNeeded: 5, trevosMin: 0, trevosMax: 1 },
+      { label: "4+2",         acertosNeeded: 4, trevosMin: 2, trevosMax: 2 },
+      { label: "4+1 ou 4+0",  acertosNeeded: 4, trevosMin: 0, trevosMax: 1 },
+      { label: "3+2",         acertosNeeded: 3, trevosMin: 2, trevosMax: 2 },
+      { label: "3+1",         acertosNeeded: 3, trevosMin: 1, trevosMax: 1 },
+      { label: "2+2",         acertosNeeded: 2, trevosMin: 2, trevosMax: 2 },
+      { label: "2+1",         acertosNeeded: 2, trevosMin: 1, trevosMax: 1 },
+    ] as const;
 
-    // +Milionária faixas: 6→1, 5→2, 4→3, 3→4
-    const faixaForAcertos = (acertos: number): number | null => {
-      if (acertos === 6) return 1;
-      if (acertos === 5) return 2;
-      if (acertos === 4) return 3;
-      if (acertos === 3) return 4;
-      return null;
+    // Probabilidades combinadas (D+T) sobre C(50,6) × C(6,2) = 238.360.500
+    const PROBABILIDADES: Record<string, string> = {
+      "6+2":         "1 em 238.360.500",
+      "6+1 ou 6+0":  "1 em 17.025.750",
+      "5+2":         "1 em 902.881",
+      "5+1 ou 5+0":  "1 em 64.492",
+      "4+2":         "1 em 16.798",
+      "4+1 ou 4+0":  "1 em 1.200",
+      "3+2":         "1 em 900",
+      "3+1":         "1 em 112",
+      "2+2":         "1 em 117",
+      "2+1":         "1 em 15",
     };
 
-    for (const row of allRows) {
-      const acertos = Number(row.acertos);
-      contagemPorAcertos[acertos] = (contagemPorAcertos[acertos] ?? 0) + 1;
+    let totalPremio = 0;
+    const contagemPorFaixa: Record<string, number> = {};
+    const concursosFiltrados: {
+      concurso: number; data: string; dezenas: string[]; trevos: string[]; acertos: number; acertosTrevos: number; premioGanho: number;
+    }[] = [];
 
-      const premios = row.premios as PremioRow[];
-      let premioGanho = 0;
-      const faixa = faixaForAcertos(acertos);
-      if (faixa !== null) {
-        premioGanho = premios.find(p => p.faixa === faixa)?.valorPremio ?? 0;
+    for (const row of allRows) {
+      const acertosD = Number(row.acertos);
+      const acertosT = Number(row.acertos_trevos);
+
+      // find which faixa this row belongs to, if any
+      const faixa = FAIXAS.find(
+        f => f.acertosNeeded === acertosD && acertosT >= f.trevosMin && acertosT <= f.trevosMax,
+      );
+
+      if (faixa) {
+        contagemPorFaixa[faixa.label] = (contagemPorFaixa[faixa.label] ?? 0) + 1;
       }
 
+      // premioGanho: use the DB prize for the matching official faixa
+      // Official faixas in DB: 1=sena, 2=quina, 3=quadra, 4=terno
+      const premios = row.premios as PremioRow[];
+      const officalFaixa =
+        acertosD === 6 ? 1 : acertosD === 5 ? 2 : acertosD === 4 ? 3 : acertosD === 3 ? 4 : null;
+      const premioGanho = officalFaixa !== null
+        ? (premios.find(p => p.faixa === officalFaixa)?.valorPremio ?? 0)
+        : 0;
       totalPremio += premioGanho;
 
+      // filter
+      const activeFaixaLabel = faixa?.label ?? null;
       const incluir =
         filtro === "todos" ||
-        (filtro === "premiados" && faixa !== null) ||
-        (filtro === "seis"    && acertos === 6) ||
-        (filtro === "cinco"   && acertos === 5) ||
-        (filtro === "quatro"  && acertos === 4) ||
-        (filtro === "tres"    && acertos === 3);
+        (filtro === "premiados" && activeFaixaLabel !== null) ||
+        (filtro === "seis"   && acertosD === 6) ||
+        (filtro === "cinco"  && acertosD === 5) ||
+        (filtro === "quatro" && acertosD === 4) ||
+        (filtro === "tres"   && acertosD === 3);
 
       if (incluir) {
         concursosFiltrados.push({
           concurso: row.concurso,
           data: row.data,
           dezenas: row.dezenas,
-          acertos,
+          trevos: row.metadata?.trevos ?? [],
+          acertos: acertosD,
+          acertosTrevos: acertosT,
           premioGanho,
         });
       }
+    }
+
+    const faixas = FAIXAS.map(f => ({
+      label: f.label,
+      contagem: contagemPorFaixa[f.label] ?? 0,
+      probabilidade: PROBABILIDADES[f.label],
+    }));
+
+    // Keep compat fields for safety
+    const contagemPorAcertos: Record<number, number> = {};
+    for (let i = 0; i <= 6; i++) contagemPorAcertos[i] = 0;
+    const contagemPorAcertosTrevos: Record<number, number> = {};
+    for (let i = 0; i <= 2; i++) contagemPorAcertosTrevos[i] = 0;
+    for (const row of allRows) {
+      contagemPorAcertos[Number(row.acertos)] = (contagemPorAcertos[Number(row.acertos)] ?? 0) + 1;
+      contagemPorAcertosTrevos[Number(row.acertos_trevos)] = (contagemPorAcertosTrevos[Number(row.acertos_trevos)] ?? 0) + 1;
     }
 
     const resumo = Array.from({ length: 7 }, (_, i) => ({
@@ -474,8 +533,15 @@ router.post("/maismilionaria/simulador", async (req, res) => {
       contagem: contagemPorAcertos[i] ?? 0,
     })).reverse();
 
+    const resumoTrevos = Array.from({ length: 3 }, (_, i) => ({
+      acertos: i,
+      contagem: contagemPorAcertosTrevos[i] ?? 0,
+    })).reverse();
+
     res.json({
       resumo,
+      resumoTrevos,
+      faixas,
       concursos: concursosFiltrados,
       totalPremio,
       totalConcursos: allRows.length,
@@ -494,7 +560,15 @@ router.post("/maismilionaria/gerador", async (req, res) => {
     const qtdDezenas = Math.min(12, Math.max(6, parseInt(String(quantidadeDezenas), 10)));
     const qtdTrevos = Math.min(6, Math.max(2, parseInt(String(quantidadeTrevos), 10)));
 
-    const custoPorJogo = 6.0;
+    function C(n: number, k: number): number {
+      if (k < 0 || k > n) return 0;
+      if (k === 0 || k === n) return 1;
+      let r = 1;
+      for (let i = 0; i < k; i++) r = (r * (n - i)) / (i + 1);
+      return Math.round(r);
+    }
+
+    const custoPorJogo = 6.0 * C(qtdDezenas, 6) * C(qtdTrevos, 2);
 
     const jogos: number[][] = [];
     const trevosList: number[][] = [];

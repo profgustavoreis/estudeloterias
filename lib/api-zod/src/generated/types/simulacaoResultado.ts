@@ -6,10 +6,14 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { SimulacaoResultadoConcursosItem } from './simulacaoResultadoConcursosItem';
+import type { SimulacaoResultadoFaixasItem } from './simulacaoResultadoFaixasItem';
 import type { SimulacaoResultadoResumoItem } from './simulacaoResultadoResumoItem';
+import type { SimulacaoResultadoResumoTrevosItem } from './simulacaoResultadoResumoTrevosItem';
 
 export interface SimulacaoResultado {
   resumo: SimulacaoResultadoResumoItem[];
+  resumoTrevos?: SimulacaoResultadoResumoTrevosItem[];
+  faixas?: SimulacaoResultadoFaixasItem[];
   concursos: SimulacaoResultadoConcursosItem[];
   totalPremio: number;
   totalConcursos: number;
