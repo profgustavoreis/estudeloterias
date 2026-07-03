@@ -17,6 +17,10 @@ const COR = "#2E3078";
 const BALL_BG = "#2E3078";
 const BALL_TEXT = "#ffffff";
 
+function isMoldura(n: number): boolean {
+  return n <= 10 || n >= 41 || n % 10 === 1 || n % 10 === 0;
+}
+
 function isPrime(n: number): boolean {
   if (n < 2) return false;
   for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
@@ -108,21 +112,20 @@ function ParesImparesCard({ dezenas }: { dezenas: string[] }) {
   );
 }
 
-function ExtremosCard({ dezenas }: { dezenas: string[] }) {
-  const nums = dezenas.map(Number).sort((a, b) => a - b);
-  const menor = nums[0];
-  const maior = nums[nums.length - 1];
+function MolduraRetratoCard({ dezenas }: { dezenas: string[] }) {
+  const moldura = dezenas.filter((d) => isMoldura(Number(d)));
+  const retrato = dezenas.filter((d) => !isMoldura(Number(d)));
   return (
     <Card className="flex flex-col h-full">
-      <CardHeader className="pb-2"><CardTitle className="text-base">Maior e Menor</CardTitle></CardHeader>
+      <CardHeader className="pb-2"><CardTitle className="text-base">Moldura e Retrato</CardTitle></CardHeader>
       <CardContent className="space-y-4 flex-1">
         <div>
-          <SectionLabel>Menor dezena</SectionLabel>
-          <LotteryBall number={menor} size="lg" color={BALL_BG} textColor={BALL_TEXT} />
+          <SectionLabel>Moldura: {moldura.length}</SectionLabel>
+          {moldura.length > 0 ? <Balls dezenas={moldura} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
         </div>
         <div>
-          <SectionLabel>Maior dezena</SectionLabel>
-          <LotteryBall number={maior} size="lg" color={BALL_BG} textColor={BALL_TEXT} />
+          <SectionLabel>Retrato: {retrato.length}</SectionLabel>
+          {retrato.length > 0 ? <Balls dezenas={retrato} size="md" /> : <span className="text-sm text-muted-foreground">Nenhum</span>}
         </div>
       </CardContent>
     </Card>
@@ -258,7 +261,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoMais
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <DezenasCard resultado={resultado} />
         <ParesImparesCard dezenas={resultado.dezenas} />
-        <ExtremosCard dezenas={resultado.dezenas} />
+        <MolduraRetratoCard dezenas={resultado.dezenas} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
