@@ -391,8 +391,8 @@ router.post("/diadesorte/simulador", async (req, res) => {
   try {
     const { dezenas, filtro = "premiados" } = req.body ?? {};
 
-    if (!Array.isArray(dezenas) || dezenas.length !== 7) {
-      res.status(400).json({ error: "Selecione exatamente 7 dezenas" });
+    if (!Array.isArray(dezenas) || dezenas.length < 7 || dezenas.length > 15) {
+      res.status(400).json({ error: "Selecione de 7 a 15 dezenas" });
       return;
     }
 

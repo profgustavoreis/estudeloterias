@@ -2536,7 +2536,7 @@ components:
           items:
             type: string
           minItems: 7
-          maxItems: 7
+          maxItems: 15
         filtro:
           type: string
           enum:
@@ -2728,13 +2728,13 @@ components:
           items:
             type: string
           minItems: 6
-          maxItems: 6
+          maxItems: 12
         trevos:
           type: array
           items:
             type: string
           minItems: 2
-          maxItems: 2
+          maxItems: 6
         filtro:
           type: string
           enum:

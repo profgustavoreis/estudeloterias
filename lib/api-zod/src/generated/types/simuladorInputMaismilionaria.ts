@@ -10,12 +10,12 @@ import type { SimuladorInputMaismilionariaFiltro } from './simuladorInputMaismil
 export interface SimuladorInputMaismilionaria {
   /**
      * @minItems 6
-     * @maxItems 6
+     * @maxItems 12
      */
   dezenas: string[];
   /**
      * @minItems 2
-     * @maxItems 2
+     * @maxItems 6
      */
   trevos: string[];
   filtro?: SimuladorInputMaismilionariaFiltro;

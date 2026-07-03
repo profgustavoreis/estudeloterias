@@ -392,12 +392,12 @@ router.post("/maismilionaria/simulador", async (req, res) => {
   try {
     const { dezenas, trevos, filtro = "premiados" } = req.body ?? {};
 
-    if (!Array.isArray(dezenas) || dezenas.length !== 6) {
-      res.status(400).json({ error: "Selecione exatamente 6 dezenas" });
+    if (!Array.isArray(dezenas) || dezenas.length < 6 || dezenas.length > 12) {
+      res.status(400).json({ error: "Selecione de 6 a 12 dezenas" });
       return;
     }
-    if (!Array.isArray(trevos) || trevos.length !== 2) {
-      res.status(400).json({ error: "Selecione exatamente 2 trevos" });
+    if (!Array.isArray(trevos) || trevos.length < 2 || trevos.length > 6) {
+      res.status(400).json({ error: "Selecione de 2 a 6 trevos" });
       return;
     }
 

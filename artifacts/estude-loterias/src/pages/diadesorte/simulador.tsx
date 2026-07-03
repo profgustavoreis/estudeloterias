@@ -12,8 +12,25 @@ import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown, ChevronLeft, Che
 import { PageSEO } from "@/components/seo/PageSEO";
 
 const COR = "#cb852b";
-const TOTAL_DEZENAS = 7;
 const PAGE_SIZE = 20;
+
+function comb(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  k = Math.min(k, n - k);
+  let r = 1;
+  for (let i = 0; i < k; i++) r = (r * (n - i)) / (i + 1);
+  return Math.round(r);
+}
+
+function probDiaDeSorte(k: number, N: number): string {
+  const total = comb(31, 7);
+  const ways = comb(N, k) * comb(31 - N, 7 - k);
+  if (ways <= 0) return "—";
+  const x = total / ways;
+  if (x >= 10) return `1 em ${Math.round(x).toLocaleString("pt-BR")}`;
+  return `1 em ${x.toFixed(2).replace(".", ",")}`;
+}
 
 type Filtro = "todos" | "premiados" | "sete" | "seis" | "cinco" | "quatro" | "tres";
 
@@ -28,22 +45,25 @@ const FILTRO_LABELS: Record<Filtro, string> = {
 };
 
 const PREMIADO_EMOJI = "⭐";
+const MAX_DEZENAS = 15;
+const MIN_DEZENAS = 7;
 const FAIXAS_PREMIADAS = new Set([7, 6, 5, 4, 3]);
 
 export default function DiaDeSorteSimulador() {
   const [selecionadas, setSelecionadas] = useState<Set<number>>(new Set());
   const [filtro, setFiltro] = useState<Filtro>("premiados");
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
+  const [nSimulado, setNSimulado] = useState<number>(7);
   const [infoAberta, setInfoAberta] = useState(false);
   const [paginaTabela, setPaginaTabela] = useState(1);
 
-  const simular = useSimularDiadesorte({ mutation: { onSuccess: data => { setResultado(data); setPaginaTabela(1); } } });
+  const simular = useSimularDiadesorte({ mutation: { onSuccess: data => { setResultado(data); setNSimulado(selecionadas.size); setPaginaTabela(1); } } });
 
   const toggleDezena = (n: number) => {
     setSelecionadas(prev => {
       const next = new Set(prev);
       if (next.has(n)) next.delete(n);
-      else if (next.size < TOTAL_DEZENAS) next.add(n);
+      else if (next.size < MAX_DEZENAS) next.add(n);
       return next;
     });
   };
@@ -55,7 +75,7 @@ export default function DiaDeSorteSimulador() {
 
   const handleLimpar = () => { setSelecionadas(new Set()); setResultado(null); simular.reset(); };
 
-  const podeSimular = selecionadas.size === TOTAL_DEZENAS;
+  const podeSimular = selecionadas.size >= MIN_DEZENAS;
   const count = selecionadas.size;
 
   const acertosGanhadores = resultado?.resumo.filter(r => FAIXAS_PREMIADAS.has(r.acertos)).reduce((acc, r) => acc + r.contagem, 0) ?? 0;
@@ -69,7 +89,7 @@ export default function DiaDeSorteSimulador() {
     <div className="space-y-6">
       <PageSEO
         title="Simulador Histórico do Dia de Sorte — Teste sua Aposta no Histórico"
-        description="Escolha suas 7 dezenas e descubra em quantos sorteios do Dia de Sorte você teria ganhado. Simulador histórico gratuito e completo."
+        description="Escolha de 7 a 15 dezenas e descubra em quantos sorteios do Dia de Sorte você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/diadesorte/simulador"
       />
       <div className="flex items-center gap-4">
@@ -78,7 +98,7 @@ export default function DiaDeSorteSimulador() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Dia de Sorte · Simulador Histórico</h1>
-          <p className="text-muted-foreground mt-1">Selecione exatamente 7 dezenas e descubra em quantos sorteios anteriores você teria acertado.</p>
+          <p className="text-muted-foreground mt-1">Selecione de 7 a 15 dezenas e descubra em quantos sorteios anteriores você teria acertado.</p>
         </div>
       </div>
 
@@ -88,11 +108,11 @@ export default function DiaDeSorteSimulador() {
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle>Escolha suas dezenas</CardTitle>
-              <span className={cn("text-sm font-semibold tabular-nums", count < TOTAL_DEZENAS ? "text-muted-foreground" : "")} style={count >= TOTAL_DEZENAS ? { color: COR } : {}}>{count}/{TOTAL_DEZENAS}</span>
+              <span className={cn("text-sm font-semibold tabular-nums", count < MIN_DEZENAS ? "text-muted-foreground" : "")} style={count >= MIN_DEZENAS ? { color: COR } : {}}>{count}/{MAX_DEZENAS}</span>
             </div>
             <CardDescription>
-              Marque exatamente 7 dezenas (01 a 31)
-              {count >= TOTAL_DEZENAS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
+              Mínimo de {MIN_DEZENAS} • Máximo de {MAX_DEZENAS}
+              {count >= MAX_DEZENAS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
@@ -100,12 +120,12 @@ export default function DiaDeSorteSimulador() {
               {Array.from({ length: 31 }, (_, i) => i + 1).map(n => {
                 const sel = selecionadas.has(n);
                 return (
-                  <button key={n} onClick={() => toggleDezena(n)} disabled={!sel && count >= TOTAL_DEZENAS}
+                  <button key={n} onClick={() => toggleDezena(n)} disabled={!sel && count >= MAX_DEZENAS}
                     className={cn("aspect-square rounded text-[10px] font-bold transition-all duration-150 select-none",
-                      sel ? "text-white shadow-sm ring-1 scale-105" : count >= TOTAL_DEZENAS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
+                      sel ? "text-white shadow-sm ring-1 scale-105" : count >= MAX_DEZENAS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
                     style={sel ? { backgroundColor: COR } : {}}
-                    onMouseEnter={e => { if (!sel && count < TOTAL_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
-                    onMouseLeave={e => { if (!sel && count < TOTAL_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
+                    onMouseEnter={e => { if (!sel && count < MAX_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
+                    onMouseLeave={e => { if (!sel && count < MAX_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
                     {String(n).padStart(2, "0")}
                   </button>
                 );
@@ -134,7 +154,7 @@ export default function DiaDeSorteSimulador() {
               </button>
               {infoAberta && (
                 <ol className="mt-3 space-y-1.5 list-decimal list-inside">
-                  <li>Marque exatamente 7 números no volante à esquerda (01 a 31).</li>
+                  <li>Escolha de {MIN_DEZENAS} a {MAX_DEZENAS} números no volante à esquerda (01 a 31).</li>
                   <li>Defina quais concursos quer ver na tabela de resultados.</li>
                   <li>Clique em <strong>Simular</strong>.</li>
                   <li>O sistema varre todos os sorteios anteriores e indica em quantos você teria acertado cada faixa de premiação (7, 6, 5, 4 ou 3 acertos).</li>
@@ -160,8 +180,8 @@ export default function DiaDeSorteSimulador() {
                 <Button variant="outline" onClick={handleLimpar} disabled={simular.isPending}><RotateCcw className="w-4 h-4 mr-2" />Limpar</Button>
               </div>
 
-              {!podeSimular && count > 0 && <p className="text-sm text-amber-600 text-center">Selecione mais {TOTAL_DEZENAS - count} dezena{TOTAL_DEZENAS - count > 1 ? "s" : ""} para simular.</p>}
-              {count === 0 && <p className="text-sm text-muted-foreground text-center">Selecione 7 números e clique em Simular.</p>}
+              {!podeSimular && count > 0 && <p className="text-sm text-amber-600 text-center">Selecione pelo menos {MIN_DEZENAS - count} dezena{MIN_DEZENAS - count > 1 ? "s" : ""} para simular.</p>}
+              {count === 0 && <p className="text-sm text-muted-foreground text-center">Selecione os números e clique em Simular.</p>}
             </CardContent>
           </Card>
 
@@ -170,7 +190,7 @@ export default function DiaDeSorteSimulador() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base"><Trophy className="w-4 h-4" style={{ color: COR }} />Resultado da Simulação</CardTitle>
                 <CardDescription>
-                  7 dezenas escolhidas • {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
+                  {nSimulado} dezena{nSimulado > 1 ? "s" : ""} escolhida{nSimulado > 1 ? "s" : ""} • {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
                   {acertosGanhadores > 0 ? <span className="font-semibold" style={{ color: COR }}>{acertosGanhadores} premiado{acertosGanhadores > 1 ? "s" : ""}</span> : "nenhum premiado"}
                 </CardDescription>
               </CardHeader>
@@ -187,12 +207,11 @@ export default function DiaDeSorteSimulador() {
                   <TableBody>
                     {resumoLinhas.map(r => {
                       const premiado = FAIXAS_PREMIADAS.has(r.acertos);
+                      const prob = probDiaDeSorte(r.acertos, nSimulado);
                       return (
                         <TableRow key={r.acertos} className={cn(premiado && "font-semibold")} style={premiado ? { backgroundColor: COR + "0d" } : {}}>
                           <TableCell className="text-center font-bold">{r.acertos}</TableCell>
-                          <TableCell className="text-center text-sm tabular-nums text-muted-foreground">
-                            {r.acertos === 7 ? "1 em 2.629.575" : r.acertos === 6 ? "1 em 36.690" : r.acertos === 5 ? "1 em 1.284" : r.acertos === 4 ? "1 em 93" : r.acertos === 3 ? "1 em 12" : "—"}
-                          </TableCell>
+                          <TableCell className="text-center text-sm tabular-nums text-muted-foreground">{prob}</TableCell>
                           <TableCell className="text-center">{r.contagem.toLocaleString("pt-BR")}</TableCell>
                           <TableCell className="text-center">{premiado ? <span>{PREMIADO_EMOJI}</span> : <span className="text-muted-foreground text-xs">—</span>}</TableCell>
                         </TableRow>
@@ -200,7 +219,11 @@ export default function DiaDeSorteSimulador() {
                     })}
                   </TableBody>
                 </Table>
-                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">As probabilidades indicadas correspondem a uma aposta de 7 dezenas no Dia de Sorte.</p>
+                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">
+                  {nSimulado === 7
+                    ? "As probabilidades indicadas correspondem a uma aposta simples de 7 dezenas."
+                    : `As probabilidades indicadas correspondem a uma aposta múltipla de ${nSimulado} dezenas.`}
+                </p>
               </CardContent>
             </Card>
           )}

@@ -10,7 +10,7 @@ import type { SimuladorInputDiadesorteFiltro } from './simuladorInputDiadesorteF
 export interface SimuladorInputDiadesorte {
   /**
      * @minItems 7
-     * @maxItems 7
+     * @maxItems 15
      */
   dezenas: string[];
   filtro?: SimuladorInputDiadesorteFiltro;

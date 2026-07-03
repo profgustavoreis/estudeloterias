@@ -737,7 +737,7 @@ export const SimuladorInputDiadesorteFiltro = {
 export interface SimuladorInputDiadesorte {
   /**
      * @minItems 7
-     * @maxItems 7
+     * @maxItems 15
      */
   dezenas: string[];
   filtro?: SimuladorInputDiadesorteFiltro;
@@ -829,12 +829,12 @@ export const SimuladorInputMaismilionariaFiltro = {
 export interface SimuladorInputMaismilionaria {
   /**
      * @minItems 6
-     * @maxItems 6
+     * @maxItems 12
      */
   dezenas: string[];
   /**
      * @minItems 2
-     * @maxItems 2
+     * @maxItems 6
      */
   trevos: string[];
   filtro?: SimuladorInputMaismilionariaFiltro;

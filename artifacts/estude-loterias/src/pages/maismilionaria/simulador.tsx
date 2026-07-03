@@ -14,9 +14,47 @@ import { PageSEO } from "@/components/seo/PageSEO";
 const COR = "#2E3078";
 const BALL_BG = "#2E3078";
 const BALL_TEXT = "#ffffff";
-const TOTAL_DEZENAS = 6;
-const TOTAL_TREVOS = 2;
 const PAGE_SIZE = 20;
+const MAX_DEZENAS = 12;
+const MIN_DEZENAS = 6;
+const MIN_TREVOS = 2;
+const MAX_TREVOS = 6;
+
+function comb(n: number, k: number): number {
+  if (k < 0 || k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  k = Math.min(k, n - k);
+  let r = 1;
+  for (let i = 0; i < k; i++) r = (r * (n - i)) / (i + 1);
+  return Math.round(r);
+}
+
+const FAIXA_DEFS = [
+  { label: "6+2",        acertosD: 6, tMin: 2, tMax: 2 },
+  { label: "6+1 ou 6+0", acertosD: 6, tMin: 0, tMax: 1 },
+  { label: "5+2",        acertosD: 5, tMin: 2, tMax: 2 },
+  { label: "5+1 ou 5+0", acertosD: 5, tMin: 0, tMax: 1 },
+  { label: "4+2",        acertosD: 4, tMin: 2, tMax: 2 },
+  { label: "4+1 ou 4+0", acertosD: 4, tMin: 0, tMax: 1 },
+  { label: "3+2",        acertosD: 3, tMin: 2, tMax: 2 },
+  { label: "3+1",        acertosD: 3, tMin: 1, tMax: 1 },
+  { label: "2+2",        acertosD: 2, tMin: 2, tMax: 2 },
+  { label: "2+1",        acertosD: 2, tMin: 1, tMax: 1 },
+];
+
+function probFaixa(acertosD: number, tMin: number, tMax: number, N: number, T: number): string {
+  if (N < acertosD || T < 2) return "—";
+  const dWays = comb(N, acertosD) * comb(50 - N, 6 - acertosD);
+  let tWays = 0;
+  for (let t = tMin; t <= tMax; t++) {
+    tWays += comb(T, t) * comb(6 - T, 2 - t);
+  }
+  if (dWays <= 0 || tWays <= 0) return "—";
+  const total = comb(50, 6) * comb(6, T);
+  const x = total / (dWays * tWays);
+  if (x >= 10) return `1 em ${Math.round(x).toLocaleString("pt-BR")}`;
+  return `1 em ${x.toFixed(2).replace(".", ",")}`;
+}
 
 type Filtro = "todos" | "premiados" | "seis" | "cinco" | "quatro" | "tres";
 
@@ -34,16 +72,18 @@ export default function MaismilionariaSimulador() {
   const [trevosSelecionados, setTrevosSelecionados] = useState<Set<number>>(new Set());
   const [filtro, setFiltro] = useState<Filtro>("premiados");
   const [resultado, setResultado] = useState<SimulacaoResultado | null>(null);
+  const [nSimulado, setNSimulado] = useState<number>(6);
+  const [tSimulado, setTSimulado] = useState<number>(2);
   const [infoAberta, setInfoAberta] = useState(false);
   const [paginaTabela, setPaginaTabela] = useState(1);
 
-  const simular = useSimularMaismilionaria({ mutation: { onSuccess: data => { setResultado(data); setPaginaTabela(1); } } });
+  const simular = useSimularMaismilionaria({ mutation: { onSuccess: data => { setResultado(data); setNSimulado(selecionadas.size); setTSimulado(trevosSelecionados.size); setPaginaTabela(1); } } });
 
   const toggleDezena = (n: number) => {
     setSelecionadas(prev => {
       const next = new Set(prev);
       if (next.has(n)) next.delete(n);
-      else if (next.size < TOTAL_DEZENAS) next.add(n);
+      else if (next.size < MAX_DEZENAS) next.add(n);
       return next;
     });
   };
@@ -52,7 +92,7 @@ export default function MaismilionariaSimulador() {
     setTrevosSelecionados(prev => {
       const next = new Set(prev);
       if (next.has(n)) next.delete(n);
-      else if (next.size < TOTAL_TREVOS) next.add(n);
+      else if (next.size < MAX_TREVOS) next.add(n);
       return next;
     });
   };
@@ -65,7 +105,7 @@ export default function MaismilionariaSimulador() {
 
   const handleLimpar = () => { setSelecionadas(new Set()); setTrevosSelecionados(new Set()); setResultado(null); simular.reset(); };
 
-  const podeSimular = selecionadas.size === TOTAL_DEZENAS && trevosSelecionados.size === TOTAL_TREVOS;
+  const podeSimular = selecionadas.size >= MIN_DEZENAS && trevosSelecionados.size >= MIN_TREVOS;
   const count = selecionadas.size;
   const countTrevos = trevosSelecionados.size;
 
@@ -94,7 +134,7 @@ export default function MaismilionariaSimulador() {
     <div className="space-y-6">
       <PageSEO
         title="Simulador Histórico da +Milionária — Teste sua Aposta no Histórico"
-        description="Escolha suas 6 dezenas e 2 trevos da sorte e descubra em quantos sorteios da +Milionária você teria ganhado. Simulador histórico gratuito e completo."
+        description="Escolha de 6 a 12 dezenas e de 2 a 6 trevos da sorte e descubra em quantos sorteios da +Milionária você teria ganhado."
         canonical="/maismilionaria/simulador"
       />
       <div className="flex items-center gap-4">
@@ -103,7 +143,7 @@ export default function MaismilionariaSimulador() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>+Milionária · Simulador Histórico</h1>
-          <p className="text-muted-foreground mt-1">Selecione exatamente 6 dezenas e 2 trevos da sorte e descubra em quantos sorteios anteriores você teria acertado.</p>
+          <p className="text-muted-foreground mt-1">Selecione de 6 a 12 dezenas e de 2 a 6 trevos da sorte e descubra em quantos sorteios anteriores você teria acertado.</p>
         </div>
       </div>
 
@@ -113,11 +153,11 @@ export default function MaismilionariaSimulador() {
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle>Escolha suas dezenas</CardTitle>
-              <span className={cn("text-sm font-semibold tabular-nums", count < TOTAL_DEZENAS ? "text-muted-foreground" : "")} style={count >= TOTAL_DEZENAS ? { color: COR } : {}}>{count}/{TOTAL_DEZENAS}</span>
+              <span className={cn("text-sm font-semibold tabular-nums", count < MIN_DEZENAS ? "text-muted-foreground" : "")} style={count >= MIN_DEZENAS ? { color: COR } : {}}>{count}/{MAX_DEZENAS}</span>
             </div>
             <CardDescription>
-              Marque exatamente 6 dezenas (01 a 50)
-              {count >= TOTAL_DEZENAS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
+              Mínimo de {MIN_DEZENAS} • Máximo de {MAX_DEZENAS}
+              {count >= MAX_DEZENAS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -125,12 +165,12 @@ export default function MaismilionariaSimulador() {
               {Array.from({ length: 50 }, (_, i) => i + 1).map(n => {
                 const sel = selecionadas.has(n);
                 return (
-                  <button key={n} onClick={() => toggleDezena(n)} disabled={!sel && count >= TOTAL_DEZENAS}
+                  <button key={n} onClick={() => toggleDezena(n)} disabled={!sel && count >= MAX_DEZENAS}
                     className={cn("aspect-square rounded text-[10px] font-bold transition-all duration-150 select-none",
-                      sel ? "text-white shadow-sm ring-1 scale-105" : count >= TOTAL_DEZENAS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
+                      sel ? "text-white shadow-sm ring-1 scale-105" : count >= MAX_DEZENAS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
                     style={sel ? { backgroundColor: COR } : {}}
-                    onMouseEnter={e => { if (!sel && count < TOTAL_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
-                    onMouseLeave={e => { if (!sel && count < TOTAL_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
+                    onMouseEnter={e => { if (!sel && count < MAX_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
+                    onMouseLeave={e => { if (!sel && count < MAX_DEZENAS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
                     {String(n).padStart(2, "0")}
                   </button>
                 );
@@ -153,11 +193,11 @@ export default function MaismilionariaSimulador() {
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle>Trevos da Sorte</CardTitle>
-              <span className={cn("text-sm font-semibold tabular-nums", countTrevos < TOTAL_TREVOS ? "text-muted-foreground" : "")} style={countTrevos >= TOTAL_TREVOS ? { color: COR } : {}}>{countTrevos}/{TOTAL_TREVOS}</span>
+              <span className={cn("text-sm font-semibold tabular-nums", countTrevos < MIN_TREVOS ? "text-muted-foreground" : "")} style={countTrevos >= MIN_TREVOS ? { color: COR } : {}}>{countTrevos}/{MAX_TREVOS}</span>
             </div>
             <CardDescription>
-              Marque exatamente 2 trevos (1 a 6)
-              {countTrevos >= TOTAL_TREVOS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
+              Mínimo de {MIN_TREVOS} • Máximo de {MAX_TREVOS}
+              {countTrevos >= MAX_TREVOS && <span className="ml-2 text-amber-600 font-medium">Limite atingido</span>}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -165,12 +205,12 @@ export default function MaismilionariaSimulador() {
               {Array.from({ length: 6 }, (_, i) => i + 1).map(n => {
                 const sel = trevosSelecionados.has(n);
                 return (
-                  <button key={n} onClick={() => toggleTrevo(n)} disabled={!sel && countTrevos >= TOTAL_TREVOS}
+                  <button key={n} onClick={() => toggleTrevo(n)} disabled={!sel && countTrevos >= MAX_TREVOS}
                     className={cn("w-12 h-12 rounded-full text-sm font-bold transition-all duration-150 select-none",
-                      sel ? "text-white shadow-sm ring-1 scale-105" : countTrevos >= TOTAL_TREVOS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
+                      sel ? "text-white shadow-sm ring-1 scale-105" : countTrevos >= MAX_TREVOS ? "bg-muted/30 text-muted-foreground/40 cursor-not-allowed" : "bg-muted/60 text-foreground border border-border hover:scale-105")}
                     style={sel ? { backgroundColor: COR } : {}}
-                    onMouseEnter={e => { if (!sel && countTrevos < TOTAL_TREVOS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
-                    onMouseLeave={e => { if (!sel && countTrevos < TOTAL_TREVOS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
+                    onMouseEnter={e => { if (!sel && countTrevos < MAX_TREVOS) (e.currentTarget as HTMLElement).style.backgroundColor = COR + "26"; }}
+                    onMouseLeave={e => { if (!sel && countTrevos < MAX_TREVOS) (e.currentTarget as HTMLElement).style.backgroundColor = ""; }}>
                     {n}
                   </button>
                 );
@@ -199,8 +239,8 @@ export default function MaismilionariaSimulador() {
               </button>
               {infoAberta && (
                 <ol className="mt-3 space-y-1.5 list-decimal list-inside">
-                  <li>Marque exatamente <strong>6 números</strong> no volante à esquerda (01 a 50).</li>
-                  <li>Marque exatamente <strong>2 trevos da sorte</strong> (1 a 6).</li>
+                  <li>Escolha de {MIN_DEZENAS} a {MAX_DEZENAS} números no volante à esquerda (01 a 50).</li>
+                  <li>Escolha de {MIN_TREVOS} a {MAX_TREVOS} trevos da sorte (1 a 6).</li>
                   <li>Defina quais concursos quer ver na tabela de resultados.</li>
                   <li>Clique em <strong>Simular</strong>.</li>
                   <li>O sistema varre todos os sorteios anteriores e indica em quantos você teria acertado cada faixa de premiação, considerando suas dezenas e trevos.</li>
@@ -228,13 +268,13 @@ export default function MaismilionariaSimulador() {
 
               {!podeSimular && (count > 0 || countTrevos > 0) && (
                 <p className="text-sm text-amber-600 text-center">
-                  {count < TOTAL_DEZENAS && `Selecione mais ${TOTAL_DEZENAS - count} dezena${TOTAL_DEZENAS - count > 1 ? "s" : ""}`}
-                  {count < TOTAL_DEZENAS && countTrevos < TOTAL_TREVOS && " e "}
-                  {countTrevos < TOTAL_TREVOS && `mais ${TOTAL_TREVOS - countTrevos} trevo${TOTAL_TREVOS - countTrevos > 1 ? "s" : ""}`}
+                  {count < MIN_DEZENAS && `Selecione mais ${MIN_DEZENAS - count} dezena${MIN_DEZENAS - count > 1 ? "s" : ""}`}
+                  {count < MIN_DEZENAS && countTrevos < MIN_TREVOS && " e "}
+                  {countTrevos < MIN_TREVOS && `mais ${MIN_TREVOS - countTrevos} trevo${MIN_TREVOS - countTrevos > 1 ? "s" : ""}`}
                   {" para simular."}
                 </p>
               )}
-              {count === 0 && countTrevos === 0 && <p className="text-sm text-muted-foreground text-center">Selecione 6 números e 2 trevos e clique em Simular.</p>}
+              {count === 0 && countTrevos === 0 && <p className="text-sm text-muted-foreground text-center">Selecione os números e trevos e clique em Simular.</p>}
             </CardContent>
           </Card>
 
@@ -243,7 +283,7 @@ export default function MaismilionariaSimulador() {
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-base"><Trophy className="w-4 h-4" style={{ color: COR }} />Resultado da Simulação</CardTitle>
                 <CardDescription>
-                  6 dezenas • 2 trevos • {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
+                  {nSimulado} dezena{nSimulado > 1 ? "s" : ""} • {tSimulado} trevo{tSimulado > 1 ? "s" : ""} • {resultado.totalConcursos.toLocaleString("pt-BR")} concursos •{" "}
                   {totalPremiados > 0 ? <span className="font-semibold" style={{ color: COR }}>{totalPremiados} faixa{totalPremiados > 1 ? "s" : ""} premiada{totalPremiados > 1 ? "s" : ""}</span> : "nenhuma faixa premiada"}
                 </CardDescription>
               </CardHeader>
@@ -257,16 +297,23 @@ export default function MaismilionariaSimulador() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {faixas.map(f => (
-                      <TableRow key={f.label} className={cn(f.contagem > 0 ? "font-semibold" : "text-muted-foreground")} style={f.contagem > 0 ? { backgroundColor: COR + "0d" } : {}}>
-                        <TableCell className="text-center font-bold">{f.label}</TableCell>
-                        <TableCell className="text-center text-sm tabular-nums">{f.probabilidade}</TableCell>
-                        <TableCell className="text-center">{f.contagem.toLocaleString("pt-BR")}</TableCell>
-                      </TableRow>
-                    ))}
+                    {FAIXA_DEFS.map(def => {
+                      const faixa = faixas.find(f => f.label === def.label);
+                      const contagem = faixa?.contagem ?? 0;
+                      const prob = probFaixa(def.acertosD, def.tMin, def.tMax, nSimulado, tSimulado);
+                      return (
+                        <TableRow key={def.label} className={cn(contagem > 0 ? "font-semibold" : "text-muted-foreground")} style={contagem > 0 ? { backgroundColor: COR + "0d" } : {}}>
+                          <TableCell className="text-center font-bold">{def.label}</TableCell>
+                          <TableCell className="text-center text-sm tabular-nums">{prob}</TableCell>
+                          <TableCell className="text-center">{contagem.toLocaleString("pt-BR")}</TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
-                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">Probabilidades calculadas sobre o espaço amostral completo da +Milionária: C(50,6) × C(6,2) = 238.360.500 combinações possíveis.</p>
+                <p className="mt-3 text-xs text-muted-foreground leading-snug border-t pt-3">
+                  Probabilidades calculadas para {nSimulado} dezena{nSimulado > 1 ? "s" : ""} + {tSimulado} trevo{tSimulado > 1 ? "s" : ""} sobre {(comb(50, 6) * comb(6, tSimulado)).toLocaleString("pt-BR")} combinações possíveis.
+                </p>
               </CardContent>
             </Card>
           )}

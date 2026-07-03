@@ -1573,7 +1573,7 @@ export const GetDiadesorteResumoResponse = zod.object({
  * @summary Simula uma aposta no histórico da Dia de Sorte
  */
 export const simularDiadesorteBodyDezenasMin = 7;
-export const simularDiadesorteBodyDezenasMax = 7;
+export const simularDiadesorteBodyDezenasMax = 15;
 
 export const simularDiadesorteBodyFiltroDefault = `premiados`;
 
@@ -1821,10 +1821,10 @@ export const GetMaismilionariaResumoResponse = zod.object({
  * @summary Simula uma aposta no histórico da +Milionária
  */
 export const simularMaismilionariaBodyDezenasMin = 6;
-export const simularMaismilionariaBodyDezenasMax = 6;
+export const simularMaismilionariaBodyDezenasMax = 12;
 
 export const simularMaismilionariaBodyTrevosMin = 2;
-export const simularMaismilionariaBodyTrevosMax = 2;
+export const simularMaismilionariaBodyTrevosMax = 6;
 
 export const simularMaismilionariaBodyFiltroDefault = `premiados`;
 
