@@ -11,6 +11,7 @@ export interface ResultadoTimemania {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */

@@ -68,10 +68,16 @@ function DezenasCard({ resultado }: { resultado: ResultadoDiadesorte }) {
       </CardHeader>
       <CardContent className="space-y-4 flex-1">
         <div>
-          <SectionLabel>Em ordem crescente</SectionLabel>
-          <Balls dezenas={resultado.dezenas} size="md" />
-        </div>
-        {resultado.mesSorte && (
+            <SectionLabel>Em ordem crescente</SectionLabel>
+            <Balls dezenas={resultado.dezenas} size="md" />
+          </div>
+          {resultado.dezenasOrdem && (
+            <div>
+              <SectionLabel>Na ordem do sorteio</SectionLabel>
+              <Balls dezenas={resultado.dezenasOrdem} size="md" />
+            </div>
+          )}
+          {resultado.mesSorte && (
           <div className="pt-2 border-t">
             <SectionLabel>Mês da Sorte</SectionLabel>
             <span className="inline-block text-sm font-bold px-3 py-1 rounded-full text-white" style={{ backgroundColor: COR }}>{resultado.mesSorte}</span>

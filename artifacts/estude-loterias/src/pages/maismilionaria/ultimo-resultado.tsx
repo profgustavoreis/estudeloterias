@@ -74,19 +74,35 @@ function DezenasCard({ resultado }: { resultado: ResultadoMaismilionaria }) {
       </CardHeader>
       <CardContent className="space-y-4 flex-1">
         <div>
-          <SectionLabel>Em ordem crescente</SectionLabel>
-          <Balls dezenas={resultado.dezenas} size="md" />
-        </div>
-        {resultado.trevos && resultado.trevos.length > 0 && (
-          <div className="pt-2 border-t">
-            <SectionLabel>Trevos da Sorte</SectionLabel>
-            <div className="flex flex-wrap gap-1">
-              {resultado.trevos.map((t, i) => (
-                <LotteryBall key={i} number={t} size="md" color={COR} textColor={BALL_TEXT} />
-              ))}
-            </div>
+            <SectionLabel>Em ordem crescente</SectionLabel>
+            <Balls dezenas={resultado.dezenas} size="md" />
           </div>
-        )}
+          {resultado.dezenasOrdem && (
+            <div>
+              <SectionLabel>Na ordem do sorteio</SectionLabel>
+              <Balls dezenas={resultado.dezenasOrdem} size="md" />
+            </div>
+          )}
+          {resultado.trevos && resultado.trevos.length > 0 && (
+            <div className="pt-2 border-t">
+              <SectionLabel>Trevos da sorte em ordem crescente</SectionLabel>
+              <div className="flex flex-wrap gap-1">
+                {resultado.trevos.map((t, i) => (
+                  <LotteryBall key={i} number={t} size="md" color={COR} textColor={BALL_TEXT} />
+                ))}
+              </div>
+            </div>
+          )}
+          {resultado.trevosOrdem && resultado.trevosOrdem.length > 0 && (
+            <div>
+              <SectionLabel>Trevos da sorte na ordem do sorteio</SectionLabel>
+              <div className="flex flex-wrap gap-1">
+                {resultado.trevosOrdem.map((t, i) => (
+                  <LotteryBall key={i} number={t} size="md" color={COR} textColor={BALL_TEXT} />
+                ))}
+              </div>
+            </div>
+          )}
       </CardContent>
     </Card>
   );

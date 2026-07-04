@@ -11,7 +11,9 @@ export interface ResultadoMaismilionaria {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   trevos?: string[] | null;
+  trevosOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */

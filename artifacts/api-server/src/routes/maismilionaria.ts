@@ -11,11 +11,16 @@ const MODALIDADE = "maismilionaria";
 
 function toResultado(row: typeof lotteryResultsTable.$inferSelect) {
   const meta = row.metadata as { trevos?: string[] } | null;
+  const trevosRaw = meta?.trevos ?? null;
+  const trevosSet = trevosRaw ? new Set(trevosRaw.map(Number)) : null;
   return {
     concurso: row.concurso,
     data: row.data,
     dezenas: row.dezenas as string[],
-    trevos: meta?.trevos ?? null,
+    dezenasOrdem: ((row.dezenasOrdem as string[] | null) ?? null)
+      ?.filter(d => !trevosSet?.has(Number(d))) ?? null,
+    trevos: trevosRaw ? [...trevosRaw].sort((a, b) => Number(a) - Number(b)) : null,
+    trevosOrdem: trevosRaw,
     premios: row.premios as Array<{ faixa: number; descricao: string; ganhadores: number; valorPremio: number }>,
     acumulado: row.acumulado,
     valorAcumulado: row.valorAcumulado ? Number(row.valorAcumulado) : null,
@@ -96,8 +101,14 @@ router.get("/maismilionaria/resultados/:concurso", async (req, res) => {
     const raw = await fetchGuidi(MODALIDADE, concurso);
     if (!raw) { res.status(404).json({ error: "Concurso não encontrado" }); return; }
     const norm = normalizeResult(raw, MODALIDADE);
+    const fbTrevos = (norm.metadata as { trevos?: string[] } | null)?.trevos ?? null;
+    const fbTrevosSet = fbTrevos ? new Set(fbTrevos.map(Number)) : null;
     res.json({
       ...norm,
+      dezenasOrdem: (norm.dezenasOrdem as string[] | null)
+        ?.filter(d => !fbTrevosSet?.has(Number(d))) ?? null,
+      trevos: fbTrevos ? [...fbTrevos].sort((a, b) => Number(a) - Number(b)) : null,
+      trevosOrdem: fbTrevos,
       valorAcumulado: norm.valorAcumulado ? Number(norm.valorAcumulado) : null,
       valorEstimadoProximoConcurso: norm.valorEstimadoProximo ? Number(norm.valorEstimadoProximo) : null,
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,

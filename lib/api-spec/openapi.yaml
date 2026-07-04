@@ -1639,6 +1639,11 @@ components:
           type: array
           items:
             type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
+          items:
+            type: string
         premios:
           type: array
           items:
@@ -1838,6 +1843,11 @@ components:
           type: string
         dezenas:
           type: array
+          items:
+            type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
           items:
             type: string
         premios:
@@ -2040,6 +2050,11 @@ components:
           type: array
           items:
             type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
+          items:
+            type: string
         premios:
           type: array
           items:
@@ -2211,6 +2226,11 @@ components:
           type: string
         dezenas:
           type: array
+          items:
+            type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
           items:
             type: string
         premios:
@@ -2386,6 +2406,11 @@ components:
           type: string
         dezenas:
           type: array
+          items:
+            type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
           items:
             type: string
         premios:
@@ -2576,7 +2601,17 @@ components:
           type: array
           items:
             type: string
+        dezenasOrdem:
+          type: array
+          nullable: true
+          items:
+            type: string
         trevos:
+          type: array
+          nullable: true
+          items:
+            type: string
+        trevosOrdem:
           type: array
           nullable: true
           items:

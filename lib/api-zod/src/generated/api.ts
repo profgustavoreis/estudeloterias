@@ -363,6 +363,7 @@ export const GetLotofacilUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -402,6 +403,7 @@ export const GetLotofacilResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -430,6 +432,7 @@ export const GetLotofacilResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -551,6 +554,7 @@ export const GetLotofacilDaIndependenciaResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -639,6 +643,7 @@ export const GetQuinaUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -678,6 +683,7 @@ export const GetQuinaResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -706,6 +712,7 @@ export const GetQuinaResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -827,6 +834,7 @@ export const GetQuinaDeSaoJoaoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -915,6 +923,7 @@ export const GetLotomaniaUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -952,6 +961,7 @@ export const GetLotomaniaResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -978,6 +988,7 @@ export const GetLotomaniaResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1152,6 +1163,7 @@ export const GetTimemaniaUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1190,6 +1202,7 @@ export const GetTimemaniaResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1217,6 +1230,7 @@ export const GetTimemaniaResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1392,6 +1406,7 @@ export const GetDiadesorteUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1433,6 +1448,7 @@ export const GetDiadesorteResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1460,6 +1476,7 @@ export const GetDiadesorteResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1640,7 +1657,9 @@ export const GetMaismilionariaUltimoResultadoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "trevos": zod.array(zod.string()).nullish(),
+  "trevosOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1681,7 +1700,9 @@ export const GetMaismilionariaResultadosResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "trevos": zod.array(zod.string()).nullish(),
+  "trevosOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),
@@ -1708,7 +1729,9 @@ export const GetMaismilionariaResultadoConcursoResponse = zod.object({
   "concurso": zod.number(),
   "data": zod.string(),
   "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
   "trevos": zod.array(zod.string()).nullish(),
+  "trevosOrdem": zod.array(zod.string()).nullish(),
   "premios": zod.array(zod.object({
   "faixa": zod.number(),
   "descricao": zod.string(),

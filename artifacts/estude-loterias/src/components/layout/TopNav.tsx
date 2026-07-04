@@ -90,76 +90,16 @@ const lotomaniaInfo = [
 
 const lotomaniaAll = [...lotomaniaTools, ...lotomaniaInfo];
 
-// ── Timemania items ──────────────────────────────────────────────────────────
-const timemaniaTools = [
-  { href: "/timemania",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da Timemania" },
-  { href: "/timemania/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
-  { href: "/timemania/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
-  { href: "/timemania/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
-  { href: "/timemania/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
-  { href: "/timemania/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
-  { href: "/timemania/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
-  { href: "/timemania/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
-];
-
-const timemaniaInfo = [
-  { href: "/timemania/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
-  { href: "/timemania/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
-  { href: "/timemania/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
-];
-
-const timemaniaAll = [...timemaniaTools, ...timemaniaInfo];
-
-// ── Dia de Sorte items ──────────────────────────────────────────────────────
-const diaDeSorteTools = [
-  { href: "/diadesorte",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da Dia de Sorte" },
-  { href: "/diadesorte/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
-  { href: "/diadesorte/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
-  { href: "/diadesorte/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
-  { href: "/diadesorte/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
-  { href: "/diadesorte/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
-  { href: "/diadesorte/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
-  { href: "/diadesorte/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
-];
-
-const diaDeSorteInfo = [
-  { href: "/diadesorte/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
-  { href: "/diadesorte/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
-  { href: "/diadesorte/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
-];
-
-const diaDeSorteAll = [...diaDeSorteTools, ...diaDeSorteInfo];
-
-// ── +Milionária items ──────────────────────────────────────────────────────
-const maisMilionariaTools = [
-  { href: "/maismilionaria",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da +Milionária" },
-  { href: "/maismilionaria/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
-  { href: "/maismilionaria/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
-  { href: "/maismilionaria/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
-  { href: "/maismilionaria/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
-  { href: "/maismilionaria/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
-  { href: "/maismilionaria/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
-  { href: "/maismilionaria/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
-];
-
-const maisMilionariaInfo = [
-  { href: "/maismilionaria/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
-  { href: "/maismilionaria/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
-  { href: "/maismilionaria/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
-];
-
-const maisMilionariaAll = [...maisMilionariaTools, ...maisMilionariaInfo];
-
 // ── Outras Loterias ───────────────────────────────────────────────────────────
 // Items with an `href` are live and link out; items without one are still "em breve".
 const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
   { label: "Quina",       cor: "#260085", href: "/quina" },
   { label: "Lotomania",   cor: "#f8901c", href: "/lotomania" },
-  { label: "Timemania",   cor: "#FFF600", href: "/timemania" },
   { label: "Dupla Sena",  cor: "#a8003c" },
-  { label: "Dia de Sorte", cor: "#cb852b", href: "/diadesorte" },
+  { label: "Timemania",   cor: "#00a650" },
+  { label: "Dia de Sorte", cor: "#f5a623" },
   { label: "Super Sete",  cor: "#a8cf45" },
-  { label: "+Milionária",  cor: "#2E3078", href: "/maismilionaria" },
+  { label: "+Milionária",  cor: "#2c2c2c" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -364,15 +304,9 @@ export function TopNav() {
   // otherwise they stay reachable via "Outras Loterias" (unlike the still-unbuilt lotteries).
   const quinaActive = !!bestMatch(location, quinaAll);
   const lotomaniaActive = !!bestMatch(location, lotomaniaAll);
-  const timemaniaActive = !!bestMatch(location, timemaniaAll);
-  const diaDeSorteActive = !!bestMatch(location, diaDeSorteAll);
-  const maisMilionariaActive = !!bestMatch(location, maisMilionariaAll);
   const visibleOutrasLoterias = outrasLoterias.filter(l =>
     (l.label !== "Quina" || !quinaActive) &&
-    (l.label !== "Lotomania" || !lotomaniaActive) &&
-    (l.label !== "Timemania" || !timemaniaActive) &&
-    (l.label !== "Dia de Sorte" || !diaDeSorteActive) &&
-    (l.label !== "+Milionária" || !maisMilionariaActive)
+    (l.label !== "Lotomania" || !lotomaniaActive)
   );
 
   return (
@@ -448,42 +382,6 @@ export function TopNav() {
                 allItems={lotomaniaAll}
                 isOpen={openMenu === "lotomania"}
                 onToggle={() => toggle("lotomania")}
-              />
-            )}
-
-            {timemaniaActive && (
-              <LotteryDropdown
-                label="Timemania"
-                cor="#049645"
-                tools={timemaniaTools}
-                info={timemaniaInfo}
-                allItems={timemaniaAll}
-                isOpen={openMenu === "timemania"}
-                onToggle={() => toggle("timemania")}
-              />
-            )}
-
-            {diaDeSorteActive && (
-              <LotteryDropdown
-                label="Dia de Sorte"
-                cor="#cb852b"
-                tools={diaDeSorteTools}
-                info={diaDeSorteInfo}
-                allItems={diaDeSorteAll}
-                isOpen={openMenu === "diadesorte"}
-                onToggle={() => toggle("diadesorte")}
-              />
-            )}
-
-            {maisMilionariaActive && (
-              <LotteryDropdown
-                label="+Milionária"
-                cor="#2E3078"
-                tools={maisMilionariaTools}
-                info={maisMilionariaInfo}
-                allItems={maisMilionariaAll}
-                isOpen={openMenu === "maismilionaria"}
-                onToggle={() => toggle("maismilionaria")}
               />
             )}
 
@@ -676,96 +574,6 @@ export function TopNav() {
               </>
             )}
 
-            {/* +Milionária — tools (only shown when a +Milionária page is active) */}
-            {maisMilionariaActive && (
-              <>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#2E3078" }}>
-                    +Milionária
-                  </div>
-                  <div className="space-y-1">
-                    {maisMilionariaTools.map(item => {
-                      const Icon = item.icon;
-                      const active = bestMatch(location, maisMilionariaAll)?.href === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#2E30781a", color: "#2E3078" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    +Milionária — Informações
-                  </div>
-                  <div className="space-y-1">
-                    {maisMilionariaInfo.map(item => {
-                      const Icon = item.icon;
-                      const active = location === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#2E30781a", color: "#2E3078" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Dia de Sorte — tools (only shown when a Dia de Sorte page is active) */}
-            {diaDeSorteActive && (
-              <>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#cb852b" }}>
-                    Dia de Sorte
-                  </div>
-                  <div className="space-y-1">
-                    {diaDeSorteTools.map(item => {
-                      const Icon = item.icon;
-                      const active = bestMatch(location, diaDeSorteAll)?.href === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#cb852b1a", color: "#cb852b" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Dia de Sorte — Informações
-                  </div>
-                  <div className="space-y-1">
-                    {diaDeSorteInfo.map(item => {
-                      const Icon = item.icon;
-                      const active = location === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#cb852b1a", color: "#cb852b" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-
             {/* Outras Loterias */}
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
@@ -807,51 +615,6 @@ export function TopNav() {
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
                           style={active ? { backgroundColor: "#f8901c1a", color: "#f8901c" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Timemania — tools (only shown when a Timemania page is active) */}
-            {timemaniaActive && (
-              <>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#049645" }}>
-                    Timemania
-                  </div>
-                  <div className="space-y-1">
-                    {timemaniaTools.map(item => {
-                      const Icon = item.icon;
-                      const active = bestMatch(location, timemaniaAll)?.href === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#0496451a", color: "#049645" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Timemania — Informações
-                  </div>
-                  <div className="space-y-1">
-                    {timemaniaInfo.map(item => {
-                      const Icon = item.icon;
-                      const active = location === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#0496451a", color: "#049645" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );

@@ -71,10 +71,16 @@ function DezenasCard({ resultado }: { resultado: ResultadoLotofacil }) {
       </CardHeader>
       <CardContent className="space-y-4 flex-1">
         <div>
-          <SectionLabel>Em ordem crescente</SectionLabel>
-          <Balls dezenas={resultado.dezenas} size="sm" />
-        </div>
-      </CardContent>
+            <SectionLabel>Em ordem crescente</SectionLabel>
+            <Balls dezenas={resultado.dezenas} size="sm" />
+          </div>
+          {resultado.dezenasOrdem && (
+            <div>
+              <SectionLabel>Na ordem do sorteio</SectionLabel>
+              <Balls dezenas={resultado.dezenasOrdem} size="sm" />
+            </div>
+          )}
+        </CardContent>
     </Card>
   );
 }

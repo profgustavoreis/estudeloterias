@@ -280,6 +280,7 @@ export interface ResultadoLotofacil {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */
@@ -384,6 +385,7 @@ export interface ResultadoQuina {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */
@@ -488,6 +490,7 @@ export interface ResultadoLotomania {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */
@@ -577,6 +580,7 @@ export interface ResultadoTimemania {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */
@@ -666,6 +670,7 @@ export interface ResultadoDiadesorte {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */
@@ -760,7 +765,9 @@ export interface ResultadoMaismilionaria {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenasOrdem?: string[] | null;
   trevos?: string[] | null;
+  trevosOrdem?: string[] | null;
   premios: FaixaPremio[];
   acumulado: boolean;
   /** @nullable */
