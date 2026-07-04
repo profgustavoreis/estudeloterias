@@ -133,6 +133,7 @@ async function upsertResult(data: ReturnType<typeof normalizeResult>) {
         valorAcumuladoConcurso_0_5: data.valorAcumuladoConcurso_0_5,
         valorAcumuladoConcursoEspecial: data.valorAcumuladoConcursoEspecial,
         metadata: data.metadata as any,
+        createdAt: sql`now()` as any,  // updated on each upsert (last-confirmed time, not original created_at)
       },
     });
 }
