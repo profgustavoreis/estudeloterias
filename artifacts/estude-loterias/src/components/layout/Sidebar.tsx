@@ -145,6 +145,25 @@ export function Sidebar() {
         { href: "/maismilionaria/premiacao", label: "Premiação", icon: Target },
         { href: "/maismilionaria/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
       ]
+    },
+    {
+      title: "Dupla Sena",
+      items: [
+        { href: "/duplasena", label: "Painel Principal", icon: Target },
+        { href: "/duplasena/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/duplasena/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/duplasena/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/duplasena/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "Dupla Sena — Info",
+      items: [
+        { href: "/duplasena/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/duplasena/premiacao", label: "Premiação", icon: Target },
+        { href: "/duplasena/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+        { href: "/duplasena/dupla-de-pascoa", label: "Dupla de Páscoa", icon: Gift },
+      ]
     }
   ];
 

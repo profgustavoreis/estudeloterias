@@ -865,6 +865,124 @@ export interface GeradorInputMaismilionaria {
   quantidadeTrevos?: number;
 }
 
+export interface ResultadoDuplasena {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  dezenasOrdem?: string[] | null;
+  trevos?: string[] | null;
+  dezenas2?: string[] | null;
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+}
+
+export interface ResultadosPaginadosDuplasena {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoDuplasena[];
+}
+
+export interface EstatisticasDuplasena {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezena[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  molduraRetrato: MolduraRetrato[];
+  frequenciaPorLinha: FrequenciaFaixa[];
+  frequenciaPorColuna: FrequenciaColuna[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+}
+
+export interface ResumoDuplasena {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores6: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputDuplasenaFiltro = typeof SimuladorInputDuplasenaFiltro[keyof typeof SimuladorInputDuplasenaFiltro];
+
+
+export const SimuladorInputDuplasenaFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  sena: 'sena',
+  quina: 'quina',
+  quadra: 'quadra',
+  terno: 'terno',
+} as const;
+
+export interface SimuladorInputDuplasena {
+  /**
+     * @minItems 6
+     * @maxItems 15
+     */
+  dezenas: string[];
+  filtro?: SimuladorInputDuplasenaFiltro;
+}
+
+export interface GeradorInputDuplasena {
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  quantidadeJogos: number;
+  /**
+     * @minimum 6
+     * @maximum 15
+     */
+  quantidadeDezenas: number;
+}
+
+export type SimulacaoResultadoDuplasenaResumoItem = {
+  acertos: number;
+  contagem: number;
+  /** Indica se o resultado é do 1º ou 2º sorteio (1 ou 2) */
+  sorteio: number;
+};
+
+export type SimulacaoResultadoDuplasenaConcursosItem = {
+  concurso: number;
+  data: string;
+  dezenas: string[];
+  acertos: number;
+  premioGanho: number;
+  /** Indica se o resultado é do 1º ou 2º sorteio (1 ou 2) */
+  sorteio: number;
+};
+
+export interface SimulacaoResultadoDuplasena {
+  resumo: SimulacaoResultadoDuplasenaResumoItem[];
+  concursos: SimulacaoResultadoDuplasenaConcursosItem[];
+  totalPremio: number;
+  totalConcursos: number;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -997,5 +1115,38 @@ export type GetMaismilionariaResultadosOrdem = typeof GetMaismilionariaResultado
 export const GetMaismilionariaResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
+} as const;
+
+export type GetDuplasenaResultadosParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+ano?: number | null;
+ordem?: GetDuplasenaResultadosOrdem;
+};
+
+export type GetDuplasenaResultadosOrdem = typeof GetDuplasenaResultadosOrdem[keyof typeof GetDuplasenaResultadosOrdem];
+
+
+export const GetDuplasenaResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;
+
+export type GetDuplasenaEstatisticasParams = {
+/**
+ * Filtrar estatísticas por sorteio (1 = 1º Sorteio, 2 = 2º Sorteio)
+ */
+sorteio?: GetDuplasenaEstatisticasSorteio;
+};
+
+export type GetDuplasenaEstatisticasSorteio = typeof GetDuplasenaEstatisticasSorteio[keyof typeof GetDuplasenaEstatisticasSorteio];
+
+
+export const GetDuplasenaEstatisticasSorteio = {
+  NUMBER_1: '1',
+  NUMBER_2: '2',
 } as const;
 

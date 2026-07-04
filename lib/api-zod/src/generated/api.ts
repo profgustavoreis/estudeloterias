@@ -1913,3 +1913,251 @@ export const GerarJogoMaismilionariaResponse = zod.object({
 })
 
 
+/**
+ * @summary Último resultado da Dupla Sena
+ */
+export const GetDuplasenaUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
+  "trevos": zod.array(zod.string()).nullish(),
+  "dezenas2": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Histórico de resultados da Dupla Sena
+ */
+export const getDuplasenaResultadosQueryPageDefault = 1;
+export const getDuplasenaResultadosQueryLimitDefault = 20;
+export const getDuplasenaResultadosQueryOrdemDefault = `desc`;
+
+export const GetDuplasenaResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().default(getDuplasenaResultadosQueryPageDefault),
+  "limit": zod.coerce.number().default(getDuplasenaResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getDuplasenaResultadosQueryOrdemDefault)
+})
+
+export const GetDuplasenaResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
+  "trevos": zod.array(zod.string()).nullish(),
+  "dezenas2": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da Dupla Sena
+ */
+export const GetDuplasenaResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const GetDuplasenaResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
+  "trevos": zod.array(zod.string()).nullish(),
+  "dezenas2": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Estatísticas da Dupla Sena (frequência de dezenas, etc.)
+ */
+export const getDuplasenaEstatisticasQuerySorteioDefault = `1`;
+
+export const GetDuplasenaEstatisticasQueryParams = zod.object({
+  "sorteio": zod.enum(['1', '2']).default(getDuplasenaEstatisticasQuerySorteioDefault).describe('Filtrar estatísticas por sorteio (1 = 1º Sorteio, 2 = 2º Sorteio)')
+})
+
+export const GetDuplasenaEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "molduraRetrato": zod.array(zod.object({
+  "moldura": zod.number(),
+  "retrato": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorLinha": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "frequenciaPorColuna": zod.array(zod.object({
+  "coluna": zod.number(),
+  "sorteios": zod.number()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+}))
+})
+
+
+/**
+ * @summary Resumo agregado da Dupla Sena
+ */
+export const GetDuplasenaResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores6": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Dupla Sena
+ */
+export const simularDuplasenaBodyDezenasMin = 6;
+export const simularDuplasenaBodyDezenasMax = 15;
+
+export const simularDuplasenaBodyFiltroDefault = `premiados`;
+
+export const SimularDuplasenaBody = zod.object({
+  "dezenas": zod.array(zod.string()).min(simularDuplasenaBodyDezenasMin).max(simularDuplasenaBodyDezenasMax),
+  "filtro": zod.enum(['todos', 'premiados', 'sena', 'quina', 'quadra', 'terno']).default(simularDuplasenaBodyFiltroDefault)
+})
+
+export const SimularDuplasenaResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number(),
+  "sorteio": zod.number().describe('Indica se o resultado é do 1º ou 2º sorteio (1 ou 2)')
+})),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "acertos": zod.number(),
+  "premioGanho": zod.number(),
+  "sorteio": zod.number().describe('Indica se o resultado é do 1º ou 2º sorteio (1 ou 2)')
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de Dupla Sena (6 a 15 dezenas)
+ */
+export const gerarJogoDuplasenaBodyQuantidadeJogosDefault = 1;
+export const gerarJogoDuplasenaBodyQuantidadeJogosMax = 20;
+
+export const gerarJogoDuplasenaBodyQuantidadeDezenasDefault = 6;
+export const gerarJogoDuplasenaBodyQuantidadeDezenasMin = 6;
+export const gerarJogoDuplasenaBodyQuantidadeDezenasMax = 15;
+
+
+
+export const GerarJogoDuplasenaBody = zod.object({
+  "quantidadeJogos": zod.number().min(1).max(gerarJogoDuplasenaBodyQuantidadeJogosMax).default(gerarJogoDuplasenaBodyQuantidadeJogosDefault),
+  "quantidadeDezenas": zod.number().min(gerarJogoDuplasenaBodyQuantidadeDezenasMin).max(gerarJogoDuplasenaBodyQuantidadeDezenasMax).default(gerarJogoDuplasenaBodyQuantidadeDezenasDefault)
+})
+
+export const GerarJogoDuplasenaResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.number())),
+  "custo": zod.number()
+})
+
+

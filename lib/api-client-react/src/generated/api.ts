@@ -22,6 +22,7 @@ import type {
 import type {
   ApiError,
   EstatisticasDiadesorte,
+  EstatisticasDuplasena,
   EstatisticasLotofacil,
   EstatisticasLotomania,
   EstatisticasMaismilionaria,
@@ -30,12 +31,15 @@ import type {
   EstatisticasTimemania,
   GeradorInput,
   GeradorInputDiadesorte,
+  GeradorInputDuplasena,
   GeradorInputLotofacil,
   GeradorInputLotomania,
   GeradorInputMaismilionaria,
   GeradorInputQuina,
   GeradorInputTimemania,
   GetDiadesorteResultadosParams,
+  GetDuplasenaEstatisticasParams,
+  GetDuplasenaResultadosParams,
   GetLotofacilResultadosParams,
   GetLotomaniaResultadosParams,
   GetMaismilionariaResultadosParams,
@@ -50,6 +54,7 @@ import type {
   QuinaDeSaoJoao,
   Resultado,
   ResultadoDiadesorte,
+  ResultadoDuplasena,
   ResultadoLotofacil,
   ResultadoLotomania,
   ResultadoMaismilionaria,
@@ -58,12 +63,14 @@ import type {
   ResultadoTimemania,
   ResultadosPaginados,
   ResultadosPaginadosDiadesorte,
+  ResultadosPaginadosDuplasena,
   ResultadosPaginadosLotofacil,
   ResultadosPaginadosLotomania,
   ResultadosPaginadosMaismilionaria,
   ResultadosPaginadosQuina,
   ResultadosPaginadosTimemania,
   ResumoDiadesorte,
+  ResumoDuplasena,
   ResumoLotofacil,
   ResumoLotomania,
   ResumoMaismilionaria,
@@ -71,8 +78,10 @@ import type {
   ResumoQuina,
   ResumoTimemania,
   SimulacaoResultado,
+  SimulacaoResultadoDuplasena,
   SimuladorInput,
   SimuladorInputDiadesorte,
+  SimuladorInputDuplasena,
   SimuladorInputLotofacil,
   SimuladorInputLotomania,
   SimuladorInputMaismilionaria,
@@ -4291,5 +4300,546 @@ export const useGerarJogoMaismilionaria = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoMaismilionariaMutationOptions(options));
+    }
+
+export const getGetDuplasenaUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/duplasena/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da Dupla Sena
+ */
+export const getDuplasenaUltimoResultado = async ( options?: RequestInit): Promise<ResultadoDuplasena> => {
+
+  return customFetch<ResultadoDuplasena>(getGetDuplasenaUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDuplasenaUltimoResultadoQueryKey = () => {
+    return [
+    `/api/duplasena/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetDuplasenaUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDuplasenaUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>> = ({ signal }) => getDuplasenaUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDuplasenaUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>>
+export type GetDuplasenaUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da Dupla Sena
+ */
+
+export function useGetDuplasenaUltimoResultado<TData = Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDuplasenaUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDuplasenaResultadosUrl = (params?: GetDuplasenaResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/duplasena/resultados?${stringifiedParams}` : `/api/duplasena/resultados`
+}
+
+/**
+ * @summary Histórico de resultados da Dupla Sena
+ */
+export const getDuplasenaResultados = async (params?: GetDuplasenaResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosDuplasena> => {
+
+  return customFetch<ResultadosPaginadosDuplasena>(getGetDuplasenaResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDuplasenaResultadosQueryKey = (params?: GetDuplasenaResultadosParams,) => {
+    return [
+    `/api/duplasena/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetDuplasenaResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getDuplasenaResultados>>, TError = ErrorType<unknown>>(params?: GetDuplasenaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDuplasenaResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDuplasenaResultados>>> = ({ signal }) => getDuplasenaResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDuplasenaResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getDuplasenaResultados>>>
+export type GetDuplasenaResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Histórico de resultados da Dupla Sena
+ */
+
+export function useGetDuplasenaResultados<TData = Awaited<ReturnType<typeof getDuplasenaResultados>>, TError = ErrorType<unknown>>(
+ params?: GetDuplasenaResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDuplasenaResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDuplasenaResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/duplasena/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da Dupla Sena
+ */
+export const getDuplasenaResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoDuplasena> => {
+
+  return customFetch<ResultadoDuplasena>(getGetDuplasenaResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDuplasenaResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/duplasena/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetDuplasenaResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>, TError = ErrorType<ApiError>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDuplasenaResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>> = ({ signal }) => getDuplasenaResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDuplasenaResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>>
+export type GetDuplasenaResultadoConcursoQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary Resultado de um concurso específico da Dupla Sena
+ */
+
+export function useGetDuplasenaResultadoConcurso<TData = Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>, TError = ErrorType<ApiError>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDuplasenaResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDuplasenaEstatisticasUrl = (params?: GetDuplasenaEstatisticasParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/duplasena/estatisticas?${stringifiedParams}` : `/api/duplasena/estatisticas`
+}
+
+/**
+ * @summary Estatísticas da Dupla Sena (frequência de dezenas, etc.)
+ */
+export const getDuplasenaEstatisticas = async (params?: GetDuplasenaEstatisticasParams, options?: RequestInit): Promise<EstatisticasDuplasena> => {
+
+  return customFetch<EstatisticasDuplasena>(getGetDuplasenaEstatisticasUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDuplasenaEstatisticasQueryKey = (params?: GetDuplasenaEstatisticasParams,) => {
+    return [
+    `/api/duplasena/estatisticas`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetDuplasenaEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getDuplasenaEstatisticas>>, TError = ErrorType<unknown>>(params?: GetDuplasenaEstatisticasParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDuplasenaEstatisticasQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDuplasenaEstatisticas>>> = ({ signal }) => getDuplasenaEstatisticas(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDuplasenaEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getDuplasenaEstatisticas>>>
+export type GetDuplasenaEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas da Dupla Sena (frequência de dezenas, etc.)
+ */
+
+export function useGetDuplasenaEstatisticas<TData = Awaited<ReturnType<typeof getDuplasenaEstatisticas>>, TError = ErrorType<unknown>>(
+ params?: GetDuplasenaEstatisticasParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDuplasenaEstatisticasQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetDuplasenaResumoUrl = () => {
+
+
+
+
+  return `/api/duplasena/resumo`
+}
+
+/**
+ * @summary Resumo agregado da Dupla Sena
+ */
+export const getDuplasenaResumo = async ( options?: RequestInit): Promise<ResumoDuplasena> => {
+
+  return customFetch<ResumoDuplasena>(getGetDuplasenaResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDuplasenaResumoQueryKey = () => {
+    return [
+    `/api/duplasena/resumo`
+    ] as const;
+    }
+
+
+export const getGetDuplasenaResumoQueryOptions = <TData = Awaited<ReturnType<typeof getDuplasenaResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDuplasenaResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDuplasenaResumo>>> = ({ signal }) => getDuplasenaResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDuplasenaResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getDuplasenaResumo>>>
+export type GetDuplasenaResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo agregado da Dupla Sena
+ */
+
+export function useGetDuplasenaResumo<TData = Awaited<ReturnType<typeof getDuplasenaResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDuplasenaResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularDuplasenaUrl = () => {
+
+
+
+
+  return `/api/duplasena/simulador`
+}
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Dupla Sena
+ */
+export const simularDuplasena = async (simuladorInputDuplasena: SimuladorInputDuplasena, options?: RequestInit): Promise<SimulacaoResultadoDuplasena> => {
+
+  return customFetch<SimulacaoResultadoDuplasena>(getSimularDuplasenaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputDuplasena,)
+  }
+);}
+
+
+
+
+export const getSimularDuplasenaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularDuplasena>>, TError,{data: BodyType<SimuladorInputDuplasena>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularDuplasena>>, TError,{data: BodyType<SimuladorInputDuplasena>}, TContext> => {
+
+const mutationKey = ['simularDuplasena'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularDuplasena>>, {data: BodyType<SimuladorInputDuplasena>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularDuplasena(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularDuplasenaMutationResult = NonNullable<Awaited<ReturnType<typeof simularDuplasena>>>
+    export type SimularDuplasenaMutationBody = BodyType<SimuladorInputDuplasena>
+    export type SimularDuplasenaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Dupla Sena
+ */
+export const useSimularDuplasena = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularDuplasena>>, TError,{data: BodyType<SimuladorInputDuplasena>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularDuplasena>>,
+        TError,
+        {data: BodyType<SimuladorInputDuplasena>},
+        TContext
+      > => {
+      return useMutation(getSimularDuplasenaMutationOptions(options));
+    }
+
+export const getGerarJogoDuplasenaUrl = () => {
+
+
+
+
+  return `/api/duplasena/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de Dupla Sena (6 a 15 dezenas)
+ */
+export const gerarJogoDuplasena = async (geradorInputDuplasena: GeradorInputDuplasena, options?: RequestInit): Promise<JogoGerado> => {
+
+  return customFetch<JogoGerado>(getGerarJogoDuplasenaUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputDuplasena,)
+  }
+);}
+
+
+
+
+export const getGerarJogoDuplasenaMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoDuplasena>>, TError,{data: BodyType<GeradorInputDuplasena>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoDuplasena>>, TError,{data: BodyType<GeradorInputDuplasena>}, TContext> => {
+
+const mutationKey = ['gerarJogoDuplasena'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoDuplasena>>, {data: BodyType<GeradorInputDuplasena>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoDuplasena(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoDuplasenaMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoDuplasena>>>
+    export type GerarJogoDuplasenaMutationBody = BodyType<GeradorInputDuplasena>
+    export type GerarJogoDuplasenaMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de Dupla Sena (6 a 15 dezenas)
+ */
+export const useGerarJogoDuplasena = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoDuplasena>>, TError,{data: BodyType<GeradorInputDuplasena>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoDuplasena>>,
+        TError,
+        {data: BodyType<GeradorInputDuplasena>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoDuplasenaMutationOptions(options));
     }
 

@@ -93,6 +93,19 @@ import MaisMilionariaComoJogar from "@/pages/maismilionaria/como-jogar";
 import MaisMilionariaPremiacao from "@/pages/maismilionaria/premiacao";
 import MaisMilionariaFAQ from "@/pages/maismilionaria/faq";
 
+import DuplaSenaHub from "@/pages/duplasena/hub";
+import DuplaSenaUltimoResultado from "@/pages/duplasena/ultimo-resultado";
+import DuplaSenaResultadosAnteriores from "@/pages/duplasena/resultados";
+import DuplaSenaEstatisticas from "@/pages/duplasena/estatisticas";
+import DuplaSenaEstatisticasTabela from "@/pages/duplasena/estatisticas-tabela";
+import DuplaSenaGerador from "@/pages/duplasena/gerador";
+import DuplaSenaSimulador from "@/pages/duplasena/simulador";
+import DuplaSenaConferidor from "@/pages/duplasena/conferidor";
+import DuplaSenaComoJogar from "@/pages/duplasena/como-jogar";
+import DuplaSenaPremiacao from "@/pages/duplasena/premiacao";
+import DuplaSenaFAQ from "@/pages/duplasena/faq";
+import DuplaSenaDuplaDePascoa from "@/pages/duplasena/dupla-de-pascoa";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -198,6 +211,22 @@ function Router() {
         <Route path="/diadesorte/premiacao" component={DiaDeSortePremiacao} />
         <Route path="/diadesorte/perguntas-frequentes" component={DiaDeSorteFAQ} />
         <Route path="/diadesorte/faq" component={DiaDeSorteFAQ} />
+
+        {/* Dupla Sena Routes */}
+        <Route path="/duplasena" component={DuplaSenaHub} />
+        <Route path="/duplasena/resultado/:concurso" component={DuplaSenaUltimoResultado} />
+        <Route path="/duplasena/resultado" component={DuplaSenaUltimoResultado} />
+        <Route path="/duplasena/resultados" component={DuplaSenaResultadosAnteriores} />
+        <Route path="/duplasena/tabela-de-dezenas" component={DuplaSenaEstatisticasTabela} />
+        <Route path="/duplasena/resumo-estatistico" component={DuplaSenaEstatisticas} />
+        <Route path="/duplasena/gerador" component={DuplaSenaGerador} />
+        <Route path="/duplasena/simulador" component={DuplaSenaSimulador} />
+        <Route path="/duplasena/conferidor" component={DuplaSenaConferidor} />
+        <Route path="/duplasena/como-jogar" component={DuplaSenaComoJogar} />
+        <Route path="/duplasena/premiacao" component={DuplaSenaPremiacao} />
+        <Route path="/duplasena/perguntas-frequentes" component={DuplaSenaFAQ} />
+        <Route path="/duplasena/faq" component={DuplaSenaFAQ} />
+        <Route path="/duplasena/dupla-de-pascoa" component={DuplaSenaDuplaDePascoa} />
 
         {/* +Milionária Routes */}
         <Route path="/maismilionaria" component={MaisMilionariaHub} />

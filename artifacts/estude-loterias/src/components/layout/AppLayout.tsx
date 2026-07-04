@@ -6,7 +6,7 @@ const loterias = [
   { name: "Lotofácil",   href: "/lotofacil",   active: true },
   { name: "Quina",       href: "/quina",        active: true },
   { name: "Lotomania",   href: "/lotomania",    active: true },
-  { name: "Dupla Sena",  href: "#",            active: false, soon: true },
+  { name: "Dupla Sena",  href: "/duplasena",    active: true },
   { name: "Super Sete",  href: "#",            active: false, soon: true },
   { name: "+Milionária",  href: "/maismilionaria", active: true },
   { name: "Timemania",   href: "/timemania",   active: true },

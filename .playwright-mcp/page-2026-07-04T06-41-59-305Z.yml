@@ -1,0 +1,255 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link "Estude Loterias estudeloterias" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Estude Loterias" [ref=e7]
+          - generic [ref=e8]: estudeloterias
+        - navigation [ref=e9]:
+          - link "Início" [ref=e10] [cursor=pointer]:
+            - /url: /
+            - img [ref=e11]
+            - text: Início
+          - button "Mega-Sena" [ref=e15]:
+            - text: Mega-Sena
+            - img [ref=e16]
+          - button "Lotofácil" [ref=e19]:
+            - text: Lotofácil
+            - img [ref=e20]
+          - button "Dupla Sena" [ref=e23]:
+            - text: Dupla Sena
+            - img [ref=e24]
+          - button "Outras Loterias" [ref=e27]:
+            - text: Outras Loterias
+            - img [ref=e28]
+        - link "Apostar" [ref=e31] [cursor=pointer]:
+          - /url: https://loterias.caixa.gov.br
+    - main [ref=e32]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - img [ref=e37]
+          - generic [ref=e43]:
+            - heading "Dupla Sena · Premiação" [level=1] [ref=e44]
+            - paragraph [ref=e45]: Faixas de prêmios, percentuais e probabilidades da Dupla Sena.
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic [ref=e48]: Distribuição dos Prêmios
+            - generic [ref=e49]: O prêmio bruto corresponde a 43,79% da arrecadação (43,35% antes de nov/2024).
+          - generic [ref=e50]:
+            - paragraph [ref=e51]: Do valor destinado aos prêmios (prêmio bruto), são distribuídos percentuais independentes para cada faixa de acerto, em cada um dos dois sorteios. Não há valor fixo para nenhuma faixa — todos os prêmios são calculados como percentuais do prêmio bruto.
+            - generic [ref=e52]:
+              - paragraph [ref=e53]: 1º Sorteio
+              - generic [ref=e54]:
+                - generic [ref=e55]:
+                  - generic [ref=e56]: 30%
+                  - generic [ref=e57]:
+                    - generic [ref=e58]: Sena (6 acertos) — 1ª faixa
+                    - generic [ref=e59]: Distribuídos entre os acertadores dos 6 números do 1º sorteio.
+                - generic [ref=e60]:
+                  - generic [ref=e61]: 10%
+                  - generic [ref=e62]:
+                    - generic [ref=e63]: Quina (5 acertos) — 2ª faixa
+                    - generic [ref=e64]: Distribuídos entre os acertadores de 5 números do 1º sorteio.
+                - generic [ref=e65]:
+                  - generic [ref=e66]: 8%
+                  - generic [ref=e67]:
+                    - generic [ref=e68]: Quadra (4 acertos) — 3ª faixa
+                    - generic [ref=e69]: Distribuídos entre os acertadores de 4 números do 1º sorteio.
+                - generic [ref=e70]:
+                  - generic [ref=e71]: 4%
+                  - generic [ref=e72]:
+                    - generic [ref=e73]: Terno (3 acertos) — 4ª faixa
+                    - generic [ref=e74]: Distribuídos entre os acertadores de 3 números do 1º sorteio.
+            - generic [ref=e75]:
+              - paragraph [ref=e76]: 2º Sorteio
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - generic [ref=e79]: 11%
+                  - generic [ref=e80]:
+                    - generic [ref=e81]: Sena (6 acertos) — 5ª faixa
+                    - generic [ref=e82]: Percentual do prêmio bruto destinado à sena do 2º sorteio.
+                - generic [ref=e83]:
+                  - generic [ref=e84]: 9%
+                  - generic [ref=e85]:
+                    - generic [ref=e86]: Quina (5 acertos) — 6ª faixa
+                    - generic [ref=e87]: Percentual do prêmio bruto destinado à quina do 2º sorteio.
+                - generic [ref=e88]:
+                  - generic [ref=e89]: 8%
+                  - generic [ref=e90]:
+                    - generic [ref=e91]: Quadra (4 acertos) — 7ª faixa
+                    - generic [ref=e92]: Percentual do prêmio bruto destinado à quadra do 2º sorteio.
+                - generic [ref=e93]:
+                  - generic [ref=e94]: 4%
+                  - generic [ref=e95]:
+                    - generic [ref=e96]: Terno (3 acertos) — 8ª faixa
+                    - generic [ref=e97]: Percentual do prêmio bruto destinado ao terno do 2º sorteio.
+                - generic [ref=e98]:
+                  - generic [ref=e99]: 16%
+                  - generic [ref=e100]:
+                    - generic [ref=e101]: Reserva — Dupla de Páscoa
+                    - generic [ref=e102]: Acumulados para a 1ª faixa do 1º sorteio do concurso especial Dupla de Páscoa.
+            - paragraph [ref=e103]: "Percentuais vigentes desde 2016 (8 faixas). Os totais somam 100% do prêmio bruto: 52% para o 1º sorteio, 32% para o 2º sorteio e 16% para a Dupla de Páscoa. Entre 2010–2016 (6 faixas) os percentuais do 2º sorteio eram: Sena 20%, Quina 15%, Quadra 10%. Entre 2001–2010 (4 faixas): Sena 30%, Quina 20%, Quadra 20%."
+        - generic [ref=e104]:
+          - generic [ref=e105]:
+            - generic [ref=e106]: Faixas de Premiação
+            - generic [ref=e107]: Cada concurso da Dupla Sena possui dois sorteios independentes, cada um com suas próprias faixas de premiação.
+          - generic [ref=e108]:
+            - generic [ref=e109]:
+              - paragraph [ref=e110]: 1º Sorteio
+              - table [ref=e113]:
+                - rowgroup [ref=e114]:
+                  - row "Faixa Acertos Tipo de Prêmio Probabilidade" [ref=e115]:
+                    - columnheader "Faixa" [ref=e116]
+                    - columnheader "Acertos" [ref=e117]
+                    - columnheader "Tipo de Prêmio" [ref=e118]
+                    - columnheader "Probabilidade" [ref=e119]
+                - rowgroup [ref=e120]:
+                  - row "Sena (1ªª faixa) 6 30% do prêmio bruto 1 em 15.890.700" [ref=e121]:
+                    - cell "Sena (1ªª faixa)" [ref=e122]
+                    - cell "6" [ref=e123]
+                    - cell "30% do prêmio bruto" [ref=e124]
+                    - cell "1 em 15.890.700" [ref=e125]
+                  - row "Quina (2ªª faixa) 5 10% do prêmio bruto 1 em 60.192" [ref=e126]:
+                    - cell "Quina (2ªª faixa)" [ref=e127]
+                    - cell "5" [ref=e128]
+                    - cell "10% do prêmio bruto" [ref=e129]
+                    - cell "1 em 60.192" [ref=e130]
+                  - row "Quadra (3ªª faixa) 4 8% do prêmio bruto 1 em 1.120" [ref=e131]:
+                    - cell "Quadra (3ªª faixa)" [ref=e132]
+                    - cell "4" [ref=e133]
+                    - cell "8% do prêmio bruto" [ref=e134]
+                    - cell "1 em 1.120" [ref=e135]
+                  - row "Terno (4ªª faixa) 3 4% do prêmio bruto 1 em 60" [ref=e136]:
+                    - cell "Terno (4ªª faixa)" [ref=e137]
+                    - cell "3" [ref=e138]
+                    - cell "4% do prêmio bruto" [ref=e139]
+                    - cell "1 em 60" [ref=e140]
+            - generic [ref=e141]:
+              - paragraph [ref=e142]: 2º Sorteio
+              - table [ref=e145]:
+                - rowgroup [ref=e146]:
+                  - row "Faixa Acertos Tipo de Prêmio Probabilidade" [ref=e147]:
+                    - columnheader "Faixa" [ref=e148]
+                    - columnheader "Acertos" [ref=e149]
+                    - columnheader "Tipo de Prêmio" [ref=e150]
+                    - columnheader "Probabilidade" [ref=e151]
+                - rowgroup [ref=e152]:
+                  - row "Sena (5ªª faixa) 6 11% do prêmio bruto 1 em 15.890.700" [ref=e153]:
+                    - cell "Sena (5ªª faixa)" [ref=e154]
+                    - cell "6" [ref=e155]
+                    - cell "11% do prêmio bruto" [ref=e156]
+                    - cell "1 em 15.890.700" [ref=e157]
+                  - row "Quina (6ªª faixa) 5 9% do prêmio bruto 1 em 60.192" [ref=e158]:
+                    - cell "Quina (6ªª faixa)" [ref=e159]
+                    - cell "5" [ref=e160]
+                    - cell "9% do prêmio bruto" [ref=e161]
+                    - cell "1 em 60.192" [ref=e162]
+                  - row "Quadra (7ªª faixa) 4 8% do prêmio bruto 1 em 1.120" [ref=e163]:
+                    - cell "Quadra (7ªª faixa)" [ref=e164]
+                    - cell "4" [ref=e165]
+                    - cell "8% do prêmio bruto" [ref=e166]
+                    - cell "1 em 1.120" [ref=e167]
+                  - row "Terno (8ªª faixa) 3 4% do prêmio bruto 1 em 60" [ref=e168]:
+                    - cell "Terno (8ªª faixa)" [ref=e169]
+                    - cell "3" [ref=e170]
+                    - cell "4% do prêmio bruto" [ref=e171]
+                    - cell "1 em 60" [ref=e172]
+            - paragraph [ref=e173]:
+              - text: Probabilidades para uma aposta simples de 6 dezenas em
+              - strong [ref=e174]: um sorteio
+              - text: . Como a Dupla Sena tem dois sorteios por concurso, as chances efetivas de ganhar alguma faixa são praticamente dobradas.
+        - generic [ref=e175]:
+          - generic [ref=e177]:
+            - img [ref=e178]
+            - text: Regras de Acumulação
+          - generic [ref=e182]:
+            - paragraph [ref=e183]:
+              - strong [ref=e184]: "Dentro do mesmo concurso:"
+              - text: Se não houver acertador da sena (6 acertos) no 1º sorteio, o prêmio da 1ª faixa passa para o 2º sorteio do mesmo concurso.
+            - paragraph [ref=e185]:
+              - strong [ref=e186]: "Entre concursos:"
+              - text: Se não houver acertador da sena em nenhum dos dois sorteios, o valor acumula para o concurso seguinte na 1ª faixa de premiação.
+            - paragraph [ref=e187]:
+              - strong [ref=e188]: "Dupla de Páscoa:"
+              - text: Parte da arrecadação (16% do fundo de prêmios) é reservada para o sorteio especial Dupla de Páscoa, realizado uma vez por ano.
+            - paragraph [ref=e189]: Os prêmios prescrevem 90 dias após a data do sorteio. Após esse prazo, os valores são repassados ao Tesouro Nacional para aplicação no FIES (Fundo de Financiamento Estudantil).
+    - contentinfo [ref=e190]:
+      - generic [ref=e192]:
+        - generic [ref=e193]:
+          - link "Estude Loterias estudeloterias" [ref=e194] [cursor=pointer]:
+            - /url: /
+            - img "Estude Loterias" [ref=e195]
+            - generic [ref=e196]: estudeloterias
+          - paragraph [ref=e197]:
+            - text: O Estude Loterias é uma iniciativa do
+            - link "Estude Matemática" [ref=e198] [cursor=pointer]:
+              - /url: https://estudematematica.com.br/
+            - text: desenvolvida pelo
+            - link "professor Gustavo Reis" [ref=e199] [cursor=pointer]:
+              - /url: https://gustavoreis.com.br/
+            - text: . Aqui você encontra resultados, estatísticas e ferramentas gratuitas para as Loterias Caixa.
+        - generic [ref=e200]:
+          - generic [ref=e201]: Loterias
+          - list [ref=e202]:
+            - listitem [ref=e203]:
+              - link "Mega-Sena" [ref=e204] [cursor=pointer]:
+                - /url: /mega-sena
+            - listitem [ref=e205]:
+              - link "Lotofácil" [ref=e206] [cursor=pointer]:
+                - /url: /lotofacil
+            - listitem [ref=e207]:
+              - link "Quina" [ref=e208] [cursor=pointer]:
+                - /url: /quina
+            - listitem [ref=e209]:
+              - link "Lotomania" [ref=e210] [cursor=pointer]:
+                - /url: /lotomania
+            - listitem [ref=e211]:
+              - link "Dupla Sena" [ref=e212] [cursor=pointer]:
+                - /url: /duplasena
+            - listitem [ref=e213]:
+              - generic [ref=e214]: Super Sete
+              - generic [ref=e215]: em breve
+            - listitem [ref=e216]:
+              - link "+Milionária" [ref=e217] [cursor=pointer]:
+                - /url: /maismilionaria
+            - listitem [ref=e218]:
+              - link "Timemania" [ref=e219] [cursor=pointer]:
+                - /url: /timemania
+            - listitem [ref=e220]:
+              - link "Dia de Sorte" [ref=e221] [cursor=pointer]:
+                - /url: /diadesorte
+        - generic [ref=e222]:
+          - generic [ref=e223]: Institucional
+          - list [ref=e224]:
+            - listitem [ref=e225]:
+              - link "Sobre o Site" [ref=e226] [cursor=pointer]:
+                - /url: /sobre
+            - listitem [ref=e227]:
+              - link "Contato" [ref=e228] [cursor=pointer]:
+                - /url: /contato
+            - listitem [ref=e229]:
+              - link "Política de Privacidade" [ref=e230] [cursor=pointer]:
+                - /url: /privacidade
+            - listitem [ref=e231]:
+              - link "Termos de Uso" [ref=e232] [cursor=pointer]:
+                - /url: /termos
+        - generic [ref=e233]:
+          - generic [ref=e234]: Aviso Legal
+          - paragraph [ref=e235]: Site independente. Dados obtidos via API pública da Caixa Econômica Federal. Não vendemos apostas e não temos vínculo com a Caixa.
+          - paragraph [ref=e236]: As loterias são jogos de azar permitidos apenas para maiores de 18 anos. Jogue com responsabilidade.
+          - link "Apostar na Caixa →" [ref=e237] [cursor=pointer]:
+            - /url: https://loterias.caixa.gov.br
+      - generic [ref=e239]:
+        - generic [ref=e240]: © 2026 Mathematica Et Cetera Sociedade Educacional Ltda. · CNPJ 09.631.507/0001-18
+        - generic [ref=e241]:
+          - link "Privacidade" [ref=e242] [cursor=pointer]:
+            - /url: /privacidade
+          - generic [ref=e243]: ·
+          - link "Termos" [ref=e244] [cursor=pointer]:
+            - /url: /termos
+          - generic [ref=e245]: ·
+          - link "Contato" [ref=e246] [cursor=pointer]:
+            - /url: /contato
+  - region "Notifications (F8)":
+    - list
