@@ -96,10 +96,10 @@ const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
   { label: "Quina",       cor: "#260085", href: "/quina" },
   { label: "Lotomania",   cor: "#f8901c", href: "/lotomania" },
   { label: "Dupla Sena",  cor: "#a8003c" },
-  { label: "Timemania",   cor: "#00a650" },
-  { label: "Dia de Sorte", cor: "#f5a623" },
+  { label: "Timemania",   cor: "#00a650", href: "/timemania" },
+  { label: "Dia de Sorte", cor: "#f5a623", href: "/diadesorte" },
   { label: "Super Sete",  cor: "#a8cf45" },
-  { label: "+Milionária",  cor: "#2c2c2c" },
+  { label: "+Milionária",  cor: "#2c2c2c", href: "/maismilionaria" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
