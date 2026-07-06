@@ -5,12 +5,12 @@ const loterias: Array<{ name: string; href: string; active: boolean; soon?: bool
   { name: "Mega-Sena",   href: "/mega-sena",    active: true },
   { name: "Lotofácil",   href: "/lotofacil",   active: true },
   { name: "Quina",       href: "/quina",        active: true },
+  { name: "+Milionária",  href: "/maismilionaria", active: true },
   { name: "Lotomania",   href: "/lotomania",    active: true },
   { name: "Dupla Sena",  href: "/duplasena",    active: true },
-  { name: "Super Sete",  href: "/super-sete",    active: true },
-  { name: "+Milionária",  href: "/maismilionaria", active: true },
   { name: "Timemania",   href: "/timemania",   active: true },
   { name: "Dia de Sorte", href: "/diadesorte",  active: true },
+  { name: "Super Sete",  href: "/super-sete",    active: true },
 ];
 
 const institucional = [

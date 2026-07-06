@@ -194,13 +194,12 @@ const maisMilionariaAll = [...maisMilionariaTools, ...maisMilionariaInfo];
 // ── Outras Loterias ───────────────────────────────────────────────────────────
 // Items with an `href` are live and link out; items without one are still "em breve".
 const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
-  { label: "Quina",       cor: "#260085", href: "/quina" },
+  { label: "+Milionária",  cor: "#2c2c2c", href: "/maismilionaria" },
   { label: "Lotomania",   cor: "#f8901c", href: "/lotomania" },
   { label: "Dupla Sena",  cor: "#a61324", href: "/duplasena" },
   { label: "Timemania",   cor: "#00a650", href: "/timemania" },
   { label: "Dia de Sorte", cor: "#f5a623", href: "/diadesorte" },
   { label: "Super Sete",  cor: "#a8cf45", href: "/super-sete" },
-  { label: "+Milionária",  cor: "#2c2c2c", href: "/maismilionaria" },
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -409,7 +408,6 @@ export function TopNav() {
   const diaDeSorteActive = !!bestMatch(location, diaDeSorteAll);
   const maisMilionariaActive = !!bestMatch(location, maisMilionariaAll);
   const visibleOutrasLoterias = outrasLoterias.filter(l =>
-    (l.label !== "Quina" || !quinaActive) &&
     (l.label !== "Lotomania" || !lotomaniaActive) &&
     (l.label !== "Dupla Sena" || !duplaSenaActive) &&
     (l.label !== "Super Sete" || !superSeteActive) &&
@@ -470,15 +468,25 @@ export function TopNav() {
               onToggle={() => toggle("lotofacil")}
             />
 
-            {quinaActive && (
+            <LotteryDropdown
+              label="Quina"
+              cor="#260085"
+              tools={quinaTools}
+              info={quinaInfo}
+              allItems={quinaAll}
+              isOpen={openMenu === "quina"}
+              onToggle={() => toggle("quina")}
+            />
+
+            {maisMilionariaActive && (
               <LotteryDropdown
-                label="Quina"
-                cor="#260085"
-                tools={quinaTools}
-                info={quinaInfo}
-                allItems={quinaAll}
-                isOpen={openMenu === "quina"}
-                onToggle={() => toggle("quina")}
+                label="+Milionária"
+                cor="#2c2c2c"
+                tools={maisMilionariaTools}
+                info={maisMilionariaInfo}
+                allItems={maisMilionariaAll}
+                isOpen={openMenu === "maismilionaria"}
+                onToggle={() => toggle("maismilionaria")}
               />
             )}
 
@@ -506,18 +514,6 @@ export function TopNav() {
               />
             )}
 
-            {superSeteActive && (
-              <LotteryDropdown
-                label="Super Sete"
-                cor="#a8cf45"
-                tools={superSeteTools}
-                info={superSeteInfo}
-                allItems={superSeteAll}
-                isOpen={openMenu === "supersete"}
-                onToggle={() => toggle("supersete")}
-              />
-            )}
-
             {timemaniaActive && (
               <LotteryDropdown
                 label="Timemania"
@@ -542,15 +538,15 @@ export function TopNav() {
               />
             )}
 
-            {maisMilionariaActive && (
+            {superSeteActive && (
               <LotteryDropdown
-                label="+Milionária"
-                cor="#2c2c2c"
-                tools={maisMilionariaTools}
-                info={maisMilionariaInfo}
-                allItems={maisMilionariaAll}
-                isOpen={openMenu === "maismilionaria"}
-                onToggle={() => toggle("maismilionaria")}
+                label="Super Sete"
+                cor="#a8cf45"
+                tools={superSeteTools}
+                info={superSeteInfo}
+                allItems={superSeteAll}
+                isOpen={openMenu === "supersete"}
+                onToggle={() => toggle("supersete")}
               />
             )}
 
@@ -698,22 +694,68 @@ export function TopNav() {
               </div>
             </div>
 
-            {/* Quina — tools (only shown when a Quina page is active) */}
-            {quinaActive && (
+            {/* Quina — tools (always visible) */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#260085" }}>
+                Quina
+              </div>
+              <div className="space-y-1">
+                {quinaTools.map(item => {
+                  const Icon = item.icon;
+                  const active = bestMatch(location, quinaAll)?.href === item.href;
+                  return (
+                    <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                      className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                        active ? "" : "text-foreground hover:bg-muted")}
+                      style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                      <Icon className="w-4 h-4" /> {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                Quina — Informações
+              </div>
+              <div className="space-y-1">
+                {quinaInfo.map(item => {
+                  const Icon = item.icon;
+                  const active = location === item.href;
+                  return (
+                    <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                      className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                        active ? "" : "text-foreground hover:bg-muted")}
+                      style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                      <Icon className="w-4 h-4" /> {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Outras Loterias */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                Outras Loterias
+              </div>
+              {/* +Milionária — tools (only shown when a +Milionária page is active) */}
+            {maisMilionariaActive && (
               <>
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#260085" }}>
-                    Quina
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#2c2c2c" }}>
+                    +Milionária
                   </div>
                   <div className="space-y-1">
-                    {quinaTools.map(item => {
+                    {maisMilionariaTools.map(item => {
                       const Icon = item.icon;
-                      const active = bestMatch(location, quinaAll)?.href === item.href;
+                      const active = bestMatch(location, maisMilionariaAll)?.href === item.href;
                       return (
                         <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                          style={active ? { backgroundColor: "#2c2c2c1a", color: "#2c2c2c" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );
@@ -723,17 +765,17 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Quina — Informações
+                    +Milionária — Informações
                   </div>
                   <div className="space-y-1">
-                    {quinaInfo.map(item => {
+                    {maisMilionariaInfo.map(item => {
                       const Icon = item.icon;
                       const active = location === item.href;
                       return (
                         <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#26008519", color: "#260085" } : {}}>
+                          style={active ? { backgroundColor: "#2c2c2c1a", color: "#2c2c2c" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );
@@ -743,12 +785,7 @@ export function TopNav() {
               </>
             )}
 
-            {/* Outras Loterias */}
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                Outras Loterias
-              </div>
-              {/* Lotomania — tools (only shown when a Lotomania page is active) */}
+            {/* Lotomania — tools (only shown when a Lotomania page is active) */}
             {lotomaniaActive && (
               <>
                 <div>
@@ -829,51 +866,6 @@ export function TopNav() {
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
                           style={active ? { backgroundColor: "#a613241a", color: "#a61324" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Super Sete — tools (only shown when a Super Sete page is active) */}
-            {superSeteActive && (
-              <>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#a8cf45" }}>
-                    Super Sete
-                  </div>
-                  <div className="space-y-1">
-                    {superSeteTools.map(item => {
-                      const Icon = item.icon;
-                      const active = bestMatch(location, superSeteAll)?.href === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#a8cf451a", color: "#a8cf45" } : {}}>
-                          <Icon className="w-4 h-4" /> {item.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Super Sete — Informações
-                  </div>
-                  <div className="space-y-1">
-                    {superSeteInfo.map(item => {
-                      const Icon = item.icon;
-                      const active = location === item.href;
-                      return (
-                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
-                            active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#a8cf451a", color: "#a8cf45" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );
@@ -973,22 +965,22 @@ export function TopNav() {
               </>
             )}
 
-            {/* +Milionária — tools (only shown when a +Milionária page is active) */}
-            {maisMilionariaActive && (
+            {/* Super Sete — tools (only shown when a Super Sete page is active) */}
+            {superSeteActive && (
               <>
                 <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#2c2c2c" }}>
-                    +Milionária
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#a8cf45" }}>
+                    Super Sete
                   </div>
                   <div className="space-y-1">
-                    {maisMilionariaTools.map(item => {
+                    {superSeteTools.map(item => {
                       const Icon = item.icon;
-                      const active = bestMatch(location, maisMilionariaAll)?.href === item.href;
+                      const active = bestMatch(location, superSeteAll)?.href === item.href;
                       return (
                         <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#2c2c2c1a", color: "#2c2c2c" } : {}}>
+                          style={active ? { backgroundColor: "#a8cf451a", color: "#a8cf45" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );
@@ -998,17 +990,17 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    +Milionária — Informações
+                    Super Sete — Informações
                   </div>
                   <div className="space-y-1">
-                    {maisMilionariaInfo.map(item => {
+                    {superSeteInfo.map(item => {
                       const Icon = item.icon;
                       const active = location === item.href;
                       return (
                         <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
-                          style={active ? { backgroundColor: "#2c2c2c1a", color: "#2c2c2c" } : {}}>
+                          style={active ? { backgroundColor: "#a8cf451a", color: "#a8cf45" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );
