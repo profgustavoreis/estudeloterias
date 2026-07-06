@@ -88,8 +88,16 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
   );
 }
 
+const HOME_ORDER = [
+  "megasena", "lotofacil", "quina", "maismilionaria",
+  "lotomania", "duplasena", "timemania", "diadesorte", "supersete",
+];
+
 export default function Home() {
   const { data: loterias, isLoading, isError } = useGetLoterias();
+  const sorted = loterias?.slice().sort(
+    (a, b) => HOME_ORDER.indexOf(a.modalidade) - HOME_ORDER.indexOf(b.modalidade),
+  );
 
   if (isLoading) {
     return (
@@ -132,7 +140,7 @@ export default function Home() {
       <AdUnit slot="1234567890" format="horizontal" className="w-full" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {loterias.map(loteria => (
+        {(sorted ?? []).map(loteria => (
           <Link key={loteria.modalidade} href={`/${loteria.modalidade === 'megasena' ? 'mega-sena' : loteria.modalidade === 'supersete' ? 'super-sete' : loteria.modalidade}`}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer border-t-4 h-full flex flex-col" style={{ borderTopColor: loteria.cor }}>
               <CardContent className="p-5 flex-1 flex flex-col">
