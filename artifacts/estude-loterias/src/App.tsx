@@ -1,134 +1,138 @@
+import { lazy, Suspense } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/layout/AppLayout";
-import NotFound from "@/pages/not-found";
+import { PageFallback } from "@/components/ui/PageFallback";
 
-import Home from "@/pages/home";
-import MegaSenaHub from "@/pages/mega-sena/hub";
-import MegaSenaUltimoResultado from "@/pages/mega-sena/ultimo-resultado";
-import MegaSenaResultadosAnteriores from "@/pages/mega-sena/resultados";
-import MegaSenaEstatisticas from "@/pages/mega-sena/estatisticas";
-import MegaSenaEstatisticasTabela from "@/pages/mega-sena/estatisticas-tabela";
-import MegaSenaGerador from "@/pages/mega-sena/gerador";
-import MegaDaVirada from "@/pages/mega-sena/mega-da-virada";
-import MegaSenaComoJogar from "@/pages/mega-sena/como-jogar";
-import MegaSenaPremiacao from "@/pages/mega-sena/premiacao";
-import MegaSenaFAQ from "@/pages/mega-sena/faq";
-import MegaSenaSimulador from "@/pages/mega-sena/simulador";
-import MegaSenaConferidor from "@/pages/mega-sena/conferidor";
+const NotFound = lazy(() => import("@/pages/not-found"));
 
-import LotofacilHub from "@/pages/lotofacil/hub";
-import LotofacilUltimoResultado from "@/pages/lotofacil/ultimo-resultado";
-import LotofacilResultadosAnteriores from "@/pages/lotofacil/resultados";
-import LotofacilEstatisticas from "@/pages/lotofacil/estatisticas";
-import LotofacilEstatisticasTabela from "@/pages/lotofacil/estatisticas-tabela";
-import LotofacilGerador from "@/pages/lotofacil/gerador";
-import LotofacilDaIndependencia from "@/pages/lotofacil/lotofacil-da-independencia";
-import LotofacilSimulador from "@/pages/lotofacil/simulador";
-import LotofacilConferidor from "@/pages/lotofacil/conferidor";
-import LotofacilComoJogar from "@/pages/lotofacil/como-jogar";
-import LotofacilPremiacao from "@/pages/lotofacil/premiacao";
-import LotofacilFAQ from "@/pages/lotofacil/faq";
+const Home = lazy(() => import("@/pages/home"));
+const MegaSenaHub = lazy(() => import("@/pages/mega-sena/hub"));
+const MegaSenaUltimoResultado = lazy(() => import("@/pages/mega-sena/ultimo-resultado"));
+const MegaSenaResultadosAnteriores = lazy(() => import("@/pages/mega-sena/resultados"));
+const MegaSenaEstatisticas = lazy(() => import("@/pages/mega-sena/estatisticas"));
+const MegaSenaEstatisticasTabela = lazy(() => import("@/pages/mega-sena/estatisticas-tabela"));
+const MegaSenaGerador = lazy(() => import("@/pages/mega-sena/gerador"));
+const MegaDaVirada = lazy(() => import("@/pages/mega-sena/mega-da-virada"));
+const MegaSenaComoJogar = lazy(() => import("@/pages/mega-sena/como-jogar"));
+const MegaSenaPremiacao = lazy(() => import("@/pages/mega-sena/premiacao"));
+const MegaSenaFAQ = lazy(() => import("@/pages/mega-sena/faq"));
+const MegaSenaSimulador = lazy(() => import("@/pages/mega-sena/simulador"));
+const MegaSenaConferidor = lazy(() => import("@/pages/mega-sena/conferidor"));
 
-import QuinaHub from "@/pages/quina/hub";
-import QuinaUltimoResultado from "@/pages/quina/ultimo-resultado";
-import QuinaResultadosAnteriores from "@/pages/quina/resultados";
-import QuinaEstatisticas from "@/pages/quina/estatisticas";
-import QuinaEstatisticasTabela from "@/pages/quina/estatisticas-tabela";
-import QuinaGerador from "@/pages/quina/gerador";
-import QuinaDeSaoJoao from "@/pages/quina/quina-de-sao-joao";
-import QuinaSimulador from "@/pages/quina/simulador";
-import QuinaConferidor from "@/pages/quina/conferidor";
-import QuinaComoJogar from "@/pages/quina/como-jogar";
-import QuinaPremiacao from "@/pages/quina/premiacao";
-import QuinaFAQ from "@/pages/quina/faq";
+const LotofacilHub = lazy(() => import("@/pages/lotofacil/hub"));
+const LotofacilUltimoResultado = lazy(() => import("@/pages/lotofacil/ultimo-resultado"));
+const LotofacilResultadosAnteriores = lazy(() => import("@/pages/lotofacil/resultados"));
+const LotofacilEstatisticas = lazy(() => import("@/pages/lotofacil/estatisticas"));
+const LotofacilEstatisticasTabela = lazy(() => import("@/pages/lotofacil/estatisticas-tabela"));
+const LotofacilGerador = lazy(() => import("@/pages/lotofacil/gerador"));
+const LotofacilDaIndependencia = lazy(() => import("@/pages/lotofacil/lotofacil-da-independencia"));
+const LotofacilSimulador = lazy(() => import("@/pages/lotofacil/simulador"));
+const LotofacilConferidor = lazy(() => import("@/pages/lotofacil/conferidor"));
+const LotofacilComoJogar = lazy(() => import("@/pages/lotofacil/como-jogar"));
+const LotofacilPremiacao = lazy(() => import("@/pages/lotofacil/premiacao"));
+const LotofacilFAQ = lazy(() => import("@/pages/lotofacil/faq"));
 
-import LotomaniaHub from "@/pages/lotomania/hub";
-import LotomaniaUltimoResultado from "@/pages/lotomania/ultimo-resultado";
-import LotomaniaResultadosAnteriores from "@/pages/lotomania/resultados";
-import LotomaniaEstatisticas from "@/pages/lotomania/estatisticas";
-import LotomaniaEstatisticasTabela from "@/pages/lotomania/estatisticas-tabela";
-import LotomaniaGerador from "@/pages/lotomania/gerador";
-import LotomaniaSimulador from "@/pages/lotomania/simulador";
-import LotomaniaConferidor from "@/pages/lotomania/conferidor";
-import LotomaniaComoJogar from "@/pages/lotomania/como-jogar";
-import LotomaniaPremiacao from "@/pages/lotomania/premiacao";
-import LotomaniaFAQ from "@/pages/lotomania/faq";
+const QuinaHub = lazy(() => import("@/pages/quina/hub"));
+const QuinaUltimoResultado = lazy(() => import("@/pages/quina/ultimo-resultado"));
+const QuinaResultadosAnteriores = lazy(() => import("@/pages/quina/resultados"));
+const QuinaEstatisticas = lazy(() => import("@/pages/quina/estatisticas"));
+const QuinaEstatisticasTabela = lazy(() => import("@/pages/quina/estatisticas-tabela"));
+const QuinaGerador = lazy(() => import("@/pages/quina/gerador"));
+const QuinaDeSaoJoao = lazy(() => import("@/pages/quina/quina-de-sao-joao"));
+const QuinaSimulador = lazy(() => import("@/pages/quina/simulador"));
+const QuinaConferidor = lazy(() => import("@/pages/quina/conferidor"));
+const QuinaComoJogar = lazy(() => import("@/pages/quina/como-jogar"));
+const QuinaPremiacao = lazy(() => import("@/pages/quina/premiacao"));
+const QuinaFAQ = lazy(() => import("@/pages/quina/faq"));
 
-import TimemaniaHub from "@/pages/timemania/hub";
-import TimemaniaUltimoResultado from "@/pages/timemania/ultimo-resultado";
-import TimemaniaResultadosAnteriores from "@/pages/timemania/resultados";
-import TimemaniaEstatisticas from "@/pages/timemania/estatisticas";
-import TimemaniaEstatisticasTabela from "@/pages/timemania/estatisticas-tabela";
-import TimemaniaGerador from "@/pages/timemania/gerador";
-import TimemaniaSimulador from "@/pages/timemania/simulador";
-import TimemaniaConferidor from "@/pages/timemania/conferidor";
-import TimemaniaComoJogar from "@/pages/timemania/como-jogar";
-import TimemaniaPremiacao from "@/pages/timemania/premiacao";
-import TimemaniaFAQ from "@/pages/timemania/faq";
+const LotomaniaHub = lazy(() => import("@/pages/lotomania/hub"));
+const LotomaniaUltimoResultado = lazy(() => import("@/pages/lotomania/ultimo-resultado"));
+const LotomaniaResultadosAnteriores = lazy(() => import("@/pages/lotomania/resultados"));
+const LotomaniaEstatisticas = lazy(() => import("@/pages/lotomania/estatisticas"));
+const LotomaniaEstatisticasTabela = lazy(() => import("@/pages/lotomania/estatisticas-tabela"));
+const LotomaniaGerador = lazy(() => import("@/pages/lotomania/gerador"));
+const LotomaniaSimulador = lazy(() => import("@/pages/lotomania/simulador"));
+const LotomaniaConferidor = lazy(() => import("@/pages/lotomania/conferidor"));
+const LotomaniaComoJogar = lazy(() => import("@/pages/lotomania/como-jogar"));
+const LotomaniaPremiacao = lazy(() => import("@/pages/lotomania/premiacao"));
+const LotomaniaFAQ = lazy(() => import("@/pages/lotomania/faq"));
 
-import DiaDeSorteHub from "@/pages/diadesorte/hub";
-import DiaDeSorteUltimoResultado from "@/pages/diadesorte/ultimo-resultado";
-import DiaDeSorteResultadosAnteriores from "@/pages/diadesorte/resultados";
-import DiaDeSorteEstatisticas from "@/pages/diadesorte/estatisticas";
-import DiaDeSorteEstatisticasTabela from "@/pages/diadesorte/estatisticas-tabela";
-import DiaDeSorteGerador from "@/pages/diadesorte/gerador";
-import DiaDeSorteSimulador from "@/pages/diadesorte/simulador";
-import DiaDeSorteConferidor from "@/pages/diadesorte/conferidor";
-import DiaDeSorteComoJogar from "@/pages/diadesorte/como-jogar";
-import DiaDeSortePremiacao from "@/pages/diadesorte/premiacao";
-import DiaDeSorteFAQ from "@/pages/diadesorte/faq";
+const TimemaniaHub = lazy(() => import("@/pages/timemania/hub"));
+const TimemaniaUltimoResultado = lazy(() => import("@/pages/timemania/ultimo-resultado"));
+const TimemaniaResultadosAnteriores = lazy(() => import("@/pages/timemania/resultados"));
+const TimemaniaEstatisticas = lazy(() => import("@/pages/timemania/estatisticas"));
+const TimemaniaEstatisticasTabela = lazy(() => import("@/pages/timemania/estatisticas-tabela"));
+const TimemaniaGerador = lazy(() => import("@/pages/timemania/gerador"));
+const TimemaniaSimulador = lazy(() => import("@/pages/timemania/simulador"));
+const TimemaniaConferidor = lazy(() => import("@/pages/timemania/conferidor"));
+const TimemaniaComoJogar = lazy(() => import("@/pages/timemania/como-jogar"));
+const TimemaniaPremiacao = lazy(() => import("@/pages/timemania/premiacao"));
+const TimemaniaFAQ = lazy(() => import("@/pages/timemania/faq"));
 
-import MaisMilionariaHub from "@/pages/maismilionaria/hub";
-import MaisMilionariaUltimoResultado from "@/pages/maismilionaria/ultimo-resultado";
-import MaisMilionariaResultadosAnteriores from "@/pages/maismilionaria/resultados";
-import MaisMilionariaEstatisticas from "@/pages/maismilionaria/estatisticas";
-import MaisMilionariaEstatisticasTabela from "@/pages/maismilionaria/estatisticas-tabela";
-import MaisMilionariaGerador from "@/pages/maismilionaria/gerador";
-import MaisMilionariaSimulador from "@/pages/maismilionaria/simulador";
-import MaisMilionariaConferidor from "@/pages/maismilionaria/conferidor";
-import MaisMilionariaComoJogar from "@/pages/maismilionaria/como-jogar";
-import MaisMilionariaPremiacao from "@/pages/maismilionaria/premiacao";
-import MaisMilionariaFAQ from "@/pages/maismilionaria/faq";
+const DiaDeSorteHub = lazy(() => import("@/pages/diadesorte/hub"));
+const DiaDeSorteUltimoResultado = lazy(() => import("@/pages/diadesorte/ultimo-resultado"));
+const DiaDeSorteResultadosAnteriores = lazy(() => import("@/pages/diadesorte/resultados"));
+const DiaDeSorteEstatisticas = lazy(() => import("@/pages/diadesorte/estatisticas"));
+const DiaDeSorteEstatisticasTabela = lazy(() => import("@/pages/diadesorte/estatisticas-tabela"));
+const DiaDeSorteGerador = lazy(() => import("@/pages/diadesorte/gerador"));
+const DiaDeSorteSimulador = lazy(() => import("@/pages/diadesorte/simulador"));
+const DiaDeSorteConferidor = lazy(() => import("@/pages/diadesorte/conferidor"));
+const DiaDeSorteComoJogar = lazy(() => import("@/pages/diadesorte/como-jogar"));
+const DiaDeSortePremiacao = lazy(() => import("@/pages/diadesorte/premiacao"));
+const DiaDeSorteFAQ = lazy(() => import("@/pages/diadesorte/faq"));
 
-import DuplaSenaHub from "@/pages/duplasena/hub";
-import DuplaSenaUltimoResultado from "@/pages/duplasena/ultimo-resultado";
-import DuplaSenaResultadosAnteriores from "@/pages/duplasena/resultados";
-import DuplaSenaEstatisticas from "@/pages/duplasena/estatisticas";
-import DuplaSenaEstatisticasTabela from "@/pages/duplasena/estatisticas-tabela";
-import DuplaSenaGerador from "@/pages/duplasena/gerador";
-import DuplaSenaSimulador from "@/pages/duplasena/simulador";
-import DuplaSenaConferidor from "@/pages/duplasena/conferidor";
-import DuplaSenaComoJogar from "@/pages/duplasena/como-jogar";
-import DuplaSenaPremiacao from "@/pages/duplasena/premiacao";
-import DuplaSenaFAQ from "@/pages/duplasena/faq";
-import DuplaSenaDuplaDePascoa from "@/pages/duplasena/dupla-de-pascoa";
+const MaisMilionariaHub = lazy(() => import("@/pages/maismilionaria/hub"));
+const MaisMilionariaUltimoResultado = lazy(() => import("@/pages/maismilionaria/ultimo-resultado"));
+const MaisMilionariaResultadosAnteriores = lazy(() => import("@/pages/maismilionaria/resultados"));
+const MaisMilionariaEstatisticas = lazy(() => import("@/pages/maismilionaria/estatisticas"));
+const MaisMilionariaEstatisticasTabela = lazy(() => import("@/pages/maismilionaria/estatisticas-tabela"));
+const MaisMilionariaGerador = lazy(() => import("@/pages/maismilionaria/gerador"));
+const MaisMilionariaSimulador = lazy(() => import("@/pages/maismilionaria/simulador"));
+const MaisMilionariaConferidor = lazy(() => import("@/pages/maismilionaria/conferidor"));
+const MaisMilionariaComoJogar = lazy(() => import("@/pages/maismilionaria/como-jogar"));
+const MaisMilionariaPremiacao = lazy(() => import("@/pages/maismilionaria/premiacao"));
+const MaisMilionariaFAQ = lazy(() => import("@/pages/maismilionaria/faq"));
 
-import SuperSeteHub from "@/pages/super-sete/hub";
-import SuperSeteUltimoResultado from "@/pages/super-sete/ultimo-resultado";
-import SuperSeteResultadosAnteriores from "@/pages/super-sete/resultados";
-import SuperSeteEstatisticas from "@/pages/super-sete/estatisticas";
-import SuperSeteEstatisticasTabela from "@/pages/super-sete/estatisticas-tabela";
-import SuperSeteGerador from "@/pages/super-sete/gerador";
-import SuperSeteSimulador from "@/pages/super-sete/simulador";
-import SuperSeteConferidor from "@/pages/super-sete/conferidor";
-import SuperSeteComoJogar from "@/pages/super-sete/como-jogar";
-import SuperSetePremiacao from "@/pages/super-sete/premiacao";
-import SuperSeteFAQ from "@/pages/super-sete/faq";
+const DuplaSenaHub = lazy(() => import("@/pages/duplasena/hub"));
+const DuplaSenaUltimoResultado = lazy(() => import("@/pages/duplasena/ultimo-resultado"));
+const DuplaSenaResultadosAnteriores = lazy(() => import("@/pages/duplasena/resultados"));
+const DuplaSenaEstatisticas = lazy(() => import("@/pages/duplasena/estatisticas"));
+const DuplaSenaEstatisticasTabela = lazy(() => import("@/pages/duplasena/estatisticas-tabela"));
+const DuplaSenaGerador = lazy(() => import("@/pages/duplasena/gerador"));
+const DuplaSenaSimulador = lazy(() => import("@/pages/duplasena/simulador"));
+const DuplaSenaConferidor = lazy(() => import("@/pages/duplasena/conferidor"));
+const DuplaSenaComoJogar = lazy(() => import("@/pages/duplasena/como-jogar"));
+const DuplaSenaPremiacao = lazy(() => import("@/pages/duplasena/premiacao"));
+const DuplaSenaFAQ = lazy(() => import("@/pages/duplasena/faq"));
+const DuplaSenaDuplaDePascoa = lazy(() => import("@/pages/duplasena/dupla-de-pascoa"));
 
-import Sobre from "@/pages/sobre";
-import Privacidade from "@/pages/privacidade";
-import Termos from "@/pages/termos";
-import Contato from "@/pages/contato";
+const SuperSeteHub = lazy(() => import("@/pages/super-sete/hub"));
+const SuperSeteUltimoResultado = lazy(() => import("@/pages/super-sete/ultimo-resultado"));
+const SuperSeteResultadosAnteriores = lazy(() => import("@/pages/super-sete/resultados"));
+const SuperSeteEstatisticas = lazy(() => import("@/pages/super-sete/estatisticas"));
+const SuperSeteEstatisticasTabela = lazy(() => import("@/pages/super-sete/estatisticas-tabela"));
+const SuperSeteGerador = lazy(() => import("@/pages/super-sete/gerador"));
+const SuperSeteSimulador = lazy(() => import("@/pages/super-sete/simulador"));
+const SuperSeteConferidor = lazy(() => import("@/pages/super-sete/conferidor"));
+const SuperSeteComoJogar = lazy(() => import("@/pages/super-sete/como-jogar"));
+const SuperSetePremiacao = lazy(() => import("@/pages/super-sete/premiacao"));
+const SuperSeteFAQ = lazy(() => import("@/pages/super-sete/faq"));
+
+const Sobre = lazy(() => import("@/pages/sobre"));
+const Privacidade = lazy(() => import("@/pages/privacidade"));
+const Termos = lazy(() => import("@/pages/termos"));
+const Contato = lazy(() => import("@/pages/contato"));
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
     <AppLayout>
-      <Switch>
+      <Suspense fallback={<PageFallback />}>
+        <Switch>
         <Route path="/" component={Home} />
 
         {/* Mega-Sena Routes */}
@@ -278,6 +282,7 @@ function Router() {
 
         <Route component={NotFound} />
       </Switch>
+      </Suspense>
     </AppLayout>
   );
 }
