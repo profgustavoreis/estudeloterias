@@ -28,6 +28,7 @@ import type {
   EstatisticasMaismilionaria,
   EstatisticasMegaSena,
   EstatisticasQuina,
+  EstatisticasSuperSete,
   EstatisticasTimemania,
   GeradorInput,
   GeradorInputDiadesorte,
@@ -36,6 +37,7 @@ import type {
   GeradorInputLotomania,
   GeradorInputMaismilionaria,
   GeradorInputQuina,
+  GeradorInputSuperSete,
   GeradorInputTimemania,
   GetDiadesorteResultadosParams,
   GetDuplasenaEstatisticasParams,
@@ -45,9 +47,11 @@ import type {
   GetMaismilionariaResultadosParams,
   GetMegaSenaResultadosParams,
   GetQuinaResultadosParams,
+  GetSuperSeteResultadosParams,
   GetTimemaniaResultadosParams,
   HealthStatus,
   JogoGerado,
+  JogoGeradoSuperSete,
   LoteriaSummary,
   LotofacilDaIndependencia,
   MegaDaVirada,
@@ -60,6 +64,7 @@ import type {
   ResultadoMaismilionaria,
   ResultadoMegaSena,
   ResultadoQuina,
+  ResultadoSuperSete,
   ResultadoTimemania,
   ResultadosPaginados,
   ResultadosPaginadosDiadesorte,
@@ -68,6 +73,7 @@ import type {
   ResultadosPaginadosLotomania,
   ResultadosPaginadosMaismilionaria,
   ResultadosPaginadosQuina,
+  ResultadosPaginadosSuperSete,
   ResultadosPaginadosTimemania,
   ResumoDiadesorte,
   ResumoDuplasena,
@@ -76,6 +82,7 @@ import type {
   ResumoMaismilionaria,
   ResumoMegaSena,
   ResumoQuina,
+  ResumoSuperSete,
   ResumoTimemania,
   SimulacaoResultado,
   SimulacaoResultadoDuplasena,
@@ -86,6 +93,7 @@ import type {
   SimuladorInputLotomania,
   SimuladorInputMaismilionaria,
   SimuladorInputQuina,
+  SimuladorInputSuperSete,
   SimuladorInputTimemania
 } from './api.schemas';
 
@@ -4841,5 +4849,539 @@ export const useGerarJogoDuplasena = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getGerarJogoDuplasenaMutationOptions(options));
+    }
+
+export const getGetSuperSeteUltimoResultadoUrl = () => {
+
+
+
+
+  return `/api/super-sete/resultado/ultimo`
+}
+
+/**
+ * @summary Último resultado da Super Sete
+ */
+export const getSuperSeteUltimoResultado = async ( options?: RequestInit): Promise<ResultadoSuperSete> => {
+
+  return customFetch<ResultadoSuperSete>(getGetSuperSeteUltimoResultadoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSuperSeteUltimoResultadoQueryKey = () => {
+    return [
+    `/api/super-sete/resultado/ultimo`
+    ] as const;
+    }
+
+
+export const getGetSuperSeteUltimoResultadoQueryOptions = <TData = Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSuperSeteUltimoResultadoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>> = ({ signal }) => getSuperSeteUltimoResultado({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSuperSeteUltimoResultadoQueryResult = NonNullable<Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>>
+export type GetSuperSeteUltimoResultadoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Último resultado da Super Sete
+ */
+
+export function useGetSuperSeteUltimoResultado<TData = Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteUltimoResultado>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSuperSeteUltimoResultadoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSuperSeteResultadosUrl = (params?: GetSuperSeteResultadosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/super-sete/resultados?${stringifiedParams}` : `/api/super-sete/resultados`
+}
+
+/**
+ * @summary Histórico de resultados da Super Sete
+ */
+export const getSuperSeteResultados = async (params?: GetSuperSeteResultadosParams, options?: RequestInit): Promise<ResultadosPaginadosSuperSete> => {
+
+  return customFetch<ResultadosPaginadosSuperSete>(getGetSuperSeteResultadosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSuperSeteResultadosQueryKey = (params?: GetSuperSeteResultadosParams,) => {
+    return [
+    `/api/super-sete/resultados`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetSuperSeteResultadosQueryOptions = <TData = Awaited<ReturnType<typeof getSuperSeteResultados>>, TError = ErrorType<unknown>>(params?: GetSuperSeteResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSuperSeteResultadosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSuperSeteResultados>>> = ({ signal }) => getSuperSeteResultados(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResultados>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSuperSeteResultadosQueryResult = NonNullable<Awaited<ReturnType<typeof getSuperSeteResultados>>>
+export type GetSuperSeteResultadosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Histórico de resultados da Super Sete
+ */
+
+export function useGetSuperSeteResultados<TData = Awaited<ReturnType<typeof getSuperSeteResultados>>, TError = ErrorType<unknown>>(
+ params?: GetSuperSeteResultadosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResultados>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSuperSeteResultadosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSuperSeteResultadoConcursoUrl = (concurso: number,) => {
+
+
+
+
+  return `/api/super-sete/resultados/${concurso}`
+}
+
+/**
+ * @summary Resultado de um concurso específico da Super Sete
+ */
+export const getSuperSeteResultadoConcurso = async (concurso: number, options?: RequestInit): Promise<ResultadoSuperSete> => {
+
+  return customFetch<ResultadoSuperSete>(getGetSuperSeteResultadoConcursoUrl(concurso),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSuperSeteResultadoConcursoQueryKey = (concurso: number,) => {
+    return [
+    `/api/super-sete/resultados/${concurso}`
+    ] as const;
+    }
+
+
+export const getGetSuperSeteResultadoConcursoQueryOptions = <TData = Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>, TError = ErrorType<ApiError>>(concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSuperSeteResultadoConcursoQueryKey(concurso);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>> = ({ signal }) => getSuperSeteResultadoConcurso(concurso, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(concurso), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSuperSeteResultadoConcursoQueryResult = NonNullable<Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>>
+export type GetSuperSeteResultadoConcursoQueryError = ErrorType<ApiError>
+
+
+/**
+ * @summary Resultado de um concurso específico da Super Sete
+ */
+
+export function useGetSuperSeteResultadoConcurso<TData = Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>, TError = ErrorType<ApiError>>(
+ concurso: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResultadoConcurso>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSuperSeteResultadoConcursoQueryOptions(concurso,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSuperSeteEstatisticasUrl = () => {
+
+
+
+
+  return `/api/super-sete/estatisticas`
+}
+
+/**
+ * @summary Estatísticas da Super Sete (frequência de dezenas por posição, etc.)
+ */
+export const getSuperSeteEstatisticas = async ( options?: RequestInit): Promise<EstatisticasSuperSete> => {
+
+  return customFetch<EstatisticasSuperSete>(getGetSuperSeteEstatisticasUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSuperSeteEstatisticasQueryKey = () => {
+    return [
+    `/api/super-sete/estatisticas`
+    ] as const;
+    }
+
+
+export const getGetSuperSeteEstatisticasQueryOptions = <TData = Awaited<ReturnType<typeof getSuperSeteEstatisticas>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSuperSeteEstatisticasQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSuperSeteEstatisticas>>> = ({ signal }) => getSuperSeteEstatisticas({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteEstatisticas>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSuperSeteEstatisticasQueryResult = NonNullable<Awaited<ReturnType<typeof getSuperSeteEstatisticas>>>
+export type GetSuperSeteEstatisticasQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Estatísticas da Super Sete (frequência de dezenas por posição, etc.)
+ */
+
+export function useGetSuperSeteEstatisticas<TData = Awaited<ReturnType<typeof getSuperSeteEstatisticas>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteEstatisticas>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSuperSeteEstatisticasQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getGetSuperSeteResumoUrl = () => {
+
+
+
+
+  return `/api/super-sete/resumo`
+}
+
+/**
+ * @summary Resumo agregado da Super Sete
+ */
+export const getSuperSeteResumo = async ( options?: RequestInit): Promise<ResumoSuperSete> => {
+
+  return customFetch<ResumoSuperSete>(getGetSuperSeteResumoUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetSuperSeteResumoQueryKey = () => {
+    return [
+    `/api/super-sete/resumo`
+    ] as const;
+    }
+
+
+export const getGetSuperSeteResumoQueryOptions = <TData = Awaited<ReturnType<typeof getSuperSeteResumo>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetSuperSeteResumoQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getSuperSeteResumo>>> = ({ signal }) => getSuperSeteResumo({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResumo>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetSuperSeteResumoQueryResult = NonNullable<Awaited<ReturnType<typeof getSuperSeteResumo>>>
+export type GetSuperSeteResumoQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Resumo agregado da Super Sete
+ */
+
+export function useGetSuperSeteResumo<TData = Awaited<ReturnType<typeof getSuperSeteResumo>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getSuperSeteResumo>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetSuperSeteResumoQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getSimularSuperSeteUrl = () => {
+
+
+
+
+  return `/api/super-sete/simulador`
+}
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Super Sete
+ */
+export const simularSuperSete = async (simuladorInputSuperSete: SimuladorInputSuperSete, options?: RequestInit): Promise<SimulacaoResultado> => {
+
+  return customFetch<SimulacaoResultado>(getSimularSuperSeteUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      simuladorInputSuperSete,)
+  }
+);}
+
+
+
+
+export const getSimularSuperSeteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularSuperSete>>, TError,{data: BodyType<SimuladorInputSuperSete>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof simularSuperSete>>, TError,{data: BodyType<SimuladorInputSuperSete>}, TContext> => {
+
+const mutationKey = ['simularSuperSete'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof simularSuperSete>>, {data: BodyType<SimuladorInputSuperSete>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  simularSuperSete(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SimularSuperSeteMutationResult = NonNullable<Awaited<ReturnType<typeof simularSuperSete>>>
+    export type SimularSuperSeteMutationBody = BodyType<SimuladorInputSuperSete>
+    export type SimularSuperSeteMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Simula uma aposta em todos os concursos anteriores da Super Sete
+ */
+export const useSimularSuperSete = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof simularSuperSete>>, TError,{data: BodyType<SimuladorInputSuperSete>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof simularSuperSete>>,
+        TError,
+        {data: BodyType<SimuladorInputSuperSete>},
+        TContext
+      > => {
+      return useMutation(getSimularSuperSeteMutationOptions(options));
+    }
+
+export const getGerarJogoSuperSeteUrl = () => {
+
+
+
+
+  return `/api/super-sete/gerador`
+}
+
+/**
+ * @summary Gera um jogo aleatório de Super Sete
+ */
+export const gerarJogoSuperSete = async (geradorInputSuperSete: GeradorInputSuperSete, options?: RequestInit): Promise<JogoGeradoSuperSete> => {
+
+  return customFetch<JogoGeradoSuperSete>(getGerarJogoSuperSeteUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      geradorInputSuperSete,)
+  }
+);}
+
+
+
+
+export const getGerarJogoSuperSeteMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoSuperSete>>, TError,{data: BodyType<GeradorInputSuperSete>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof gerarJogoSuperSete>>, TError,{data: BodyType<GeradorInputSuperSete>}, TContext> => {
+
+const mutationKey = ['gerarJogoSuperSete'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof gerarJogoSuperSete>>, {data: BodyType<GeradorInputSuperSete>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  gerarJogoSuperSete(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GerarJogoSuperSeteMutationResult = NonNullable<Awaited<ReturnType<typeof gerarJogoSuperSete>>>
+    export type GerarJogoSuperSeteMutationBody = BodyType<GeradorInputSuperSete>
+    export type GerarJogoSuperSeteMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Gera um jogo aleatório de Super Sete
+ */
+export const useGerarJogoSuperSete = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof gerarJogoSuperSete>>, TError,{data: BodyType<GeradorInputSuperSete>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof gerarJogoSuperSete>>,
+        TError,
+        {data: BodyType<GeradorInputSuperSete>},
+        TContext
+      > => {
+      return useMutation(getGerarJogoSuperSeteMutationOptions(options));
     }
 

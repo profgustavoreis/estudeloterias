@@ -111,6 +111,86 @@ const duplaSenaInfo = [
 
 const duplaSenaAll = [...duplaSenaTools, ...duplaSenaInfo];
 
+// ── Super Sete items ───────────────────────────────────────────────────────────
+const superSeteTools = [
+  { href: "/super-sete",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da Super Sete" },
+  { href: "/super-sete/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/super-sete/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/super-sete/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/super-sete/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/super-sete/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/super-sete/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/super-sete/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const superSeteInfo = [
+  { href: "/super-sete/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/super-sete/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/super-sete/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+];
+
+const superSeteAll = [...superSeteTools, ...superSeteInfo];
+
+// ── Timemania items ──────────────────────────────────────────────────────────
+const timemaniaTools = [
+  { href: "/timemania",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da Timemania" },
+  { href: "/timemania/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/timemania/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/timemania/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/timemania/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/timemania/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/timemania/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/timemania/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const timemaniaInfo = [
+  { href: "/timemania/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/timemania/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/timemania/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+];
+
+const timemaniaAll = [...timemaniaTools, ...timemaniaInfo];
+
+// ── Dia de Sorte items ─────────────────────────────────────────────────────────
+const diaDeSorteTools = [
+  { href: "/diadesorte",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral do Dia de Sorte" },
+  { href: "/diadesorte/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/diadesorte/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/diadesorte/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/diadesorte/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/diadesorte/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/diadesorte/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/diadesorte/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const diaDeSorteInfo = [
+  { href: "/diadesorte/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/diadesorte/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/diadesorte/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+];
+
+const diaDeSorteAll = [...diaDeSorteTools, ...diaDeSorteInfo];
+
+// ── +Milionária items ─────────────────────────────────────────────────────────
+const maisMilionariaTools = [
+  { href: "/maismilionaria",                    label: "Painel Principal",       icon: Target,         desc: "Visão geral da +Milionária" },
+  { href: "/maismilionaria/resultado",          label: "Último Resultado",       icon: Dices,          desc: "Dezenas e premiação do último sorteio" },
+  { href: "/maismilionaria/resultados",         label: "Resultados Anteriores",  icon: List,           desc: "Histórico completo de concursos" },
+  { href: "/maismilionaria/resumo-estatistico", label: "Resumo Estatístico",     icon: BarChart3,      desc: "Frequência e análise das dezenas" },
+  { href: "/maismilionaria/tabela-de-dezenas",  label: "Tabela de Dezenas",      icon: Table,          desc: "Ranking detalhado de todas as dezenas" },
+  { href: "/maismilionaria/gerador",            label: "Gerador de Jogos",       icon: Sparkles,       desc: "Crie apostas aleatórias" },
+  { href: "/maismilionaria/simulador",          label: "Simulador Histórico",    icon: FlaskConical,   desc: "Teste suas dezenas no histórico completo" },
+  { href: "/maismilionaria/conferidor",         label: "Conferidor de Apostas",  icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
+];
+
+const maisMilionariaInfo = [
+  { href: "/maismilionaria/como-jogar",           label: "Como Jogar",            icon: BookOpen,     desc: "Regras e formas de apostar" },
+  { href: "/maismilionaria/premiacao",            label: "Premiação",             icon: Trophy,       desc: "Faixas e percentuais de prêmio" },
+  { href: "/maismilionaria/perguntas-frequentes", label: "Perguntas Frequentes",  icon: HelpCircle,   desc: "Dúvidas comuns respondidas" },
+];
+
+const maisMilionariaAll = [...maisMilionariaTools, ...maisMilionariaInfo];
+
 // ── Outras Loterias ───────────────────────────────────────────────────────────
 // Items with an `href` are live and link out; items without one are still "em breve".
 const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
@@ -119,7 +199,7 @@ const outrasLoterias: Array<{ label: string; cor: string; href?: string }> = [
   { label: "Dupla Sena",  cor: "#a61324", href: "/duplasena" },
   { label: "Timemania",   cor: "#00a650", href: "/timemania" },
   { label: "Dia de Sorte", cor: "#f5a623", href: "/diadesorte" },
-  { label: "Super Sete",  cor: "#a8cf45" },
+  { label: "Super Sete",  cor: "#a8cf45", href: "/super-sete" },
   { label: "+Milionária",  cor: "#2c2c2c", href: "/maismilionaria" },
 ];
 
@@ -324,10 +404,18 @@ export function TopNav() {
   const quinaActive = !!bestMatch(location, quinaAll);
   const lotomaniaActive = !!bestMatch(location, lotomaniaAll);
   const duplaSenaActive = !!bestMatch(location, duplaSenaAll);
+  const superSeteActive = !!bestMatch(location, superSeteAll);
+  const timemaniaActive = !!bestMatch(location, timemaniaAll);
+  const diaDeSorteActive = !!bestMatch(location, diaDeSorteAll);
+  const maisMilionariaActive = !!bestMatch(location, maisMilionariaAll);
   const visibleOutrasLoterias = outrasLoterias.filter(l =>
     (l.label !== "Quina" || !quinaActive) &&
     (l.label !== "Lotomania" || !lotomaniaActive) &&
-    (l.label !== "Dupla Sena" || !duplaSenaActive)
+    (l.label !== "Dupla Sena" || !duplaSenaActive) &&
+    (l.label !== "Super Sete" || !superSeteActive) &&
+    (l.label !== "Timemania" || !timemaniaActive) &&
+    (l.label !== "Dia de Sorte" || !diaDeSorteActive) &&
+    (l.label !== "+Milionária" || !maisMilionariaActive)
   );
 
   return (
@@ -415,6 +503,54 @@ export function TopNav() {
                 allItems={duplaSenaAll}
                 isOpen={openMenu === "duplasena"}
                 onToggle={() => toggle("duplasena")}
+              />
+            )}
+
+            {superSeteActive && (
+              <LotteryDropdown
+                label="Super Sete"
+                cor="#a8cf45"
+                tools={superSeteTools}
+                info={superSeteInfo}
+                allItems={superSeteAll}
+                isOpen={openMenu === "supersete"}
+                onToggle={() => toggle("supersete")}
+              />
+            )}
+
+            {timemaniaActive && (
+              <LotteryDropdown
+                label="Timemania"
+                cor="#00a650"
+                tools={timemaniaTools}
+                info={timemaniaInfo}
+                allItems={timemaniaAll}
+                isOpen={openMenu === "timemania"}
+                onToggle={() => toggle("timemania")}
+              />
+            )}
+
+            {diaDeSorteActive && (
+              <LotteryDropdown
+                label="Dia de Sorte"
+                cor="#f5a623"
+                tools={diaDeSorteTools}
+                info={diaDeSorteInfo}
+                allItems={diaDeSorteAll}
+                isOpen={openMenu === "diadesorte"}
+                onToggle={() => toggle("diadesorte")}
+              />
+            )}
+
+            {maisMilionariaActive && (
+              <LotteryDropdown
+                label="+Milionária"
+                cor="#2c2c2c"
+                tools={maisMilionariaTools}
+                info={maisMilionariaInfo}
+                allItems={maisMilionariaAll}
+                isOpen={openMenu === "maismilionaria"}
+                onToggle={() => toggle("maismilionaria")}
               />
             )}
 
@@ -693,6 +829,186 @@ export function TopNav() {
                           className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
                             active ? "" : "text-foreground hover:bg-muted")}
                           style={active ? { backgroundColor: "#a613241a", color: "#a61324" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Super Sete — tools (only shown when a Super Sete page is active) */}
+            {superSeteActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#a8cf45" }}>
+                    Super Sete
+                  </div>
+                  <div className="space-y-1">
+                    {superSeteTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, superSeteAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#a8cf451a", color: "#a8cf45" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    Super Sete — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {superSeteInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#a8cf451a", color: "#a8cf45" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Timemania — tools (only shown when a Timemania page is active) */}
+            {timemaniaActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#00a650" }}>
+                    Timemania
+                  </div>
+                  <div className="space-y-1">
+                    {timemaniaTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, timemaniaAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#00a6501a", color: "#00a650" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    Timemania — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {timemaniaInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#00a6501a", color: "#00a650" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Dia de Sorte — tools (only shown when a Dia de Sorte page is active) */}
+            {diaDeSorteActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#f5a623" }}>
+                    Dia de Sorte
+                  </div>
+                  <div className="space-y-1">
+                    {diaDeSorteTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, diaDeSorteAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#f5a6231a", color: "#f5a623" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    Dia de Sorte — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {diaDeSorteInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#f5a6231a", color: "#f5a623" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* +Milionária — tools (only shown when a +Milionária page is active) */}
+            {maisMilionariaActive && (
+              <>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider mb-2 px-3" style={{ color: "#2c2c2c" }}>
+                    +Milionária
+                  </div>
+                  <div className="space-y-1">
+                    {maisMilionariaTools.map(item => {
+                      const Icon = item.icon;
+                      const active = bestMatch(location, maisMilionariaAll)?.href === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#2c2c2c1a", color: "#2c2c2c" } : {}}>
+                          <Icon className="w-4 h-4" /> {item.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
+                    +Milionária — Informações
+                  </div>
+                  <div className="space-y-1">
+                    {maisMilionariaInfo.map(item => {
+                      const Icon = item.icon;
+                      const active = location === item.href;
+                      return (
+                        <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                          className={cn("flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                            active ? "" : "text-foreground hover:bg-muted")}
+                          style={active ? { backgroundColor: "#2c2c2c1a", color: "#2c2c2c" } : {}}>
                           <Icon className="w-4 h-4" /> {item.label}
                         </Link>
                       );

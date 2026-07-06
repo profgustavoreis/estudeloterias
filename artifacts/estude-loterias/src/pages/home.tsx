@@ -19,8 +19,10 @@ function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
   const isTimemania = loteria.modalidade === "timemania";
   // Dia de Sorte uses orange balls with white text
   const isDiaDeSorte = loteria.modalidade === "diadesorte";
-  const ballColor = isTimemania ? "#FFF600" : isDiaDeSorte ? "#cb852b" : loteria.cor;
-  const ballTextColor = isTimemania ? "#049645" : undefined;
+  // Super Sete uses green balls with white text
+  const isSupersete = loteria.modalidade === "supersete";
+  const ballColor = isTimemania ? "#FFF600" : isDiaDeSorte ? "#cb852b" : isSupersete ? "#a8cf45" : loteria.cor;
+  const ballTextColor = isTimemania ? "#049645" : isSupersete ? "#ffffff" : undefined;
 
   if (loteria.modalidade === "duplasena") {
     return (
@@ -131,7 +133,7 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {loterias.map(loteria => (
-          <Link key={loteria.modalidade} href={`/${loteria.modalidade === 'megasena' ? 'mega-sena' : loteria.modalidade}`}>
+          <Link key={loteria.modalidade} href={`/${loteria.modalidade === 'megasena' ? 'mega-sena' : loteria.modalidade === 'supersete' ? 'super-sete' : loteria.modalidade}`}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer border-t-4 h-full flex flex-col" style={{ borderTopColor: loteria.cor }}>
               <CardContent className="p-5 flex-1 flex flex-col">
 

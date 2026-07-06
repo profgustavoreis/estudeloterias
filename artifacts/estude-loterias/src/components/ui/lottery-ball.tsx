@@ -6,6 +6,7 @@ interface LotteryBallProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: string; // Optional hex or custom class
   textColor?: string; // Optional hex for text color (defaults to #fff when color is set)
   intensity?: number; // 0-1 for heatmap coloring
+  padDigits?: number; // Number of digits to pad to (default 2, 1 for single-digit like Super Sete)
 }
 
 export function LotteryBall({ 
@@ -15,6 +16,7 @@ export function LotteryBall({
   textColor,
   className,
   intensity,
+  padDigits = 2,
   ...props 
 }: LotteryBallProps) {
   const sizeClasses = {
@@ -24,7 +26,7 @@ export function LotteryBall({
     xl: "w-16 h-16 text-xl",
   };
 
-  const formattedNumber = number.toString().padStart(2, "0");
+  const formattedNumber = number.toString().padStart(padDigits, "0");
   
   // Base style is typical white ball with dark text, or colored ball with white text
   const baseStyle = color 

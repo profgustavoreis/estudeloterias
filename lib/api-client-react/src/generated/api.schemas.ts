@@ -276,6 +276,11 @@ export interface JogoGerado {
   custo: number;
 }
 
+export interface JogoGeradoSuperSete {
+  jogos: number[][][];
+  custo: number;
+}
+
 export interface ResultadoLotofacil {
   concurso: number;
   data: string;
@@ -983,6 +988,162 @@ export interface SimulacaoResultadoDuplasena {
   totalConcursos: number;
 }
 
+export interface ResultadoSuperSete {
+  concurso: number;
+  data: string;
+  /**
+     * @minItems 7
+     * @maxItems 7
+     */
+  dezenas: string[];
+  premios: FaixaPremio[];
+  acumulado: boolean;
+  /** @nullable */
+  valorAcumulado?: number | null;
+  /** @nullable */
+  dataProximoConcurso?: string | null;
+  /** @nullable */
+  valorEstimadoProximoConcurso?: number | null;
+  /** @nullable */
+  arrecadacaoTotal?: number | null;
+}
+
+export interface ResultadosPaginadosSuperSete {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: ResultadoSuperSete[];
+}
+
+export type EstatisticasSuperSeteDigitosUnicosItem = {
+  /**
+     * @minimum 1
+     * @maximum 7
+     */
+  count: number;
+  sorteios: number;
+  ultimoConcurso: number;
+};
+
+export interface FrequenciaDezenaPosicao {
+  /**
+     * @minimum 1
+     * @maximum 7
+     */
+  posicao: number;
+  /**
+     * @minimum 0
+     * @maximum 9
+     */
+  digito: number;
+  frequencia: number;
+  atraso: number;
+  ultimoConcurso: number;
+}
+
+export interface DistribuicaoPosicaoItem {
+  /**
+     * @minimum 0
+     * @maximum 9
+     */
+  digito: number;
+  sorteios: number;
+  ultimoConcurso: number;
+}
+
+export interface DistribuicaoPosicao {
+  /**
+     * @minimum 1
+     * @maximum 7
+     */
+  posicao: number;
+  distribuicao: DistribuicaoPosicaoItem[];
+}
+
+export interface EstatisticasSuperSete {
+  totalConcursos: number;
+  frequenciaDezenas: FrequenciaDezenaPosicao[];
+  atrasoMaiores: FrequenciaDezena[];
+  totalAcumulados: number;
+  percentualAcumulado: number;
+  maiorPremio: number;
+  maiorPremioData: string;
+  maiorPremioConcurso: number;
+  paresImpares: ParesImpares[];
+  somaDezenas: SomaDezenas;
+  numerosEspeciais: NumerosEspeciaisItem[];
+  distribuicaoPorPosicao: DistribuicaoPosicao[];
+  digitosUnicos: EstatisticasSuperSeteDigitosUnicosItem[];
+}
+
+export interface ResumoSuperSete {
+  totalConcursos: number;
+  acumulado: boolean;
+  /** @nullable */
+  valorAtualAcumulado?: number | null;
+  /** @nullable */
+  valorEstimadoProximo?: number | null;
+  maiorPremio: number;
+  maiorPremioConcurso: number;
+  maiorPremioAno: number;
+  totalGanhadores7: number;
+  totalGanhadores6: number;
+  totalGanhadores5: number;
+  totalGanhadores4: number;
+  totalGanhadores3: number;
+  /** @nullable */
+  proximoSorteio?: string | null;
+  ultimoConcurso: number;
+}
+
+export type SimuladorInputSuperSeteFiltro = typeof SimuladorInputSuperSeteFiltro[keyof typeof SimuladorInputSuperSeteFiltro];
+
+
+export const SimuladorInputSuperSeteFiltro = {
+  todos: 'todos',
+  premiados: 'premiados',
+  NUMBER_3: '3',
+  NUMBER_4: '4',
+  NUMBER_5: '5',
+  NUMBER_6: '6',
+  NUMBER_7: '7',
+} as const;
+
+export type SimuladorInputSuperSete = ({
+  /**
+     * @minItems 7
+     * @maxItems 7
+     */
+  dezenas: string[];
+} & {
+  filtro?: SimuladorInputSuperSeteFiltro;
+}) | ({
+  /**
+     * @minItems 7
+     * @maxItems 7
+     */
+  dezenasMultipla: string[][];
+} & {
+  filtro?: SimuladorInputSuperSeteFiltro;
+});
+
+export type GeradorInputSuperSete = ({
+  digitosPorColuna: 1 | 2 | 3;
+} & {
+  /** @minimum 1 */
+  quantidade: number;
+}) | ({
+  /**
+     * @minItems 7
+     * @maxItems 7
+     */
+  digitosPorColunaArray: number[];
+} & {
+  /** @minimum 1 */
+  quantidade: number;
+});
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -1148,5 +1309,23 @@ export type GetDuplasenaEstatisticasSorteio = typeof GetDuplasenaEstatisticasSor
 export const GetDuplasenaEstatisticasSorteio = {
   NUMBER_1: '1',
   NUMBER_2: '2',
+} as const;
+
+export type GetSuperSeteResultadosParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+ano?: number | null;
+ordem?: GetSuperSeteResultadosOrdem;
+};
+
+export type GetSuperSeteResultadosOrdem = typeof GetSuperSeteResultadosOrdem[keyof typeof GetSuperSeteResultadosOrdem];
+
+
+export const GetSuperSeteResultadosOrdem = {
+  asc: 'asc',
+  desc: 'desc',
 } as const;
 

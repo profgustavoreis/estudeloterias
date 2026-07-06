@@ -2161,3 +2161,287 @@ export const GerarJogoDuplasenaResponse = zod.object({
 })
 
 
+/**
+ * @summary Último resultado da Super Sete
+ */
+export const getSuperSeteUltimoResultadoResponseDezenasMin = 7;
+export const getSuperSeteUltimoResultadoResponseDezenasMax = 7;
+
+
+
+export const GetSuperSeteUltimoResultadoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()).min(getSuperSeteUltimoResultadoResponseDezenasMin).max(getSuperSeteUltimoResultadoResponseDezenasMax),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Histórico de resultados da Super Sete
+ */
+export const getSuperSeteResultadosQueryPageDefault = 1;
+export const getSuperSeteResultadosQueryLimitDefault = 20;
+export const getSuperSeteResultadosQueryOrdemDefault = `desc`;
+
+export const GetSuperSeteResultadosQueryParams = zod.object({
+  "page": zod.coerce.number().default(getSuperSeteResultadosQueryPageDefault),
+  "limit": zod.coerce.number().default(getSuperSeteResultadosQueryLimitDefault),
+  "ano": zod.coerce.number().nullish(),
+  "ordem": zod.enum(['asc', 'desc']).default(getSuperSeteResultadosQueryOrdemDefault)
+})
+
+export const getSuperSeteResultadosResponseResultadosItemDezenasMin = 7;
+export const getSuperSeteResultadosResponseResultadosItemDezenasMax = 7;
+
+
+
+export const GetSuperSeteResultadosResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()).min(getSuperSeteResultadosResponseResultadosItemDezenasMin).max(getSuperSeteResultadosResponseResultadosItemDezenasMax),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+}))
+})
+
+
+/**
+ * @summary Resultado de um concurso específico da Super Sete
+ */
+export const GetSuperSeteResultadoConcursoParams = zod.object({
+  "concurso": zod.coerce.number()
+})
+
+export const getSuperSeteResultadoConcursoResponseDezenasMin = 7;
+export const getSuperSeteResultadoConcursoResponseDezenasMax = 7;
+
+
+
+export const GetSuperSeteResultadoConcursoResponse = zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()).min(getSuperSeteResultadoConcursoResponseDezenasMin).max(getSuperSeteResultadoConcursoResponseDezenasMax),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})
+
+
+/**
+ * @summary Estatísticas da Super Sete (frequência de dezenas por posição, etc.)
+ */
+export const getSuperSeteEstatisticasResponseFrequenciaDezenasItemPosicaoMax = 7;
+
+export const getSuperSeteEstatisticasResponseFrequenciaDezenasItemDigitoMin = 0;
+export const getSuperSeteEstatisticasResponseFrequenciaDezenasItemDigitoMax = 9;
+
+export const getSuperSeteEstatisticasResponseDistribuicaoPorPosicaoItemPosicaoMax = 7;
+
+export const getSuperSeteEstatisticasResponseDistribuicaoPorPosicaoItemDistribuicaoItemDigitoMin = 0;
+export const getSuperSeteEstatisticasResponseDistribuicaoPorPosicaoItemDistribuicaoItemDigitoMax = 9;
+
+export const getSuperSeteEstatisticasResponseDigitosUnicosItemCountMax = 7;
+
+
+
+export const GetSuperSeteEstatisticasResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "frequenciaDezenas": zod.array(zod.object({
+  "posicao": zod.number().min(1).max(getSuperSeteEstatisticasResponseFrequenciaDezenasItemPosicaoMax),
+  "digito": zod.number().min(getSuperSeteEstatisticasResponseFrequenciaDezenasItemDigitoMin).max(getSuperSeteEstatisticasResponseFrequenciaDezenasItemDigitoMax),
+  "frequencia": zod.number(),
+  "atraso": zod.number(),
+  "ultimoConcurso": zod.number()
+})),
+  "atrasoMaiores": zod.array(zod.object({
+  "dezena": zod.string(),
+  "frequencia": zod.number(),
+  "percentual": zod.number(),
+  "ultimoConcurso": zod.number().nullish(),
+  "atraso": zod.number()
+})),
+  "totalAcumulados": zod.number(),
+  "percentualAcumulado": zod.number(),
+  "maiorPremio": zod.number(),
+  "maiorPremioData": zod.string(),
+  "maiorPremioConcurso": zod.number(),
+  "paresImpares": zod.array(zod.object({
+  "pares": zod.number(),
+  "impares": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "somaDezenas": zod.object({
+  "intervalos": zod.array(zod.object({
+  "faixa": zod.string(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+})),
+  "menor": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable(),
+  "maior": zod.object({
+  "valor": zod.number(),
+  "concurso": zod.number(),
+  "data": zod.string()
+}).nullable()
+}),
+  "numerosEspeciais": zod.array(zod.object({
+  "tipo": zod.string(),
+  "label": zod.string(),
+  "dezenas": zod.array(zod.number()),
+  "quantidadeNaFaixa": zod.number(),
+  "media": zod.number(),
+  "distribuicao": zod.array(zod.object({
+  "count": zod.number(),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number().nullable()
+}))
+})),
+  "distribuicaoPorPosicao": zod.array(zod.object({
+  "posicao": zod.number().min(1).max(getSuperSeteEstatisticasResponseDistribuicaoPorPosicaoItemPosicaoMax),
+  "distribuicao": zod.array(zod.object({
+  "digito": zod.number().min(getSuperSeteEstatisticasResponseDistribuicaoPorPosicaoItemDistribuicaoItemDigitoMin).max(getSuperSeteEstatisticasResponseDistribuicaoPorPosicaoItemDistribuicaoItemDigitoMax),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number()
+}))
+})),
+  "digitosUnicos": zod.array(zod.object({
+  "count": zod.number().min(1).max(getSuperSeteEstatisticasResponseDigitosUnicosItemCountMax),
+  "sorteios": zod.number(),
+  "ultimoConcurso": zod.number()
+}))
+})
+
+
+/**
+ * @summary Resumo agregado da Super Sete
+ */
+export const GetSuperSeteResumoResponse = zod.object({
+  "totalConcursos": zod.number(),
+  "acumulado": zod.boolean(),
+  "valorAtualAcumulado": zod.number().nullish(),
+  "valorEstimadoProximo": zod.number().nullish(),
+  "maiorPremio": zod.number(),
+  "maiorPremioConcurso": zod.number(),
+  "maiorPremioAno": zod.number(),
+  "totalGanhadores7": zod.number(),
+  "totalGanhadores6": zod.number(),
+  "totalGanhadores5": zod.number(),
+  "totalGanhadores4": zod.number(),
+  "totalGanhadores3": zod.number(),
+  "proximoSorteio": zod.string().nullish(),
+  "ultimoConcurso": zod.number()
+})
+
+
+/**
+ * @summary Simula uma aposta em todos os concursos anteriores da Super Sete
+ */
+export const simularSuperSeteBodyOneDezenasMin = 7;
+export const simularSuperSeteBodyOneDezenasMax = 7;
+
+export const simularSuperSeteBodyTwoDezenasMultiplaItemMax = 3;
+
+export const simularSuperSeteBodyTwoDezenasMultiplaMin = 7;
+export const simularSuperSeteBodyTwoDezenasMultiplaMax = 7;
+
+export const simularSuperSeteBodyThreeFiltroDefault = `todos`;
+
+export const SimularSuperSeteBody = zod.union([zod.object({
+  "dezenas": zod.array(zod.string()).min(simularSuperSeteBodyOneDezenasMin).max(simularSuperSeteBodyOneDezenasMax)
+}),zod.object({
+  "dezenasMultipla": zod.array(zod.array(zod.string()).min(1).max(simularSuperSeteBodyTwoDezenasMultiplaItemMax)).min(simularSuperSeteBodyTwoDezenasMultiplaMin).max(simularSuperSeteBodyTwoDezenasMultiplaMax)
+})]).and(zod.object({
+  "filtro": zod.enum(['todos', 'premiados', '3', '4', '5', '6', '7']).default(simularSuperSeteBodyThreeFiltroDefault)
+}))
+
+export const SimularSuperSeteResponse = zod.object({
+  "resumo": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})),
+  "resumoTrevos": zod.array(zod.object({
+  "acertos": zod.number(),
+  "contagem": zod.number()
+})).optional(),
+  "faixas": zod.array(zod.object({
+  "label": zod.string(),
+  "contagem": zod.number(),
+  "probabilidade": zod.string()
+})).optional(),
+  "concursos": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "trevos": zod.array(zod.string()).optional(),
+  "acertos": zod.number(),
+  "acertosTrevos": zod.number().optional(),
+  "premioGanho": zod.number()
+})),
+  "totalPremio": zod.number(),
+  "totalConcursos": zod.number()
+})
+
+
+/**
+ * @summary Gera um jogo aleatório de Super Sete
+ */
+export const gerarJogoSuperSeteBodyTwoDigitosPorColunaArrayItemMax = 3;
+
+export const gerarJogoSuperSeteBodyTwoDigitosPorColunaArrayMin = 7;
+export const gerarJogoSuperSeteBodyTwoDigitosPorColunaArrayMax = 7;
+
+export const gerarJogoSuperSeteBodyThreeQuantidadeDefault = 1;
+
+
+
+export const GerarJogoSuperSeteBody = zod.union([zod.object({
+  "digitosPorColuna": zod.union([zod.literal(1),zod.literal(2),zod.literal(3)])
+}),zod.object({
+  "digitosPorColunaArray": zod.array(zod.number().min(1).max(gerarJogoSuperSeteBodyTwoDigitosPorColunaArrayItemMax)).min(gerarJogoSuperSeteBodyTwoDigitosPorColunaArrayMin).max(gerarJogoSuperSeteBodyTwoDigitosPorColunaArrayMax)
+})]).and(zod.object({
+  "quantidade": zod.number().min(1).default(gerarJogoSuperSeteBodyThreeQuantidadeDefault)
+}))
+
+export const GerarJogoSuperSeteResponse = zod.object({
+  "jogos": zod.array(zod.array(zod.array(zod.number()))),
+  "custo": zod.number()
+})
+
+

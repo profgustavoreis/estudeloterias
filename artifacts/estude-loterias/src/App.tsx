@@ -106,6 +106,18 @@ import DuplaSenaPremiacao from "@/pages/duplasena/premiacao";
 import DuplaSenaFAQ from "@/pages/duplasena/faq";
 import DuplaSenaDuplaDePascoa from "@/pages/duplasena/dupla-de-pascoa";
 
+import SuperSeteHub from "@/pages/super-sete/hub";
+import SuperSeteUltimoResultado from "@/pages/super-sete/ultimo-resultado";
+import SuperSeteResultadosAnteriores from "@/pages/super-sete/resultados";
+import SuperSeteEstatisticas from "@/pages/super-sete/estatisticas";
+import SuperSeteEstatisticasTabela from "@/pages/super-sete/estatisticas-tabela";
+import SuperSeteGerador from "@/pages/super-sete/gerador";
+import SuperSeteSimulador from "@/pages/super-sete/simulador";
+import SuperSeteConferidor from "@/pages/super-sete/conferidor";
+import SuperSeteComoJogar from "@/pages/super-sete/como-jogar";
+import SuperSetePremiacao from "@/pages/super-sete/premiacao";
+import SuperSeteFAQ from "@/pages/super-sete/faq";
+
 import Sobre from "@/pages/sobre";
 import Privacidade from "@/pages/privacidade";
 import Termos from "@/pages/termos";
@@ -242,6 +254,21 @@ function Router() {
         <Route path="/maismilionaria/premiacao" component={MaisMilionariaPremiacao} />
         <Route path="/maismilionaria/perguntas-frequentes" component={MaisMilionariaFAQ} />
         <Route path="/maismilionaria/faq" component={MaisMilionariaFAQ} />
+
+        {/* Super Sete Routes */}
+        <Route path="/super-sete" component={SuperSeteHub} />
+        <Route path="/super-sete/resultado/:concurso" component={SuperSeteUltimoResultado} />
+        <Route path="/super-sete/resultado" component={SuperSeteUltimoResultado} />
+        <Route path="/super-sete/resultados" component={SuperSeteResultadosAnteriores} />
+        <Route path="/super-sete/tabela-de-dezenas" component={SuperSeteEstatisticasTabela} />
+        <Route path="/super-sete/resumo-estatistico" component={SuperSeteEstatisticas} />
+        <Route path="/super-sete/gerador" component={SuperSeteGerador} />
+        <Route path="/super-sete/simulador" component={SuperSeteSimulador} />
+        <Route path="/super-sete/conferidor" component={SuperSeteConferidor} />
+        <Route path="/super-sete/como-jogar" component={SuperSeteComoJogar} />
+        <Route path="/super-sete/premiacao" component={SuperSetePremiacao} />
+        <Route path="/super-sete/perguntas-frequentes" component={SuperSeteFAQ} />
+        <Route path="/super-sete/faq" component={SuperSeteFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

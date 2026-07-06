@@ -164,6 +164,24 @@ export function Sidebar() {
         { href: "/duplasena/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
         { href: "/duplasena/dupla-de-pascoa", label: "Dupla de Páscoa", icon: Gift },
       ]
+    },
+    {
+      title: "Super Sete",
+      items: [
+        { href: "/super-sete", label: "Painel Principal", icon: Target },
+        { href: "/super-sete/resultado", label: "Último Resultado", icon: Dices },
+        { href: "/super-sete/resultados", label: "Resultados Anteriores", icon: List },
+        { href: "/super-sete/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3 },
+        { href: "/super-sete/gerador", label: "Gerador de Jogos", icon: Sparkles },
+      ]
+    },
+    {
+      title: "Super Sete — Info",
+      items: [
+        { href: "/super-sete/como-jogar", label: "Como Jogar", icon: Info },
+        { href: "/super-sete/premiacao", label: "Premiação", icon: Target },
+        { href: "/super-sete/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle },
+      ]
     }
   ];
 

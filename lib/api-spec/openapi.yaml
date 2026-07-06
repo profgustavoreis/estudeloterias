@@ -28,6 +28,8 @@ tags:
     description: +Milionária específico
   - name: duplasena
     description: Dupla Sena específico
+  - name: super-sete
+    description: Super Sete específico
 paths:
   /healthz:
     get:
@@ -1231,6 +1233,142 @@ paths:
               schema:
                 $ref: "#/components/schemas/JogoGerado"
 
+  /super-sete/resultado/ultimo:
+    get:
+      operationId: getSuperSeteUltimoResultado
+      tags: [super-sete]
+      summary: Último resultado da Super Sete
+      responses:
+        "200":
+          description: Último resultado da Super Sete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoSuperSete"
+
+  /super-sete/resultados:
+    get:
+      operationId: getSuperSeteResultados
+      tags: [super-sete]
+      summary: Histórico de resultados da Super Sete
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: ano
+          in: query
+          schema:
+            type: ["integer", "null"]
+        - name: ordem
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+      responses:
+        "200":
+          description: Lista paginada de resultados
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadosPaginadosSuperSete"
+
+  /super-sete/resultados/{concurso}:
+    get:
+      operationId: getSuperSeteResultadoConcurso
+      tags: [super-sete]
+      summary: Resultado de um concurso específico da Super Sete
+      parameters:
+        - name: concurso
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Resultado do concurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoSuperSete"
+        "404":
+          description: Concurso não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /super-sete/estatisticas:
+    get:
+      operationId: getSuperSeteEstatisticas
+      tags: [super-sete]
+      summary: Estatísticas da Super Sete (frequência de dezenas por posição, etc.)
+      responses:
+        "200":
+          description: Estatísticas completas
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstatisticasSuperSete"
+
+  /super-sete/resumo:
+    get:
+      operationId: getSuperSeteResumo
+      tags: [super-sete]
+      summary: Resumo agregado da Super Sete
+      responses:
+        "200":
+          description: Resumo da Super Sete
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResumoSuperSete"
+
+  /super-sete/simulador:
+    post:
+      operationId: simularSuperSete
+      tags: [super-sete]
+      summary: Simula uma aposta em todos os concursos anteriores da Super Sete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimuladorInputSuperSete"
+      responses:
+        "200":
+          description: Resultado da simulação
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulacaoResultado"
+
+  /super-sete/gerador:
+    post:
+      operationId: gerarJogoSuperSete
+      tags: [super-sete]
+      summary: Gera um jogo aleatório de Super Sete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GeradorInputSuperSete"
+      responses:
+        "200":
+          description: Jogo(s) gerado(s)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JogoGeradoSuperSete"
+
 components:
   schemas:
     HealthStatus:
@@ -1769,6 +1907,23 @@ components:
             type: array
             items:
               type: integer
+        custo:
+          type: number
+      required:
+        - jogos
+        - custo
+
+    JogoGeradoSuperSete:
+      type: object
+      properties:
+        jogos:
+          type: array
+          items:
+            type: array
+            items:
+              type: array
+              items:
+                type: integer
         custo:
           type: number
       required:
@@ -3184,4 +3339,280 @@ components:
           type: number
         totalConcursos:
           type: integer
+
+    ResultadoSuperSete:
+      type: object
+      properties:
+        concurso:
+          type: integer
+        data:
+          type: string
+        dezenas:
+          type: array
+          items:
+            type: string
+          minItems: 7
+          maxItems: 7
+        premios:
+          type: array
+          items:
+            $ref: "#/components/schemas/FaixaPremio"
+        acumulado:
+          type: boolean
+        valorAcumulado:
+          type: ["number", "null"]
+        dataProximoConcurso:
+          type: ["string", "null"]
+        valorEstimadoProximoConcurso:
+          type: ["number", "null"]
+        arrecadacaoTotal:
+          type: ["number", "null"]
+      required:
+        - concurso
+        - data
+        - dezenas
+        - premios
+        - acumulado
+
+    ResultadosPaginadosSuperSete:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoSuperSete"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    EstatisticasSuperSete:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        frequenciaDezenas:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezenaPosicao"
+        atrasoMaiores:
+          type: array
+          items:
+            $ref: "#/components/schemas/FrequenciaDezena"
+        totalAcumulados:
+          type: integer
+        percentualAcumulado:
+          type: number
+        maiorPremio:
+          type: number
+        maiorPremioData:
+          type: string
+        maiorPremioConcurso:
+          type: integer
+        paresImpares:
+          type: array
+          items:
+            $ref: "#/components/schemas/ParesImpares"
+        somaDezenas:
+          $ref: "#/components/schemas/SomaDezenas"
+        numerosEspeciais:
+          type: array
+          items:
+            $ref: "#/components/schemas/NumerosEspeciaisItem"
+        distribuicaoPorPosicao:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistribuicaoPosicao"
+        digitosUnicos:
+          type: array
+          items:
+            type: object
+            properties:
+              count:
+                type: integer
+                minimum: 1
+                maximum: 7
+              sorteios:
+                type: integer
+              ultimoConcurso:
+                type: integer
+            required: [count, sorteios, ultimoConcurso]
+      required:
+        - totalConcursos
+        - frequenciaDezenas
+        - atrasoMaiores
+        - totalAcumulados
+        - percentualAcumulado
+        - maiorPremio
+        - maiorPremioData
+        - maiorPremioConcurso
+        - paresImpares
+        - somaDezenas
+        - numerosEspeciais
+        - distribuicaoPorPosicao
+        - digitosUnicos
+
+    ResumoSuperSete:
+      type: object
+      properties:
+        totalConcursos:
+          type: integer
+        acumulado:
+          type: boolean
+        valorAtualAcumulado:
+          type: ["number", "null"]
+        valorEstimadoProximo:
+          type: ["number", "null"]
+        maiorPremio:
+          type: number
+        maiorPremioConcurso:
+          type: integer
+        maiorPremioAno:
+          type: integer
+        totalGanhadores7:
+          type: integer
+        totalGanhadores6:
+          type: integer
+        totalGanhadores5:
+          type: integer
+        totalGanhadores4:
+          type: integer
+        totalGanhadores3:
+          type: integer
+        proximoSorteio:
+          type: ["string", "null"]
+        ultimoConcurso:
+          type: integer
+      required:
+        - totalConcursos
+        - acumulado
+        - maiorPremio
+        - maiorPremioConcurso
+        - maiorPremioAno
+        - totalGanhadores7
+        - totalGanhadores6
+        - totalGanhadores5
+        - totalGanhadores4
+        - totalGanhadores3
+        - ultimoConcurso
+
+    SimuladorInputSuperSete:
+      type: object
+      oneOf:
+        - required: [dezenas]
+          properties:
+            dezenas:
+              type: array
+              items:
+                type: string
+              minItems: 7
+              maxItems: 7
+        - required: [dezenasMultipla]
+          properties:
+            dezenasMultipla:
+              type: array
+              items:
+                type: array
+                items:
+                  type: string
+                minItems: 1
+                maxItems: 3
+              minItems: 7
+              maxItems: 7
+      properties:
+        filtro:
+          type: string
+          enum: [todos, premiados, "3", "4", "5", "6", "7"]
+          default: todos
+
+    GeradorInputSuperSete:
+      type: object
+      oneOf:
+        - required: [digitosPorColuna]
+          properties:
+            digitosPorColuna:
+              type: integer
+              enum: [1, 2, 3]
+        - required: [digitosPorColunaArray]
+          properties:
+            digitosPorColunaArray:
+              type: array
+              items:
+                type: integer
+                minimum: 1
+                maximum: 3
+              minItems: 7
+              maxItems: 7
+      properties:
+        quantidade:
+          type: integer
+          minimum: 1
+          default: 1
+      required:
+        - quantidade
+
+    FrequenciaDezenaPosicao:
+      type: object
+      properties:
+        posicao:
+          type: integer
+          minimum: 1
+          maximum: 7
+        digito:
+          type: integer
+          minimum: 0
+          maximum: 9
+        frequencia:
+          type: integer
+        atraso:
+          type: integer
+        ultimoConcurso:
+          type: integer
+      required:
+        - posicao
+        - digito
+        - frequencia
+        - atraso
+        - ultimoConcurso
+
+    DistribuicaoPosicao:
+      type: object
+      properties:
+        posicao:
+          type: integer
+          minimum: 1
+          maximum: 7
+        distribuicao:
+          type: array
+          items:
+            $ref: "#/components/schemas/DistribuicaoPosicaoItem"
+      required:
+        - posicao
+        - distribuicao
+
+    DistribuicaoPosicaoItem:
+      type: object
+      properties:
+        digito:
+          type: integer
+          minimum: 0
+          maximum: 9
+        sorteios:
+          type: integer
+        ultimoConcurso:
+          type: integer
+      required:
+        - digito
+        - sorteios
+        - ultimoConcurso
 
