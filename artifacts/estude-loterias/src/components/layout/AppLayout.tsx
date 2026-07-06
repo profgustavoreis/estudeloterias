@@ -1,4 +1,5 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import { useEffect } from "react";
 import { TopNav } from "./TopNav";
 
 const loterias: Array<{ name: string; href: string; active: boolean; soon?: boolean }> = [
@@ -21,7 +22,13 @@ const institucional = [
 ];
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
+  const [location] = useLocation();
   const ano = new Date().getFullYear();
+
+  // Scroll to top on menu-driven route changes. Tool interactions (simulador/gerador/conferidor) stay in-page so naturally unaffected.
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [location]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
