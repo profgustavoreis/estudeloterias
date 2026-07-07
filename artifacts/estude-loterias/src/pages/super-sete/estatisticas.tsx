@@ -14,6 +14,9 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -118,6 +121,7 @@ function ConcursoLink({ concurso }: { concurso: number | null }) {
 export default function SuperSeteEstatisticas() {
   const { data: stats, isLoading, isError } = useGetSuperSeteEstatisticas();
   const [tabEspecial, setTabEspecial] = useState(0);
+  const [posicaoFiltro, setPosicaoFiltro] = useState("all");
 
   if (isLoading) {
     return (
@@ -592,101 +596,128 @@ export default function SuperSeteEstatisticas() {
           Distribuição por Posição
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {stats.distribuicaoPorPosicao.map((pos, idx) => {
-            const sorted = [...pos.distribuicao].sort((a, b) => b.sorteios - a.sorteios);
-            const top3 = sorted.slice(0, 3);
-            const low3 = [...pos.distribuicao].sort((a, b) => a.sorteios - b.sorteios).slice(0, 3);
-            const totalPos = pos.distribuicao.reduce((a, b) => a + b.sorteios, 0);
-            const isLast = idx === stats.distribuicaoPorPosicao.length - 1;
+
+          {(() => {
+            const posData = posicaoFiltro === "all" ? null
+              : stats.distribuicaoPorPosicao.find(p => p.posicao === Number(posicaoFiltro))!;
+
+            const chartData = posicaoFiltro === "all"
+              ? Array.from({ length: 10 }, (_, digito) => {
+                  const total = stats.distribuicaoPorPosicao.reduce((sum, pos) => {
+                    const item = pos.distribuicao.find(d => d.digito === digito);
+                    return sum + (item?.sorteios ?? 0);
+                  }, 0);
+                  return { digito, sorteios: total };
+                })
+              : [...posData!.distribuicao];
+
+            const totalGeral = chartData.reduce((a, b) => a + b.sorteios, 0);
+            const sorted = [...chartData].sort((a, b) => b.sorteios - a.sorteios);
+            const title = posicaoFiltro === "all" ? "Todas as Posições" : `Posição ${posicaoFiltro}`;
+            const subtitle = posicaoFiltro === "all"
+              ? "Frequência acumulada de cada dígito (0-9) em todas as posições"
+              : `Frequência de cada número (0-9) na ${posicaoFiltro}ª posição`;
+
             return (
-              <div key={pos.posicao} className={isLast ? "lg:col-span-2" : ""}>
-                <Card className={isLast ? "max-w-2xl mx-auto" : ""}>
-                  <CardHeader className="pb-3">
-                    <CardTitle>Posição {pos.posicao}</CardTitle>
-                    <CardDescription>
-                      Frequência de cada número (0-9) na {pos.posicao}ª posição
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="h-[180px]">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={pos.distribuicao} margin={{ top: 22, right: 8, left: -20, bottom: 0 }}>
-                          <XAxis
-                            dataKey="digito"
-                            tickLine={false}
-                            axisLine={false}
-                            tick={{ fontSize: 11 }}
-                            tickFormatter={(v) => `${v}`}
-                          />
-                          <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
-                          <Tooltip
-                            cursor={{ fill: "rgba(0,0,0,0.04)" }}
-                            content={({ active, payload }) => {
-                              if (!active || !payload?.length) return null;
-                              const d = payload[0].payload as { digito: number; sorteios: number };
-                              return (
-                                <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
-                                  <p className="font-semibold mb-0.5">Número {d.digito}</p>
-                                  <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} ocorrências</p>
-                                  {totalPos > 0 && (
-                                    <p className="text-muted-foreground">
-                                      {((d.sorteios / totalPos) * 100).toFixed(1)}%
-                                    </p>
-                                  )}
-                                </div>
-                              );
-                            }}
-                          />
-                          <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
-                            <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
-                          </Bar>
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </div>
-
-                    <CompactTable
-                      headers={["Número", "Ocorrências", "%"]}
-                      rows={[
-                        ...top3.map(d => [
-                          <LotteryBall key={`top-${d.digito}`} number={d.digito} size="sm" color={BALL_BG} textColor={BALL_TEXT} padDigits={1} />,
-                          d.sorteios.toLocaleString("pt-BR"),
-                          totalPos > 0 ? `${((d.sorteios / totalPos) * 100).toFixed(1)}%` : "–",
-                        ]),
-                        ...low3.map(d => [
-                          <LotteryBall key={`low-${d.digito}`} number={d.digito} size="sm" className="bg-muted text-muted-foreground" padDigits={1} />,
-                          d.sorteios.toLocaleString("pt-BR"),
-                          totalPos > 0 ? `${((d.sorteios / totalPos) * 100).toFixed(1)}%` : "–",
-                        ]),
-                      ]}
-                    />
-
-                    <Accordion type="single" collapsible className="mt-2 border rounded-md px-3 bg-muted/20">
-                      <AccordionItem value={`pos-${pos.posicao}`} className="border-b-0">
-                        <AccordionTrigger className="text-xs font-medium py-2 text-muted-foreground hover:text-foreground hover:no-underline">
-                          Ver todos os 10 números
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                            {pos.distribuicao.map(d => (
-                              <div key={d.digito} className="flex items-center justify-between">
-                                <span>
-                                  <span className="font-semibold text-foreground">Número {d.digito}:{" "}</span>
-                                  {d.sorteios.toLocaleString("pt-BR")} vezes
-                                </span>
-                                <span>
-                                  {totalPos > 0 ? `${((d.sorteios / totalPos) * 100).toFixed(1)}%` : "–"}
-                                </span>
+              <Card>
+                <CardHeader className="pb-3 flex flex-row items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <CardTitle>{title}</CardTitle>
+                    <CardDescription>{subtitle}</CardDescription>
+                  </div>
+                  <Select value={posicaoFiltro} onValueChange={setPosicaoFiltro}>
+                    <SelectTrigger className="w-44 h-8 text-xs shrink-0">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todas as Posições</SelectItem>
+                      {stats.distribuicaoPorPosicao.map(p => (
+                        <SelectItem key={p.posicao} value={String(p.posicao)}>
+                          Posição {p.posicao}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[180px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} margin={{ top: 22, right: 8, left: -20, bottom: 0 }}>
+                        <XAxis
+                          dataKey="digito"
+                          tickLine={false}
+                          axisLine={false}
+                          tick={{ fontSize: 11 }}
+                          tickFormatter={(v) => `${v}`}
+                        />
+                        <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11 }} />
+                        <Tooltip
+                          cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                          content={({ active, payload }) => {
+                            if (!active || !payload?.length) return null;
+                            const d = payload[0].payload as { digito: number; sorteios: number };
+                            return (
+                              <div className="bg-card border rounded shadow-md px-3 py-2 text-sm">
+                                <p className="font-semibold mb-0.5">Número {d.digito}</p>
+                                <p className="text-muted-foreground">{d.sorteios.toLocaleString("pt-BR")} ocorrências</p>
+                                {totalGeral > 0 && (
+                                  <p className="text-muted-foreground">
+                                    {((d.sorteios / totalGeral) * 100).toFixed(1)}%
+                                  </p>
+                                )}
                               </div>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </CardContent>
-                </Card>
-              </div>
+                            );
+                          }}
+                        />
+                        <Bar dataKey="sorteios" fill={COR} radius={[3, 3, 0, 0]}>
+                          <LabelList dataKey="sorteios" position="top" style={{ fontSize: 13, fontWeight: "bold", fill: "#333" }} formatter={(v: number) => v.toLocaleString("pt-BR")} />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  <div className="mt-4 overflow-x-auto">
+                    <Table className="w-full" style={{ tableLayout: "fixed" }}>
+                      <TableHeader>
+                        <TableRow className="border-b">
+                          <TableHead className="py-1.5 text-xs h-auto font-semibold text-center w-1/3">
+                            Número
+                          </TableHead>
+                          <TableHead className="py-1.5 text-xs h-auto font-semibold text-center w-1/3">
+                            Ocorrências
+                          </TableHead>
+                          <TableHead className="py-1.5 text-xs h-auto font-semibold text-center w-1/3">
+                            %
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {sorted.map((d, i) => (
+                          <TableRow key={d.digito} className="border-b odd:bg-muted/40">
+                            <TableCell className="py-1.5 text-xs">
+                              <div className="flex justify-center">
+                                <LotteryBall number={d.digito} size="sm" color={BALL_BG} textColor={BALL_TEXT} padDigits={1} />
+                              </div>
+                            </TableCell>
+                            <TableCell className="py-1.5 text-xs text-center font-medium tabular-nums">
+                              {d.sorteios.toLocaleString("pt-BR")}
+                            </TableCell>
+                            <TableCell className="py-1.5 text-xs text-center tabular-nums">
+                              {totalGeral > 0 ? `${((d.sorteios / totalGeral) * 100).toFixed(1)}%` : "–"}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
             );
-          })}
+          })()}
+
+          <div className="flex flex-col gap-4">
+            <AdUnit slot="6677889900" format="rectangle" className="w-full" />
+          </div>
         </div>
       </section>
 
