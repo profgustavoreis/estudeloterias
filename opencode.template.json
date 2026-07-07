@@ -1,0 +1,34 @@
+{
+  "plugin": ["oh-my-openagent@latest"],
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {},
+  "compaction": {
+    "auto": false,
+    "prompt": "You are generating a continuation prompt. Summarize the current task, modified files, and next steps. Do not make any tool calls."
+  },
+  "mcp": {
+    "openrouter": {
+      "type": "remote",
+      "url": "https://mcp.openrouter.ai/mcp",
+      "enabled": true
+    },
+    "vidiq": {
+      "type": "remote",
+      "url": "https://mcp.vidiq.com/mcp",
+      "enabled": true
+    },
+    "brevo": {
+      "type": "remote",
+      "url": "https://mcp.brevo.com/v1/brevo/mcp",
+      "headers": {
+        "Authorization": "Bearer BREVO_API_KEY"
+      },
+      "enabled": true
+    },
+    "graymatter": {
+      "command": ["GRAYMATTER_PATH", "mcp", "serve"],
+      "enabled": true,
+      "type": "local"
+    }
+  }
+}
