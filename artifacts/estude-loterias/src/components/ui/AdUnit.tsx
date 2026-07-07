@@ -9,13 +9,14 @@ interface AdUnitProps {
 
 const PUBLISHER_ID = import.meta.env.VITE_ADSENSE_PUBLISHER_ID ?? "";
 const IS_DEV = import.meta.env.DEV;
+const ADS_ENABLED = import.meta.env.VITE_ADSENSE_ENABLED !== "false";
 
 export function AdUnit({ slot, format = "auto", className = "", label = true }: AdUnitProps) {
   const ref = useRef<HTMLDivElement>(null);
   const pushed = useRef(false);
 
   useEffect(() => {
-    if (IS_DEV || !PUBLISHER_ID || pushed.current) return;
+    if (!ADS_ENABLED || IS_DEV || !PUBLISHER_ID || pushed.current) return;
     try {
       // @ts-ignore
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -24,6 +25,8 @@ export function AdUnit({ slot, format = "auto", className = "", label = true }: 
       // AdSense not loaded yet
     }
   }, []);
+
+  if (!ADS_ENABLED) return null;
 
   if (IS_DEV || !PUBLISHER_ID) {
     const height = format === "horizontal" ? 90 : format === "rectangle" ? 250 : 100;
