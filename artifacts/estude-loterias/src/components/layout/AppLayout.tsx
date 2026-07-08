@@ -139,12 +139,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 Jogue com responsabilidade.
               </p>
               <a
-                href="https://loterias.caixa.gov.br"
+                href="https://clubelotosport.com.br/convite/694f3c11405d9"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-xs text-[#009640] hover:underline font-medium"
               >
-                Apostar na Caixa →
+                Apostar no Clube LotoSport →
               </a>
             </div>
           </div>
