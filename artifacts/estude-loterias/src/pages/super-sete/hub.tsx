@@ -18,16 +18,16 @@ export default function SuperSeteHub() {
   const { data: resultado, isLoading } = useGetSuperSeteUltimoResultado();
 
   const quickLinks = [
-    { href: `/super-sete/ultimo-resultado`, label: "Último Resultado", icon: Dices, desc: "Detalhes do último sorteio" },
+    { href: `/super-sete/resultado/${resultado?.concurso ?? ""}`, label: "Último Resultado", icon: Dices, desc: "Detalhes do último sorteio" },
     { href: "/super-sete/resultados", label: "Resultados Anteriores", icon: List, desc: "Busque por sorteios passados" },
-    { href: "/super-sete/estatisticas", label: "Resumo Estatístico", icon: BarChart3, desc: "Frequência de dezenas e atrasos" },
+    { href: "/super-sete/resumo-estatistico", label: "Resumo Estatístico", icon: BarChart3, desc: "Frequência de dezenas e atrasos" },
     { href: "/super-sete/tabela-de-dezenas", label: "Tabela de Dezenas", icon: TableIcon, desc: "Ranking detalhado de todas as dezenas" },
     { href: "/super-sete/gerador", label: "Gerador de Jogos", icon: Sparkles, desc: "Gere jogos inteligentes" },
     { href: "/super-sete/simulador", label: "Simulador Histórico", icon: FlaskConical, desc: "Confira sua aposta no histórico" },
     { href: "/super-sete/conferidor", label: "Conferidor de Apostas", icon: ClipboardCheck, desc: "Verifique se sua aposta ganhou" },
     { href: "/super-sete/como-jogar", label: "Como Jogar", icon: BookOpen, desc: "Regras e formas de apostar" },
     { href: "/super-sete/premiacao", label: "Premiação", icon: Trophy, desc: "Faixas e percentuais de prêmio" },
-    { href: "/super-sete/faq", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
+    { href: "/super-sete/perguntas-frequentes", label: "Perguntas Frequentes", icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
   ];
 
   if (isLoading) {
