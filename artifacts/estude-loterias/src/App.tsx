@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PageFallback } from "@/components/ui/PageFallback";
+import { AnalyticsTracker } from "@/lib/analytics";
 
 const NotFound = lazy(() => import("@/pages/not-found"));
 
@@ -292,6 +293,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <AnalyticsTracker />
           <Router />
         </WouterRouter>
         <Toaster />
