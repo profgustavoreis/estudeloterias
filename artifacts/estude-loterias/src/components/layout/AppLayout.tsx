@@ -14,11 +14,11 @@ const loterias: Array<{ name: string; href: string; active: boolean; soon?: bool
   { name: "Super Sete",  href: "/super-sete",    active: true },
 ];
 
-const institucional = [
+const institucional: Array<{ href: string; label: string; external?: boolean }> = [
   { href: "/sobre", label: "Sobre o Site" },
-  { href: "/contato", label: "Contato" },
-  { href: "/privacidade", label: "Política de Privacidade" },
   { href: "/termos", label: "Termos de Uso" },
+  { href: "/privacidade", label: "Política de Privacidade" },
+  { href: "https://estudematematica.com.br/contato", label: "Contato", external: true },
 ];
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
@@ -114,12 +114,23 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <ul className="space-y-2">
                 {institucional.map((l) => (
                   <li key={l.href}>
-                    <Link
-                      href={l.href}
-                      className="text-xs text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {l.label}
-                    </Link>
+                    {l.external ? (
+                      <a
+                        href={l.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {l.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={l.href}
+                        className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        {l.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -159,7 +170,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <span>·</span>
               <Link href="/termos" className="hover:text-foreground transition-colors">Termos</Link>
               <span>·</span>
-              <Link href="/contato" className="hover:text-foreground transition-colors">Contato</Link>
+              <a href="https://estudematematica.com.br/contato" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Contato</a>
             </div>
           </div>
         </div>
