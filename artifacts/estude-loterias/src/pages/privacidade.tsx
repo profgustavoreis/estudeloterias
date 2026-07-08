@@ -113,7 +113,7 @@ export default function Privacidade() {
           </p>
           <p className="text-sm leading-relaxed">
             Para exercer esses direitos, entre em contato pelo nosso formulário de{" "}
-            <a href="/contato" className="text-[#009640] hover:underline">Contato</a>.
+            <a href="https://estudematematica.com.br/contato" target="_blank" rel="noopener noreferrer" className="text-[#009640] hover:underline">Contato</a>.
           </p>
         </section>
 
@@ -140,7 +140,7 @@ export default function Privacidade() {
           <p className="text-sm leading-relaxed">
             Para dúvidas sobre esta Política de Privacidade ou para exercer seus direitos,
             acesse nossa página de{" "}
-            <a href="/contato" className="text-[#009640] hover:underline">Contato</a>.
+            <a href="https://estudematematica.com.br/contato" target="_blank" rel="noopener noreferrer" className="text-[#009640] hover:underline">Contato</a>.
           </p>
         </section>
       </div>

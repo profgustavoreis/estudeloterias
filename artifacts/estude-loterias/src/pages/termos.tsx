@@ -124,7 +124,7 @@ export default function Termos() {
           <h2 className="text-base font-semibold">10. Contato</h2>
           <p>
             Para dúvidas sobre estes termos, acesse nossa página de{" "}
-            <a href="/contato" className="text-[#009640] hover:underline">Contato</a>.
+             <a href="https://estudematematica.com.br/contato" target="_blank" rel="noopener noreferrer" className="text-[#009640] hover:underline">Contato</a>.
           </p>
         </section>
       </div>
