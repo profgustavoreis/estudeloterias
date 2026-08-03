@@ -78,22 +78,64 @@ Esperamos que este guia sobre **${pauta}** ajude você a aprimorar suas estraté
   };
 }
 
+interface SizeConfig {
+  maxTokens: number;
+  wordCount: string;
+}
+
+const SIZE_CONFIG: Record<string, SizeConfig> = {
+  // Modelos do Zen (ex.: deepseek-v4-flash-free) são "thinking": queimam tokens
+  // no reasoning_content antes de gerar o conteúdo. Os limites abaixo reservam
+  // folga para o raciocínio; sem isso o conteúdo sai vazio (finish_reason=length).
+  curto: { maxTokens: 8000, wordCount: "≈ 500 palavras (2-3 min de leitura)" },
+  medio: { maxTokens: 12000, wordCount: "≈ 1.000 palavras (4-5 min de leitura)" },
+  longo: { maxTokens: 16000, wordCount: "≈ 1.800+ palavras (guia detalhado, 7-10 min de leitura)" },
+};
+
+const DEFAULT_BASE_URL = "https://opencode.ai/zen/v1";
+const DEFAULT_MODEL = "deepseek-v4-flash-free";
+const DEFAULT_TIMEOUT_MS = 180000;
+
+/** Strip optional ```json ... ``` code fences and whitespace before JSON.parse. */
+function parseJsonResponse(rawText: string): any {
+  let text = rawText.trim();
+  const fenceMatch = text.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/);
+  if (fenceMatch) {
+    text = fenceMatch[1].trim();
+  }
+  return JSON.parse(text);
+}
+
 export async function generateArticleWithAi(
   params: AiGenerateInput,
 ): Promise<AiGenerateOutput> {
-  const apiKey = process.env.GEMINI_API_KEY;
-
-  if (!apiKey) {
-    return generateFallbackArticle(params);
-  }
-
   const { pauta, modalidade, tom = "informativo", tamanho = "medio" } = params;
+
+  // Lido a cada chamada para que testes/recarga a quente reflitam mudanças.
+  const baseUrl = (process.env.LLM_BASE_URL || DEFAULT_BASE_URL).replace(/\/+$/, "");
+  const apiKey = (process.env.LLM_API_KEY || "").trim() || "public";
+  const model = process.env.LLM_MODEL || DEFAULT_MODEL;
+  const timeoutMs = Number(process.env.LLM_TIMEOUT_MS) || DEFAULT_TIMEOUT_MS;
+
+  // Controle do modo thinking: "disabled" (default) desliga o raciocínio via
+  // `thinking: {type: "disabled"}` — determinístico, 0 tokens de raciocínio e
+  // faz temperature/tom voltarem a ter efeito (com thinking ligado o DeepSeek
+  // ignora temperature/top_p). "low" | "medium" | "high" enviam
+  // `reasoning_effort` (note: níveis são soft no gateway e estocásticos).
+  const thinkingLevels = ["low", "medium", "high"] as const;
+  const thinkingRaw = (process.env.LLM_THINKING || "disabled").trim().toLowerCase();
+  const thinking: "disabled" | (typeof thinkingLevels)[number] =
+    thinkingRaw === "disabled" || !(thinkingLevels as readonly string[]).includes(thinkingRaw)
+      ? "disabled"
+      : (thinkingRaw as (typeof thinkingLevels)[number]);
+
+  const sizeConfig = SIZE_CONFIG[tamanho] || SIZE_CONFIG.medio;
 
   const prompt = `Você é um redator especialista em loterias brasileiras para o site Estude Loterias.
 Gere um artigo completo e de alta qualidade sobre a seguinte pauta: "${pauta}".
 Modalidade: ${modalidade || "Geral / Loterias"}.
 Tom de voz: ${tom}.
-Tamanho desejado: ${tamanho}.
+Tamanho desejado: ${tamanho} — escreva ${sizeConfig.wordCount}.
 
 Sua resposta DEVE ser um objeto JSON válido com as seguintes propriedades:
 - title: Título atrativo do artigo
@@ -105,44 +147,59 @@ Sua resposta DEVE ser um objeto JSON válido com as seguintes propriedades:
 - seoTitle: Título para SEO (até 60 caracteres)
 - seoDescription: Descrição para SEO (até 160 caracteres)`;
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [{ text: prompt }],
-            },
-          ],
-          generationConfig: {
-            responseMimeType: "application/json",
-          },
-        }),
+    const response = await fetch(`${baseUrl}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "User-Agent": "opencode/1.15.0",
+        "x-opencode-client": "cli",
       },
-    );
+      body: JSON.stringify({
+        model,
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+        max_tokens: sizeConfig.maxTokens,
+        response_format: { type: "json_object" },
+        // Modelos "thinking" (ex.: deepseek-v4-flash-free) queimam o orçamento de
+        // tokens no reasoning_content antes de gerar conteúdo. Por padrão o
+        // thinking fica desabilitado (LLM_THINKING=disabled): 0 tokens de
+        // raciocínio e temperature/tom voltam a ter efeito. Nunca envie
+        // `thinking` e `reasoning_effort` juntos (o gateway rejeita com 400).
+        ...(thinking === "disabled"
+          ? { thinking: { type: "disabled" } }
+          : { reasoning_effort: thinking }),
+      }),
+      signal: controller.signal,
+    });
 
     if (!response.ok) {
       console.warn(
-        `Gemini API returned status ${response.status}. Falling back to default generation.`,
+        `LLM API returned status ${response.status} (model: ${model}). Falling back to default generation.`,
       );
       return generateFallbackArticle(params);
     }
 
     const data = (await response.json()) as any;
-    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const rawText = data?.choices?.[0]?.message?.content;
 
     if (!rawText) {
+      console.warn(
+        "LLM API returned an empty response. Falling back to default generation.",
+      );
       return generateFallbackArticle(params);
     }
 
-    const parsed = JSON.parse(rawText);
+    const parsed = parseJsonResponse(String(rawText));
 
     if (!parsed.title || !parsed.content) {
+      console.warn(
+        "LLM response is missing required fields (title/content). Falling back to default generation.",
+      );
       return generateFallbackArticle(params);
     }
 
@@ -157,7 +214,9 @@ Sua resposta DEVE ser um objeto JSON válido com as seguintes propriedades:
       seoDescription: String(parsed.seoDescription || parsed.excerpt || ""),
     };
   } catch (error) {
-    console.error("Error generating article with Gemini AI:", error);
+    console.error("Error generating article with AI:", error);
     return generateFallbackArticle(params);
+  } finally {
+    clearTimeout(timeoutId);
   }
 }
