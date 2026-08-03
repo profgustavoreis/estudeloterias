@@ -82,8 +82,8 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
     }
 
     setLoadingStep(1);
-    const stepTimer1 = setTimeout(() => setLoadingStep(2), 2500);
-    const stepTimer2 = setTimeout(() => setLoadingStep(3), 5500);
+    const stepTimer1 = setTimeout(() => setLoadingStep(2), 8000);
+    const stepTimer2 = setTimeout(() => setLoadingStep(3), 20000);
 
     try {
       const result = await generateAiMutation.mutateAsync({
@@ -152,7 +152,7 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
           {generateAiMutation.isPending ? (
             <div className="py-10 px-4 flex flex-col items-center justify-center text-center space-y-6">
               <div className="relative">
-                <div className="w-20 h-120 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/30">
+                <div className="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/30">
                   <BrainCircuit className="w-10 h-10 text-emerald-600 dark:text-emerald-400 animate-pulse" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg">
@@ -172,8 +172,10 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
 
               <div className="w-full max-w-sm space-y-2 text-left bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
                 <div className="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-300">
-                  {loadingStep >= 1 ? (
+                  {loadingStep > 1 ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  ) : loadingStep === 1 ? (
+                    <Loader2 className="w-4 h-4 text-emerald-600 animate-spin shrink-0" />
                   ) : (
                     <div className="w-4 h-4 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
                   )}
@@ -183,8 +185,10 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-300">
-                  {loadingStep >= 2 ? (
+                  {loadingStep > 2 ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  ) : loadingStep === 2 ? (
+                    <Loader2 className="w-4 h-4 text-emerald-600 animate-spin shrink-0" />
                   ) : (
                     <div className="w-4 h-4 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
                   )}
@@ -195,7 +199,7 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
 
                 <div className="flex items-center gap-2.5 text-xs text-slate-700 dark:text-slate-300">
                   {loadingStep >= 3 ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <Loader2 className="w-4 h-4 text-emerald-600 animate-spin shrink-0" />
                   ) : (
                     <div className="w-4 h-4 rounded-full border border-slate-300 dark:border-slate-600 shrink-0" />
                   )}
