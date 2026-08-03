@@ -2445,3 +2445,247 @@ export const GerarJogoSuperSeteResponse = zod.object({
 })
 
 
+/**
+ * @summary Lista artigos do blog (público)
+ */
+export const getBlogPostsQueryPageDefault = 1;
+export const getBlogPostsQueryLimitDefault = 10;
+
+export const GetBlogPostsQueryParams = zod.object({
+  "page": zod.coerce.number().default(getBlogPostsQueryPageDefault),
+  "limit": zod.coerce.number().default(getBlogPostsQueryLimitDefault),
+  "modalidade": zod.coerce.string().nullish(),
+  "tag": zod.coerce.string().nullish(),
+  "q": zod.coerce.string().nullish()
+})
+
+export const GetBlogPostsResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "id": zod.number(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()),
+  "author": zod.string(),
+  "authorDescription": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish(),
+  "readingTimeMinutes": zod.number(),
+  "publishedAt": zod.string().nullish(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+}))
+})
+
+
+/**
+ * @summary Busca um artigo publicado pelo slug
+ */
+export const GetBlogPostBySlugParams = zod.object({
+  "slug": zod.coerce.string()
+})
+
+export const GetBlogPostBySlugResponse = zod.object({
+  "id": zod.number(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()),
+  "author": zod.string(),
+  "authorDescription": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish(),
+  "readingTimeMinutes": zod.number(),
+  "publishedAt": zod.string().nullish(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Lista todos os artigos (rascunhos e publicados) para o painel admin
+ */
+export const getAdminBlogPostsQueryPageDefault = 1;
+export const getAdminBlogPostsQueryLimitDefault = 20;
+
+export const GetAdminBlogPostsQueryParams = zod.object({
+  "page": zod.coerce.number().default(getAdminBlogPostsQueryPageDefault),
+  "limit": zod.coerce.number().default(getAdminBlogPostsQueryLimitDefault),
+  "status": zod.coerce.string().nullish(),
+  "q": zod.coerce.string().nullish()
+})
+
+export const GetAdminBlogPostsResponse = zod.object({
+  "total": zod.number(),
+  "pagina": zod.number(),
+  "limite": zod.number(),
+  "totalPaginas": zod.number(),
+  "resultados": zod.array(zod.object({
+  "id": zod.number(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()),
+  "author": zod.string(),
+  "authorDescription": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish(),
+  "readingTimeMinutes": zod.number(),
+  "publishedAt": zod.string().nullish(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+}))
+})
+
+
+/**
+ * @summary Cria um novo artigo
+ */
+export const createAdminBlogPostBodyStatusDefault = `draft`;
+export const createAdminBlogPostBodyAuthorDefault = `Equipe Estude Loterias`;
+export const createAdminBlogPostBodyAuthorDescriptionDefault = `Especialista em Loterias e Estatística`;
+
+export const CreateAdminBlogPostBody = zod.object({
+  "slug": zod.string().optional(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']).default(createAdminBlogPostBodyStatusDefault),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()).optional(),
+  "author": zod.string().default(createAdminBlogPostBodyAuthorDefault),
+  "authorDescription": zod.string().nullish().default(createAdminBlogPostBodyAuthorDescriptionDefault),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish()
+})
+
+
+/**
+ * @summary Busca artigo por ID para edição
+ */
+export const GetAdminBlogPostByIdParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetAdminBlogPostByIdResponse = zod.object({
+  "id": zod.number(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()),
+  "author": zod.string(),
+  "authorDescription": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish(),
+  "readingTimeMinutes": zod.number(),
+  "publishedAt": zod.string().nullish(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Atualiza um artigo existente
+ */
+export const UpdateAdminBlogPostParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const updateAdminBlogPostBodyStatusDefault = `draft`;
+export const updateAdminBlogPostBodyAuthorDefault = `Equipe Estude Loterias`;
+export const updateAdminBlogPostBodyAuthorDescriptionDefault = `Especialista em Loterias e Estatística`;
+
+export const UpdateAdminBlogPostBody = zod.object({
+  "slug": zod.string().optional(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']).default(updateAdminBlogPostBodyStatusDefault),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()).optional(),
+  "author": zod.string().default(updateAdminBlogPostBodyAuthorDefault),
+  "authorDescription": zod.string().nullish().default(updateAdminBlogPostBodyAuthorDescriptionDefault),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish()
+})
+
+export const UpdateAdminBlogPostResponse = zod.object({
+  "id": zod.number(),
+  "slug": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImageUrl": zod.string().nullish(),
+  "status": zod.enum(['draft', 'published']),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()),
+  "author": zod.string(),
+  "authorDescription": zod.string().nullish(),
+  "seoTitle": zod.string().nullish(),
+  "seoDescription": zod.string().nullish(),
+  "readingTimeMinutes": zod.number(),
+  "publishedAt": zod.string().nullish(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Remove um artigo
+ */
+export const DeleteAdminBlogPostParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteAdminBlogPostResponse = zod.object({
+  "success": zod.boolean()
+})
+
+
+/**
+ * @summary Gera rascunho de artigo usando IA a partir de uma pauta
+ */
+export const generateBlogPostAiBodyTomDefault = `informativo`;
+export const generateBlogPostAiBodyTamanhoDefault = `medio`;
+
+export const GenerateBlogPostAiBody = zod.object({
+  "pauta": zod.string(),
+  "modalidade": zod.string().nullish(),
+  "tom": zod.enum(['informativo', 'educativo', 'analitico', 'descontraido']).default(generateBlogPostAiBodyTomDefault),
+  "tamanho": zod.enum(['curto', 'medio', 'longo']).default(generateBlogPostAiBodyTamanhoDefault)
+})
+
+export const GenerateBlogPostAiResponse = zod.object({
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "modalidade": zod.string().nullish(),
+  "tags": zod.array(zod.string()),
+  "seoTitle": zod.string(),
+  "seoDescription": zod.string()
+})
+
+

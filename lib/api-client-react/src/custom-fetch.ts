@@ -152,7 +152,11 @@ function buildErrorMessage(response: Response, data: unknown): string {
   const prefix = `HTTP ${response.status} ${response.statusText}`;
 
   if (typeof data === "string") {
-    const text = data.trim();
+    let text = data.trim();
+    if (text.startsWith("<!DOCTYPE") || text.startsWith("<html")) {
+      // Strip HTML markup for clean display in error messages / toasts
+      text = text.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+    }
     return text ? `${prefix}: ${truncate(text)}` : prefix;
   }
 
@@ -355,6 +359,14 @@ export async function customFetch<T = unknown>(
     const token = await _authTokenGetter();
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
+    }
+  }
+
+  // Attach admin key when present in localStorage and no x-admin-key header provided
+  if (typeof window !== "undefined" && !headers.has("x-admin-key")) {
+    const adminKey = window.localStorage.getItem("estude_admin_key");
+    if (adminKey) {
+      headers.set("x-admin-key", adminKey);
     }
   }
 

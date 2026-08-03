@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import {
   ChevronDown, Menu, X,
   BarChart3, Dices, Gift, HelpCircle, Home,
-  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck, PartyPopper,
+  List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck, PartyPopper, Newspaper,
 } from "lucide-react";
 
 // ── Mega-Sena items ───────────────────────────────────────────────────────────
@@ -448,6 +448,19 @@ export function TopNav() {
               Início
             </Link>
 
+            <Link
+              href="/blog"
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                location.startsWith("/blog")
+                  ? "text-[#009640]"
+                  : "text-foreground/80 hover:text-foreground hover:bg-muted"
+              )}
+            >
+              <Newspaper className="w-3.5 h-3.5" />
+              Blog
+            </Link>
+
             <LotteryDropdown
               label="Mega-Sena"
               cor="#009640"
@@ -612,6 +625,17 @@ export function TopNav() {
               )}
             >
               <Home className="w-4 h-4" /> Início
+            </Link>
+
+            <Link
+              href="/blog"
+              onClick={() => setMobileOpen(false)}
+              className={cn(
+                "flex items-center gap-3 p-3 rounded-lg text-sm font-medium",
+                location.startsWith("/blog") ? "bg-[#009640]/10 text-[#009640]" : "text-foreground hover:bg-muted"
+              )}
+            >
+              <Newspaper className="w-4 h-4" /> Blog Estude Loterias
             </Link>
 
             {/* Mega-Sena — tools */}

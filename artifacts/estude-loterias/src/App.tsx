@@ -127,6 +127,12 @@ const Privacidade = lazy(() => import("@/pages/privacidade"));
 const Termos = lazy(() => import("@/pages/termos"));
 const Contato = lazy(() => import("@/pages/contato"));
 
+const BlogFeed = lazy(() => import("@/pages/blog/feed"));
+const BlogArticleReader = lazy(() => import("@/pages/blog/article-reader"));
+
+const BlogListAdmin = lazy(() => import("@/pages/admin/blog-list"));
+const BlogEditorAdmin = lazy(() => import("@/pages/admin/blog-editor"));
+
 const queryClient = new QueryClient();
 
 function Router() {
@@ -280,6 +286,15 @@ function Router() {
         <Route path="/privacidade" component={Privacidade} />
         <Route path="/termos" component={Termos} />
         <Route path="/contato" component={Contato} />
+
+        {/* Public Blog Routes */}
+        <Route path="/blog" component={BlogFeed} />
+        <Route path="/blog/:slug" component={BlogArticleReader} />
+
+        {/* Blog Admin Routes */}
+        <Route path="/admin/blog" component={BlogListAdmin} />
+        <Route path="/admin/blog/novo" component={BlogEditorAdmin} />
+        <Route path="/admin/blog/editar/:id" component={BlogEditorAdmin} />
 
         <Route component={NotFound} />
       </Switch>

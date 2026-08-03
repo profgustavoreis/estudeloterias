@@ -6,7 +6,18 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './aiGenerateInput';
+export * from './aiGenerateInputTamanho';
+export * from './aiGenerateInputTom';
+export * from './aiGenerateResultado';
 export * from './apiError';
+export * from './artigo';
+export * from './artigoInput';
+export * from './artigoInputStatus';
+export * from './artigosPaginados';
+export * from './artigosPaginadosAdmin';
+export * from './artigoStatus';
+export * from './deleteAdminBlogPost200';
 export * from './distribuicaoPosicao';
 export * from './distribuicaoPosicaoItem';
 export * from './estatisticasDiadesorte';
@@ -33,6 +44,8 @@ export * from './geradorInputMaismilionaria';
 export * from './geradorInputQuina';
 export * from './geradorInputSuperSete';
 export * from './geradorInputTimemania';
+export * from './getAdminBlogPostsParams';
+export * from './getBlogPostsParams';
 export * from './getDiadesorteResultadosOrdem';
 export * from './getDiadesorteResultadosParams';
 export * from './getDuplasenaEstatisticasParams';

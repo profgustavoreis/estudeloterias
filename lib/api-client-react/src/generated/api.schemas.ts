@@ -1144,6 +1144,123 @@ export type GeradorInputSuperSete = ({
   quantidade: number;
 });
 
+export type ArtigoStatus = typeof ArtigoStatus[keyof typeof ArtigoStatus];
+
+
+export const ArtigoStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface Artigo {
+  id: number;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  /** @nullable */
+  coverImageUrl?: string | null;
+  status: ArtigoStatus;
+  /** @nullable */
+  modalidade?: string | null;
+  tags: string[];
+  author: string;
+  /** @nullable */
+  authorDescription?: string | null;
+  /** @nullable */
+  seoTitle?: string | null;
+  /** @nullable */
+  seoDescription?: string | null;
+  readingTimeMinutes: number;
+  /** @nullable */
+  publishedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ArtigosPaginados {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: Artigo[];
+}
+
+export interface ArtigosPaginadosAdmin {
+  total: number;
+  pagina: number;
+  limite: number;
+  totalPaginas: number;
+  resultados: Artigo[];
+}
+
+export type ArtigoInputStatus = typeof ArtigoInputStatus[keyof typeof ArtigoInputStatus];
+
+
+export const ArtigoInputStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface ArtigoInput {
+  slug?: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  /** @nullable */
+  coverImageUrl?: string | null;
+  status?: ArtigoInputStatus;
+  /** @nullable */
+  modalidade?: string | null;
+  tags?: string[];
+  author?: string;
+  /** @nullable */
+  authorDescription?: string | null;
+  /** @nullable */
+  seoTitle?: string | null;
+  /** @nullable */
+  seoDescription?: string | null;
+}
+
+export type AiGenerateInputTom = typeof AiGenerateInputTom[keyof typeof AiGenerateInputTom];
+
+
+export const AiGenerateInputTom = {
+  informativo: 'informativo',
+  educativo: 'educativo',
+  analitico: 'analitico',
+  descontraido: 'descontraido',
+} as const;
+
+export type AiGenerateInputTamanho = typeof AiGenerateInputTamanho[keyof typeof AiGenerateInputTamanho];
+
+
+export const AiGenerateInputTamanho = {
+  curto: 'curto',
+  medio: 'medio',
+  longo: 'longo',
+} as const;
+
+export interface AiGenerateInput {
+  pauta: string;
+  /** @nullable */
+  modalidade?: string | null;
+  tom?: AiGenerateInputTom;
+  tamanho?: AiGenerateInputTamanho;
+}
+
+export interface AiGenerateResultado {
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  /** @nullable */
+  modalidade?: string | null;
+  tags: string[];
+  seoTitle: string;
+  seoDescription: string;
+}
+
 export type GetMegaSenaResultadosParams = {
 page?: number;
 limit?: number;
@@ -1328,4 +1445,38 @@ export const GetSuperSeteResultadosOrdem = {
   asc: 'asc',
   desc: 'desc',
 } as const;
+
+export type GetBlogPostsParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+modalidade?: string | null;
+/**
+ * @nullable
+ */
+tag?: string | null;
+/**
+ * @nullable
+ */
+q?: string | null;
+};
+
+export type GetAdminBlogPostsParams = {
+page?: number;
+limit?: number;
+/**
+ * @nullable
+ */
+status?: string | null;
+/**
+ * @nullable
+ */
+q?: string | null;
+};
+
+export type DeleteAdminBlogPost200 = {
+  success: boolean;
+};
 

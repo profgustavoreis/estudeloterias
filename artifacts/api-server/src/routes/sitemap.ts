@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import { db } from "@workspace/db";
+import { db, articlesTable } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, asc, or } from "drizzle-orm";
 
@@ -83,6 +83,7 @@ function buildStaticPages(): SitemapEntry[] {
 
 const STATIC_PAGES: SitemapEntry[] = [
   { url: "/", changefreq: "daily", priority: "1.0" },
+  { url: "/blog", changefreq: "daily", priority: "0.8" },
   ...buildStaticPages(),
   ...INSTITUCIONAL_PAGES,
 ];
@@ -107,6 +108,14 @@ function toXmlUrl(entry: SitemapEntry): string {
 export async function sitemapHandler(req: Request, res: Response) {
   const today = new Date().toISOString().split("T")[0]!;
 
+  const publishedArticles = await db
+    .select({
+      slug: articlesTable.slug,
+      updatedAt: articlesTable.updatedAt,
+    })
+    .from(articlesTable)
+    .where(eq(articlesTable.status, "published"));
+
   const rows = await db
     .select({
       modalidade: lotteryResultsTable.modalidade,
@@ -115,12 +124,18 @@ export async function sitemapHandler(req: Request, res: Response) {
     })
     .from(lotteryResultsTable)
     .where(
-      or(...MODALIDADES.map((m) => eq(lotteryResultsTable.modalidade, m)),
-    ))
+      or(...MODALIDADES.map((m) => eq(lotteryResultsTable.modalidade, m))),
+    )
     .orderBy(asc(lotteryResultsTable.concurso));
 
   const entries: SitemapEntry[] = [
     ...STATIC_PAGES.map((p) => ({ ...p, lastmod: today })),
+    ...publishedArticles.map((a) => ({
+      url: `/blog/${a.slug}`,
+      lastmod: a.updatedAt ? new Date(a.updatedAt).toISOString().split("T")[0] : today,
+      changefreq: "weekly",
+      priority: "0.7",
+    })),
     ...rows.map((row) => ({
       url: `/${slug(row.modalidade)}/resultado/${row.concurso}`,
       lastmod: parseDate(row.data),

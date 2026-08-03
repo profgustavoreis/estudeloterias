@@ -11,6 +11,8 @@ import diadesorteRouter from "./diadesorte";
 import duplasenaRouter from "./duplasena";
 import maismilionariaRouter from "./maismilionaria";
 import adminRouter from "./admin";
+import blogRouter from "./blog";
+import adminBlogRouter from "./admin-blog";
 
 const router: IRouter = Router();
 
@@ -26,5 +28,7 @@ router.use(diadesorteRouter);
 router.use(duplasenaRouter);
 router.use(maismilionariaRouter);
 router.use(adminRouter);
+router.use(blogRouter);
+router.use(adminBlogRouter);
 
 export default router;

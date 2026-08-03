@@ -30,6 +30,10 @@ tags:
     description: Dupla Sena específico
   - name: super-sete
     description: Super Sete específico
+  - name: blog
+    description: Blog e notícias
+  - name: admin-blog
+    description: Administração do blog
 paths:
   /healthz:
     get:
@@ -1368,6 +1372,231 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/JogoGeradoSuperSete"
+
+  /blog/posts:
+    get:
+      operationId: getBlogPosts
+      tags: [blog]
+      summary: Lista artigos do blog (público)
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: modalidade
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: tag
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: q
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Lista paginada de artigos do blog
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtigosPaginados"
+
+  /blog/posts/{slug}:
+    get:
+      operationId: getBlogPostBySlug
+      tags: [blog]
+      summary: Busca um artigo publicado pelo slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Artigo encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artigo"
+        "404":
+          description: Artigo não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/blog/posts:
+    get:
+      operationId: getAdminBlogPosts
+      tags: [admin-blog]
+      summary: Lista todos os artigos (rascunhos e publicados) para o painel admin
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: status
+          in: query
+          schema:
+            type: ["string", "null"]
+        - name: q
+          in: query
+          schema:
+            type: ["string", "null"]
+      responses:
+        "200":
+          description: Lista paginada de artigos (admin)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArtigosPaginadosAdmin"
+
+    post:
+      operationId: createAdminBlogPost
+      tags: [admin-blog]
+      summary: Cria um novo artigo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtigoInput"
+      responses:
+        "201":
+          description: Artigo criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artigo"
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/blog/posts/{id}:
+    get:
+      operationId: getAdminBlogPostById
+      tags: [admin-blog]
+      summary: Busca artigo por ID para edição
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Artigo encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artigo"
+        "404":
+          description: Artigo não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+    put:
+      operationId: updateAdminBlogPost
+      tags: [admin-blog]
+      summary: Atualiza um artigo existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArtigoInput"
+      responses:
+        "200":
+          description: Artigo atualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Artigo"
+        "404":
+          description: Artigo não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+    delete:
+      operationId: deleteAdminBlogPost
+      tags: [admin-blog]
+      summary: Remove um artigo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Artigo removido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required: [success]
+        "404":
+          description: Artigo não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+
+  /admin/blog/ai-generate:
+    post:
+      operationId: generateBlogPostAi
+      tags: [admin-blog]
+      summary: Gera rascunho de artigo usando IA a partir de uma pauta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AiGenerateInput"
+      responses:
+        "200":
+          description: Rascunho gerado pela IA
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiGenerateResultado"
+        "500":
+          description: Erro na geração
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
 
 components:
   schemas:
@@ -3615,4 +3844,187 @@ components:
         - digito
         - sorteios
         - ultimoConcurso
+
+    Artigo:
+      type: object
+      properties:
+        id:
+          type: integer
+        slug:
+          type: string
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        coverImageUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [draft, published]
+        modalidade:
+          type: ["string", "null"]
+        tags:
+          type: array
+          items:
+            type: string
+        author:
+          type: string
+        authorDescription:
+          type: ["string", "null"]
+        seoTitle:
+          type: ["string", "null"]
+        seoDescription:
+          type: ["string", "null"]
+        readingTimeMinutes:
+          type: integer
+        publishedAt:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - slug
+        - title
+        - excerpt
+        - content
+        - status
+        - tags
+        - author
+        - readingTimeMinutes
+        - createdAt
+        - updatedAt
+
+    ArtigosPaginados:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/Artigo"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    ArtigosPaginadosAdmin:
+      type: object
+      properties:
+        total:
+          type: integer
+        pagina:
+          type: integer
+        limite:
+          type: integer
+        totalPaginas:
+          type: integer
+        resultados:
+          type: array
+          items:
+            $ref: "#/components/schemas/Artigo"
+      required:
+        - total
+        - pagina
+        - limite
+        - totalPaginas
+        - resultados
+
+    ArtigoInput:
+      type: object
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        coverImageUrl:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [draft, published]
+          default: draft
+        modalidade:
+          type: ["string", "null"]
+        tags:
+          type: array
+          items:
+            type: string
+        author:
+          type: string
+          default: "Equipe Estude Loterias"
+        authorDescription:
+          type: ["string", "null"]
+          default: "Especialista em Loterias e Estatística"
+        seoTitle:
+          type: ["string", "null"]
+        seoDescription:
+          type: ["string", "null"]
+      required:
+        - title
+        - excerpt
+        - content
+
+    AiGenerateInput:
+      type: object
+      properties:
+        pauta:
+          type: string
+        modalidade:
+          type: ["string", "null"]
+        tom:
+          type: string
+          enum: [informativo, educativo, analitico, descontraido]
+          default: informativo
+        tamanho:
+          type: string
+          enum: [curto, medio, longo]
+          default: medio
+      required:
+        - pauta
+
+    AiGenerateResultado:
+      type: object
+      properties:
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        modalidade:
+          type: ["string", "null"]
+        tags:
+          type: array
+          items:
+            type: string
+        seoTitle:
+          type: string
+        seoDescription:
+          type: string
+      required:
+        - title
+        - slug
+        - excerpt
+        - content
+        - tags
+        - seoTitle
+        - seoDescription
 
