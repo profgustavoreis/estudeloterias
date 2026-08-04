@@ -47,7 +47,8 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { AdminKeyModal } from "@/components/admin/AdminKeyModal";
-import { hasAdminKey } from "@/lib/admin-auth";
+import { AdminAuthGate } from "@/components/admin/AdminAuthGate";
+import { useAdminKey } from "@/lib/admin-auth";
 import {
   FileText,
   Plus,
@@ -64,7 +65,6 @@ import {
   Sparkles,
   RefreshCw,
   AlertTriangle,
-  Lock,
   ExternalLink,
 } from "lucide-react";
 
@@ -84,6 +84,7 @@ const MODALIDADE_STYLES: Record<string, { label: string; class: string }> = {
 export default function BlogListAdminPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { hasKey } = useAdminKey();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("todos");
@@ -92,7 +93,7 @@ export default function BlogListAdminPage() {
 
   const [deleteArticleId, setDeleteArticleId] = useState<number | null>(null);
 
-  // Fetch admin posts
+  // Fetch admin posts — only when a key is present (avoids useless 401s)
   const queryParams = {
     q: searchQuery.trim() || undefined,
     status: statusFilter === "todos" ? undefined : statusFilter,
@@ -109,8 +110,12 @@ export default function BlogListAdminPage() {
     query: {
       queryKey: getGetAdminBlogPostsQueryKey(queryParams),
       retry: false,
+      enabled: hasKey,
     },
   });
+
+  // Derive auth error from the protected query
+  const authError = hasKey && isError && ((error as any)?.status === 401 || (error as any)?.status === 403);
 
   const updateArticleMutation = useUpdateAdminBlogPost();
   const deleteArticleMutation = useDeleteAdminBlogPost();
@@ -126,8 +131,6 @@ export default function BlogListAdminPage() {
 
   const publishedCount = posts.filter((p) => p.status === "published").length;
   const draftCount = posts.filter((p) => p.status === "draft").length;
-
-  const isUnauthorized = (error as any)?.status === 401 || (error as any)?.status === 403;
 
   const handleToggleStatus = async (article: Artigo) => {
     const newStatus: ArtigoStatus = article.status === "published" ? "draft" : "published";
@@ -211,6 +214,7 @@ export default function BlogListAdminPage() {
         description="Painel administrativo de gerenciamento de artigos do blog das Loterias Caixa."
       />
 
+      <AdminAuthGate isLoading={hasKey && isLoading} authError={authError}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Top Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
@@ -219,11 +223,7 @@ export default function BlogListAdminPage() {
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
                 Painel Admin
               </span>
-              {!hasAdminKey() && (
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 flex items-center gap-1">
-                  <Lock className="w-3 h-3" /> Sem chave
-                </span>
-              )}
+
             </div>
             <h1 className="text-3xl font-extrabold text-slate-900 dark:text-slate-50 tracking-tight flex items-center gap-3">
               <FileText className="w-8 h-8 text-emerald-600" />
@@ -255,33 +255,6 @@ export default function BlogListAdminPage() {
             </Button>
           </div>
         </div>
-
-        {/* Unauthorized Warning Alert */}
-        {isUnauthorized && (
-          <div className="p-5 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
-            <div className="flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
-                <AlertTriangle className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base">
-                  Chave Admin Inválida ou Não Configurada
-                </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
-                  Para carregar ou gerenciar as publicações do blog, informe sua chave de administrador (<code className="font-mono">x-admin-key</code>).
-                </p>
-              </div>
-            </div>
-            <Button
-              size="sm"
-              onClick={() => setKeyModalOpen(true)}
-              className="bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl shrink-0"
-            >
-              <KeyRound className="w-4 h-4 mr-2" />
-              Inserir Chave Admin
-            </Button>
-          </div>
-        )}
 
         {/* Statistics Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -404,7 +377,7 @@ export default function BlogListAdminPage() {
               <RefreshCw className="w-8 h-8 animate-spin mx-auto text-emerald-600" />
               <p className="text-sm font-medium">Carregando artigos do blog...</p>
             </div>
-          ) : isError && !isUnauthorized ? (
+          ) : isError ? (
             <div className="py-16 text-center text-red-500 space-y-3">
               <AlertTriangle className="w-10 h-10 mx-auto" />
               <p className="text-base font-bold">Falha ao carregar artigos</p>
@@ -567,6 +540,7 @@ export default function BlogListAdminPage() {
           )}
         </div>
       </div>
+      </AdminAuthGate>
 
       {/* Admin Key Modal */}
       <AdminKeyModal

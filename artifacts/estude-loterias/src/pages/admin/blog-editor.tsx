@@ -4,6 +4,8 @@ import { PageSEO } from "@/components/seo/PageSEO";
 import {
   useGetAdminBlogPostById,
   getGetAdminBlogPostByIdQueryKey,
+  useGetAdminBlogPosts,
+  getGetAdminBlogPostsQueryKey,
   useCreateAdminBlogPost,
   useUpdateAdminBlogPost,
   ArtigoInput,
@@ -27,6 +29,8 @@ import { useToast } from "@/hooks/use-toast";
 import { MarkdownPreview } from "@/components/admin/MarkdownPreview";
 import { AiGeneratorModal } from "@/components/admin/AiGeneratorModal";
 import { AdminKeyModal } from "@/components/admin/AdminKeyModal";
+import { AdminAuthGate } from "@/components/admin/AdminAuthGate";
+import { useAdminKey } from "@/lib/admin-auth";
 import {
   ArrowLeft,
   Save,
@@ -75,6 +79,7 @@ export default function BlogEditorAdminPage() {
   const params = useParams<{ id?: string }>();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const { hasKey } = useAdminKey();
 
   const articleId = params.id ? parseInt(params.id, 10) : undefined;
   const isEditing = Boolean(articleId && !isNaN(articleId));
@@ -110,10 +115,30 @@ export default function BlogEditorAdminPage() {
   } = useGetAdminBlogPostById(articleId || 0, {
     query: {
       queryKey: getGetAdminBlogPostByIdQueryKey(articleId || 0),
-      enabled: isEditing,
+      enabled: isEditing && hasKey,
       retry: false,
     },
   });
+
+  const authProbe = useGetAdminBlogPosts(
+    { page: 1, limit: 1 },
+    {
+      query: {
+        queryKey: getGetAdminBlogPostsQueryKey({ page: 1, limit: 1 }),
+        enabled: !isEditing && hasKey,
+        retry: false,
+      },
+    },
+  );
+
+  const isAuthFailure = (value: unknown) => {
+    const status = (value as { status?: number } | undefined)?.status;
+    return status === 401 || status === 403;
+  };
+  const authError = hasKey && (isEditing
+    ? isErrorArticle && isAuthFailure(articleError)
+    : authProbe.isError && isAuthFailure(authProbe.error));
+  const authLoading = hasKey && (isEditing ? isLoadingArticle : authProbe.isLoading);
 
   const createMutation = useCreateAdminBlogPost();
   const updateMutation = useUpdateAdminBlogPost();
@@ -500,6 +525,7 @@ export default function BlogEditorAdminPage() {
         description="Editor de artigos do blog Estude Loterias com suporte a Markdown, IA e SEO."
       />
 
+      <AdminAuthGate isLoading={authLoading} authError={authError}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         {/* Top Header & Navigation */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-200 dark:border-slate-800">
@@ -1120,6 +1146,7 @@ export default function BlogEditorAdminPage() {
         open={keyModalOpen}
         onOpenChange={setKeyModalOpen}
       />
+      </AdminAuthGate>
     </>
   );
 }
