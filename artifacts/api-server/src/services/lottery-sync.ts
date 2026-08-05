@@ -1,5 +1,5 @@
 import { db } from "@workspace/db";
-import { lotteryResultsTable } from "@workspace/db/schema";
+import { lotteryResultsTable, drawAvailabilityTable } from "@workspace/db/schema";
 import { eq, desc, max, min, asc, sql } from "drizzle-orm";
 import { logger } from "../lib/logger";
 
@@ -16,6 +16,135 @@ const MODALIDADES = [
   "megasena", "lotofacil", "quina", "duplasena",
   "diadesorte", "supersete", "lotomania", "timemania", "maismilionaria",
 ];
+
+// ---------------------------------------------------------------------------
+// Disponibilidade de resultados (time-to-availability)
+//
+// Objetivo: medir, para cada novo sorteio de cada modalidade, quanto tempo depois
+// do sorteio o resultado passa a ficar visível nas nossas varreduras de sincronização.
+// Isso gera uma média ("Mega-Sena costuma estar disponível ~X min após o sorteio")
+// com a qual podemos dimensionar, com evidência, as janelas dos crons em index.ts
+// em vez de ajustar na mão.
+//
+// A Caixa só devolve a data (dd/mm/yyyy) do sorteio — não a hora. Combinamos a data
+// com o horário agendado do sorteio daquela modalidade para derivar drawTime:
+//   - domingo  : 11:00 (o bloco que era sábado à noite passou para domingo 19/07/2026)
+//   - semana   : 20:00 (janela noturna de seg–sex em index.ts)
+//   - sábado   : 21:00 (sem sorteio regular hoje — fallback seguro)
+// Ajuste DRAW_TIMES_BY_MODALIDADE se uma modalidade específica sortear em horário diverso.
+// ---------------------------------------------------------------------------
+const DRAW_TIMES_BY_MODALIDADE: Record<string, { hour: number; minute: number }> = {
+  // Se preciso, adicione overrides por modalidade; o padrão abaixo usa dia-da-semana.
+};
+
+const KEEP_AVAILABILITY_PER_MODALIDADE = 60; // pruning: mantém só as 60 observações mais recentes por modalidade
+
+// Estado em memória do último concurso observado por modalidade — usado para detectar
+// quando um número NOVO de sorteio aparece durante o polling (primeira constatação).
+// Persistir em Map (mesma instância do processo) é suficiente: os crons rodam no mesmo
+// processo longo; num restart o baseline é recalibrado no primeiro sync e o conflito
+// unique (modalidade, concurso) impede duplicação.
+const observedLatestByModalidade = new Map<string, number>();
+
+interface ObservableDraw {
+  modalidade: string;
+  concurso: number;
+  dataApuracao: string; // dd/mm/yyyy vindo da Caixa
+}
+
+// Monta o horário de referência do sorteio (BRT) a partir da data de apuração.
+function getDrawDateTime(dataApuracao: string, modalidade: string): Date | null {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(dataApuracao);
+  if (!match) return null;
+  const [, dd, mm, yyyy] = match;
+  const year = Number(yyyy);
+  const month = Number(mm) - 1;
+  const day = Number(dd);
+
+  const override = DRAW_TIMES_BY_MODALIDADE[modalidade];
+  const date = new Date(Date.UTC(year, month, day));
+  const dayOfWeek = date.getUTCDay(); // 0=Dom
+  let hour = 20;
+  let minute = 0;
+  if (dayOfWeek === 0) {
+    hour = 11; // domingo
+  } else if (dayOfWeek === 6) {
+    hour = 21; // sábado (fallback)
+  }
+  if (override) {
+    hour = override.hour;
+    minute = override.minute;
+  }
+  return new Date(Date.UTC(year, month, day, hour, minute, 0));
+}
+
+// Tenta registrar a primeira constatação de um novo sorteio (idempotente — grava só a
+// PRIMEIRA vez por (modalidade, concurso)). Não re-registra em polls seguintes.
+async function recordDrawAvailability(draw: ObservableDraw, observedAt: Date): Promise<void> {
+  const drawTime = getDrawDateTime(draw.dataApuracao, draw.modalidade);
+  if (!drawTime) {
+    logger.warn({ modalidade: draw.modalidade, concurso: draw.concurso, data: draw.dataApuracao },
+      "draw-availability: impossível derivar drawTime, observação ignorada");
+    return;
+  }
+
+  const latencyMinutes = Math.max(0, Math.round((observedAt.getTime() - drawTime.getTime()) / 60000));
+  const inserted = await db
+    .insert(drawAvailabilityTable)
+    .values({
+      modalidade: draw.modalidade,
+      concurso: draw.concurso,
+      drawTime,
+      observedAt,
+      latencyMinutes,
+    })
+    .onConflictDoNothing({ target: [drawAvailabilityTable.modalidade, drawAvailabilityTable.concurso] })
+    .returning({ id: drawAvailabilityTable.id });
+
+  // onConflictDoNothing(): se já existir para aquela (modalidade, concurso) → nada.
+  if (inserted.length === 0) return;
+
+  logger.info(
+    { modalidade: draw.modalidade, concurso: draw.concurso, latencyMinutes, observedAt: observedAt.toISOString() },
+    `first-observed ${draw.modalidade} concurso #${draw.concurso}, ${latencyMinutes} min após o sorteio`,
+  );
+
+  // A estatística é uma média móvel recente: poda mantendo só os K mais recentes por modalidade.
+  await db.execute(sql`
+    DELETE FROM ${drawAvailabilityTable}
+    WHERE ${drawAvailabilityTable.modalidade} = ${draw.modalidade}
+      AND ${drawAvailabilityTable.id} NOT IN (
+        SELECT id FROM (
+          SELECT id
+          FROM ${drawAvailabilityTable}
+          WHERE ${drawAvailabilityTable.modalidade} = ${draw.modalidade}
+          ORDER BY ${drawAvailabilityTable.observedAt} DESC
+          LIMIT ${KEEP_AVAILABILITY_PER_MODALIDADE}
+        ) keep
+      )
+  `);
+}
+
+// Chamado de syncLatest quando a Caixa passa a devolver um concurso NOVO (acima do
+// último observado). Só registra a primeira vez que ele aparece.
+async function detectAndRecordNewDraw(
+  modalidade: string,
+  concurso: number,
+  dataApuracao: string,
+  observedAt: Date,
+): Promise<void> {
+  const previousLatest = observedLatestByModalidade.get(modalidade) ?? 0;
+  // Atualiza o baseline sempre que vemos um concurso >= o último conhecido.
+  // Se o número que retornou for menor que o último já observado (ex.: API instável),
+  // não muda nada nem registra.
+  if (concurso <= previousLatest) return;
+
+  // Concurso NOVO (acima do último observado) → primeira constatação deste sorteio.
+  observedLatestByModalidade.set(modalidade, concurso);
+  await recordDrawAvailability({ modalidade, concurso, dataApuracao }, observedAt).catch((err) => {
+    logger.error({ err, modalidade, concurso }, "draw-availability: falha ao registrar observação");
+  });
+}
 
 interface CaixaResult {
   numero?: number;
@@ -165,7 +294,15 @@ export async function syncLatest(modalidade: string): Promise<void> {
   const raw = await fetchCaixa(modalidade);
   if (!raw) return;
 
+  // A "observação" é o instante em que o resultado ficou visível na resposta da Caixa.
+  const observedAt = new Date();
   const latest = normalizeResult(raw, modalidade);
+
+  // Sinal de disponibilidade: se o último concurso devolvido pela Caixa for um número
+  // NOVO (acima do que já observamos em memória), é a primeira vez que ele aparece —
+  // registra a observação (idempotente por (modalidade, concurso)).
+  await detectAndRecordNewDraw(modalidade, latest.concurso, latest.data, observedAt);
+
   await upsertResult(latest);
 
   const [stored] = await db
