@@ -8,7 +8,7 @@ export default function MaismilionariaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da +Milionária?",
-      a: "Os sorteios da +Milionária são realizados aos sábados, a partir das 20h (horário de Brasília) — um sorteio por semana."
+      a: "Os sorteios da +Milionária são realizados às quartas-feiras, às 20h, e aos domingos, às 11h (horário de Brasília) — dois sorteios por semana."
     },
     {
       q: "Como faço para jogar na +Milionária?",

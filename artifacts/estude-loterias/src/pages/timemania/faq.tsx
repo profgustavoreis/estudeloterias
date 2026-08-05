@@ -8,7 +8,7 @@ export default function TimemaniaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Timemania?",
-      a: "Os sorteios da Timemania são realizados às terças, quintas e sábados, a partir das 21h (horário de Brasília) — três sorteios por semana."
+      a: "Os sorteios da Timemania são realizados às terças e quintas, às 21h, e aos domingos, às 11h (horário de Brasília) — três sorteios por semana."
     },
     {
       q: "Como faço para jogar na Timemania?",

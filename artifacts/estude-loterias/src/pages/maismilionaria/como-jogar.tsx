@@ -67,8 +67,8 @@ export default function MaismilionariaComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios da +Milionária são realizados aos <strong>sábados</strong>,
-              às 20h (horário de Brasília) — um sorteio por semana.
+              <strong>Dias de Sorteio:</strong> Os sorteios da +Milionária são realizados às <strong>quartas-feiras</strong>,
+              às 20h, e aos <strong>domingos</strong>, às 11h (horário de Brasília) — dois sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta mínima custa <strong>R$ 6,00</strong> para 6 dezenas e 2 trevos.

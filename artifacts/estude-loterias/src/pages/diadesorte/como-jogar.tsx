@@ -67,8 +67,8 @@ export default function DiaDeSorteComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios do Dia de Sorte são realizados às <strong>segundas, quartas e sextas-feiras</strong>,
-              às 20h (horário de Brasília) — três sorteios por semana.
+              <strong>Dias de Sorteio:</strong> Os sorteios do Dia de Sorte são realizados todos os dias,
+              às 20h de segunda a sábado e às 11h aos domingos (horário de Brasília).
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta mínima (7 dezenas) custa <strong>R$ 2,50</strong>. O preço aumenta conforme

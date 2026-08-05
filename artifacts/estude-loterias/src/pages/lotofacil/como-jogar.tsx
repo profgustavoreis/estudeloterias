@@ -28,7 +28,7 @@ export default function LotofacilComoJogar() {
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            A Lotofácil é uma das loterias mais populares do Brasil, com sorteios realizados de segunda a sábado (6 sorteios por semana).
+            A Lotofácil é uma das loterias mais populares do Brasil, com sorteios realizados todos os dias (domingo a sábado).
             O apostador marca de 15 a 20 números dentre os 25 disponíveis no volante (de 01 a 25) e ganha
             se acertar 11, 12, 13, 14 ou 15 desses números.
           </p>
@@ -67,8 +67,8 @@ export default function LotofacilComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios da Lotofácil são realizados de segunda a sábado,
-              às 21h (horário de Brasília). São seis sorteios por semana.
+              <strong>Dias de Sorteio:</strong> Os sorteios da Lotofácil são realizados todos os dias,
+              às 21h de segunda a sábado e às 11h aos domingos (horário de Brasília).
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta mínima, de 15 números, custa R$ 3,50.

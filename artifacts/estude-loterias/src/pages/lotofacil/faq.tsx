@@ -8,7 +8,7 @@ export default function LotofacilFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Lotofácil?",
-      a: "Os sorteios da Lotofácil são realizados de segunda a sábado, a partir das 21h (horário de Brasília) — seis sorteios por semana."
+      a: "Os sorteios da Lotofácil são realizados todos os dias, às 21h de segunda a sábado e às 11h aos domingos (horário de Brasília) — um sorteio por dia."
     },
     {
       q: "Como faço para jogar na Lotofácil?",

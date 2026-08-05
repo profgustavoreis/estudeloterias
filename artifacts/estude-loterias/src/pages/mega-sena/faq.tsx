@@ -6,7 +6,7 @@ export default function MegaSenaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Mega-Sena?",
-      a: "Os sorteios da Mega-Sena são realizados três vezes por semana — às terças, quintas e sábados — a partir das 21h (horário de Brasília)."
+      a: "Os sorteios da Mega-Sena são realizados três vezes por semana — às terças e quintas, às 21h, e aos domingos, às 11h (horário de Brasília)."
     },
     {
       q: "Como faço para jogar na Mega-Sena?",

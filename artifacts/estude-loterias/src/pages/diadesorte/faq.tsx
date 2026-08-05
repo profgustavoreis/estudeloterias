@@ -8,7 +8,7 @@ export default function DiaDeSorteFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios do Dia de Sorte?",
-      a: "Os sorteios do Dia de Sorte são realizados às segundas, quartas e sextas-feiras, a partir das 20h (horário de Brasília) — três sorteios por semana."
+      a: "Os sorteios do Dia de Sorte são realizados todos os dias, às 20h de segunda a sábado e às 11h aos domingos (horário de Brasília) — um sorteio por dia."
     },
     {
       q: "Como faço para jogar no Dia de Sorte?",

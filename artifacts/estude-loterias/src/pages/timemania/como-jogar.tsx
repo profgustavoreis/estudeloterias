@@ -67,8 +67,8 @@ export default function TimemaniaComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios da Timemania são realizados às <strong>terças, quintas e sábados</strong>,
-              às 21h (horário de Brasília) — três sorteios por semana.
+              <strong>Dias de Sorteio:</strong> Os sorteios da Timemania são realizados às <strong>terças e quintas</strong>,
+              às 21h, e aos <strong>domingos</strong>, às 11h (horário de Brasília) — três sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta custa <strong>R$ 3,50</strong>. Não há variação de preço,

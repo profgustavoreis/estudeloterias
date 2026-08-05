@@ -28,7 +28,7 @@ export default function QuinaComoJogar() {
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            A Quina é uma das loterias mais tradicionais da Caixa, com sorteios realizados de segunda a sábado (6 sorteios por semana).
+            A Quina é uma das loterias mais tradicionais da Caixa, com sorteios realizados todos os dias (domingo a sábado).
             O apostador marca de 5 a 15 números dentre os 80 disponíveis no volante (de 01 a 80) e ganha
             se acertar 2, 3, 4 ou 5 desses números — sendo o prêmio principal para quem acerta os 5 números sorteados (a "quina").
           </p>
@@ -67,8 +67,8 @@ export default function QuinaComoJogar() {
           </CardHeader>
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
-              <strong>Dias de Sorteio:</strong> Os sorteios da Quina são realizados de segunda a sábado,
-              às 21h (horário de Brasília). São seis sorteios por semana.
+              <strong>Dias de Sorteio:</strong> Os sorteios da Quina são realizados todos os dias,
+              às 21h de segunda a sábado e às 11h aos domingos (horário de Brasília).
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta mínima, de 5 números, custa R$ 3,00.

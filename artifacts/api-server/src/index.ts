@@ -47,15 +47,36 @@ app.listen(port, (err) => {
   // host (local dev machine, Replit, etc.) regardless of that host's system TZ.
   const BR_TZ = "America/Sao_Paulo";
 
-  // Draw-window sync — every 5 minutes (5 min), 21:00–23:59 BR time, Monday–Saturday
-  // (some lottery draws every day except Sunday). Caixa usually publishes results
-  // between ~20:30 and ~22:00 BRT, but publication can lag; keeping the window
-  // open until midnight catches late results without extra one-off jobs.
+  // Draw-window sync — every 5 minutes (5 min) in BR time during scheduled draw
+  // windows. CAIXA moved the weekend draw from Saturday night to Sunday 11:00
+  // (effective 19/07/2026), so we now run two windows:
+  //
+  //  1. Weekday draws (Mon–Fri): weekly/daily lotteries (Mega-Sena, Lotofácil,
+  //     Quina, Timemania, Dia de Sorte, +Milionária, Dupla Sena, Super Sete,
+  //     Lotomania) draw on weekday evenings ~20h–22h BR. Window: 21:00–23:59 Mon–Fri.
+  //  2. Weekend draw (Sunday): the block that used to be Saturday-night now draws
+  //     Sunday 11:00 BR. Window: 11:00–13:59 on Sunday.
+  //
+  // Saturday no longer has regular draws. Caixa publication can lag ~30–60 min;
+  // keeping each window slightly open + the 4-hourly net (below) catches late results without
+  // extra one-off jobs.
   cron.schedule(
-    "*/5 21-23 * * 1,2,3,4,5,6",
+    "*/5 21-23 * * 1,2,3,4,5",
     () => {
-      logger.info("Cron: draw-window lottery sync (5 min)");
+      logger.info("Cron: draw-window lottery sync (5 min) — weekday evening");
       runSync().catch((err) => logger.error({ err }, "Draw-window sync failed"));
+    },
+    { timezone: BR_TZ },
+  );
+
+  // Sunday-morning draw window — the weekend draw moved from Saturday to Sunday 11:00
+  // BR (effective 19/07/2026). Runs Sun 11:00–13:59 so the DB catches results right
+  // after publication instead of waiting hours for the 4h periodic net.
+  cron.schedule(
+    "*/5 11-13 * * 0",
+    () => {
+      logger.info("Cron: draw-window lottery sync (5 min) — Sunday morning");
+      runSync().catch((err) => logger.error({ err }, "Sunday draw-window sync failed"));
     },
     { timezone: BR_TZ },
   );
