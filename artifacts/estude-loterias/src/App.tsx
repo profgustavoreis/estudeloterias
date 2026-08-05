@@ -154,7 +154,6 @@ function Router() {
         <Route path="/mega-sena/como-jogar" component={MegaSenaComoJogar} />
         <Route path="/mega-sena/premiacao" component={MegaSenaPremiacao} />
         <Route path="/mega-sena/perguntas-frequentes" component={MegaSenaFAQ} />
-        <Route path="/mega-sena/faq" component={MegaSenaFAQ} />
         <Route path="/mega-sena/simulador" component={MegaSenaSimulador} />
         <Route path="/mega-sena/conferidor" component={MegaSenaConferidor} />
 
@@ -172,7 +171,6 @@ function Router() {
         <Route path="/lotofacil/como-jogar" component={LotofacilComoJogar} />
         <Route path="/lotofacil/premiacao" component={LotofacilPremiacao} />
         <Route path="/lotofacil/perguntas-frequentes" component={LotofacilFAQ} />
-        <Route path="/lotofacil/faq" component={LotofacilFAQ} />
 
         {/* Quina Routes */}
         <Route path="/quina" component={QuinaHub} />
@@ -188,7 +186,6 @@ function Router() {
         <Route path="/quina/como-jogar" component={QuinaComoJogar} />
         <Route path="/quina/premiacao" component={QuinaPremiacao} />
         <Route path="/quina/perguntas-frequentes" component={QuinaFAQ} />
-        <Route path="/quina/faq" component={QuinaFAQ} />
 
         {/* Lotomania Routes */}
         <Route path="/lotomania" component={LotomaniaHub} />
@@ -203,7 +200,6 @@ function Router() {
         <Route path="/lotomania/como-jogar" component={LotomaniaComoJogar} />
         <Route path="/lotomania/premiacao" component={LotomaniaPremiacao} />
         <Route path="/lotomania/perguntas-frequentes" component={LotomaniaFAQ} />
-        <Route path="/lotomania/faq" component={LotomaniaFAQ} />
 
         {/* Timemania Routes */}
         <Route path="/timemania" component={TimemaniaHub} />
@@ -218,7 +214,6 @@ function Router() {
         <Route path="/timemania/como-jogar" component={TimemaniaComoJogar} />
         <Route path="/timemania/premiacao" component={TimemaniaPremiacao} />
         <Route path="/timemania/perguntas-frequentes" component={TimemaniaFAQ} />
-        <Route path="/timemania/faq" component={TimemaniaFAQ} />
 
         {/* Dia de Sorte Routes */}
         <Route path="/diadesorte" component={DiaDeSorteHub} />
@@ -233,7 +228,6 @@ function Router() {
         <Route path="/diadesorte/como-jogar" component={DiaDeSorteComoJogar} />
         <Route path="/diadesorte/premiacao" component={DiaDeSortePremiacao} />
         <Route path="/diadesorte/perguntas-frequentes" component={DiaDeSorteFAQ} />
-        <Route path="/diadesorte/faq" component={DiaDeSorteFAQ} />
 
         {/* Dupla Sena Routes */}
         <Route path="/duplasena" component={DuplaSenaHub} />
@@ -248,7 +242,6 @@ function Router() {
         <Route path="/duplasena/como-jogar" component={DuplaSenaComoJogar} />
         <Route path="/duplasena/premiacao" component={DuplaSenaPremiacao} />
         <Route path="/duplasena/perguntas-frequentes" component={DuplaSenaFAQ} />
-        <Route path="/duplasena/faq" component={DuplaSenaFAQ} />
         <Route path="/duplasena/dupla-de-pascoa" component={DuplaSenaDuplaDePascoa} />
 
         {/* +Milionária Routes */}
@@ -264,7 +257,6 @@ function Router() {
         <Route path="/maismilionaria/como-jogar" component={MaisMilionariaComoJogar} />
         <Route path="/maismilionaria/premiacao" component={MaisMilionariaPremiacao} />
         <Route path="/maismilionaria/perguntas-frequentes" component={MaisMilionariaFAQ} />
-        <Route path="/maismilionaria/faq" component={MaisMilionariaFAQ} />
 
         {/* Super Sete Routes */}
         <Route path="/super-sete" component={SuperSeteHub} />
@@ -279,7 +271,6 @@ function Router() {
         <Route path="/super-sete/como-jogar" component={SuperSeteComoJogar} />
         <Route path="/super-sete/premiacao" component={SuperSetePremiacao} />
         <Route path="/super-sete/perguntas-frequentes" component={SuperSeteFAQ} />
-        <Route path="/super-sete/faq" component={SuperSeteFAQ} />
 
         {/* Institutional pages */}
         <Route path="/sobre" component={Sobre} />

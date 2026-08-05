@@ -6,7 +6,7 @@ export default function Privacidade() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <PageSEO
-        title="Política de Privacidade — Estude Loterias"
+        title="Política de Privacidade"
         description="Política de Privacidade do Estude Loterias: saiba como coletamos, usamos e protegemos seus dados pessoais, em conformidade com a LGPD."
         canonical="/privacidade"
       />

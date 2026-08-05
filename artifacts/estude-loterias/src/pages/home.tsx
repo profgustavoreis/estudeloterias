@@ -128,8 +128,8 @@ export default function Home() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resultados e Estatísticas das Loterias da Caixa"
-        description="Acompanhe os resultados de hoje, prêmios acumulados e estatísticas completas da Mega-Sena, Lotofácil, Quina e demais loterias da Caixa."
+        title="Resultados das Loterias da Caixa e Estatísticas"
+        description="Resultados de hoje, prêmios acumulados e estatísticas completas das loterias da Caixa: Mega-Sena, Lotofácil, Quina, Lotomania e outras."
         canonical="/"
       />
       <div>

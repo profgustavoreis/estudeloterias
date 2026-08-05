@@ -83,7 +83,7 @@ function buildStaticPages(): SitemapEntry[] {
 
 const STATIC_PAGES: SitemapEntry[] = [
   { url: "/", changefreq: "daily", priority: "1.0" },
-  { url: "/blog", changefreq: "daily", priority: "0.8" },
+  { url: "/blog", changefreq: "daily", priority: "1.0" },
   ...buildStaticPages(),
   ...INSTITUCIONAL_PAGES,
 ];
@@ -134,7 +134,7 @@ export async function sitemapHandler(req: Request, res: Response) {
       url: `/blog/${a.slug}`,
       lastmod: a.updatedAt ? new Date(a.updatedAt).toISOString().split("T")[0] : today,
       changefreq: "weekly",
-      priority: "0.7",
+      priority: "1.0",
     })),
     ...rows.map((row) => ({
       url: `/${slug(row.modalidade)}/resultado/${row.concurso}`,

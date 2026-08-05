@@ -36,7 +36,7 @@ export default function Sobre() {
   return (
     <div className="max-w-3xl mx-auto space-y-10">
       <PageSEO
-        title="Sobre o Estude Loterias — Estatísticas e Ferramentas para Loterias da Caixa"
+        title="Sobre — Estatísticas e Ferramentas para Loterias da Caixa"
         description="Conheça o Estude Loterias: o site com estatísticas, resultados e ferramentas gratuitas para as loterias da Caixa Econômica Federal."
         canonical="/sobre"
       />

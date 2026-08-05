@@ -6,7 +6,7 @@ export default function Termos() {
   return (
     <div className="max-w-3xl mx-auto space-y-8">
       <PageSEO
-        title="Termos de Uso — Estude Loterias"
+        title="Termos de Uso"
         description="Termos de Uso do Estude Loterias. Leia as condições de uso do site de estatísticas e ferramentas para loterias da Caixa."
         canonical="/termos"
       />
