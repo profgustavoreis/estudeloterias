@@ -7,6 +7,26 @@ interface MarkdownPreviewProps {
   className?: string;
 }
 
+const extractYouTubeId = (input: string): string | null => {
+  const raw = input.trim();
+  if (/^[A-Za-z0-9_-]{11}$/.test(raw)) return raw;
+  const patterns = [
+    /[?&]v=([A-Za-z0-9_-]{11})/, // youtube.com/watch?v=ID
+    /youtu\.be\/([A-Za-z0-9_-]{11})/, // youtu.be/ID
+    /\/(?:embed|shorts|live)\/([A-Za-z0-9_-]{11})/, // /embed/, /shorts/, /live/
+  ];
+  for (const pattern of patterns) {
+    const match = raw.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+};
+
+const getYouTubeStartSeconds = (input: string): number => {
+  const match = input.trim().match(/[?&](?:t|start)=(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
 const renderMath = (tex: string, displayMode: boolean, key: string | number): React.ReactNode => {
   try {
     const html = katex.renderToString(tex, {
@@ -306,6 +326,44 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content, class
       // Horizontal Rule
       if (line.trim() === "---" || line.trim() === "***" || line.trim() === "___") {
         elements.push(<hr key={key} className="my-6 border-slate-200 dark:border-slate-800" />);
+        return;
+      }
+
+      // YouTube embeds (:::youtube <id/url> [| legenda])
+      if (/^:::youtube\s+/i.test(line.trim())) {
+        const rest = line.trim().replace(/^:::youtube\s+/i, "");
+        const [urlOrId, ...captionParts] = rest.split("|");
+        const videoId = extractYouTubeId(urlOrId);
+        if (!videoId) {
+          elements.push(
+            <div key={key} className="my-4 rounded-xl border border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-4 py-3 text-xs font-medium text-red-600 dark:text-red-400">
+              Link de YouTube inválido: {line.trim()}
+            </div>
+          );
+          return;
+        }
+        const caption = captionParts.join("|").trim();
+        const startSeconds = getYouTubeStartSeconds(urlOrId);
+        const src = `https://www.youtube-nocookie.com/embed/${videoId}${startSeconds > 0 ? `?start=${startSeconds}` : ""}`;
+        elements.push(
+          <figure key={key} className="my-6">
+            <div className="aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 shadow-md">
+              <iframe
+                src={src}
+                title={caption || "Vídeo do YouTube"}
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="w-full h-full border-0"
+              />
+            </div>
+            {caption && (
+              <figcaption className="text-center text-xs text-slate-500 dark:text-slate-400 py-2">
+                {caption}
+              </figcaption>
+            )}
+          </figure>
+        );
         return;
       }
 

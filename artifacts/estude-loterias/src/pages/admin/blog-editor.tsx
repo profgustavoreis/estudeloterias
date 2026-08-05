@@ -61,6 +61,7 @@ import {
   Upload,
   Trash2,
   Columns2,
+  Youtube,
 } from "lucide-react";
 
 function slugify(text: string): string {
@@ -503,6 +504,16 @@ export default function BlogEditorAdminPage() {
         title="Inserir Tabela"
       >
         <TableIcon className="w-3.5 h-3.5" />
+      </Button>
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={() => insertMarkdown("\n:::youtube ", "\n")}
+        className="h-7 px-2 text-slate-700"
+        title="Inserir vídeo do YouTube"
+      >
+        <Youtube className="w-3.5 h-3.5" />
       </Button>
     </div>
   );
