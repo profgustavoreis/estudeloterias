@@ -5,8 +5,13 @@ import { formatCurrency, formatDateWithWeekday } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
+import { Helmet } from "react-helmet-async";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { PageSEO } from "@/components/seo/PageSEO";
+
+const HOME_TITLE = "Estude Loterias | Estatísticas das Loterias da Caixa";
+const HOME_DESCRIPTION =
+  "Estatísticas completas, histórico de resultados, frequência de dezenas e ferramentas para análise das loterias da Caixa: Mega-Sena, Lotofácil, Quina e mais.";
+const HOME_URL = "https://estudeloterias.com.br/";
 
 function DezenasSection({ loteria }: { loteria: LoteriaSummary }) {
   const dezenas = loteria.dezenas ?? [];
@@ -127,11 +132,23 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      <PageSEO
-        title="Resultados das Loterias da Caixa e Estatísticas"
-        description="Resultados de hoje, prêmios acumulados e estatísticas completas das loterias da Caixa: Mega-Sena, Lotofácil, Quina, Lotomania e outras."
-        canonical="/"
-      />
+      <Helmet>
+        <title>{HOME_TITLE}</title>
+        <meta name="description" content={HOME_DESCRIPTION} />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={HOME_URL} />
+        <meta property="og:title" content={HOME_TITLE} />
+        <meta property="og:description" content={HOME_DESCRIPTION} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={HOME_URL} />
+        <meta property="og:site_name" content="Estude Loterias" />
+        <meta property="og:locale" content="pt_BR" />
+        <meta property="og:image" content="https://estudeloterias.com.br/opengraph.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={HOME_TITLE} />
+        <meta name="twitter:description" content={HOME_DESCRIPTION} />
+        <meta name="twitter:image" content="https://estudeloterias.com.br/opengraph.jpg" />
+      </Helmet>
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Visão Geral das Loterias</h1>
         <p className="text-muted-foreground mt-2">Acompanhe os últimos resultados e prêmios acumulados.</p>
