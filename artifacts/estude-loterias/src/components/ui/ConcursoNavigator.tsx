@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 
 interface ConcursoNavigatorProps {
   concurso: number;
@@ -95,22 +95,24 @@ export function ConcursoNavigator({ concurso, isLatest, latestConcurso, basePath
           placeholder="Ex: 1475"
           className={`w-24 ${inputClass}`}
         />
-        <button
-          onClick={() => go(concurso - 1)}
-          disabled={concurso <= 1}
-          className="text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:underline whitespace-nowrap"
-          style={{ color }}
-        >
-          &lt; Anterior
-        </button>
-        <button
-          onClick={() => go(concurso + 1)}
-          disabled={isLatest}
-          className="text-sm font-semibold disabled:opacity-30 disabled:cursor-not-allowed hover:underline whitespace-nowrap"
-          style={{ color }}
-        >
-          Próximo &gt;
-        </button>
+        {concurso > 1 ? (
+          <Link href={`${basePath}/${concurso - 1}`} className="text-sm font-semibold hover:underline whitespace-nowrap" style={{ color }}>
+            &lt; Anterior
+          </Link>
+        ) : (
+          <span aria-hidden="true" className="text-sm font-semibold whitespace-nowrap opacity-30 cursor-not-allowed">
+            &lt; Anterior
+          </span>
+        )}
+        {!isLatest ? (
+          <Link href={`${basePath}/${concurso + 1}`} className="text-sm font-semibold hover:underline whitespace-nowrap" style={{ color }}>
+            Próximo &gt;
+          </Link>
+        ) : (
+          <span aria-hidden="true" className="text-sm font-semibold whitespace-nowrap opacity-30 cursor-not-allowed">
+            Próximo &gt;
+          </span>
+        )}
       </div>
       {error && (
         <p className="text-xs text-destructive font-medium">{error}</p>
