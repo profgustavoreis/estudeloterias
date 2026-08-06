@@ -290,23 +290,28 @@ export default function BlogFeedPage() {
               <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
                 {/* Image / Cover Section */}
                 <div className="lg:col-span-7 relative min-h-[260px] sm:min-h-[340px] overflow-hidden bg-slate-900">
-                  {featuredPost.coverImageUrl ? (
-                    <img
-                      src={featuredPost.coverImageUrl}
-                      alt={featuredPost.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className={`w-full h-full min-h-[300px] bg-gradient-to-br ${getModalityConfig(featuredPost.modalidade).bgGradient} flex items-center justify-center p-8 text-white relative`}>
-                      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px]" />
-                      <div className="text-center space-y-2 relative z-10">
-                        <Newspaper className="w-16 h-16 mx-auto opacity-80" />
-                        <span className="text-xs font-mono uppercase tracking-widest opacity-75">
-                          {getModalityConfig(featuredPost.modalidade).label}
-                        </span>
+                  <Link
+                    href={`/blog/${featuredPost.slug}`}
+                    className="block h-full"
+                  >
+                    {featuredPost.coverImageUrl ? (
+                      <img
+                        src={featuredPost.coverImageUrl}
+                        alt={featuredPost.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className={`w-full h-full min-h-[300px] bg-gradient-to-br ${getModalityConfig(featuredPost.modalidade).bgGradient} flex items-center justify-center p-8 text-white relative`}>
+                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px]" />
+                        <div className="text-center space-y-2 relative z-10">
+                          <Newspaper className="w-16 h-16 mx-auto opacity-80" />
+                          <span className="text-xs font-mono uppercase tracking-widest opacity-75">
+                            {getModalityConfig(featuredPost.modalidade).label}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </Link>
 
                   <div className="absolute top-4 left-4 z-10">
                     <Badge className={`px-3 py-1 text-xs font-extrabold uppercase tracking-wider rounded-full shadow-md ${getModalityConfig(featuredPost.modalidade).badgeClass}`}>
