@@ -1,4 +1,9 @@
 kind = "api"
+# ⚠️ TARGET DE DEV/LEGACY — não é o host de produção.
+# Este artefato pertence ao layout original do Replit (hoje dev/legacy). A
+# PRODUÇÃO REAL roda em Oracle Cloud Free + aaPanel + Apache: o Apache faz
+# proxy reverso de tudo para o api-server (Express) via PORT/FRONTEND_DIST/
+# DATABASE_URL gerenciadas no projeto Node do aaPanel.
 previewPath = "/api" # TODO - should be excluded from preview in the first place
 title = "API Server"
 version = "1.0.0"

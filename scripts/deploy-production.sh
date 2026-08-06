@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # deploy-production.sh — Deploy de produção do Estude Loterias (Oracle Cloud
-# Free + aaPanel + Nginx). Rode a partir de QUALQUER diretório; o script
+# Free + aaPanel + Apache). Rode a partir de QUALQUER diretório; o script
 # localiza a raiz do repo sozinho (usa este arquivo como âncora).
 #
 #   Uso:  bash scripts/deploy-production.sh
@@ -12,9 +12,9 @@
 #   1. git pull (com GIT_SSH_COMMAND explícito — o alias "gitpull" NÃO existe
 #      em shell não-interativo, então embutimos a mesma linha do alias aqui)
 #   2. pnpm install --frozen-lockfile  (dependências novas/mudadas)
-#   3. pnpm --filter db push           (CRÍTICO: aplica o schema — cria/atualiza
-#      a tabela articles. O Replit fazia isso via post-merge.sh; no aaPanel
-#      ninguém roda. Sem isto, /blog e /admin/blog respondem 500.)
+#      a tabela articles. No dev/legacy do Replit isso ocorria via post-merge.sh,
+#      mas em produção (aaPanel) ninguém roda — sem isto, /blog e /admin/blog
+#      respondem 500.)
 #   4. build do api-server
 #   5. build do frontend (PORT + BASE_PATH são exigidos pelo vite.config.ts)
 #   6. kill do processo da API na porta $API_PORT (libera para o aaPanel religar)
@@ -57,10 +57,20 @@ pnpm --filter db push
 say "pnpm --filter @workspace/api-server run build"
 pnpm --filter @workspace/api-server run build
 
-# --- 5. Build do frontend (gera os estáticos servidos pelo Nginx) ---------------
+# --- 5. Build do frontend (gera o dist/public que o api-server vai servir) ------
 say "pnpm --filter @workspace/estude-loterias run build (BASE_PATH=$BASE_PATH)"
 PORT="$FRONTEND_PORT" BASE_PATH="$BASE_PATH" \
   pnpm --filter @workspace/estude-loterias run build
+
+# --- 5b. FRONTEND_DIST — obrigatório: aponta o api-server para o build do SPA ----
+# (Sem isto o api-server não serve o HTML e o head SEO de /blog/* não é injetado.)
+FRONTEND_DIST="$REPO_ROOT/artifacts/estude-loterias/dist/public"
+if grep -q '^FRONTEND_DIST=' "$REPO_ROOT/.env" 2>/dev/null; then
+  sed -i.bak "s|^FRONTEND_DIST=.*|FRONTEND_DIST=$FRONTEND_DIST|" "$REPO_ROOT/.env" && rm -f "$REPO_ROOT/.env.bak"
+else
+  printf 'FRONTEND_DIST=%s\n' "$FRONTEND_DIST" >> "$REPO_ROOT/.env"
+fi
+say "FRONTEND_DIST setado no .env -> $FRONTEND_DIST"
 
 # --- 6. Encerra o processo da API na porta -------------------------------------
 say "Liberando a porta $API_PORT (fuser -k)"

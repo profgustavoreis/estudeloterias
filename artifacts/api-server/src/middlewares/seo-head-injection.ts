@@ -168,7 +168,7 @@ export function injectHead(html: string, head: string): string {
   // Remove meta description genérica.
   out = out.replace(/<meta[^>]*name=["']description["'][^>]*>/gi, "");
   // Remove og:type / og:url / og:title / og:description genéricos.
-  out = out.replace(/<meta[^>]*property=["']og:(?:url|title|description)["'][^>]*>/gi, "");
+  out = out.replace(/<meta[^>]*property=["']og:(?:type|url|title|description)["'][^>]*>/gi, "");
   // Remove JSON-LD genérico (bloco <script type="application/ld+json">).
   out = out.replace(/<script[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi, "");
 

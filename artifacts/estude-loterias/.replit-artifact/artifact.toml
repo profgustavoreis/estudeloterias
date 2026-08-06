@@ -9,6 +9,16 @@ router = "path"
 name = "react-vite"
 version = "1.0.0"
 
+# ⚠️ TARGET DE DEV/LEGACY — NÃO é o host de produção.
+# Este artefato pertence ao layout original do Replit, que hoje é apenas
+# dev/legacy. A PRODUÇÃO REAL roda em Oracle Cloud Free + aaPanel + Apache,
+# onde: o Apache faz proxy reverso de TUDO para o api-server (Express), que
+# serve o SPA (dist/public via FRONTEND_DIST) com injeção de head SEO para
+# /blog/<slug>. Não use este artefato como referência de config de produção.
+#
+# Aqui mantemos o fluxo DEV orientado a Vite: o serviço "web" roda o dev
+# server (services.development.run). Não deve implicar que o Replit é o host
+# prod.
 [[services]]
 name = "web"
 paths = [ "/" ]
@@ -17,14 +27,21 @@ localPort = 23948
 [services.development]
 run = "pnpm --filter @workspace/estude-loterias run dev"
 
+# Production dentro do Replit é BEST-EFFORT dev apenas (não é o host prod).
 [services.production]
+# Build do SPA (gera dist/public). O artefato "api-server" compila o dist do
+# Express (usado no run). O node abaixo reusa o dist do api-server.
 build = [ "pnpm", "--filter", "@workspace/estude-loterias", "run", "build" ]
-publicDir = "artifacts/estude-loterias/dist/public"
-serve = "static"
+# run = node start do api-server (serve /api, /sitemap.xml e o SPA com head SEO).
+run = [ "node", "--enable-source-maps", "artifacts/api-server/dist/index.mjs" ]
+# serve = "static"  # <-- removido: o HTML agora vem da Express (injeção SEO)
 
-[[services.production.rewrites]]
-from = "/*"
-to = "/index.html"
+[services.production.env]
+# Porta própria do artefato web (não conflita com o artefato api-server :8080)
+PORT = "23948"
+NODE_ENV = "production"
+FRONTEND_DIST = "artifacts/estude-loterias/dist/public"
+# DATABASE_URL é injetada pelo Replit (Postgres vinculado); default em .env se ausente.
 
 [services.env]
 PORT = "23948"
