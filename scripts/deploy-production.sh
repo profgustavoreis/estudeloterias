@@ -58,6 +58,23 @@ say "pnpm --filter @workspace/api-server run build"
 pnpm --filter @workspace/api-server run build
 
 # --- 5. Build do frontend (gera o dist/public que o api-server vai servir) ------
+# Garantir que as vars VITE_* (ex.: VITE_ADSENSE_ENABLED) cheguem ao build.
+# O vite.config.ts já leva envDir para a raiz, mas exportá-las explicitamente é
+# mais à prova de regressões. (Fonte do .env da raiz; não expõe segredos aqui.)
+set -a
+[ -f "$REPO_ROOT/.env" ] && . "$REPO_ROOT/.env"
+set +a
+
+# Aviso de build: use exatamente "false" para DESLIGAR os anúncios/placeholders.
+# O AdUnit só os desativa quando a var é exatamente "false"; qualquer outro valor
+# (ou var ausente, ex.: linha comentada com #) => anúncios/placeholders ativos.
+VITE_ADSENSE_ENABLED="${VITE_ADSENSE_ENABLED:-<vazio>}"
+case "$VITE_ADSENSE_ENABLED" in
+  false)  say "AdSense: VITE_ADSENSE_ENABLED=false -> anúncios/placeholders DESATIVADOS no build." ;;
+  true)   printf '\n\033[1;33m==>\033[0m AVISO: anúncios HABILITADOS no build (VITE_ADSENSE_ENABLED=true). Confira o publisher ID se for intencional.\n' ;;
+  *)      printf '\n\033[1;33m==>\033[0m AVISO: VITE_ADSENSE_ENABLED nao definido ou valor inesperado (atual: "%s").\n' "$VITE_ADSENSE_ENABLED" >&2
+          printf '  Anúncios/placeholders serão HABILITADOS. Se a intenção é desativar, defina VITE_ADSENSE_ENABLED=false (linha SEM #) no .env.\n' >&2 ;;
+esac
 say "pnpm --filter @workspace/estude-loterias run build (BASE_PATH=$BASE_PATH)"
 PORT="$FRONTEND_PORT" BASE_PATH="$BASE_PATH" \
   pnpm --filter @workspace/estude-loterias run build
