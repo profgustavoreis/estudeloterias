@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db, articlesTable } from "@workspace/db";
+import { db, articlesTable, blogRedirectsTable } from "@workspace/db";
 import { eq, and, or, ilike, count, desc, ne } from "drizzle-orm";
 import { adminAuthMiddleware } from "../middlewares/admin-auth";
 import { generateArticleWithAi, slugify } from "../services/ai-writer";
@@ -224,6 +224,18 @@ router.put("/admin/blog/posts/:id", async (req, res) => {
         res.status(409).json({ error: "Já existe um artigo com esse slug. Escolha outro." });
         return;
       }
+    }
+
+    // Registra redirect 301 (slug antigo → novo) para preservar SEO/backlinks.
+    // Usa INSERT ON CONFLICT para sobrescrever to_slug caso do mesmo fromSlug.
+    if (finalSlug !== existing.slug) {
+      await db
+        .insert(blogRedirectsTable)
+        .values({ fromSlug: existing.slug, toSlug: finalSlug })
+        .onConflictDoUpdate({
+          target: blogRedirectsTable.fromSlug,
+          set: { toSlug: finalSlug },
+        });
     }
 
     const [updated] = await db

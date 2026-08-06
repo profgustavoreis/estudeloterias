@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express";
-import { db, articlesTable } from "@workspace/db";
+import { db, articlesTable, blogRedirectsTable } from "@workspace/db";
 import type { Article } from "@workspace/db/schema";
 import { eq, and } from "drizzle-orm";
 
@@ -176,11 +176,39 @@ export function injectHead(html: string, head: string): string {
 }
 
 /**
+ * Constrói o `<head>` para a lista de artigos (/blog), com canonical/título/
+ * og próprios em vez de herdar o metadata da homepage.
+ */
+export function buildBlogIndexHead(): string {
+  const title = `Blog | ${SITE_NAME}`;
+  const description =
+    "Artigos, análises e estatísticas sobre as loterias da Caixa: probabilidades, estratégias, resultados e curiosidades da Mega-Sena, Lotofácil, Quina e mais.";
+
+  return [
+    `    <title>${escapeHtml(title)}</title>`,
+    `    <meta name="description" content="${escapeHtml(description)}" />`,
+    `    <meta name="robots" content="index, follow" />`,
+    `    <link rel="canonical" href="${BASE_URL}/blog" />`,
+    `    <meta property="og:type" content="website" />`,
+    `    <meta property="og:url" content="${BASE_URL}/blog" />`,
+    `    <meta property="og:title" content="${escapeHtml(title)}" />`,
+    `    <meta property="og:description" content="${escapeHtml(description)}" />`,
+  ].join("\n");
+}
+
+/**
  * Middleware Express que, para rotas `/blog/:slug`, busca o artigo no banco,
  * monta o `<head>` com o canonical/og/JSON-LD do artigo e injeta no HTML antes
- * de enviá-lo. Rotas não `/blog` e chamadas que não esperam HTML seguem inalteradas.
+ * de enviá-lo. Para `/blog` (índice) injeta o head da lista. Rotas não `/blog`
+ * e chamadas que não esperam HTML seguem inalteradas.
  */
 export function blogSeoHeadInjection(req: Request, res: Response, next: NextFunction) {
+  if (req.path === "/blog" || req.path === "/blog/") {
+    res.locals.articleSeoHead = buildBlogIndexHead();
+    next();
+    return;
+  }
+
   const match = /^\/blog\/([^/?#]+)/.exec(req.path);
   if (!match) {
     next();
@@ -189,8 +217,19 @@ export function blogSeoHeadInjection(req: Request, res: Response, next: NextFunc
   const slug = decodeURIComponent(match[1]);
 
   getArticleBySlug(slug)
-    .then((artigo) => {
+    .then(async (artigo) => {
       if (!artigo) {
+        // Slug não encontrado: usa a tabela de redirects (criada quando um slug
+        // foi renomeado) para responder 301 para a URL atual, preservando SEO.
+        const [redir] = await db
+          .select({ toSlug: blogRedirectsTable.toSlug })
+          .from(blogRedirectsTable)
+          .where(eq(blogRedirectsTable.fromSlug, slug))
+          .limit(1);
+        if (redir) {
+          res.redirect(301, `${BASE_URL}/blog/${encodeURIComponent(redir.toSlug)}`);
+          return;
+        }
         next();
         return;
       }

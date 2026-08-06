@@ -21,3 +21,4 @@ export * from "./cache";
 export * from "./draw-availability";
 export * from "./lottery-results";
 export * from "./articles";
+export * from "./blog-redirects";

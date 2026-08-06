@@ -511,6 +511,18 @@ export default function BlogListAdminPage() {
                                 Editar Artigo
                               </DropdownMenuItem>
 
+                              {article.status === "published" && (
+                                <DropdownMenuItem
+                                  onSelect={() =>
+                                    window.open(`/blog/${article.slug}`, "_blank", "noopener,noreferrer")
+                                  }
+                                  className="text-xs font-medium cursor-pointer"
+                                >
+                                  <ExternalLink className="w-3.5 h-3.5 mr-2 text-slate-500" />
+                                  Ver página do artigo
+                                </DropdownMenuItem>
+                              )}
+
                               <DropdownMenuItem
                                 onClick={() => handleToggleStatus(article)}
                                 className="text-xs font-medium cursor-pointer"
