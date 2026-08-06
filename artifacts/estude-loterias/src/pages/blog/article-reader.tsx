@@ -8,7 +8,7 @@ import {
   getGetBlogPostsQueryKey,
 } from "@workspace/api-client-react";
 import { MarkdownPreview } from "@/components/admin/MarkdownPreview";
-import { getModalityConfig, formatArticleDate } from "@/lib/blog-utils";
+import { getModalityConfig, formatArticleDate, isTimeSensitiveArticle } from "@/lib/blog-utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -65,6 +65,23 @@ export default function ArticleReaderPage() {
   const relatedPosts = (relatedData?.resultados || [])
     .filter((post) => post.slug !== slug)
     .slice(0, 3);
+
+  // Query the full published list ordered by publish date so we can build a
+  // real prev/next internal-linking chain between articles (server-visible <a>).
+  const allQueryParams = { limit: 100 };
+  const { data: allData } = useGetBlogPosts(allQueryParams, {
+    query: {
+      queryKey: getGetBlogPostsQueryKey(allQueryParams),
+      enabled: !!artigo,
+    },
+  });
+  const allPosts = allData?.resultados || [];
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+  const prevArticle = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  const nextArticle =
+    currentIndex >= 0 && currentIndex < allPosts.length - 1
+      ? allPosts[currentIndex + 1]
+      : null;
 
   const currentUrl = typeof window !== "undefined" ? window.location.href : `https://estudeloterias.com.br/blog/${slug}`;
 
@@ -134,15 +151,22 @@ export default function ArticleReaderPage() {
   const descriptionText = artigo.seoDescription || artigo.excerpt;
   const canonicalUrl = `https://estudeloterias.com.br/blog/${artigo.slug}`;
 
-  // Schema.org BlogPosting
+  // Time-sensitive (noticioso / concursável) articles use NewsArticle schema;
+  // evergreen analysis uses BlogPosting.
+  const isNewsArticle = isTimeSensitiveArticle(artigo);
+  const schemaType = isNewsArticle ? "NewsArticle" : "BlogPosting";
+  const publishedAt = artigo.publishedAt || artigo.createdAt;
+  const modifiedAt = artigo.updatedAt || artigo.publishedAt || artigo.createdAt;
+
+  // Schema.org BlogPosting / NewsArticle
   const schemaJsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": schemaType,
     "headline": artigo.title,
     "description": descriptionText,
     "image": artigo.coverImageUrl ? [artigo.coverImageUrl] : undefined,
-    "datePublished": artigo.publishedAt || artigo.createdAt,
-    "dateModified": artigo.updatedAt || artigo.publishedAt || artigo.createdAt,
+    "datePublished": publishedAt,
+    "dateModified": modifiedAt,
     "author": [
       {
         "@type": "Person",
@@ -174,7 +198,8 @@ export default function ArticleReaderPage() {
         <meta property="og:type" content="article" />
         <meta property="og:url" content={canonicalUrl} />
         {artigo.coverImageUrl && <meta property="og:image" content={artigo.coverImageUrl} />}
-        <meta property="article:published_time" content={artigo.publishedAt || artigo.createdAt} />
+        <meta property="article:published_time" content={publishedAt} />
+        <meta property="article:modified_time" content={modifiedAt} />
         <meta property="article:author" content={artigo.author || "Equipe Estude Loterias"} />
 
         {/* Schema.org Structured Data */}
@@ -347,6 +372,44 @@ export default function ArticleReaderPage() {
               </div>
             </div>
           </footer>
+
+          {/* Prev / Next article navigation — real internal <a> linking chain */}
+          {(prevArticle || nextArticle) && (
+            <nav
+              aria-label="Navegação entre artigos"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            >
+              {prevArticle ? (
+                <Link
+                  href={`/blog/${prevArticle.slug}`}
+                  className="group flex flex-col gap-1 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 hover:border-emerald-500/60 hover:shadow-md transition-all"
+                >
+                  <span className="flex items-center gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <ArrowLeft className="w-3.5 h-3.5" /> Artigo Anterior
+                  </span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100 line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {prevArticle.title}
+                  </span>
+                </Link>
+              ) : (
+                <span aria-hidden="true" />
+              )}
+
+              {nextArticle && (
+                <Link
+                  href={`/blog/${nextArticle.slug}`}
+                  className="group flex flex-col justify-end gap-1 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 text-right hover:border-emerald-500/60 hover:shadow-md transition-all"
+                >
+                  <span className="flex items-center justify-end gap-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    Próximo Artigo <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                  <span className="text-sm font-bold text-slate-900 dark:text-slate-100 line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {nextArticle.title}
+                  </span>
+                </Link>
+              )}
+            </nav>
+          )}
 
           {/* Related Articles Section */}
           {relatedPosts.length > 0 && (

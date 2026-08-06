@@ -1,4 +1,4 @@
-import { useGetLoterias } from "@workspace/api-client-react";
+import { useGetLoterias, useGetBlogPosts } from "@workspace/api-client-react";
 import type { LoteriaSummary } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency, formatDateWithWeekday } from "@/lib/formatters";
@@ -7,6 +7,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { Calendar, ArrowRight, Newspaper } from "lucide-react";
+import { formatArticleDate } from "@/lib/blog-utils";
 
 const HOME_TITLE = "Estude Loterias | Estatísticas das Loterias da Caixa";
 const HOME_DESCRIPTION =
@@ -103,6 +105,13 @@ export default function Home() {
   const sorted = loterias?.slice().sort(
     (a, b) => HOME_ORDER.indexOf(a.modalidade) - HOME_ORDER.indexOf(b.modalidade),
   );
+
+  // Latest blog article — provides a real internal <a> link to the newest post.
+  const { data: latestBlogData } = useGetBlogPosts(
+    { page: 1, limit: 1 },
+    { query: { queryKey: ["home-latest-blog", "1"] } },
+  );
+  const latestArticle = latestBlogData?.resultados?.[0];
 
   if (isLoading) {
     return (
@@ -248,6 +257,29 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      {latestArticle && (
+        <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-sm">
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+            <Newspaper className="w-4 h-4 text-emerald-600" />
+            Último artigo do blog
+          </div>
+          <Link href={`/blog/${latestArticle.slug}`} className="block group">
+            <h3 className="text-lg font-extrabold text-slate-900 dark:text-slate-50 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug">
+              {latestArticle.title}
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 line-clamp-2">
+              {latestArticle.excerpt}
+            </p>
+            <span className="inline-flex items-center gap-1.5 mt-3 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+              Ler artigo completo <ArrowRight className="w-3.5 h-3.5" />
+              <span className="font-medium text-slate-400 ml-1">
+                • {formatArticleDate(latestArticle.publishedAt || latestArticle.createdAt)}
+              </span>
+            </span>
+          </Link>
+        </section>
+      )}
 
       <AdUnit slot="0987654321" format="horizontal" className="w-full" />
     </div>

@@ -99,3 +99,40 @@ export function formatArticleDate(dateStr?: string | null): string {
     return dateStr;
   }
 }
+
+/**
+ * Detecta se um artigo é "time-sensitive" (noticioso / sobre concurso ou prêmio)
+ * para escolher entre schema.org BlogPosting e NewsArticle.
+ * Mantido em sintonia com a heurística do api-server (middlewares/seo-head-injection).
+ */
+export function isTimeSensitiveArticle(artigo: {
+  slug?: string;
+  title?: string;
+  tags?: string[];
+}): boolean {
+  const slug = artigo.slug?.toLowerCase() ?? "";
+  const title = artigo.title?.toLowerCase() ?? "";
+  const tags = (artigo.tags ?? []).join(" ").toLowerCase();
+  const haystack = `${slug} ${title} ${tags}`;
+
+  if (/^[a-z-]{3,}?-(\d{2,4})(-|$)/.test(slug)) {
+    return true;
+  }
+
+  const newsMarkers = [
+    "premio de r$",
+    "premio acumulado",
+    "premio estimado",
+    "vence hoje",
+    "hoje",
+    "resultado do concurso",
+    "aguardando sorteio",
+    "sorteio",
+    "ultima",
+    "noticia",
+    "acumulou",
+    "acontecimento",
+    "saiu o resultado",
+  ];
+  return newsMarkers.some((m) => haystack.includes(m));
+}
