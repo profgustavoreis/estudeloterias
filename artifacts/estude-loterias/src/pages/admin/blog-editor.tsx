@@ -106,6 +106,10 @@ export default function BlogEditorAdminPage() {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Guards the form-population effect so it runs once on the first loaded article
+  // and does NOT clobber a user's in-progress edits when the query refetches
+  // (TanStack Query refetches on window focus / invalidation by default).
+  const formInitializedRef = useRef(false);
 
   // Fetch article if editing
   const {
@@ -144,9 +148,10 @@ export default function BlogEditorAdminPage() {
   const createMutation = useCreateAdminBlogPost();
   const updateMutation = useUpdateAdminBlogPost();
 
-  // Populate form on article load
+  // Populate form on article load (only once, so refetches never overwrite edits)
   useEffect(() => {
-    if (existingArticle) {
+    if (existingArticle && !formInitializedRef.current) {
+      formInitializedRef.current = true;
       setTitle(existingArticle.title || "");
       setSlug(existingArticle.slug || "");
       setExcerpt(existingArticle.excerpt || "");
@@ -162,6 +167,13 @@ export default function BlogEditorAdminPage() {
       setIsAutoSlug(false);
     }
   }, [existingArticle]);
+
+  // When switching to a different article (e.g. redirect after creating a new
+  // article goes /admin/blog/novo → /admin/blog/editar/:id), allow the form to
+  // be repopulated once with the newly loaded article.
+  useEffect(() => {
+    formInitializedRef.current = false;
+  }, [articleId]);
 
   // Handle title changes & auto-slug
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -373,6 +385,12 @@ export default function BlogEditorAdminPage() {
           variant: "destructive",
         });
         setKeyModalOpen(true);
+      } else if (err?.status === 409) {
+        toast({
+          title: "Slug já em uso",
+          description: "Já existe um artigo com esse slug. Escolha outro no campo 'URL Slug'.",
+          variant: "destructive",
+        });
       } else {
         toast({
           title: "Erro ao salvar artigo",

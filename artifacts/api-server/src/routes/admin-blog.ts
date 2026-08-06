@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, articlesTable } from "@workspace/db";
-import { eq, and, or, ilike, count, desc } from "drizzle-orm";
+import { eq, and, or, ilike, count, desc, ne } from "drizzle-orm";
 import { adminAuthMiddleware } from "../middlewares/admin-auth";
 import { generateArticleWithAi, slugify } from "../services/ai-writer";
 
@@ -126,6 +126,18 @@ router.post("/admin/blog/posts", async (req, res) => {
     const readingTimeMinutes = calculateReadingTime(content);
     const publishedAt = status === "published" ? new Date() : null;
 
+    // Unique-slug guard: fails fast with a clear error instead of a DB 500
+    const [existingSlug] = await db
+      .select({ id: articlesTable.id })
+      .from(articlesTable)
+      .where(eq(articlesTable.slug, finalSlug))
+      .limit(1);
+
+    if (existingSlug) {
+      res.status(409).json({ error: "Já existe um artigo com esse slug. Escolha outro." });
+      return;
+    }
+
     const [inserted] = await db
       .insert(articlesTable)
       .values({
@@ -198,11 +210,27 @@ router.put("/admin/blog/posts/:id", async (req, res) => {
       publishedAt = new Date();
     }
 
+    const finalSlug = slug !== undefined ? (slug ? slugify(slug) : slugify(title || existing.title)) : existing.slug;
+
+    // Unique-slug guard: fail fast with a clear error instead of a generic 500
+    if (finalSlug !== existing.slug) {
+      const [existingSlug] = await db
+        .select({ id: articlesTable.id })
+        .from(articlesTable)
+        .where(and(eq(articlesTable.slug, finalSlug), ne(articlesTable.id, id)))
+        .limit(1);
+
+      if (existingSlug) {
+        res.status(409).json({ error: "Já existe um artigo com esse slug. Escolha outro." });
+        return;
+      }
+    }
+
     const [updated] = await db
       .update(articlesTable)
       .set({
         title: title !== undefined ? title : existing.title,
-        slug: slug !== undefined ? (slug ? slugify(slug) : slugify(title || existing.title)) : existing.slug,
+        slug: finalSlug,
         excerpt: excerpt !== undefined ? excerpt : existing.excerpt,
         content: newContent,
         coverImageUrl: coverImageUrl !== undefined ? coverImageUrl : existing.coverImageUrl,
