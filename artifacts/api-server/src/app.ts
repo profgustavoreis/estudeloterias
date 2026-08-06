@@ -23,6 +23,12 @@ const app: Express = express();
 const frontendDist = process.env.FRONTEND_DIST;
 let indexHtml: string | null = null;
 
+// Body parser é montado ANTES das rotas de API: sem isto, req.body chega
+// vazio em todos os POST/PUT e os updates falham silenciosamente (só updatedAt
+// muda). A ordem importa no Express.
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
 // Rotas de API/sitemap são montadas ANTES do serviço do SPA para que o
 // catch-all abaixo nunca as capture.
 app.get("/sitemap.xml", sitemapHandler);
@@ -85,7 +91,5 @@ app.use(
   }),
 );
 app.use(cors());
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 export default app;
