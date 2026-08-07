@@ -1,3 +1,10 @@
+import { logger } from "../lib/logger";
+import {
+  completeWithFallback,
+  type LlmRequestParams,
+  type ThinkingLevel,
+} from "./llm-client";
+
 export interface AiGenerateInput {
   pauta: string;
   modalidade?: string | null;
@@ -92,9 +99,7 @@ const SIZE_CONFIG: Record<string, SizeConfig> = {
   longo: { maxTokens: 16000, wordCount: "≈ 1.800+ palavras (guia detalhado, 7-10 min de leitura)" },
 };
 
-const DEFAULT_BASE_URL = "https://opencode.ai/zen/v1";
-const DEFAULT_MODEL = "deepseek-v4-flash-free";
-const DEFAULT_TIMEOUT_MS = 180000;
+const DEFAULT_TIMEOUT_MS = 60000;
 
 /** Strip optional ```json ... ``` code fences and whitespace before JSON.parse. */
 function parseJsonResponse(rawText: string): any {
@@ -112,9 +117,9 @@ export async function generateArticleWithAi(
   const { pauta, modalidade, tom = "informativo", tamanho = "medio" } = params;
 
   // Lido a cada chamada para que testes/recarga a quente reflitam mudanças.
-  const baseUrl = (process.env.LLM_BASE_URL || DEFAULT_BASE_URL).replace(/\/+$/, "");
-  const apiKey = (process.env.LLM_API_KEY || "").trim() || "public";
-  const model = process.env.LLM_MODEL || DEFAULT_MODEL;
+  // A cadeia de modelos/endpoints (LLM_MODELS/LLM_MODEL_ENDPOINTS/LLM_BASE_URL/
+  // LLM_GO_BASE_URL), o timeout (LLM_TIMEOUT_MS) e os retries são resolvidos
+  // dentro de llm-client (llm.resolveChainFromEnv / llm.attemptWithRetry).
   const timeoutMs = Number(process.env.LLM_TIMEOUT_MS) || DEFAULT_TIMEOUT_MS;
 
   // Controle do modo thinking: "disabled" (default) desliga o raciocínio via
@@ -124,10 +129,10 @@ export async function generateArticleWithAi(
   // `reasoning_effort` (note: níveis são soft no gateway e estocásticos).
   const thinkingLevels = ["low", "medium", "high"] as const;
   const thinkingRaw = (process.env.LLM_THINKING || "disabled").trim().toLowerCase();
-  const thinking: "disabled" | (typeof thinkingLevels)[number] =
+  const thinking: ThinkingLevel =
     thinkingRaw === "disabled" || !(thinkingLevels as readonly string[]).includes(thinkingRaw)
       ? "disabled"
-      : (thinkingRaw as (typeof thinkingLevels)[number]);
+      : (thinkingRaw as ThinkingLevel);
 
   const sizeConfig = SIZE_CONFIG[tamanho] || SIZE_CONFIG.medio;
 
@@ -147,59 +152,46 @@ Sua resposta DEVE ser um objeto JSON válido com as seguintes propriedades:
 - seoTitle: Título para SEO (até 60 caracteres)
 - seoDescription: Descrição para SEO (até 160 caracteres)`;
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  const request: LlmRequestParams = {
+    prompt,
+    maxTokens: sizeConfig.maxTokens,
+    thinking,
+    responseFormat: "json_object",
+  };
+
+  // Aceitável = conteúdo parseável com title+content. Nunca lança: retorna
+  // false para que o chain avance para o próximo candidato (llm.invalid_response).
+  const isAcceptable = (content: string): boolean => {
+    try {
+      const parsed = parseJsonResponse(content);
+      return Boolean(parsed && parsed.title && parsed.content);
+    } catch {
+      return false;
+    }
+  };
+
+  const result = await completeWithFallback(request, isAcceptable);
+
+  if (!result.ok) {
+    logger.warn(
+      {
+        kind: result.kind,
+        reason: result.reason,
+        candidatesTried: result.candidatesTried,
+        attempts: result.attempts,
+        latencyMs: result.latencyMs,
+      },
+      "llm.fallback_article",
+    );
+    return generateFallbackArticle(params);
+  }
 
   try {
-    const response = await fetch(`${baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-        "User-Agent": "opencode/1.15.0",
-        "x-opencode-client": "cli",
-      },
-      body: JSON.stringify({
-        model,
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
-        max_tokens: sizeConfig.maxTokens,
-        response_format: { type: "json_object" },
-        // Modelos "thinking" (ex.: deepseek-v4-flash-free) queimam o orçamento de
-        // tokens no reasoning_content antes de gerar conteúdo. Por padrão o
-        // thinking fica desabilitado (LLM_THINKING=disabled): 0 tokens de
-        // raciocínio e temperature/tom voltam a ter efeito. Nunca envie
-        // `thinking` e `reasoning_effort` juntos (o gateway rejeita com 400).
-        ...(thinking === "disabled"
-          ? { thinking: { type: "disabled" } }
-          : { reasoning_effort: thinking }),
-      }),
-      signal: controller.signal,
-    });
-
-    if (!response.ok) {
-      console.warn(
-        `LLM API returned status ${response.status} (model: ${model}). Falling back to default generation.`,
-      );
-      return generateFallbackArticle(params);
-    }
-
-    const data = (await response.json()) as any;
-    const rawText = data?.choices?.[0]?.message?.content;
-
-    if (!rawText) {
-      console.warn(
-        "LLM API returned an empty response. Falling back to default generation.",
-      );
-      return generateFallbackArticle(params);
-    }
-
-    const parsed = parseJsonResponse(String(rawText));
-
-    if (!parsed.title || !parsed.content) {
-      console.warn(
-        "LLM response is missing required fields (title/content). Falling back to default generation.",
-      );
+    // result.ok já garante que o conteúdo passou em isAcceptable; o parse abaixo
+    // é defensivo e não deve lançar.
+    const parsed = parseJsonResponse(result.content);
+    if (!parsed || !parsed.title || !parsed.content) {
+      logger.warn({ model: result.model }, "llm.parse_error");
       return generateFallbackArticle(params);
     }
 
@@ -214,9 +206,7 @@ Sua resposta DEVE ser um objeto JSON válido com as seguintes propriedades:
       seoDescription: String(parsed.seoDescription || parsed.excerpt || ""),
     };
   } catch (error) {
-    console.error("Error generating article with AI:", error);
+    logger.warn({ model: result.model, err: String(error) }, "llm.parse_error");
     return generateFallbackArticle(params);
-  } finally {
-    clearTimeout(timeoutId);
   }
 }
