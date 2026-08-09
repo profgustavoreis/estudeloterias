@@ -37,6 +37,76 @@ const DRAW_TIMES_BY_MODALIDADE: Record<string, { hour: number; minute: number }>
   // Se preciso, adicione overrides por modalidade; o padrão abaixo usa dia-da-semana.
 };
 
+// ---------------------------------------------------------------------------
+// Correção defensiva do dataProximoConcurso (a Caixa devolve data errada)
+//
+// Desde 19/07/2026 a Caixa eliminou o bloco de sábado: quem sorteava sábado
+// passou a sortear domingo 11:00 (e quem tinha sábado + dias úteis ficou só com
+// os dias úteis). MAS a API da Caixa ainda devolve o sábado antigo em
+// dataProximoConcurso (ex.: 08/08/2026 quando o sorteio real é 09/08/2026),
+// fazendo o site exibir uma data já passada como "próximo sorteio".
+//
+// Calendário VIGENTE, derivado dos concursos >= 19/07/2026 gravados no banco:
+//   megasena / timemania        : ter, qui, dom   (sáb → dom)
+//   maismilionaria              : qua, dom        (qui/sáb removidos)
+//   lotofacil / quina / diadesorte : seg–sex + dom (sáb removido)
+//   duplasena / lotomania / supersete : seg, qua, sex (sáb removido)
+// ---------------------------------------------------------------------------
+const DRAW_WEEKDAYS_BY_MODALIDADE: Record<string, number[]> = {
+  // getUTCDay(): 0=Dom, 1=Seg, 2=Ter, 3=Qua, 4=Qui, 5=Sex, 6=Sáb
+  megasena:       [0, 2, 4],
+  timemania:      [0, 2, 4],
+  maismilionaria: [0, 3],
+  diadesorte:     [0, 1, 2, 3, 4, 5],
+  lotofacil:      [0, 1, 2, 3, 4, 5],
+  quina:          [0, 1, 2, 3, 4, 5],
+  duplasena:      [1, 3, 5],
+  lotomania:      [1, 3, 5],
+  supersete:      [1, 3, 5],
+};
+
+function parseDDMMYYYY(dateStr: string): Date | null {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(dateStr);
+  if (!match) return null;
+  const [, dd, mm, yyyy] = match;
+  return new Date(Date.UTC(Number(yyyy), Number(mm) - 1, Number(dd)));
+}
+
+function formatDDMMYYYY(date: Date): string {
+  const dd = String(date.getUTCDate()).padStart(2, "0");
+  const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}/${date.getUTCFullYear()}`;
+}
+
+// Próximo sorteio conforme o calendário: primeiro dia de sorteio estritamente
+// após a data do último concurso apurado.
+function deriveNextDrawDate(dataApuracao: string, modalidade: string): string | null {
+  const weekdays = DRAW_WEEKDAYS_BY_MODALIDADE[modalidade];
+  const lastDraw = parseDDMMYYYY(dataApuracao);
+  if (!weekdays || !lastDraw) return null;
+  for (let i = 1; i <= 7; i++) {
+    const candidate = new Date(lastDraw.getTime() + i * 86400000);
+    if (weekdays.includes(candidate.getUTCDay())) return formatDDMMYYYY(candidate);
+  }
+  return null;
+}
+
+// Correção defensiva do dataProximoConcurso da Caixa:
+//  - data da Caixa >= data derivada → mantém a da Caixa (inclui concursos
+//    especiais fora do calendário regular, ex.: Mega da Virada, que a Caixa
+//    reporta corretamente e que podem ser DEPOIS do próximo sorteio regular);
+//  - data da Caixa < data derivada → a Caixa aponta para um dia de sorteio que
+//    deixou de existir (o sábado antigo) → usa a data derivada do calendário.
+function correctNextDrawDate(caixaDate: string | null, dataApuracao: string, modalidade: string): string | null {
+  if (!caixaDate) return caixaDate;
+  const derived = deriveNextDrawDate(dataApuracao, modalidade);
+  if (!derived) return caixaDate;
+  const caixaTs = parseDDMMYYYY(caixaDate)?.getTime() ?? null;
+  const derivedTs = parseDDMMYYYY(derived)?.getTime() ?? null;
+  if (caixaTs == null || derivedTs == null) return caixaDate;
+  return caixaTs < derivedTs ? derived : caixaDate;
+}
+
 const KEEP_AVAILABILITY_PER_MODALIDADE = 60; // pruning: mantém só as 60 observações mais recentes por modalidade
 
 // Estado em memória do último concurso observado por modalidade — usado para detectar
@@ -229,7 +299,7 @@ export function normalizeResult(raw: CaixaResult, modalidade: string) {
       raw.valorAcumuladoProximoConcurso && raw.valorAcumuladoProximoConcurso > 0
         ? String(raw.valorAcumuladoProximoConcurso)
         : null,
-    dataProximoConcurso: raw.dataProximoConcurso ?? null,
+    dataProximoConcurso: correctNextDrawDate(raw.dataProximoConcurso ?? null, raw.dataApuracao ?? "", modalidade),
     valorEstimadoProximo:
       raw.valorEstimadoProximoConcurso && raw.valorEstimadoProximoConcurso > 0
         ? String(raw.valorEstimadoProximoConcurso)
