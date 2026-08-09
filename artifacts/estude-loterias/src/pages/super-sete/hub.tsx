@@ -2,7 +2,7 @@ import { useGetSuperSeteUltimoResultado } from "@workspace/api-client-react";
 import { ConcursoNavigator } from "@/components/ui/ConcursoNavigator";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { formatCurrency, formatDateShort } from "@/lib/formatters";
+import { formatCurrency, formatDateShortWithWeekday } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AdUnit } from "@/components/ui/AdUnit";
@@ -93,7 +93,7 @@ export default function SuperSeteHub() {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle>Último Sorteio</CardTitle>
-                <CardDescription>Concurso {resultado.concurso} • {formatDateShort(resultado.data)}</CardDescription>
+                <CardDescription>Concurso {resultado.concurso} • {formatDateShortWithWeekday(resultado.data)}</CardDescription>
               </div>
               <Link href={`/super-sete/resultado/${resultado.concurso}`}>
                 <span className="text-sm font-semibold" style={{ color: COR }}>Ver detalhes →</span>
@@ -136,7 +136,7 @@ export default function SuperSeteHub() {
                   Próximo Sorteio
                 </div>
                 <div className="text-sm text-muted-foreground mb-1">
-                  Concurso {resultado.concurso + 1} • {formatDateShort(resultado.dataProximoConcurso)}
+                  Concurso {resultado.concurso + 1} • {formatDateShortWithWeekday(resultado.dataProximoConcurso)}
                 </div>
                 <div className="text-2xl font-bold">{formatCurrency(resultado.valorEstimadoProximoConcurso)}</div>
                 <div className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">Prêmio Estimado</div>

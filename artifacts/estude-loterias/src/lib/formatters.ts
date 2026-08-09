@@ -129,6 +129,16 @@ export function formatDateShort(dateStr: string | null | undefined): string {
   return `${Number(dd)}/${Number(mm)}/${yyyy}`;
 }
 
+export function formatDateShortWithWeekday(dateStr: string | null | undefined): string {
+  if (!dateStr) return "";
+  const parts = dateStr.split("/");
+  if (parts.length !== 3) return dateStr;
+  const [dd, mm, yyyy] = parts;
+  const date = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  const weekday = date.toLocaleDateString("pt-BR", { weekday: "long" });
+  return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)}, ${Number(dd)}/${Number(mm)}/${yyyy}`;
+}
+
 export function formatDateWithWeekday(dateStr: string | null | undefined): string {
   if (!dateStr) return "";
   const parts = dateStr.split("/");
