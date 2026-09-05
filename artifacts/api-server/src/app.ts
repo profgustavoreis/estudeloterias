@@ -6,19 +6,19 @@ import pinoHttp from "pino-http";
 import router from "./routes";
 import { sitemapHandler } from "./routes/sitemap";
 import { logger } from "./lib/logger";
-import { blogSeoHeadInjection, injectHeadFromLocals } from "./middlewares/seo-head-injection";
+import { spaSeoHeadInjection, resolveSeoHead, injectHead } from "./middlewares/seo-head-injection";
 
 const app: Express = express();
 
 // ---------------------------------------------------------------------------
 // SPA / SEO head-injection
 // ---------------------------------------------------------------------------
-// O api-server é o host de produção do SPA (Path A): quando `FRONTEND_DIST`
+// O api-server é o host de produção do SPA: quando `FRONTEND_DIST`
 // (caminho absoluto p/ o `dist/public` do frontend) está presente, ele:
-//   1. injeta head de SEO para `/blog/:slug` (blogSeoHeadInjection);
-//   2. serve os assets estáticos do build;
-//   3. faz o catch-all do SPA servindo index.html já com o head injetado
-//      (canonical/título/og/JSON-LD do ARTIGO para /blog/*, shell p/ o resto).
+//   1. serve os assets estáticos do build (scripts, css, imagens);
+//   2. injeta head de SEO específico para cada rota (concursos, hubs,
+//      estatísticas, ferramentas, blog e institucionais);
+//   3. faz o catch-all do SPA servindo index.html já com canonical e title corretos.
 // Sem `FRONTEND_DIST`, o app continua sendo somente API/sitemap.
 const frontendDist = process.env.FRONTEND_DIST;
 let indexHtml: string | null = null;
@@ -38,24 +38,24 @@ if (frontendDist && fs.existsSync(path.join(frontendDist, "index.html"))) {
   indexHtml = fs.readFileSync(path.join(frontendDist, "index.html"), "utf8");
   logger.info({ frontendDist }, "Servindo SPA a partir do build de produção do frontend");
 
-  // Monta SEO head antes de servir o HTML para /blog/:slug.
-  app.use(blogSeoHeadInjection);
-
-  // Assets estáticos (scripts, css, imagens) — não injeta head em binários.
+  // Assets estáticos (scripts, css, imagens) — servidos direto sem computação de SEO.
   app.use(
     express.static(frontendDist, {
       index: false, // nunca serve index.html automaticamente (usamos o catch-all)
-      // index.html carrega o head de SEO dinâmico (depende do slug) → não cachear.
+      // index.html carrega o head de SEO dinâmico → não cachear.
       setHeaders(res, urlPath) {
         if (urlPath.endsWith("index.html")) res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
       },
     }),
   );
 
+  // Injeção de SEO no head para rotas do SPA
+  app.use(spaSeoHeadInjection);
+
   // Catch-all do SPA: qualquer rota não coberta pelos assets retorna o
-  // index.html (com head de SEO injetado para /blog/*). Rotas de API não
-  // mapeadas / /sitemap.xml respondem 404 JSON em vez de HTML.
-  app.use((req: Request, res: Response) => {
+  // index.html com o head de SEO apropriado para a rota atual (concursos,
+  // estatísticas, blog, institucional, etc.).
+  app.use(async (req: Request, res: Response) => {
     if (req.method !== "GET" && req.method !== "HEAD") {
       res.status(404).json({ error: "Not found" });
       return;
@@ -65,8 +65,20 @@ if (frontendDist && fs.existsSync(path.join(frontendDist, "index.html"))) {
       return;
     }
     let html = indexHtml ?? "";
-    const { html: injected, changed } = injectHeadFromLocals(html, req);
-    if (changed) html = injected;
+    try {
+      let head = (res.locals.seoHead || res.locals.articleSeoHead) as string | undefined;
+      if (!head) {
+        const seoResult = await resolveSeoHead(req.path);
+        if (typeof seoResult === "object" && "redirect" in seoResult) {
+          res.redirect(301, seoResult.redirect);
+          return;
+        }
+        head = seoResult;
+      }
+      html = injectHead(html, head);
+    } catch (err) {
+      logger.error({ err, path: req.path }, "Erro ao injetar SEO head no catch-all");
+    }
     res.type("html").send(html);
   });
 }
