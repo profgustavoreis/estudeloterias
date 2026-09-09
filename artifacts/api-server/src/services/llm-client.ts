@@ -178,13 +178,13 @@ function parseEndpointOverrides(raw: string | undefined): Map<string, "free" | "
  * - If the base URL already ends with `/chat/completions` it is used as-is.
  */
 export function resolveChainFromEnv(): LlmCandidate[] {
-  const modelsRaw = (process.env.LLM_MODELS || "").trim();
+  const modelsRaw = (process.env.LLM_MODELS || process.env.LLM_MODEL || "").trim();
   const models = modelsRaw
     ? modelsRaw
         .split(",")
         .map((s) => s.trim())
         .filter(Boolean)
-    : [(process.env.LLM_MODEL || DEFAULT_MODEL).trim()];
+    : [DEFAULT_MODEL];
 
   const baseFree = (process.env.LLM_BASE_URL || DEFAULT_BASE_URL).replace(/\/+$/, "");
   const baseGo = (process.env.LLM_GO_BASE_URL || DEFAULT_GO_BASE_URL).replace(/\/+$/, "");
