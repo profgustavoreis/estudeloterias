@@ -192,7 +192,7 @@ export function resolveChainFromEnv(): LlmCandidate[] {
 
   return models.map((model) => {
     const override = overrides.get(model);
-    const isFreeModel = model.endsWith("-free");
+    const isFreeModel = model.endsWith("-free") || model === "big-pickle";
     let base: string;
     let endpointIsGo: boolean;
     if (override === "go") {
@@ -321,6 +321,7 @@ async function attemptOnce(
     Authorization: `Bearer ${apiKey}`,
     "User-Agent": "opencode/1.15.0",
     "x-opencode-client": "cli",
+    "x-opencode-session": `estudeloterias-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
   };
 
   const start = Date.now();

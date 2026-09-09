@@ -38,9 +38,11 @@ function generateFallbackArticle(params: AiGenerateInput): AiGenerateOutput {
     ? modalidade.charAt(0).toUpperCase() + modalidade.slice(1)
     : "Loterias";
 
-  const title = `Estratégias e Análise: ${pauta}`;
+  // Se a pauta for um prompt longo ou multilinha, extrai a primeira linha limpa
+  const pautaTitle = pauta.split("\n")[0].replace(/^#+\s*/, "").slice(0, 80).trim() || "Loterias";
+  const title = `Estratégias e Análise: ${pautaTitle}`;
   const slug = slugify(title);
-  const excerpt = `Confira nosso guia sobre ${pauta}. Descubra estatísticas, dicas práticas e análises para a ${modTitle}.`;
+  const excerpt = `Confira nosso guia sobre ${pautaTitle}. Descubra estatísticas, dicas práticas e análises para a ${modTitle}.`;
 
   const tags = [
     modalidade ? modalidade.toLowerCase() : "loterias",
@@ -50,14 +52,14 @@ function generateFallbackArticle(params: AiGenerateInput): AiGenerateOutput {
   ];
 
   const seoTitle = `${title} | Estude Loterias`;
-  const seoDescription = `Análise e dicas sobre ${pauta}. Aprenda estratégias e estatísticas para a ${modTitle} no Estude Loterias.`;
+  const seoDescription = `Análise e dicas sobre ${pautaTitle}. Aprenda estratégias e estatísticas para a ${modTitle} no Estude Loterias.`;
 
   const content = `# ${title}
 
 ## Introdução
-Entender como funciona **${pauta}** é fundamental para quem busca fazer apostas mais conscientes e fundamentadas. Neste artigo, abordamos de forma **${tom}** os principais pontos que você precisa saber sobre este tema para a ${modTitle}.
+Entender como funciona **${pautaTitle}** é fundamental para quem busca fazer apostas mais conscientes e fundamentadas. Neste artigo, abordamos de forma **${tom}** os principais pontos que você precisa saber sobre este tema para a ${modTitle}.
 
-## O Que Você Precisa Saber sobre ${pauta}
+## O Que Você Precisa Saber sobre ${pautaTitle}
 Ao analisar a ${modTitle}, é essencial olhar para os dados históricos. As estatísticas nos ajudam a identificar padrões e frequências de dezenas que podem orientar suas futuras apostas.
 
 ### Principais Dicas Práticas
