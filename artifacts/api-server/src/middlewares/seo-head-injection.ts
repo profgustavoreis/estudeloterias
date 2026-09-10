@@ -465,9 +465,9 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 
   if (p === "/lotofacil/lotofacil-da-independencia") {
     return buildHeadTags({
-      title: `Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
+      title: `Lotofácil da Independência — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
       description:
-        "Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09.",
+        "Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa.",
       canonicalUrl,
     });
   }

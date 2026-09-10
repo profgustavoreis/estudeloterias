@@ -26,8 +26,8 @@ export default function LotofacilDaIndependencia() {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09."
+          title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa."
           canonical="/lotofacil/lotofacil-da-independencia"
         />
         <div>Carregando informações...</div>
@@ -39,8 +39,8 @@ export default function LotofacilDaIndependencia() {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09."
+          title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa."
           canonical="/lotofacil/lotofacil-da-independencia"
         />
         <div>Erro ao carregar informações da Lotofácil da Independência.</div>
@@ -51,8 +51,8 @@ export default function LotofacilDaIndependencia() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09."
+        title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
+        description="Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa."
         canonical="/lotofacil/lotofacil-da-independencia"
       />
       <div className="flex items-center gap-4">
