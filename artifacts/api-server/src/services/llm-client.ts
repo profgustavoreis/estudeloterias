@@ -177,14 +177,16 @@ function parseEndpointOverrides(raw: string | undefined): Map<string, "free" | "
  *   suffix rule: `model.endsWith("-free")` → free base, otherwise → go base.
  * - If the base URL already ends with `/chat/completions` it is used as-is.
  */
-export function resolveChainFromEnv(): LlmCandidate[] {
+export function resolveChainFromEnv(overrideModels?: string[]): LlmCandidate[] {
   const modelsRaw = (process.env.LLM_MODELS || process.env.LLM_MODEL || "").trim();
-  const models = modelsRaw
-    ? modelsRaw
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean)
-    : [DEFAULT_MODEL];
+  const models = overrideModels && overrideModels.length > 0
+    ? Array.from(new Set(overrideModels.map((m) => m.trim()).filter(Boolean)))
+    : modelsRaw
+      ? modelsRaw
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+      : [DEFAULT_MODEL];
 
   const baseFree = (process.env.LLM_BASE_URL || DEFAULT_BASE_URL).replace(/\/+$/, "");
   const baseGo = (process.env.LLM_GO_BASE_URL || DEFAULT_GO_BASE_URL).replace(/\/+$/, "");
@@ -475,8 +477,9 @@ function estimateCostUsd(model: string, usage: LlmUsage): number | undefined {
 export async function completeWithFallback(
   params: LlmRequestParams,
   isAcceptable: (content: string) => boolean,
+  overrideModels?: string[],
 ): Promise<LlmSuccess | LlmFailure> {
-  const candidates = resolveChainFromEnv();
+  const candidates = resolveChainFromEnv(overrideModels);
   const timeoutMs = readPositiveInt(process.env.LLM_TIMEOUT_MS, DEFAULT_TIMEOUT_MS);
   const start = Date.now();
   const candidatesTried: string[] = [];

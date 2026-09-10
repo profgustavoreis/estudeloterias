@@ -3995,6 +3995,12 @@ components:
           type: string
           enum: [curto, medio, longo]
           default: medio
+        modeloPrimario:
+          type: ["string", "null"]
+          description: Modelo LLM primário desejado para a geração
+        modeloSecundario:
+          type: ["string", "null"]
+          description: Modelo LLM secundário (fallback) caso o primário falhe
       required:
         - pauta
 

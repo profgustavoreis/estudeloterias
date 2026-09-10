@@ -55,6 +55,17 @@ const TAMANHOS = [
   { value: "longo", label: "Longo", desc: "~1.800+ palavras, guia detalhado de 7-10 min" },
 ];
 
+const LLM_MODELS_LIST = [
+  { value: "deepseek-v4-flash", label: "DeepSeek V4 Flash" },
+  { value: "deepseek-v4-pro", label: "DeepSeek V4 Pro" },
+  { value: "glm-5.3-flash", label: "GLM 5.3 Flash" },
+  { value: "longcat-2.0", label: "LongCat-2.0" },
+  { value: "hy3", label: "Hy3" },
+  { value: "hy4-preview", label: "Hy4 Preview" },
+  { value: "mimo-v2.5-pro", label: "MiMo-V2.5-Pro" },
+  { value: "mimo-v2.5", label: "MiMo-V2.5" },
+];
+
 export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
   open,
   onOpenChange,
@@ -66,6 +77,8 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
   const [modalidade, setModalidade] = useState(defaultModalidade);
   const [tom, setTom] = useState<AiGenerateInputTom>("informativo");
   const [tamanho, setTamanho] = useState<AiGenerateInputTamanho>("medio");
+  const [modeloPrimario, setModeloPrimario] = useState("deepseek-v4-flash");
+  const [modeloSecundario, setModeloSecundario] = useState("glm-5.3-flash");
   const [loadingStep, setLoadingStep] = useState(0);
 
   const { toast } = useToast();
@@ -92,6 +105,8 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
           modalidade: modalidade === "geral" ? null : modalidade,
           tom,
           tamanho,
+          modeloPrimario,
+          modeloSecundario,
         },
       });
 
@@ -148,7 +163,7 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
           </div>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="p-6 space-y-5 max-h-[calc(85vh-130px)] overflow-y-auto">
           {generateAiMutation.isPending ? (
             <div className="py-10 px-4 flex flex-col items-center justify-center text-center space-y-6">
               <div className="relative">
@@ -290,6 +305,46 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
                       </div>
                     </button>
                   ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div className="space-y-2">
+                  <Label htmlFor="ai-modelo-primario" className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center justify-between">
+                    <span>Modelo Primário</span>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">1ª Opção</span>
+                  </Label>
+                  <Select value={modeloPrimario} onValueChange={setModeloPrimario}>
+                    <SelectTrigger id="ai-modelo-primario" className="rounded-xl border-slate-300 dark:border-slate-700">
+                      <SelectValue placeholder="Selecione o modelo primário" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {LLM_MODELS_LIST.map((m) => (
+                        <SelectItem key={m.value} value={m.value}>
+                          {m.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="ai-modelo-secundario" className="text-sm font-semibold text-slate-900 dark:text-slate-100 flex items-center justify-between">
+                    <span>Modelo Secundário</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">Fallback automático</span>
+                  </Label>
+                  <Select value={modeloSecundario} onValueChange={setModeloSecundario}>
+                    <SelectTrigger id="ai-modelo-secundario" className="rounded-xl border-slate-300 dark:border-slate-700">
+                      <SelectValue placeholder="Selecione o modelo secundário" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {LLM_MODELS_LIST.map((m) => (
+                        <SelectItem key={m.value} value={m.value}>
+                          {m.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </>

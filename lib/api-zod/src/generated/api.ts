@@ -2674,7 +2674,9 @@ export const GenerateBlogPostAiBody = zod.object({
   "pauta": zod.string(),
   "modalidade": zod.string().nullish(),
   "tom": zod.enum(['informativo', 'educativo', 'analitico', 'descontraido']).default(generateBlogPostAiBodyTomDefault),
-  "tamanho": zod.enum(['curto', 'medio', 'longo']).default(generateBlogPostAiBodyTamanhoDefault)
+  "tamanho": zod.enum(['curto', 'medio', 'longo']).default(generateBlogPostAiBodyTamanhoDefault),
+  "modeloPrimario": zod.string().nullish().describe('Modelo LLM primário desejado para a geração'),
+  "modeloSecundario": zod.string().nullish().describe('Modelo LLM secundário (fallback) caso o primário falhe')
 })
 
 export const GenerateBlogPostAiResponse = zod.object({

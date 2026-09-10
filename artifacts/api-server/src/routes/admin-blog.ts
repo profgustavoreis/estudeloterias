@@ -299,7 +299,7 @@ router.delete("/admin/blog/posts/:id", async (req, res) => {
 // POST /admin/blog/ai-generate
 router.post("/admin/blog/ai-generate", async (req, res) => {
   try {
-    const { pauta, modalidade, tom, tamanho } = req.body || {};
+    const { pauta, modalidade, tom, tamanho, modeloPrimario, modeloSecundario } = req.body || {};
 
     if (!pauta) {
       res.status(400).json({ error: "A pauta é obrigatória para a geração via IA" });
@@ -311,6 +311,8 @@ router.post("/admin/blog/ai-generate", async (req, res) => {
       modalidade,
       tom,
       tamanho,
+      modeloPrimario,
+      modeloSecundario,
     });
 
     res.json(resultado);

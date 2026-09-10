@@ -10,6 +10,8 @@ export interface AiGenerateInput {
   modalidade?: string | null;
   tom?: string;
   tamanho?: string;
+  modeloPrimario?: string | null;
+  modeloSecundario?: string | null;
 }
 
 export interface AiGenerateOutput {
@@ -116,7 +118,26 @@ function parseJsonResponse(rawText: string): any {
 export async function generateArticleWithAi(
   params: AiGenerateInput,
 ): Promise<AiGenerateOutput> {
-  const { pauta, modalidade, tom = "informativo", tamanho = "medio" } = params;
+  const {
+    pauta,
+    modalidade,
+    tom = "informativo",
+    tamanho = "medio",
+    modeloPrimario,
+    modeloSecundario,
+  } = params;
+
+  // Monta a cadeia a partir dos modelos selecionados no formulário (se informados)
+  const overrideModels: string[] = [];
+  if (modeloPrimario?.trim()) {
+    overrideModels.push(modeloPrimario.trim());
+  }
+  if (
+    modeloSecundario?.trim() &&
+    modeloSecundario.trim() !== modeloPrimario?.trim()
+  ) {
+    overrideModels.push(modeloSecundario.trim());
+  }
 
   // Lido a cada chamada para que testes/recarga a quente reflitam mudanças.
   // A cadeia de modelos/endpoints (LLM_MODELS/LLM_MODEL_ENDPOINTS/LLM_BASE_URL/
@@ -172,7 +193,11 @@ Sua resposta DEVE ser um objeto JSON válido com as seguintes propriedades:
     }
   };
 
-  const result = await completeWithFallback(request, isAcceptable);
+  const result = await completeWithFallback(
+    request,
+    isAcceptable,
+    overrideModels.length > 0 ? overrideModels : undefined,
+  );
 
   if (!result.ok) {
     logger.warn(

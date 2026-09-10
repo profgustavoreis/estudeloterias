@@ -14,4 +14,14 @@ export interface AiGenerateInput {
   modalidade?: string | null;
   tom?: AiGenerateInputTom;
   tamanho?: AiGenerateInputTamanho;
+  /**
+     * Modelo LLM primário desejado para a geração
+     * @nullable
+     */
+  modeloPrimario?: string | null;
+  /**
+     * Modelo LLM secundário (fallback) caso o primário falhe
+     * @nullable
+     */
+  modeloSecundario?: string | null;
 }
