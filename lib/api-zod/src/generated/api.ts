@@ -271,7 +271,22 @@ export const GetMegaDaViradaResponse = zod.object({
   "arrecadacaoTotal": zod.number().nullish(),
   "valorAcumuladoConcurso_0_5": zod.number().nullish(),
   "valorAcumuladoConcursoEspecial": zod.number().nullish()
-}))
+})),
+  "anoProximaEdicao": zod.number().optional(),
+  "confirmado": zod.boolean().optional(),
+  "fase": zod.enum(['proxima', 'resultado', 'apuracao']).optional(),
+  "ultimaEdicao": zod.object({
+  "concurso": zod.number().optional(),
+  "data": zod.string().optional().describe('Data da edição no formato dd\/mm\/yyyy'),
+  "premioTotal": zod.number().nullish(),
+  "ganhadores": zod.number().nullish(),
+  "anoEdicao": zod.number().optional()
+}).nullish(),
+  "proximaEdicao": zod.object({
+  "data": zod.string().nullish().describe('Data da próxima edição no formato dd\/mm\/yyyy'),
+  "valorEstimado": zod.number().nullish(),
+  "confirmado": zod.boolean().optional()
+}).nullish()
 })
 
 
@@ -569,7 +584,21 @@ export const GetLotofacilDaIndependenciaResponse = zod.object({
   "arrecadacaoTotal": zod.number().nullish(),
   "valorAcumuladoConcurso_0": zod.number().nullish(),
   "valorAcumuladoConcursoEspecial": zod.number().nullish()
-}))
+})),
+  "anoProximaEdicao": zod.number().optional(),
+  "fase": zod.enum(['proxima', 'resultado', 'apuracao']).optional(),
+  "ultimaEdicao": zod.object({
+  "concurso": zod.number().optional(),
+  "data": zod.string().optional().describe('Data da edição no formato dd\/mm\/yyyy'),
+  "premioTotal": zod.number().nullish(),
+  "ganhadores": zod.number().nullish(),
+  "anoEdicao": zod.number().optional()
+}).nullish(),
+  "proximaEdicao": zod.object({
+  "data": zod.string().nullish().describe('Data da próxima edição no formato dd\/mm\/yyyy'),
+  "valorEstimado": zod.number().nullish(),
+  "confirmado": zod.boolean().optional()
+}).nullish()
 })
 
 
@@ -849,7 +878,22 @@ export const GetQuinaDeSaoJoaoResponse = zod.object({
   "arrecadacaoTotal": zod.number().nullish(),
   "valorAcumuladoConcursoFinal5": zod.number().nullish(),
   "valorAcumuladoConcursoEspecial": zod.number().nullish()
-}))
+})),
+  "anoProximaEdicao": zod.number().optional(),
+  "confirmado": zod.boolean().optional(),
+  "fase": zod.enum(['proxima', 'resultado', 'apuracao']).optional(),
+  "ultimaEdicao": zod.object({
+  "concurso": zod.number().optional(),
+  "data": zod.string().optional().describe('Data da edição no formato dd\/mm\/yyyy'),
+  "premioTotal": zod.number().nullish(),
+  "ganhadores": zod.number().nullish(),
+  "anoEdicao": zod.number().optional()
+}).nullish(),
+  "proximaEdicao": zod.object({
+  "data": zod.string().nullish().describe('Data da próxima edição no formato dd\/mm\/yyyy'),
+  "valorEstimado": zod.number().nullish(),
+  "confirmado": zod.boolean().optional()
+}).nullish()
 })
 
 
@@ -2159,6 +2203,50 @@ export const GerarJogoDuplasenaBody = zod.object({
 export const GerarJogoDuplasenaResponse = zod.object({
   "jogos": zod.array(zod.array(zod.number())),
   "custo": zod.number()
+})
+
+
+/**
+ * @summary Informações e histórico da Dupla de Páscoa
+ */
+export const GetDuplasenaDuplaDePascoaResponse = zod.object({
+  "anoAtual": zod.number(),
+  "dataProximaEdicao": zod.string(),
+  "valorEstimado": zod.number().nullish(),
+  "confirmado": zod.boolean().optional().describe('Indica se a data e prêmio já foram oficialmente confirmados'),
+  "historico": zod.array(zod.object({
+  "concurso": zod.number(),
+  "data": zod.string(),
+  "dezenas": zod.array(zod.string()),
+  "dezenasOrdem": zod.array(zod.string()).nullish(),
+  "trevos": zod.array(zod.string()).nullish(),
+  "dezenas2": zod.array(zod.string()).nullish(),
+  "premios": zod.array(zod.object({
+  "faixa": zod.number(),
+  "descricao": zod.string(),
+  "ganhadores": zod.number(),
+  "valorPremio": zod.number()
+})),
+  "acumulado": zod.boolean(),
+  "valorAcumulado": zod.number().nullish(),
+  "dataProximoConcurso": zod.string().nullish(),
+  "valorEstimadoProximoConcurso": zod.number().nullish(),
+  "arrecadacaoTotal": zod.number().nullish()
+})),
+  "anoProximaEdicao": zod.number().optional(),
+  "fase": zod.enum(['proxima', 'resultado', 'apuracao']).optional(),
+  "ultimaEdicao": zod.object({
+  "concurso": zod.number().optional(),
+  "data": zod.string().optional().describe('Data da edição no formato dd\/mm\/yyyy'),
+  "premioTotal": zod.number().nullish(),
+  "ganhadores": zod.number().nullish(),
+  "anoEdicao": zod.number().optional()
+}).nullish(),
+  "proximaEdicao": zod.object({
+  "data": zod.string().nullish().describe('Data da próxima edição no formato dd\/mm\/yyyy'),
+  "valorEstimado": zod.number().nullish(),
+  "confirmado": zod.boolean().optional()
+}).nullish()
 })
 
 

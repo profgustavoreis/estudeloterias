@@ -2,6 +2,14 @@ import { type Request, type Response, type NextFunction } from "express";
 import { db, articlesTable, blogRedirectsTable, lotteryResultsTable } from "@workspace/db";
 import type { Article } from "@workspace/db/schema";
 import { eq, and } from "drizzle-orm";
+import {
+  buildSpecialEditionFallback,
+  buildSpecialEditionJsonLd,
+  buildSpecialEditionSeo,
+  serializeSpecialEditionJsonLd,
+  type SpecialEditionFacts,
+} from "@workspace/seo-special-editions";
+import { getTodaySaoPaulo, resolveSpecialEdition } from "../services/special-editions";
 
 /**
  * Middleware de injeção de SEO no head do HTML do SPA para todas as rotas
@@ -347,6 +355,107 @@ export function buildBlogIndexHead(): string {
 }
 
 /**
+ * Configuração das páginas de edições especiais. `modalidade` é o que
+ * `resolveSpecialEdition` espera; `nome`/`slug` alimentam o fallback atemporal
+ * específico da modalidade (o mesmo que o cliente monta).
+ */
+interface SpecialEditionRouteConfig {
+  modalidade: string;
+  nome: string;
+  slug: string;
+}
+
+const SPECIAL_EDITION_ROUTES: Record<string, SpecialEditionRouteConfig> = {
+  "/mega-sena/mega-da-virada": {
+    modalidade: "mega-sena",
+    nome: "Mega da Virada",
+    slug: "/mega-sena/mega-da-virada",
+  },
+  "/lotofacil/lotofacil-da-independencia": {
+    modalidade: "lotofacil",
+    nome: "Lotofácil da Independência",
+    slug: "/lotofacil/lotofacil-da-independencia",
+  },
+  "/quina/quina-de-sao-joao": {
+    modalidade: "quina",
+    nome: "Quina de São João",
+    slug: "/quina/quina-de-sao-joao",
+  },
+  "/duplasena/dupla-de-pascoa": {
+    modalidade: "duplasena",
+    nome: "Dupla de Páscoa",
+    slug: "/duplasena/dupla-de-pascoa",
+  },
+};
+
+/**
+ * Fatos-base (sem payload) para o fallback atemporal — mesma forma que o cliente
+ * monta via `specialEditionBaseFacts`, garantindo convergência SSR×cliente quando
+ * `resolveSpecialEdition` falha/retorna null.
+ */
+function buildSpecialEditionBaseFacts(
+  route: SpecialEditionRouteConfig,
+): SpecialEditionFacts {
+  return {
+    modalidade: route.modalidade,
+    slug: route.slug,
+    nome: route.nome,
+    anoProximaEdicao: getTodaySaoPaulo().year,
+    ultimaEdicao: null,
+    proximaEdicao: null,
+    fase: "proxima",
+  };
+}
+
+/**
+ * `<head>` orientado a dados para as páginas de edições especiais (Mega da Virada,
+ * Lotofácil da Independência, Quina de São João e Dupla de Páscoa).
+ *
+ * Título/descrição: `buildSpecialEditionSeo` decide a fase (`resultado` |
+ * `proxima` | `apuracao`) a partir de `facts.fase` (autoritativa). Se o serviço
+ * falhar/retornar null, usamos `buildSpecialEditionFallback` com os fatos-base da
+ * modalidade — texto atemporal específico, idêntico ao do cliente.
+ *
+ * JSON-LD (`@graph`: Organization/WebSite/WebPage/BreadcrumbList): injetado pelos
+ * `extraTags` de `buildHeadTags` (mesmo mecanismo do head dos artigos). O
+ * `dateModified` é a data atual do servidor em America/Sao_Paulo (`hoje`), nunca
+ * futura; `serializeSpecialEditionJsonLd` escapa `<` para não quebrar o `<script>`.
+ * No fallback não há JSON-LD (o cliente também não emite LD nesse path).
+ */
+async function buildSpecialEditionHead(
+  route: SpecialEditionRouteConfig,
+  canonicalUrl: string,
+): Promise<string> {
+  let facts: SpecialEditionFacts | null = null;
+  try {
+    facts = await resolveSpecialEdition(route.modalidade);
+  } catch {
+    facts = null;
+  }
+
+  const { title, description } = facts
+    ? buildSpecialEditionSeo(facts)
+    : buildSpecialEditionFallback(buildSpecialEditionBaseFacts(route));
+
+  const extraTags: string[] = [];
+  if (facts) {
+    const { year, month, day } = getTodaySaoPaulo();
+    const hoje = new Date(year, month - 1, day);
+    const jsonLd = buildSpecialEditionJsonLd(facts, canonicalUrl, { hoje });
+    extraTags.push(
+      `    <script type="application/ld+json">${serializeSpecialEditionJsonLd(jsonLd)}</script>`,
+    );
+  }
+
+  return buildHeadTags({
+    title: `${title} | ${SITE_NAME}`,
+    description,
+    canonicalUrl,
+    extraTags,
+  });
+}
+
+/**
  * Resolve o bloco de tags `<head>` para qualquer rota do site.
  * Retorna uma string de tags HTML ou um objeto `{ redirect: string }` para redirecionamentos 301.
  */
@@ -453,41 +562,10 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
     });
   }
 
-  // 5. Páginas especiais de loterias
-  if (p === "/mega-sena/mega-da-virada") {
-    return buildHeadTags({
-      title: `Mega da Virada — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
-      description:
-        "Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
-      canonicalUrl,
-    });
-  }
-
-  if (p === "/lotofacil/lotofacil-da-independencia") {
-    return buildHeadTags({
-      title: `Lotofácil da Independência — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
-      description:
-        "Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
-      canonicalUrl,
-    });
-  }
-
-  if (p === "/quina/quina-de-sao-joao") {
-    return buildHeadTags({
-      title: `Quina de São João — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
-      description:
-        "Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
-      canonicalUrl,
-    });
-  }
-
-  if (p === "/duplasena/dupla-de-pascoa") {
-    return buildHeadTags({
-      title: `Dupla de Páscoa — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
-      description:
-        "Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
-      canonicalUrl,
-    });
+  // 5. Páginas especiais de loterias — head orientado a dados + JSON-LD
+  const specialEditionRoute = SPECIAL_EDITION_ROUTES[p];
+  if (specialEditionRoute) {
+    return buildSpecialEditionHead(specialEditionRoute, canonicalUrl);
   }
 
   // 6. Rotas por modalidade de loteria

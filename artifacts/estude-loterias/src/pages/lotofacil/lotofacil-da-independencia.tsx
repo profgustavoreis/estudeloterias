@@ -1,19 +1,34 @@
 import { Link } from "wouter";
 import { useGetLotofacilDaIndependencia, useGetBlogPostBySlug } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate, formatWeekday } from "@/lib/formatters";
+import { formatCurrency } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Badge } from "@/components/ui/badge";
-import { Flag, Calendar, Trophy, Sparkles, Clock, ArrowRight, BookOpen, TrendingUp } from "lucide-react";
+import { Flag, Trophy, Sparkles, Clock, ArrowRight, BookOpen, TrendingUp } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { SpecialEditionHero } from "@/components/ui/SpecialEditionHero";
+import { cn } from "@/lib/utils";
+import {
+  buildSpecialEditionFallback,
+  buildSpecialEditionSeo,
+} from "@workspace/seo-special-editions";
+import {
+  resolveSpecialEditionView,
+  specialEditionBaseFacts,
+  specialEditionFacts,
+  SPECIAL_EDITIONS_META,
+} from "@/lib/special-editions";
 
 const COR = "#930089";
+const META = SPECIAL_EDITIONS_META.independencia;
 
 export default function LotofacilDaIndependencia() {
   const { data, isLoading, isError } = useGetLotofacilDaIndependencia();
   const { data: blogPost } = useGetBlogPostBySlug("lotofacil-da-independencia-2026-guia-completo");
+
+  const fallbackSeo = buildSpecialEditionFallback(specialEditionBaseFacts("independencia"));
 
   const postSlug = blogPost?.slug || "lotofacil-da-independencia-2026-guia-completo";
   const postTitle = blogPost?.title || "Guia Completo da Lotofácil da Independência 2026: R$ 300 Milhões em Jogo!";
@@ -26,9 +41,9 @@ export default function LotofacilDaIndependencia() {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/lotofacil/lotofacil-da-independencia"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Carregando informações...</div>
       </div>
@@ -39,66 +54,40 @@ export default function LotofacilDaIndependencia() {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/lotofacil/lotofacil-da-independencia"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Erro ao carregar informações da Lotofácil da Independência.</div>
       </div>
     );
   }
 
+  const view = resolveSpecialEditionView({ tipo: "independencia", data });
+  const seo = buildSpecialEditionSeo(specialEditionFacts({ tipo: "independencia", data }));
+
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-        canonical="/lotofacil/lotofacil-da-independencia"
+        title={seo.title}
+        description={seo.description}
+        canonical={META.canonical}
       />
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg" style={{ backgroundColor: COR }}>
           <Flag className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase" style={{ color: COR }}>
-            Lotofácil da Independência
+          <h1 className={cn("text-2xl md:text-3xl font-black tracking-tight", view.accent.text)}>
+            {view.h1}
           </h1>
           <p className="text-muted-foreground mt-1 text-lg">O concurso especial de setembro com prêmio recorde que não acumula.</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-t-4 bg-[#930089]/5 flex flex-col justify-between" style={{ borderColor: COR }}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" style={{ color: COR }} />
-              Próxima Edição
-            </CardTitle>
-            <CardDescription className="text-base font-medium text-foreground flex items-center gap-2 flex-wrap">
-              {formatLongDate(data.dataProximaEdicao)} ({formatWeekday(data.dataProximaEdicao)})
-              {data.confirmado ? (
-                <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                  Confirmado
-                </Badge>
-              ) : (
-                <Badge className="bg-amber-100 text-amber-800 border border-amber-200">a confirmar</Badge>
-              )}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col justify-between flex-1">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1 uppercase font-semibold">Prêmio Estimado</div>
-              <div className="text-4xl font-black" style={{ color: COR }}>
-                {data.valorEstimado ? formatCurrency(data.valorEstimado) : "R$ 300.000.000,00"}
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              O prêmio da Lotofácil da Independência não acumula. Se não houver acertadores de 15 números,
-              o prêmio será dividido entre os acertadores de 14 números.
-            </p>
-          </CardContent>
-        </Card>
+      <SpecialEditionHero view={view} />
 
+      <div className="grid grid-cols-1 gap-6">
         <Link
           href={`/blog/${postSlug}`}
           className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#930089] rounded-xl"
@@ -167,7 +156,7 @@ export default function LotofacilDaIndependencia() {
 
       <AdUnit slot="7788990011" format="horizontal" className="w-full" />
 
-      <Card>
+      <Card id="historico">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="w-5 h-5" style={{ color: COR }} />

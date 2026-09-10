@@ -1,36 +1,62 @@
 import { Link } from "wouter";
 import { useGetMegaDaVirada } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate, formatWeekday } from "@/lib/formatters";
+import { formatCurrency } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { Gift, Calendar, Trophy } from "lucide-react";
+import { Gift, Trophy } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { SpecialEditionHero } from "@/components/ui/SpecialEditionHero";
+import { cn } from "@/lib/utils";
+import {
+  buildSpecialEditionFallback,
+  buildSpecialEditionSeo,
+} from "@workspace/seo-special-editions";
+import {
+  anoEdicaoDaData,
+  resolveSpecialEditionView,
+  specialEditionBaseFacts,
+  specialEditionFacts,
+  SPECIAL_EDITIONS_META,
+} from "@/lib/special-editions";
 
-// Concursos sorteados em 01/01 do ano seguinte → exibe o ano da edição
-const VIRADA_ANO_EDICAO: Record<number, number> = {
-  2955: 2025,
-};
+const COR = "#009640";
+const META = SPECIAL_EDITIONS_META.virada;
 
-function edicaoYear(concurso: number, dateStr: string): string {
-  if (VIRADA_ANO_EDICAO[concurso] !== undefined) {
-    return String(VIRADA_ANO_EDICAO[concurso]);
+/**
+ * Ano da edição exibido na tabela de histórico.
+ *
+ * A edição corrente usa o `anoEdicao` normalizado do payload. Para as demais
+ * linhas aplicamos a mesma regra do serviço (`anoEdicaoDaData`): uma Virada
+ * sorteada em 01/01/yyyy pertence à edição yyyy - 1 (ex.: concurso 2955,
+ * sorteado em 01/01/2026, é a edição 2025). Isso mantém o ano correto mesmo
+ * depois que o ciclo avança e `ultimaEdicao` passa a apontar para outra edição.
+ * Pequena duplicação consciente da regra server-side.
+ */
+function edicaoYear(
+  sorteio: { concurso: number; data: string },
+  ultimaEdicao: { concurso?: number; anoEdicao?: number } | null | undefined,
+): string {
+  if (ultimaEdicao && ultimaEdicao.concurso === sorteio.concurso && ultimaEdicao.anoEdicao != null) {
+    return String(ultimaEdicao.anoEdicao);
   }
-  const parts = dateStr.split("/");
-  return parts.length === 3 ? (parts[2] ?? "–") : "–";
+  const ano = anoEdicaoDaData("virada", sorteio.data);
+  return ano ? String(ano) : "–";
 }
 
 export default function MegaDaVirada() {
   const { data: megaDaVirada, isLoading, isError } = useGetMegaDaVirada();
 
+  const fallbackSeo = buildSpecialEditionFallback(specialEditionBaseFacts("virada"));
+
   if (isLoading) {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Mega da Virada — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/mega-sena/mega-da-virada"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Carregando informações...</div>
       </div>
@@ -41,60 +67,43 @@ export default function MegaDaVirada() {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Mega da Virada — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/mega-sena/mega-da-virada"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Erro ao carregar informações da Mega da Virada.</div>
       </div>
     );
   }
 
+  const view = resolveSpecialEditionView({ tipo: "virada", data: megaDaVirada });
+  const seo = buildSpecialEditionSeo(specialEditionFacts({ tipo: "virada", data: megaDaVirada }));
+
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Mega da Virada — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-        canonical="/mega-sena/mega-da-virada"
+        title={seo.title}
+        description={seo.description}
+        canonical={META.canonical}
       />
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-xl bg-[#009640] flex items-center justify-center text-white shadow-lg">
           <Gift className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight text-[#009640] uppercase">Mega da Virada</h1>
+          <h1 className={cn("text-2xl md:text-3xl font-black tracking-tight", view.accent.text)}>
+            {view.h1}
+          </h1>
           <p className="text-muted-foreground mt-1 text-lg">O sorteio mais aguardado do ano que não acumula.</p>
         </div>
       </div>
 
-      {/* Row 1: Próximo Sorteio + AdUnit */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-t-4 border-[#009640] bg-[#009640]/5">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-[#009640]" />
-              Próxima Edição
-            </CardTitle>
-            <CardDescription className="text-base font-medium text-foreground">
-              {formatLongDate(megaDaVirada.dataProximaVirada)} ({formatWeekday(megaDaVirada.dataProximaVirada)})
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground mb-1 uppercase font-semibold">Prêmio Estimado</div>
-            <div className="text-4xl font-black text-[#009640]">
-              {megaDaVirada.valorEstimado ? formatCurrency(megaDaVirada.valorEstimado) : "A definir"}
-            </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              O prêmio da Mega da Virada não acumula. Se não houver acertadores de 6 números, o prêmio será dividido entre os acertadores de 5 números.
-            </p>
-          </CardContent>
-        </Card>
+      <SpecialEditionHero view={view} />
 
-        <AdUnit slot="1122334456" format="rectangle" className="min-h-[250px]" />
-      </div>
+      <AdUnit slot="1122334456" format="rectangle" className="min-h-[250px]" />
 
       {/* Histórico */}
-      <Card>
+      <Card id="historico">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-[#009640]" />
@@ -127,7 +136,7 @@ export default function MegaDaVirada() {
                     return (
                       <TableRow key={sorteio.concurso}>
                         <TableCell className="text-center font-bold">
-                          {edicaoYear(sorteio.concurso, sorteio.data)}
+                          {edicaoYear(sorteio, megaDaVirada.ultimaEdicao)}
                         </TableCell>
                         <TableCell className="text-center text-muted-foreground font-mono">
                           {sorteio.concurso}

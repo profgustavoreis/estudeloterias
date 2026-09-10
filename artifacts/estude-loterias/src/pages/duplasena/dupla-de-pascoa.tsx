@@ -1,39 +1,41 @@
 import { Link } from "wouter";
-import { useGetDuplasenaUltimoResultado, useGetDuplasenaResultados } from "@workspace/api-client-react";
+import { useGetDuplasenaDuplaDePascoa } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Gift, Calendar, Trophy, Sparkles } from "lucide-react";
+import { Gift, Trophy, Sparkles } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { SpecialEditionHero } from "@/components/ui/SpecialEditionHero";
+import { cn } from "@/lib/utils";
+import {
+  buildSpecialEditionFallback,
+  buildSpecialEditionSeo,
+} from "@workspace/seo-special-editions";
+import {
+  resolveSpecialEditionView,
+  specialEditionBaseFacts,
+  specialEditionFacts,
+  SPECIAL_EDITIONS_META,
+} from "@/lib/special-editions";
 
 const COR = "#a61324";
+const META = SPECIAL_EDITIONS_META.pascoa;
 
 export default function DuplasenaDuplaDePascoa() {
-  const { data: resultado, isLoading, isError } = useGetDuplasenaUltimoResultado();
-  const { data: resultados } = useGetDuplasenaResultados({ page: 1, limit: 100, ordem: "desc" });
+  const { data, isLoading, isError } = useGetDuplasenaDuplaDePascoa();
 
-  const historicoConcursos = resultados?.resultados ?? [];
-
-  const isPascoa = (concurso: number) => {
-    const concursosEspeciais = historicoConcursos.filter(r => {
-      const data = r.data;
-      const [dia, mes] = data.split("/").map(Number);
-      return mes === 3 || mes === 4;
-    }).slice(0, 10);
-    return concursosEspeciais.length > 0;
-  };
+  const fallbackSeo = buildSpecialEditionFallback(specialEditionBaseFacts("pascoa"));
 
   if (isLoading) {
     return (
       <div className="space-y-6">
         <PageSEO
-          title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/duplasena/dupla-de-pascoa"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div className="flex items-center gap-4">
           <Skeleton className="w-16 h-16 rounded-xl" />
@@ -44,64 +46,44 @@ export default function DuplasenaDuplaDePascoa() {
     );
   }
 
-  if (isError || !resultado) {
+  if (isError || !data) {
     return (
       <div className="space-y-6">
         <PageSEO
-          title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/duplasena/dupla-de-pascoa"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Erro ao carregar informações da Dupla de Páscoa.</div>
       </div>
     );
   }
 
+  const view = resolveSpecialEditionView({ tipo: "pascoa", data });
+  const seo = buildSpecialEditionSeo(specialEditionFacts({ tipo: "pascoa", data }));
+
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-        canonical="/duplasena/dupla-de-pascoa"
+        title={seo.title}
+        description={seo.description}
+        canonical={META.canonical}
       />
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg" style={{ backgroundColor: COR }}>
           <Gift className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase" style={{ color: COR }}>
-            Dupla de Páscoa
+          <h1 className={cn("text-2xl md:text-3xl font-black tracking-tight", view.accent.text)}>
+            {view.h1}
           </h1>
           <p className="text-muted-foreground mt-1 text-lg">O sorteio especial da Dupla Sena com prêmio turbinado!</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-t-4" style={{ borderColor: COR }}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" style={{ color: COR }} />
-              Sorteio Especial de Páscoa
-            </CardTitle>
-            <CardDescription className="text-base font-medium text-foreground flex items-center gap-2 flex-wrap">
-              Realizado uma vez por ano, próximo à Páscoa
-              <Badge variant="secondary">edição especial</Badge>
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              A Dupla de Páscoa é o sorteio especial da Dupla Sena. Durante todo o ano, <strong>15% do fundo de prêmios</strong> de cada
-              concurso é reservado para esta edição especial, resultando em um prêmio muito maior que o dos concursos regulares.
-            </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              As regras do jogo são as mesmas: você escolhe de 6 a 15 números entre 01 e 50, e concorre em dois sorteios.
-              A diferença é o prêmio acumulado, que pode chegar a dezenas de milhões!
-            </p>
-          </CardContent>
-        </Card>
+      <SpecialEditionHero view={view} />
 
-        <AdUnit slot="7788990044" format="rectangle" className="min-h-[250px]" />
-      </div>
+      <AdUnit slot="7788990044" format="rectangle" className="min-h-[250px]" />
 
       <Card>
         <CardHeader>
@@ -114,14 +96,14 @@ export default function DuplasenaDuplaDePascoa() {
         <CardContent className="text-muted-foreground space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-4 border rounded-lg bg-muted/30 text-center">
-              <div className="text-3xl font-black" style={{ color: COR }}>15%</div>
-              <p className="text-sm mt-1">Do fundo de prêmios de cada concurso é separado para a Dupla de Páscoa</p>
+              <div className="text-3xl font-black" style={{ color: COR }}>16%</div>
+              <p className="text-sm mt-1">Do fundo de prêmios de cada concurso é reservado para a 1ª faixa do 1º sorteio da Dupla de Páscoa</p>
             </div>
             <div className="p-4 border rounded-lg bg-muted/30 text-center">
               <div className="text-3xl font-black" style={{ color: COR }}>
                 <Sparkles className="w-7 h-7 inline-block" style={{ color: COR }} />
               </div>
-              <p className="text-sm mt-1">O valor acumula ao longo do ano e turbina o prêmio do sorteio especial</p>
+              <p className="text-sm mt-1">O valor é acumulado ao longo do ano e turbina a 1ª faixa do 1º sorteio da edição especial</p>
             </div>
             <div className="p-4 border rounded-lg bg-muted/30 text-center">
               <div className="text-3xl font-black" style={{ color: COR }}>2×</div>
@@ -131,21 +113,21 @@ export default function DuplasenaDuplaDePascoa() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card id="historico">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="w-5 h-5" style={{ color: COR }} />
-            Últimos Concursos
+            Histórico de Sorteios
           </CardTitle>
-          <CardDescription>Confira os resultados recentes da Dupla Sena.</CardDescription>
+          <CardDescription>Todos os resultados da Dupla de Páscoa.</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="text-center w-[80px]">Concurso</TableHead>
-                  <TableHead className="text-center w-[100px]">Data</TableHead>
+                  <TableHead className="text-center w-[100px]">Concurso</TableHead>
+                  <TableHead className="text-center w-[110px]">Data</TableHead>
                   <TableHead className="text-center">1º Sorteio</TableHead>
                   <TableHead className="text-center">2º Sorteio</TableHead>
                   <TableHead className="text-center">Prêmio Principal</TableHead>
@@ -153,21 +135,28 @@ export default function DuplasenaDuplaDePascoa() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {historicoConcursos.length === 0 ? (
+                {data.historico.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center h-24">Nenhum resultado encontrado.</TableCell>
+                    <TableCell colSpan={6} className="text-center h-24">Nenhum histórico encontrado.</TableCell>
                   </TableRow>
                 ) : (
-                  historicoConcursos.slice(0, 10).map((res) => {
-                    const premioFaixa1 = res.premios.find(p => p.faixa === 1);
-                    const dezenas2 = res.dezenas2 ?? [];
+                  data.historico.map((sorteio) => {
+                    const premioFaixa1 = sorteio.premios.find(p => p.faixa === 1);
+                    const isAtual = data.ultimaEdicao?.concurso === sorteio.concurso;
+                    const totalPremio =
+                      isAtual && data.ultimaEdicao?.premioTotal != null
+                        ? data.ultimaEdicao.premioTotal
+                        : premioFaixa1 && premioFaixa1.ganhadores > 0
+                          ? premioFaixa1.valorPremio * premioFaixa1.ganhadores
+                          : premioFaixa1?.valorPremio;
+                    const dezenas2 = sorteio.dezenas2 ?? [];
                     return (
-                      <TableRow key={res.concurso}>
-                        <TableCell className="text-center font-bold">{res.concurso}</TableCell>
-                        <TableCell className="text-center text-muted-foreground font-mono text-sm">{res.data}</TableCell>
+                      <TableRow key={sorteio.concurso}>
+                        <TableCell className="text-center font-bold">{sorteio.concurso}</TableCell>
+                        <TableCell className="text-center text-muted-foreground font-mono text-sm">{sorteio.data}</TableCell>
                         <TableCell>
                           <div className="flex justify-center gap-1 flex-wrap">
-                            {res.dezenas.map((num, i) => (
+                            {sorteio.dezenas.map((num, i) => (
                               <LotteryBall key={i} number={parseInt(num, 10)} size="sm" color={COR} />
                             ))}
                           </div>
@@ -184,11 +173,11 @@ export default function DuplasenaDuplaDePascoa() {
                           </div>
                         </TableCell>
                         <TableCell className="text-center font-bold" style={{ color: COR }}>
-                          {premioFaixa1 ? formatCurrency(premioFaixa1.valorPremio) : "—"}
+                          {formatCurrency(totalPremio)}
                         </TableCell>
                         <TableCell className="text-center">
                           <Link
-                            href={`/duplasena/resultado/${res.concurso}`}
+                            href={`/duplasena/resultado/${sorteio.concurso}`}
                             className="text-sm font-semibold hover:underline whitespace-nowrap"
                             style={{ color: COR }}
                           >

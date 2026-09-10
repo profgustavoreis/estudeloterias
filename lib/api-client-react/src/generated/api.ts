@@ -28,6 +28,7 @@ import type {
   ArtigosPaginados,
   ArtigosPaginadosAdmin,
   DeleteAdminBlogPost200,
+  DuplasenaDuplaDePascoa,
   EstatisticasDiadesorte,
   EstatisticasDuplasena,
   EstatisticasLotofacil,
@@ -4859,6 +4860,83 @@ export const useGerarJogoDuplasena = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getGerarJogoDuplasenaMutationOptions(options));
     }
+
+export const getGetDuplasenaDuplaDePascoaUrl = () => {
+
+
+
+
+  return `/api/duplasena/dupla-de-pascoa`
+}
+
+/**
+ * @summary Informações e histórico da Dupla de Páscoa
+ */
+export const getDuplasenaDuplaDePascoa = async ( options?: RequestInit): Promise<DuplasenaDuplaDePascoa> => {
+
+  return customFetch<DuplasenaDuplaDePascoa>(getGetDuplasenaDuplaDePascoaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDuplasenaDuplaDePascoaQueryKey = () => {
+    return [
+    `/api/duplasena/dupla-de-pascoa`
+    ] as const;
+    }
+
+
+export const getGetDuplasenaDuplaDePascoaQueryOptions = <TData = Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDuplasenaDuplaDePascoaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>> = ({ signal }) => getDuplasenaDuplaDePascoa({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetDuplasenaDuplaDePascoaQueryResult = NonNullable<Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>>
+export type GetDuplasenaDuplaDePascoaQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Informações e histórico da Dupla de Páscoa
+ */
+
+export function useGetDuplasenaDuplaDePascoa<TData = Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDuplasenaDuplaDePascoa>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetDuplasenaDuplaDePascoaQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getGetSuperSeteUltimoResultadoUrl = () => {
 

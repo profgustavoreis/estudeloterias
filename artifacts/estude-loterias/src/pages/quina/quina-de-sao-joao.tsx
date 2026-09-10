@@ -1,26 +1,88 @@
 import { Link } from "wouter";
-import { useGetQuinaDeSaoJoao } from "@workspace/api-client-react";
+import { useGetQuinaDeSaoJoao, type FaixaPremio } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatCurrency, formatLongDate, formatWeekday } from "@/lib/formatters";
+import { formatCurrency } from "@/lib/formatters";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { Badge } from "@/components/ui/badge";
-import { PartyPopper, Calendar, Trophy } from "lucide-react";
+import { PartyPopper, Trophy } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { SpecialEditionHero } from "@/components/ui/SpecialEditionHero";
+import { cn } from "@/lib/utils";
+import {
+  buildSpecialEditionFallback,
+  buildSpecialEditionSeo,
+} from "@workspace/seo-special-editions";
+import {
+  resolveSpecialEditionView,
+  specialEditionBaseFacts,
+  specialEditionFacts,
+  SPECIAL_EDITIONS_META,
+} from "@/lib/special-editions";
 
 const COR = "#260085";
+const META = SPECIAL_EDITIONS_META["sao-joao"];
+
+interface LinhaDestaque {
+  total: number;
+  ganhadores: number;
+  valorPremio: number;
+  rotulo: string;
+}
+
+/**
+ * Valores das colunas de prêmio de uma linha do histórico.
+ *
+ * A edição corrente usa o que o serviço já resolveu em `ultimaEdicao`
+ * (`premioTotal`/`ganhadores`) — inclusive o fallback "sem quina → quadra".
+ * Para edições antigas o contrato não expõe valores normalizados por linha, então
+ * caímos nos `premios` da própria linha (quina ou, sem acertador, quadra).
+ */
+function linhaDestaque(
+  sorteio: { concurso: number; premios: FaixaPremio[] },
+  ultimaEdicao:
+    | { concurso?: number; premioTotal?: number | null; ganhadores?: number | null }
+    | null
+    | undefined,
+): LinhaDestaque {
+  const faixa1 = sorteio.premios.find((p) => p.faixa === 1);
+
+  if (ultimaEdicao && ultimaEdicao.concurso === sorteio.concurso) {
+    const ganhadores = ultimaEdicao.ganhadores ?? 0;
+    const total = ultimaEdicao.premioTotal ?? 0;
+    const naQuina = (faixa1?.ganhadores ?? 0) > 0;
+    return {
+      total,
+      ganhadores,
+      valorPremio: ganhadores > 0 ? total / ganhadores : 0,
+      rotulo: naQuina ? "com 5 acertos" : "com 4 acertos",
+    };
+  }
+
+  const semQuina = !faixa1 || faixa1.ganhadores === 0;
+  const faixa = semQuina ? sorteio.premios.find((p) => p.faixa === 2) : faixa1;
+  const ganhadores = faixa?.ganhadores ?? 0;
+  const valorPremio = faixa?.valorPremio ?? 0;
+  return {
+    total: ganhadores > 0 ? valorPremio * ganhadores : valorPremio,
+    ganhadores,
+    valorPremio,
+    rotulo: semQuina ? "com 4 acertos" : "com 5 acertos",
+  };
+}
 
 export default function QuinaDeSaoJoao() {
   const { data, isLoading, isError } = useGetQuinaDeSaoJoao();
+
+  const fallbackSeo = buildSpecialEditionFallback(specialEditionBaseFacts("sao-joao"));
 
   if (isLoading) {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Quina de São João — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/quina/quina-de-sao-joao"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Carregando informações...</div>
       </div>
@@ -31,64 +93,42 @@ export default function QuinaDeSaoJoao() {
     return (
       <div className="space-y-8">
         <PageSEO
-          title="Quina de São João — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-          canonical="/quina/quina-de-sao-joao"
+          title={fallbackSeo.title}
+          description={fallbackSeo.description}
+          canonical={META.canonical}
         />
         <div>Erro ao carregar informações da Quina de São João.</div>
       </div>
     );
   }
 
+  const view = resolveSpecialEditionView({ tipo: "sao-joao", data });
+  const seo = buildSpecialEditionSeo(specialEditionFacts({ tipo: "sao-joao", data }));
+
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Quina de São João — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
-        canonical="/quina/quina-de-sao-joao"
+        title={seo.title}
+        description={seo.description}
+        canonical={META.canonical}
       />
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 rounded-xl flex items-center justify-center text-white shadow-lg" style={{ backgroundColor: COR }}>
           <PartyPopper className="w-8 h-8" />
         </div>
         <div>
-          <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase" style={{ color: COR }}>
-            Quina de São João
+          <h1 className={cn("text-2xl md:text-3xl font-black tracking-tight", view.accent.text)}>
+            {view.h1}
           </h1>
           <p className="text-muted-foreground mt-1 text-lg">O sorteio especial realizado anualmente perto de 24 de junho.</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-t-4 bg-[#260085]/5" style={{ borderColor: COR }}>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5" style={{ color: COR }} />
-              Próxima Edição
-            </CardTitle>
-            <CardDescription className="text-base font-medium text-foreground flex items-center gap-2 flex-wrap">
-              {formatLongDate(data.dataProximaEdicao)} ({formatWeekday(data.dataProximaEdicao)})
-              <Badge className="bg-amber-100 text-amber-800 border border-amber-200">a confirmar</Badge>
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground mb-1 uppercase font-semibold">Prêmio Estimado</div>
-            <div className="text-4xl font-black" style={{ color: COR }}>
-              {data.valorEstimado ? formatCurrency(data.valorEstimado) : "A definir"}
-            </div>
-            <p className="text-sm text-muted-foreground mt-4">
-              Diferente da Mega da Virada (sempre 31 de dezembro) e da Lotofácil da Independência (sempre 7 de
-              setembro), a Quina de São João não tem uma data fixa. Desde 2020, o sorteio costuma acontecer no
-              sábado da semana do dia 24 de junho — mas já houve exceções, então trate a data acima como uma
-              estimativa até a confirmação oficial da Caixa.
-            </p>
-          </CardContent>
-        </Card>
+      <SpecialEditionHero view={view} />
 
-        <AdUnit slot="7788990022" format="rectangle" className="min-h-[250px]" />
-      </div>
+      <AdUnit slot="7788990022" format="rectangle" className="min-h-[250px]" />
 
-      <Card>
+      <Card id="historico">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Trophy className="w-5 h-5" style={{ color: COR }} />
@@ -117,15 +157,7 @@ export default function QuinaDeSaoJoao() {
                   </TableRow>
                 ) : (
                   data.historico.map((sorteio) => {
-                    const faixa1 = sorteio.premios.find(p => p.faixa === 1);
-                    const faixa2 = sorteio.premios.find(p => p.faixa === 2);
-                    // Sorteio especial não acumula: sem ganhador na quina, o prêmio garantido
-                    // desce para a faixa da quadra (4 acertos) no mesmo concurso.
-                    const semQuina = !faixa1 || faixa1.ganhadores === 0;
-                    const faixaPremiada = semQuina ? faixa2 : faixa1;
-                    const totalPremio = faixaPremiada && faixaPremiada.ganhadores > 0
-                      ? faixaPremiada.valorPremio * faixaPremiada.ganhadores
-                      : faixaPremiada?.valorPremio;
+                    const info = linhaDestaque(sorteio, data.ultimaEdicao);
                     const ano = sorteio.data.split("/")[2] ?? "–";
                     return (
                       <TableRow key={sorteio.concurso}>
@@ -141,16 +173,14 @@ export default function QuinaDeSaoJoao() {
                           </div>
                         </TableCell>
                         <TableCell className="text-center font-bold" style={{ color: COR }}>
-                          {formatCurrency(totalPremio)}
+                          {formatCurrency(info.total)}
                         </TableCell>
                         <TableCell className="text-center font-medium">
-                          <div>{faixaPremiada?.ganhadores ?? 0}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {semQuina ? "com 4 acertos" : "com 5 acertos"}
-                          </div>
+                          <div>{info.ganhadores}</div>
+                          <div className="text-xs text-muted-foreground">{info.rotulo}</div>
                         </TableCell>
                         <TableCell className="text-center font-bold" style={{ color: COR }}>
-                          {formatCurrency(faixaPremiada?.valorPremio)}
+                          {formatCurrency(info.valorPremio)}
                         </TableCell>
                         <TableCell className="text-center">
                           <Link

@@ -5,6 +5,9 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { QuinaDeSaoJoaoFase } from './quinaDeSaoJoaoFase';
+import type { QuinaDeSaoJoaoProximaEdicao } from './quinaDeSaoJoaoProximaEdicao';
+import type { QuinaDeSaoJoaoUltimaEdicao } from './quinaDeSaoJoaoUltimaEdicao';
 import type { ResultadoQuina } from './resultadoQuina';
 
 export interface QuinaDeSaoJoao {
@@ -14,4 +17,9 @@ export interface QuinaDeSaoJoao {
   /** @nullable */
   valorEstimado?: number | null;
   historico: ResultadoQuina[];
+  anoProximaEdicao?: number;
+  confirmado?: boolean;
+  fase?: QuinaDeSaoJoaoFase;
+  ultimaEdicao?: QuinaDeSaoJoaoUltimaEdicao;
+  proximaEdicao?: QuinaDeSaoJoaoProximaEdicao;
 }

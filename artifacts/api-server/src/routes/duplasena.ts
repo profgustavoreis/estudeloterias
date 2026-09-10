@@ -4,6 +4,11 @@ import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
 import { fetchGuidi, normalizeResult } from "../services/lottery-sync";
 import { getLatest } from "./loterias";
+import {
+  getSpecialEditionHistorico,
+  getTodaySaoPaulo,
+  resolveSpecialEdition,
+} from "../services/special-editions";
 
 const router = Router();
 
@@ -415,6 +420,37 @@ router.get("/duplasena/resumo", async (req, res) => {
   } catch (err) {
     req.log.error({ err }, "Failed to get duplasena resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
+  }
+});
+
+// GET /api/duplasena/dupla-de-pascoa
+router.get("/duplasena/dupla-de-pascoa", async (req, res) => {
+  try {
+    // Detecção centralizada (sábado que antecede a Páscoa + exceções COVID) em
+    // services/special-editions.
+    const [facts, edicoes] = await Promise.all([
+      resolveSpecialEdition(MODALIDADE),
+      getSpecialEditionHistorico(MODALIDADE),
+    ]);
+
+    const anoAtual = getTodaySaoPaulo().year;
+    const proximaEdicao = facts?.proximaEdicao ?? null;
+
+    res.json({
+      anoAtual,
+      dataProximaEdicao: proximaEdicao?.data ?? null,
+      valorEstimado: proximaEdicao?.valorEstimado ?? null,
+      confirmado: proximaEdicao?.confirmado ?? false,
+      // Campos aditivos (contrato compartilhado com a lane de SEO/HTML)
+      anoProximaEdicao: facts?.anoProximaEdicao ?? anoAtual,
+      fase: facts?.fase ?? "proxima",
+      ultimaEdicao: facts?.ultimaEdicao ?? null,
+      proximaEdicao,
+      historico: edicoes.map(toResultado),
+    });
+  } catch (err) {
+    req.log.error({ err }, "Failed to get dupla de pascoa");
+    res.status(500).json({ error: "Erro ao buscar Dupla de Páscoa" });
   }
 });
 

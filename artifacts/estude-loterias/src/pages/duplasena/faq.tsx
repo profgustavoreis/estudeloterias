@@ -48,7 +48,7 @@ export default function DuplasenaFAQ() {
     },
     {
       q: "O que é a Dupla de Páscoa?",
-      a: "É o sorteio especial de Páscoa da Dupla Sena. Realizado uma vez por ano, ele conta com um prêmio maior porque 15% do fundo de prêmios de cada concurso ao longo do ano é reservado para esta edição especial."
+      a: "É o sorteio especial de Páscoa da Dupla Sena. Realizado uma vez por ano, no sábado anterior à Páscoa, ele conta com um prêmio maior porque 16% do valor destinado à premiação de cada concurso regular ao longo do ano é acumulado para a 1ª faixa do 1º sorteio desta edição especial."
     },
     {
       q: "A Dupla de Páscoa tem regras diferentes?",

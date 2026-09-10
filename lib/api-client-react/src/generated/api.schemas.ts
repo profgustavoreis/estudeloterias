@@ -179,12 +179,48 @@ export interface EstatisticasMegaSena {
   numerosEspeciais: NumerosEspeciaisItem[];
 }
 
+export type MegaDaViradaFase = typeof MegaDaViradaFase[keyof typeof MegaDaViradaFase];
+
+
+export const MegaDaViradaFase = {
+  proxima: 'proxima',
+  resultado: 'resultado',
+  apuracao: 'apuracao',
+} as const;
+
+export type MegaDaViradaUltimaEdicao = {
+  concurso?: number;
+  /** Data da edição no formato dd/mm/yyyy */
+  data?: string;
+  /** @nullable */
+  premioTotal?: number | null;
+  /** @nullable */
+  ganhadores?: number | null;
+  anoEdicao?: number;
+} | null;
+
+export type MegaDaViradaProximaEdicao = {
+  /**
+     * Data da próxima edição no formato dd/mm/yyyy
+     * @nullable
+     */
+  data?: string | null;
+  /** @nullable */
+  valorEstimado?: number | null;
+  confirmado?: boolean;
+} | null;
+
 export interface MegaDaVirada {
   anoAtual: number;
   dataProximaVirada: string;
   /** @nullable */
   valorEstimado?: number | null;
   historico: ResultadoMegaSena[];
+  anoProximaEdicao?: number;
+  confirmado?: boolean;
+  fase?: MegaDaViradaFase;
+  ultimaEdicao?: MegaDaViradaUltimaEdicao;
+  proximaEdicao?: MegaDaViradaProximaEdicao;
 }
 
 export interface ResumoMegaSena {
@@ -343,6 +379,37 @@ export interface ResumoLotofacil {
   ultimoConcurso: number;
 }
 
+export type LotofacilDaIndependenciaFase = typeof LotofacilDaIndependenciaFase[keyof typeof LotofacilDaIndependenciaFase];
+
+
+export const LotofacilDaIndependenciaFase = {
+  proxima: 'proxima',
+  resultado: 'resultado',
+  apuracao: 'apuracao',
+} as const;
+
+export type LotofacilDaIndependenciaUltimaEdicao = {
+  concurso?: number;
+  /** Data da edição no formato dd/mm/yyyy */
+  data?: string;
+  /** @nullable */
+  premioTotal?: number | null;
+  /** @nullable */
+  ganhadores?: number | null;
+  anoEdicao?: number;
+} | null;
+
+export type LotofacilDaIndependenciaProximaEdicao = {
+  /**
+     * Data da próxima edição no formato dd/mm/yyyy
+     * @nullable
+     */
+  data?: string | null;
+  /** @nullable */
+  valorEstimado?: number | null;
+  confirmado?: boolean;
+} | null;
+
 export interface LotofacilDaIndependencia {
   anoAtual: number;
   dataProximaEdicao: string;
@@ -351,6 +418,10 @@ export interface LotofacilDaIndependencia {
   /** Indica se a data e prêmio já foram oficialmente confirmados */
   confirmado?: boolean;
   historico: ResultadoLotofacil[];
+  anoProximaEdicao?: number;
+  fase?: LotofacilDaIndependenciaFase;
+  ultimaEdicao?: LotofacilDaIndependenciaUltimaEdicao;
+  proximaEdicao?: LotofacilDaIndependenciaProximaEdicao;
 }
 
 export type SimuladorInputLotofacilFiltro = typeof SimuladorInputLotofacilFiltro[keyof typeof SimuladorInputLotofacilFiltro];
@@ -450,6 +521,37 @@ export interface ResumoQuina {
   ultimoConcurso: number;
 }
 
+export type QuinaDeSaoJoaoFase = typeof QuinaDeSaoJoaoFase[keyof typeof QuinaDeSaoJoaoFase];
+
+
+export const QuinaDeSaoJoaoFase = {
+  proxima: 'proxima',
+  resultado: 'resultado',
+  apuracao: 'apuracao',
+} as const;
+
+export type QuinaDeSaoJoaoUltimaEdicao = {
+  concurso?: number;
+  /** Data da edição no formato dd/mm/yyyy */
+  data?: string;
+  /** @nullable */
+  premioTotal?: number | null;
+  /** @nullable */
+  ganhadores?: number | null;
+  anoEdicao?: number;
+} | null;
+
+export type QuinaDeSaoJoaoProximaEdicao = {
+  /**
+     * Data da próxima edição no formato dd/mm/yyyy
+     * @nullable
+     */
+  data?: string | null;
+  /** @nullable */
+  valorEstimado?: number | null;
+  confirmado?: boolean;
+} | null;
+
 export interface QuinaDeSaoJoao {
   anoAtual: number;
   /** @nullable */
@@ -457,6 +559,11 @@ export interface QuinaDeSaoJoao {
   /** @nullable */
   valorEstimado?: number | null;
   historico: ResultadoQuina[];
+  anoProximaEdicao?: number;
+  confirmado?: boolean;
+  fase?: QuinaDeSaoJoaoFase;
+  ultimaEdicao?: QuinaDeSaoJoaoUltimaEdicao;
+  proximaEdicao?: QuinaDeSaoJoaoProximaEdicao;
 }
 
 export type SimuladorInputQuinaFiltro = typeof SimuladorInputQuinaFiltro[keyof typeof SimuladorInputQuinaFiltro];
@@ -889,6 +996,51 @@ export interface ResultadoDuplasena {
   valorEstimadoProximoConcurso?: number | null;
   /** @nullable */
   arrecadacaoTotal?: number | null;
+}
+
+export type DuplasenaDuplaDePascoaFase = typeof DuplasenaDuplaDePascoaFase[keyof typeof DuplasenaDuplaDePascoaFase];
+
+
+export const DuplasenaDuplaDePascoaFase = {
+  proxima: 'proxima',
+  resultado: 'resultado',
+  apuracao: 'apuracao',
+} as const;
+
+export type DuplasenaDuplaDePascoaUltimaEdicao = {
+  concurso?: number;
+  /** Data da edição no formato dd/mm/yyyy */
+  data?: string;
+  /** @nullable */
+  premioTotal?: number | null;
+  /** @nullable */
+  ganhadores?: number | null;
+  anoEdicao?: number;
+} | null;
+
+export type DuplasenaDuplaDePascoaProximaEdicao = {
+  /**
+     * Data da próxima edição no formato dd/mm/yyyy
+     * @nullable
+     */
+  data?: string | null;
+  /** @nullable */
+  valorEstimado?: number | null;
+  confirmado?: boolean;
+} | null;
+
+export interface DuplasenaDuplaDePascoa {
+  anoAtual: number;
+  dataProximaEdicao: string;
+  /** @nullable */
+  valorEstimado?: number | null;
+  /** Indica se a data e prêmio já foram oficialmente confirmados */
+  confirmado?: boolean;
+  historico: ResultadoDuplasena[];
+  anoProximaEdicao?: number;
+  fase?: DuplasenaDuplaDePascoaFase;
+  ultimaEdicao?: DuplasenaDuplaDePascoaUltimaEdicao;
+  proximaEdicao?: DuplasenaDuplaDePascoaProximaEdicao;
 }
 
 export interface ResultadosPaginadosDuplasena {

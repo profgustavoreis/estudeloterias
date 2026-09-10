@@ -3,6 +3,11 @@ import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
 import { fetchGuidi, normalizeResult } from "../services/lottery-sync";
+import {
+  getSpecialEditionHistorico,
+  getTodaySaoPaulo,
+  resolveSpecialEdition,
+} from "../services/special-editions";
 import { getLatest } from "./loterias";
 
 const router = Router();
@@ -371,30 +376,26 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
 // GET /api/mega-sena/mega-da-virada
 router.get("/mega-sena/mega-da-virada", async (req, res) => {
   try {
-    // Mega da Virada always on Dec 31 — filter by date
-    const rows = await db
-      .select()
-      .from(lotteryResultsTable)
-      .where(eq(lotteryResultsTable.modalidade, "megasena"))
-      .orderBy(asc(lotteryResultsTable.concurso));
+    // Detecção centralizada (padrão 31/12 + exceção do concurso 2955) em special-editions.
+    const [facts, edicoes] = await Promise.all([
+      resolveSpecialEdition("megasena"),
+      getSpecialEditionHistorico("megasena"),
+    ]);
 
-    // Concursos realizados fora do padrão 31/12 (ex.: 2025 foi sorteado em 01/01/2026)
-    const VIRADA_EXCECOES = new Set([2955]);
-
-    const virada = rows.filter(r => {
-      if (VIRADA_EXCECOES.has(r.concurso)) return true;
-      const parts = r.data.split("/");
-      const year = Number(parts[2]);
-      return parts[0] === "31" && parts[1] === "12" && year >= 2009;
-    });
-
-    const anoAtual = new Date().getFullYear();
+    const anoAtual = getTodaySaoPaulo().year;
+    const proximaEdicao = facts?.proximaEdicao ?? null;
 
     res.json({
       anoAtual,
-      dataProximaVirada: `31/12/${anoAtual}`,
-      valorEstimado: null,
-      historico: virada.reverse().map(toResultado),
+      dataProximaVirada: proximaEdicao?.data ?? `31/12/${anoAtual}`,
+      valorEstimado: proximaEdicao?.valorEstimado ?? null,
+      confirmado: proximaEdicao?.confirmado ?? false,
+      // Campos aditivos (contrato compartilhado com a lane de SEO/HTML)
+      anoProximaEdicao: facts?.anoProximaEdicao ?? anoAtual,
+      fase: facts?.fase ?? "proxima",
+      ultimaEdicao: facts?.ultimaEdicao ?? null,
+      proximaEdicao,
+      historico: edicoes.map(toResultado),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to get mega da virada");

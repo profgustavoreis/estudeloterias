@@ -1237,6 +1237,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/JogoGerado"
 
+  /duplasena/dupla-de-pascoa:
+    get:
+      operationId: getDuplasenaDuplaDePascoa
+      tags: [duplasena]
+      summary: Informações e histórico da Dupla de Páscoa
+      responses:
+        "200":
+          description: Informações da Dupla de Páscoa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DuplasenaDuplaDePascoa"
+
   /super-sete/resultado/ultimo:
     get:
       operationId: getSuperSeteUltimoResultado
@@ -1993,6 +2006,39 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ResultadoMegaSena"
+        anoProximaEdicao:
+          type: integer
+        confirmado:
+          type: boolean
+        fase:
+          type: string
+          enum: [proxima, resultado, apuracao]
+        ultimaEdicao:
+          type: object
+          nullable: true
+          properties:
+            concurso:
+              type: integer
+            data:
+              type: string
+              description: Data da edição no formato dd/mm/yyyy
+            premioTotal:
+              type: ["number", "null"]
+            ganhadores:
+              type: ["integer", "null"]
+            anoEdicao:
+              type: integer
+        proximaEdicao:
+          type: object
+          nullable: true
+          properties:
+            data:
+              type: ["string", "null"]
+              description: Data da próxima edição no formato dd/mm/yyyy
+            valorEstimado:
+              type: ["number", "null"]
+            confirmado:
+              type: boolean
       required:
         - anoAtual
         - dataProximaVirada
@@ -2331,6 +2377,37 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ResultadoLotofacil"
+        anoProximaEdicao:
+          type: integer
+        fase:
+          type: string
+          enum: [proxima, resultado, apuracao]
+        ultimaEdicao:
+          type: object
+          nullable: true
+          properties:
+            concurso:
+              type: integer
+            data:
+              type: string
+              description: Data da edição no formato dd/mm/yyyy
+            premioTotal:
+              type: ["number", "null"]
+            ganhadores:
+              type: ["integer", "null"]
+            anoEdicao:
+              type: integer
+        proximaEdicao:
+          type: object
+          nullable: true
+          properties:
+            data:
+              type: ["string", "null"]
+              description: Data da próxima edição no formato dd/mm/yyyy
+            valorEstimado:
+              type: ["number", "null"]
+            confirmado:
+              type: boolean
       required:
         - anoAtual
         - dataProximaEdicao
@@ -2537,6 +2614,39 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ResultadoQuina"
+        anoProximaEdicao:
+          type: integer
+        confirmado:
+          type: boolean
+        fase:
+          type: string
+          enum: [proxima, resultado, apuracao]
+        ultimaEdicao:
+          type: object
+          nullable: true
+          properties:
+            concurso:
+              type: integer
+            data:
+              type: string
+              description: Data da edição no formato dd/mm/yyyy
+            premioTotal:
+              type: ["number", "null"]
+            ganhadores:
+              type: ["integer", "null"]
+            anoEdicao:
+              type: integer
+        proximaEdicao:
+          type: object
+          nullable: true
+          properties:
+            data:
+              type: ["string", "null"]
+              description: Data da próxima edição no formato dd/mm/yyyy
+            valorEstimado:
+              type: ["number", "null"]
+            confirmado:
+              type: boolean
       required:
         - anoAtual
         - historico
@@ -3381,6 +3491,58 @@ components:
         - dezenas
         - premios
         - acumulado
+
+    DuplasenaDuplaDePascoa:
+      type: object
+      properties:
+        anoAtual:
+          type: integer
+        dataProximaEdicao:
+          type: string
+        valorEstimado:
+          type: ["number", "null"]
+        confirmado:
+          type: boolean
+          description: Indica se a data e prêmio já foram oficialmente confirmados
+        historico:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultadoDuplasena"
+        anoProximaEdicao:
+          type: integer
+        fase:
+          type: string
+          enum: [proxima, resultado, apuracao]
+        ultimaEdicao:
+          type: object
+          nullable: true
+          properties:
+            concurso:
+              type: integer
+            data:
+              type: string
+              description: Data da edição no formato dd/mm/yyyy
+            premioTotal:
+              type: ["number", "null"]
+            ganhadores:
+              type: ["integer", "null"]
+            anoEdicao:
+              type: integer
+        proximaEdicao:
+          type: object
+          nullable: true
+          properties:
+            data:
+              type: ["string", "null"]
+              description: Data da próxima edição no formato dd/mm/yyyy
+            valorEstimado:
+              type: ["number", "null"]
+            confirmado:
+              type: boolean
+      required:
+        - anoAtual
+        - dataProximaEdicao
+        - historico
 
     ResultadosPaginadosDuplasena:
       type: object

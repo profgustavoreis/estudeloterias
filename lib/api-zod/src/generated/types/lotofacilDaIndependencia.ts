@@ -5,6 +5,9 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { LotofacilDaIndependenciaFase } from './lotofacilDaIndependenciaFase';
+import type { LotofacilDaIndependenciaProximaEdicao } from './lotofacilDaIndependenciaProximaEdicao';
+import type { LotofacilDaIndependenciaUltimaEdicao } from './lotofacilDaIndependenciaUltimaEdicao';
 import type { ResultadoLotofacil } from './resultadoLotofacil';
 
 export interface LotofacilDaIndependencia {
@@ -15,4 +18,8 @@ export interface LotofacilDaIndependencia {
   /** Indica se a data e prêmio já foram oficialmente confirmados */
   confirmado?: boolean;
   historico: ResultadoLotofacil[];
+  anoProximaEdicao?: number;
+  fase?: LotofacilDaIndependenciaFase;
+  ultimaEdicao?: LotofacilDaIndependenciaUltimaEdicao;
+  proximaEdicao?: LotofacilDaIndependenciaProximaEdicao;
 }

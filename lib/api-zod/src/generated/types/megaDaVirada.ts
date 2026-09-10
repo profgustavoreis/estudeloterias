@@ -5,6 +5,9 @@
  * Estude Loterias API - Estatísticas e ferramentas para loterias da Caixa
  * OpenAPI spec version: 0.1.0
  */
+import type { MegaDaViradaFase } from './megaDaViradaFase';
+import type { MegaDaViradaProximaEdicao } from './megaDaViradaProximaEdicao';
+import type { MegaDaViradaUltimaEdicao } from './megaDaViradaUltimaEdicao';
 import type { ResultadoMegaSena } from './resultadoMegaSena';
 
 export interface MegaDaVirada {
@@ -13,4 +16,9 @@ export interface MegaDaVirada {
   /** @nullable */
   valorEstimado?: number | null;
   historico: ResultadoMegaSena[];
+  anoProximaEdicao?: number;
+  confirmado?: boolean;
+  fase?: MegaDaViradaFase;
+  ultimaEdicao?: MegaDaViradaUltimaEdicao;
+  proximaEdicao?: MegaDaViradaProximaEdicao;
 }

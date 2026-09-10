@@ -3,6 +3,11 @@ import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
 import { fetchGuidi, normalizeResult } from "../services/lottery-sync";
+import {
+  getSpecialEditionHistorico,
+  getTodaySaoPaulo,
+  resolveSpecialEdition,
+} from "../services/special-editions";
 import { getLatest } from "./loterias";
 
 const router = Router();
@@ -401,86 +406,29 @@ router.get("/quina/resumo", async (req, res) => {
 });
 
 // GET /api/quina/quina-de-sao-joao
-// A Quina de São João é o concurso especial realizado anualmente em data próxima
-// ao dia 24 de junho. Desde 2020, o sorteio acontece no sábado da semana (domingo a
-// sábado) que contém o dia 24 de junho — mesmo quando o próprio 24 cai num sábado
-// (ficando na mesma data). Há exceções pontuais (ex.: 2024 saiu no sábado anterior;
-// 2026 saiu num domingo), então tratamos a data calculada apenas como uma estimativa
-// para a próxima edição, não como regra absoluta.
-//
-// Assim como a Mega da Virada e a Lotofácil da Independência, é um concurso especial
-// que NÃO acumula: se ninguém acerta a quina (5 números), o prêmio garantido é
-// repassado, no mesmo concurso, aos acertadores da quadra (faixa 2) — foi o que
-// aconteceu em 2019 (concurso 5002).
-const LIMIAR_PREMIO_ESPECIAL_QUINA = 50_000_000;
-
-type Premio = { faixa: number; valorPremio: number; ganhadores: number };
-
-function premioEfetivoSaoJoao(premios: Premio[] | null | undefined): number {
-  const faixa1 = premios?.find(p => p.faixa === 1);
-  if (faixa1 && faixa1.ganhadores > 0) return faixa1.valorPremio * faixa1.ganhadores;
-  // Sem acertador da quina: o prêmio garantido desce para a faixa da quadra.
-  const faixa2 = premios?.find(p => p.faixa === 2);
-  if (faixa2 && faixa2.ganhadores > 0) return faixa2.valorPremio * faixa2.ganhadores;
-  return 0;
-}
-
-function dataSaoJoao(ano: number): Date {
-  const data = new Date(Date.UTC(ano, 5, 24)); // mês 5 = junho (0-indexed)
-  const diaSemana = data.getUTCDay(); // 0=domingo..6=sábado
-  const offset = 6 - diaSemana; // dias até o sábado da mesma semana domingo-sábado
-  data.setUTCDate(data.getUTCDate() + offset);
-  return data;
-}
-
-function proximaDataSaoJoao(hoje: Date): string {
-  let ano = hoje.getUTCFullYear();
-  let data = dataSaoJoao(ano);
-  if (data < hoje) {
-    ano += 1;
-    data = dataSaoJoao(ano);
-  }
-  const dd = String(data.getUTCDate()).padStart(2, "0");
-  const mm = String(data.getUTCMonth() + 1).padStart(2, "0");
-  return `${dd}/${mm}/${data.getUTCFullYear()}`;
-}
-
+// A detecção (janela de junho, limiar de prêmio, prêmio que desce para a quadra,
+// regra do sábado e exceções confirmadas) vive em services/special-editions.
 router.get("/quina/quina-de-sao-joao", async (req, res) => {
   try {
-    const rows = await db
-      .select()
-      .from(lotteryResultsTable)
-      .where(eq(lotteryResultsTable.modalidade, MODALIDADE))
-      .orderBy(asc(lotteryResultsTable.concurso));
+    const [facts, edicoes] = await Promise.all([
+      resolveSpecialEdition(MODALIDADE),
+      getSpecialEditionHistorico(MODALIDADE),
+    ]);
 
-    const junho = rows.filter(r => {
-      const partes = r.data.split("/");
-      const ano = partes[2] ? parseInt(partes[2], 10) : 0;
-      return partes[1] === "06" && ano >= 2011;
-    });
+    const anoAtual = getTodaySaoPaulo().year;
+    const proximaEdicao = facts?.proximaEdicao ?? null;
 
-    const melhorPorAno = new Map<string, (typeof rows)[number]>();
-    for (const r of junho) {
-      const ano = r.data.split("/")[2];
-      if (!ano) continue;
-      const total = premioEfetivoSaoJoao(r.premios as Premio[] | null);
-
-      const atual = melhorPorAno.get(ano);
-      const totalAtual = atual ? premioEfetivoSaoJoao(atual.premios as Premio[] | null) : -1;
-
-      if (total > totalAtual) melhorPorAno.set(ano, r);
-    }
-
-    const saoJoao = Array.from(melhorPorAno.values())
-      .filter(r => premioEfetivoSaoJoao(r.premios as Premio[] | null) >= LIMIAR_PREMIO_ESPECIAL_QUINA)
-      .sort((a, b) => a.concurso - b.concurso);
-
-    const anoAtual = new Date().getFullYear();
     res.json({
       anoAtual,
-      dataProximaEdicao: proximaDataSaoJoao(new Date()),
-      valorEstimado: null,
-      historico: saoJoao.reverse().map(toResultado),
+      dataProximaEdicao: proximaEdicao?.data ?? null,
+      valorEstimado: proximaEdicao?.valorEstimado ?? null,
+      confirmado: proximaEdicao?.confirmado ?? false,
+      // Campos aditivos (contrato compartilhado com a lane de SEO/HTML)
+      anoProximaEdicao: facts?.anoProximaEdicao ?? anoAtual,
+      fase: facts?.fase ?? "proxima",
+      ultimaEdicao: facts?.ultimaEdicao ?? null,
+      proximaEdicao,
+      historico: edicoes.map(toResultado),
     });
   } catch (err) {
     req.log.error({ err }, "Failed to get quina de sao joao");
