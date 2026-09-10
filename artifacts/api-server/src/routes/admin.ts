@@ -2,7 +2,8 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { drawAvailabilityTable } from "@workspace/db/schema";
 import { sql } from "drizzle-orm";
-import { backfillOrdemSorteio, backfillGaps, runGapAudit, runSync } from "../services/lottery-sync";
+import { backfillOrdemSorteio, backfillGaps, runGapAudit, runSync, resyncConcursos } from "../services/lottery-sync";
+import { clearSpecialEditionCache } from "../services/special-editions";
 import { logger } from "../lib/logger";
 
 const router = Router();
@@ -34,6 +35,60 @@ router.post("/admin/backfill-gaps-all", (req, res) => {
 router.post("/admin/sync-now", (req, res) => {
   res.json({ started: true });
   runSync().catch((err) => logger.error({ err }, "Admin sync-now failed"));
+});
+
+// Re-sincroniza concursos específicos JÁ existentes no banco (ex.: para preencher
+// metadata.dezenas2 ausente na Dupla Sena). Diferente dos demais /admin/*, aqui
+// aguardamos o resultado e devolvemos o resumo — o payload é pequeno (até 50
+// concursos) e o operador quer feedback imediato.
+router.post("/admin/resync-concursos", async (req, res) => {
+  const { modalidade, concursos } = (req.body ?? {}) as {
+    modalidade?: unknown;
+    concursos?: unknown;
+  };
+
+  if (typeof modalidade !== "string" || modalidade.trim() === "") {
+    return res.status(400).json({
+      error: "Campo 'modalidade' é obrigatório e deve ser uma string não vazia.",
+    });
+  }
+
+  if (
+    !Array.isArray(concursos) ||
+    concursos.length === 0 ||
+    concursos.length > 50 ||
+    !concursos.every((c) => Number.isInteger(c) && (c as number) > 0)
+  ) {
+    return res.status(400).json({
+      error: "Campo 'concursos' deve ser um array de 1 a 50 inteiros positivos.",
+    });
+  }
+
+  const concursoList = concursos as number[];
+  logger.info({ modalidade, concursos: concursoList }, "Admin resync-concursos started");
+
+  try {
+    const resultados = await resyncConcursos(modalidade, concursoList);
+    clearSpecialEditionCache();
+
+    const atualizados = resultados.filter((r) => r.ok).length;
+    const falhas = resultados.length - atualizados;
+    logger.info(
+      { modalidade, solicitados: concursoList.length, atualizados, falhas },
+      "Admin resync-concursos complete",
+    );
+
+    return res.json({
+      modalidade,
+      solicitados: concursoList.length,
+      atualizados,
+      falhas,
+      resultados,
+    });
+  } catch (err) {
+    logger.error({ err, modalidade }, "Admin resync-concursos failed");
+    return res.status(500).json({ error: "Erro ao re-sincronizar concursos" });
+  }
 });
 
 // GET /admin/availability/summary?n=40

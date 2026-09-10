@@ -142,13 +142,20 @@ export default function DuplasenaDuplaDePascoa() {
                 ) : (
                   data.historico.map((sorteio) => {
                     const premioFaixa1 = sorteio.premios.find(p => p.faixa === 1);
+                    const premioFaixa2 = sorteio.premios.find(p => p.faixa === 2);
+                    // Prêmio principal = total pago na faixa principal do 1º sorteio,
+                    // com cascade faixa 1 → faixa 2 (mesma regra do servidor).
+                    const premioPrincipal =
+                      premioFaixa1 && premioFaixa1.ganhadores > 0
+                        ? premioFaixa1.valorPremio * premioFaixa1.ganhadores
+                        : premioFaixa2 && premioFaixa2.ganhadores > 0
+                          ? premioFaixa2.valorPremio * premioFaixa2.ganhadores
+                          : premioFaixa1?.valorPremio;
                     const isAtual = data.ultimaEdicao?.concurso === sorteio.concurso;
                     const totalPremio =
                       isAtual && data.ultimaEdicao?.premioTotal != null
                         ? data.ultimaEdicao.premioTotal
-                        : premioFaixa1 && premioFaixa1.ganhadores > 0
-                          ? premioFaixa1.valorPremio * premioFaixa1.ganhadores
-                          : premioFaixa1?.valorPremio;
+                        : premioPrincipal;
                     const dezenas2 = sorteio.dezenas2 ?? [];
                     return (
                       <TableRow key={sorteio.concurso}>

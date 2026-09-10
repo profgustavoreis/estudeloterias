@@ -492,6 +492,47 @@ export async function backfillGaps(modalidade: string): Promise<void> {
   logger.info({ modalidade, succeeded, failed, total: missing.length }, "backfillGaps complete");
 }
 
+// Re-sincroniza concursos ESPECÍFICOS que já existem no banco mas estão com dados
+// incompletos (ex.: metadata.dezenas2 ausente na Dupla Sena). Diferente de
+// backfillGaps (só concursos ausentes) e syncLatest (só o último), aqui rebuscamos
+// os concursos informados na Caixa e fazemos upsert. Rodamos sequencialmente com um
+// intervalo entre chamadas para reduzir a chance de 403 da Caixa; erro em um concurso
+// não aborta os demais.
+export async function resyncConcursos(
+  modalidade: string,
+  concursos: number[],
+): Promise<Array<{ concurso: number; ok: boolean; temDezenas2?: boolean }>> {
+  const resultados: Array<{ concurso: number; ok: boolean; temDezenas2?: boolean }> = [];
+
+  for (let i = 0; i < concursos.length; i++) {
+    const concurso = concursos[i];
+    try {
+      const raw = await fetchCaixa(modalidade, concurso);
+      if (raw) {
+        const normalized = normalizeResult(raw, modalidade);
+        await upsertResult(normalized);
+        resultados.push({
+          concurso,
+          ok: true,
+          temDezenas2: Array.isArray(normalized.metadata?.dezenas2) && normalized.metadata.dezenas2.length > 0,
+        });
+      } else {
+        resultados.push({ concurso, ok: false });
+      }
+    } catch (err) {
+      logger.error({ err, modalidade, concurso }, "resyncConcursos: fetch/upsert error");
+      resultados.push({ concurso, ok: false });
+    }
+    if (i < concursos.length - 1) await sleep(150);
+  }
+
+  logger.info(
+    { modalidade, solicitados: concursos.length, atualizados: resultados.filter((r) => r.ok).length },
+    "resyncConcursos complete",
+  );
+  return resultados;
+}
+
 // Varredura robusta de lacunas internas para todas as modalidades: para cada uma,
 // descobre o último concurso realizado na Caixa e preenche qualquer concurso
 // faltante entre 1 e esse teto (não apenas os extremos min/max, como o seed inicial
