@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { useGetLotofacilDaIndependencia, useGetBlogPostBySlug } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatters";
-import { LotteryBall } from "@/components/ui/lottery-ball";
+import { DezenasGrid } from "@/components/ui/dezenas-grid";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Badge } from "@/components/ui/badge";
@@ -194,11 +194,7 @@ export default function LotofacilDaIndependencia() {
                           {sorteio.concurso}
                         </TableCell>
                         <TableCell>
-                          <div className="flex justify-center gap-1 flex-wrap">
-                            {sorteio.dezenas.map((num, i) => (
-                              <LotteryBall key={i} number={parseInt(num, 10)} size="sm" color={COR} />
-                            ))}
-                          </div>
+                          <DezenasGrid dezenas={sorteio.dezenas} perRow={8} size="sm" color={COR} />
                         </TableCell>
                         <TableCell className="text-center font-bold" style={{ color: COR }}>
                           {formatCurrency(

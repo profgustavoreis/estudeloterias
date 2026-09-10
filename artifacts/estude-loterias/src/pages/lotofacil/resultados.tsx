@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useGetLotofacilResultados } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency, formatDateShort } from "@/lib/formatters";
-import { LotteryBall } from "@/components/ui/lottery-ball";
+import { DezenasGrid } from "@/components/ui/dezenas-grid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
@@ -69,7 +69,7 @@ export default function LotofacilResultadosAnteriores() {
                 <TableRow className="bg-muted/50 hover:bg-muted/50">
                   <TableHead className="w-[100px]">Concurso</TableHead>
                   <TableHead className="w-[110px]">Data</TableHead>
-                  <TableHead className="text-center">Dezenas Sorteadas</TableHead>
+                  <TableHead className="text-center min-w-[300px]">Dezenas Sorteadas</TableHead>
                   <TableHead className="text-right">Prêmio 15 acertos</TableHead>
                   <TableHead>Situação</TableHead>
                   <TableHead className="w-[130px]"></TableHead>
@@ -81,7 +81,15 @@ export default function LotofacilResultadosAnteriores() {
                     <TableRow key={i}>
                       <TableCell><Skeleton className="h-5 w-12" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-20" /></TableCell>
-                      <TableCell><div className="flex justify-center gap-1">{Array.from({ length: 15 }).map((_, j) => <Skeleton key={j} className="h-7 w-7 rounded-full" />)}</div></TableCell>
+                      <TableCell>
+                        <div className="flex flex-col items-center gap-1">
+                          {[8, 7].map((qtd, rowIndex) => (
+                            <div key={rowIndex} className="flex justify-center gap-1">
+                              {Array.from({ length: qtd }).map((_, j) => <Skeleton key={j} className="h-8 w-8 rounded-full" />)}
+                            </div>
+                          ))}
+                        </div>
+                      </TableCell>
                       <TableCell><Skeleton className="h-5 w-16 ml-auto" /></TableCell>
                       <TableCell><Skeleton className="h-5 w-24" /></TableCell>
                       <TableCell></TableCell>
@@ -97,11 +105,7 @@ export default function LotofacilResultadosAnteriores() {
                       <TableCell className="font-bold">{res.concurso}</TableCell>
                       <TableCell className="text-muted-foreground text-sm">{formatDateShort(res.data)}</TableCell>
                       <TableCell>
-                        <div className="flex justify-center gap-1 flex-wrap">
-                          {res.dezenas.map((num, i) => (
-                            <LotteryBall key={i} number={num} size="sm" color={COR} />
-                          ))}
-                        </div>
+                        <DezenasGrid dezenas={res.dezenas} perRow={8} size="sm" color={COR} />
                       </TableCell>
                       <TableCell className="text-right font-medium">
                         {(() => {
