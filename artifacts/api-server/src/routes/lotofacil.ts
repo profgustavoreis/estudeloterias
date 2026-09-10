@@ -14,6 +14,10 @@ const MODALIDADE = "lotofacil";
 // o próprio dia 7 cai num sábado, caso em que o sorteio passa para a segunda-feira seguinte
 // (foi o que aconteceu em 2024: 07/09/2024 era sábado, e o sorteio saiu em 09/09/2024).
 function dataIndependencia(ano: number): Date {
+  // Em 2026, a Caixa confirmou oficialmente o sorteio para 15/09/2026 (terça-feira)
+  if (ano === 2026) {
+    return new Date(Date.UTC(2026, 8, 15));
+  }
   const sete = new Date(Date.UTC(ano, 8, 7));
   const diaSemana = sete.getUTCDay(); // 0=domingo..6=sábado
   const indiceSegunda = (diaSemana + 6) % 7; // 0=segunda..6=domingo
@@ -478,10 +482,31 @@ router.get("/lotofacil/lotofacil-da-independencia", async (req, res) => {
       .sort((a, b) => a.concurso - b.concurso);
 
     const anoAtual = new Date().getFullYear();
+    const latest = await getLatest(MODALIDADE);
+
+    let dataProximaEdicao = proximaDataIndependencia(new Date());
+    let valorEstimado: number | null = null;
+    let confirmado = false;
+
+    // Se o próximo concurso no espelho da Caixa estiver em setembro, pega diretamente dele
+    if (latest?.dataProximoConcurso && latest.dataProximoConcurso.split("/")[1] === "09") {
+      dataProximaEdicao = latest.dataProximoConcurso;
+      if (latest.valorEstimadoProximo) {
+        valorEstimado = Number(latest.valorEstimadoProximo);
+      }
+      confirmado = true;
+    } else if (anoAtual === 2026) {
+      // Confirmação oficial Caixa para 2026
+      dataProximaEdicao = "15/09/2026";
+      valorEstimado = 300_000_000;
+      confirmado = true;
+    }
+
     res.json({
       anoAtual,
-      dataProximaEdicao: proximaDataIndependencia(new Date()),
-      valorEstimado: null,
+      dataProximaEdicao,
+      valorEstimado,
+      confirmado,
       historico: independencia.reverse().map(toResultado),
     });
   } catch (err) {

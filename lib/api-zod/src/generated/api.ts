@@ -550,6 +550,7 @@ export const GetLotofacilDaIndependenciaResponse = zod.object({
   "anoAtual": zod.number(),
   "dataProximaEdicao": zod.string(),
   "valorEstimado": zod.number().nullish(),
+  "confirmado": zod.boolean().optional().describe('Indica se a data e prêmio já foram oficialmente confirmados'),
   "historico": zod.array(zod.object({
   "concurso": zod.number(),
   "data": zod.string(),

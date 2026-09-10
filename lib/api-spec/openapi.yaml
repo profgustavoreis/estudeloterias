@@ -2324,6 +2324,9 @@ components:
           type: string
         valorEstimado:
           type: ["number", "null"]
+        confirmado:
+          type: boolean
+          description: Indica se a data e prêmio já foram oficialmente confirmados
         historico:
           type: array
           items:

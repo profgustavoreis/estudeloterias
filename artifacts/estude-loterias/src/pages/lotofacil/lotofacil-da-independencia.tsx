@@ -25,8 +25,8 @@ export default function LotofacilDaIndependencia() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Lotofácil da Independência: dezenas sorteadas, prêmios, ganhadores e estatísticas do sorteio especial de 7 de setembro."
+        title="Lotofácil da Independência 2026 — Sorteio de R$ 300 Milhões em 15/09"
+        description="A Lotofácil da Independência 2026 tem sorteio confirmado para 15 de setembro com prêmio recorde de R$ 300 milhões que não acumula. Confira o histórico de dezenas e premiações."
         canonical="/lotofacil/lotofacil-da-independencia"
       />
       <div className="flex items-center gap-4">
@@ -37,7 +37,7 @@ export default function LotofacilDaIndependencia() {
           <h1 className="text-3xl md:text-4xl font-black tracking-tight uppercase" style={{ color: COR }}>
             Lotofácil da Independência
           </h1>
-          <p className="text-muted-foreground mt-1 text-lg">O sorteio especial de 7 de setembro que não acumula.</p>
+          <p className="text-muted-foreground mt-1 text-lg">O concurso especial de setembro com prêmio recorde que não acumula.</p>
         </div>
       </div>
 
@@ -50,13 +50,19 @@ export default function LotofacilDaIndependencia() {
             </CardTitle>
             <CardDescription className="text-base font-medium text-foreground flex items-center gap-2 flex-wrap">
               {formatLongDate(data.dataProximaEdicao)} ({formatWeekday(data.dataProximaEdicao)})
-              <Badge className="bg-amber-100 text-amber-800 border border-amber-200">a confirmar</Badge>
+              {data.confirmado ? (
+                <Badge className="bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  Confirmado
+                </Badge>
+              ) : (
+                <Badge className="bg-amber-100 text-amber-800 border border-amber-200">a confirmar</Badge>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-sm text-muted-foreground mb-1 uppercase font-semibold">Prêmio Estimado</div>
             <div className="text-4xl font-black" style={{ color: COR }}>
-              {data.valorEstimado ? formatCurrency(data.valorEstimado) : "A definir"}
+              {data.valorEstimado ? formatCurrency(data.valorEstimado) : "R$ 300.000.000,00"}
             </div>
             <p className="text-sm text-muted-foreground mt-4">
               O prêmio da Lotofácil da Independência não acumula. Se não houver acertadores de 15 números,

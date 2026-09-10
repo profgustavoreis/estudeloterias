@@ -465,9 +465,9 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 
   if (p === "/lotofacil/lotofacil-da-independencia") {
     return buildHeadTags({
-      title: `Lotofácil da Independência — Histórico e Estatísticas | ${SITE_NAME}`,
+      title: `Lotofácil da Independência 2026: R$ 300 Milhões em 15/09 | ${SITE_NAME}`,
       description:
-        "Todos os resultados da Lotofácil da Independência: histórico completo, dezenas mais sorteadas, premiações e estatísticas do sorteio especial.",
+        "Lotofácil da Independência 2026: sorteio confirmado para 15 de setembro com prêmio recorde de R$ 300 milhões que não acumula. Veja histórico, regras e estatísticas.",
       canonicalUrl,
     });
   }

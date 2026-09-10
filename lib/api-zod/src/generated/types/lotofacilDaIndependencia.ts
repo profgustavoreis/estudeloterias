@@ -12,5 +12,7 @@ export interface LotofacilDaIndependencia {
   dataProximaEdicao: string;
   /** @nullable */
   valorEstimado?: number | null;
+  /** Indica se a data e prêmio já foram oficialmente confirmados */
+  confirmado?: boolean;
   historico: ResultadoLotofacil[];
 }
