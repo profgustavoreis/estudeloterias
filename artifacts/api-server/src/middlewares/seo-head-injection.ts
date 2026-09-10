@@ -411,10 +411,11 @@ function buildSpecialEditionBaseFacts(
  * `<head>` orientado a dados para as páginas de edições especiais (Mega da Virada,
  * Lotofácil da Independência, Quina de São João e Dupla de Páscoa).
  *
- * Título/descrição: `buildSpecialEditionSeo` decide a fase (`resultado` |
- * `proxima` | `apuracao`) a partir de `facts.fase` (autoritativa). Se o serviço
- * falhar/retornar null, usamos `buildSpecialEditionFallback` com os fatos-base da
- * modalidade — texto atemporal específico, idêntico ao do cliente.
+ * Título/descrição: **atemporais** (sem ano/fase) por decisão editorial — estas
+ * páginas são arquivos permanentes. `buildSpecialEditionSeo` devolve o texto
+ * atemporal da modalidade; se o serviço falhar/retornar null, usamos
+ * `buildSpecialEditionFallback` com os fatos-base, resultando no mesmo texto.
+ * O destaque de "última/próxima edição" é feito no corpo da página, não no head.
  *
  * JSON-LD (`@graph`: Organization/WebSite/WebPage/BreadcrumbList): injetado pelos
  * `extraTags` de `buildHeadTags` (mesmo mecanismo do head dos artigos). O

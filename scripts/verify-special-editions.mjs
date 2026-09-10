@@ -24,25 +24,25 @@ const PAGES = [
     label: "Lotofácil da Independência",
     route: "/lotofacil/lotofacil-da-independencia",
     api: "/api/lotofacil/lotofacil-da-independencia",
-    title: /Todos os Resultados da Lotofácil da Independência \d{4}/i,
+    title: /Lotofácil da Independência — Histórico, Resultados e Estatísticas/i,
   },
   {
     label: "Mega da Virada",
     route: "/mega-sena/mega-da-virada",
     api: "/api/mega-sena/mega-da-virada",
-    title: /Todos os Resultados da Mega da Virada \d{4}/i,
+    title: /Mega da Virada — Histórico, Resultados e Estatísticas/i,
   },
   {
     label: "Quina de São João",
     route: "/quina/quina-de-sao-joao",
     api: "/api/quina/quina-de-sao-joao",
-    title: /Todos os Resultados da Quina de São João \d{4}/i,
+    title: /Quina de São João — Histórico, Resultados e Estatísticas/i,
   },
   {
     label: "Dupla de Páscoa",
     route: "/duplasena/dupla-de-pascoa",
     api: "/api/duplasena/dupla-de-pascoa",
-    title: /Todos os Resultados da Dupla de Páscoa \d{4}/i,
+    title: /Dupla de Páscoa — Histórico, Resultados e Estatísticas/i,
   },
 ];
 
