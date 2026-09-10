@@ -6,7 +6,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Gift, Trophy, Sparkles } from "lucide-react";
+import { Gift, Trophy } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 import { SpecialEditionHero } from "@/components/ui/SpecialEditionHero";
 import { cn } from "@/lib/utils";
@@ -135,34 +135,6 @@ export default function DuplasenaDuplaDePascoa() {
       <SpecialEditionHero view={view} />
 
       <AdUnit slot="7788990044" format="rectangle" className="min-h-[250px]" />
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="w-5 h-5" style={{ color: COR }} />
-            Como Funciona a Reserva
-          </CardTitle>
-          <CardDescription>Entenda como o prêmio da Dupla de Páscoa é formado.</CardDescription>
-        </CardHeader>
-        <CardContent className="text-muted-foreground space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-4 border rounded-lg bg-muted/30 text-center">
-              <div className="text-3xl font-black" style={{ color: COR }}>16%</div>
-              <p className="text-sm mt-1">Do fundo de prêmios de cada concurso é reservado para a 1ª faixa do 1º sorteio da Dupla de Páscoa</p>
-            </div>
-            <div className="p-4 border rounded-lg bg-muted/30 text-center">
-              <div className="text-3xl font-black" style={{ color: COR }}>
-                <Sparkles className="w-7 h-7 inline-block" style={{ color: COR }} />
-              </div>
-              <p className="text-sm mt-1">O valor é acumulado ao longo do ano e turbina a 1ª faixa do 1º sorteio da edição especial</p>
-            </div>
-            <div className="p-4 border rounded-lg bg-muted/30 text-center">
-              <div className="text-3xl font-black" style={{ color: COR }}>2×</div>
-              <p className="text-sm mt-1">Sorteios por concurso — sua aposta concorre em dois sorteios diferentes</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       <Card id="historico">
         <CardHeader>
