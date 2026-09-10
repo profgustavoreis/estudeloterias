@@ -458,7 +458,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
     return buildHeadTags({
       title: `Mega da Virada — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
       description:
-        "Todos os resultados da Mega da Virada desde 2009: dezenas sorteadas, prêmios, ganhadores e estatísticas do sorteio especial de 31 de dezembro.",
+        "Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
       canonicalUrl,
     });
   }
@@ -467,7 +467,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
     return buildHeadTags({
       title: `Lotofácil da Independência — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
       description:
-        "Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa.",
+        "Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
       canonicalUrl,
     });
   }
@@ -476,7 +476,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
     return buildHeadTags({
       title: `Quina de São João — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
       description:
-        "Histórico completo da Quina de São João: resultados de todas as edições, dezenas mais sorteadas, maiores prêmios e estatísticas.",
+        "Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
       canonicalUrl,
     });
   }
@@ -485,7 +485,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
     return buildHeadTags({
       title: `Dupla de Páscoa — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
       description:
-        "Histórico completo da Dupla de Páscoa: resultados de todas as edições, 1º e 2º sorteios, maiores prêmios e estatísticas.",
+        "Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial.",
       canonicalUrl,
     });
   }

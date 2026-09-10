@@ -27,7 +27,7 @@ export default function LotofacilDaIndependencia() {
       <div className="space-y-8">
         <PageSEO
           title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa."
+          description="Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
           canonical="/lotofacil/lotofacil-da-independencia"
         />
         <div>Carregando informações...</div>
@@ -40,7 +40,7 @@ export default function LotofacilDaIndependencia() {
       <div className="space-y-8">
         <PageSEO
           title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-          description="Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa."
+          description="Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
           canonical="/lotofacil/lotofacil-da-independencia"
         />
         <div>Erro ao carregar informações da Lotofácil da Independência.</div>
@@ -52,7 +52,7 @@ export default function LotofacilDaIndependencia() {
     <div className="space-y-8">
       <PageSEO
         title="Lotofácil da Independência — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Lotofácil da Independência desde o primeiro concurso: histórico completo de dezenas sorteadas, maiores premiações e estatísticas do concurso especial da Caixa."
+        description="Todos os resultados da Lotofácil da Independência desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
         canonical="/lotofacil/lotofacil-da-independencia"
       />
       <div className="flex items-center gap-4">

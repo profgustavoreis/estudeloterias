@@ -25,18 +25,36 @@ export default function MegaDaVirada() {
   const { data: megaDaVirada, isLoading, isError } = useGetMegaDaVirada();
 
   if (isLoading) {
-    return <div>Carregando informações...</div>;
+    return (
+      <div className="space-y-8">
+        <PageSEO
+          title="Mega da Virada — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
+          canonical="/mega-sena/mega-da-virada"
+        />
+        <div>Carregando informações...</div>
+      </div>
+    );
   }
 
   if (isError || !megaDaVirada) {
-    return <div>Erro ao carregar informações da Mega da Virada.</div>;
+    return (
+      <div className="space-y-8">
+        <PageSEO
+          title="Mega da Virada — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
+          canonical="/mega-sena/mega-da-virada"
+        />
+        <div>Erro ao carregar informações da Mega da Virada.</div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-8">
       <PageSEO
         title="Mega da Virada — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Mega da Virada desde 2009: dezenas sorteadas, prêmios, ganhadores e estatísticas do sorteio especial de 31 de dezembro."
+        description="Todos os resultados da Mega da Virada desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
         canonical="/mega-sena/mega-da-virada"
       />
       <div className="flex items-center gap-4">

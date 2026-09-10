@@ -13,7 +13,7 @@ import { PageSEO } from "@/components/seo/PageSEO";
 const COR = "#a61324";
 
 export default function DuplasenaDuplaDePascoa() {
-  const { data: resultado, isLoading } = useGetDuplasenaUltimoResultado();
+  const { data: resultado, isLoading, isError } = useGetDuplasenaUltimoResultado();
   const { data: resultados } = useGetDuplasenaResultados({ page: 1, limit: 100, ordem: "desc" });
 
   const historicoConcursos = resultados?.resultados ?? [];
@@ -32,7 +32,7 @@ export default function DuplasenaDuplaDePascoa() {
       <div className="space-y-6">
         <PageSEO
           title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
-          description="Histórico completo da Dupla de Páscoa: resultados de todas as edições, 1º e 2º sorteios, maiores prêmios e estatísticas."
+          description="Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
           canonical="/duplasena/dupla-de-pascoa"
         />
         <div className="flex items-center gap-4">
@@ -44,11 +44,24 @@ export default function DuplasenaDuplaDePascoa() {
     );
   }
 
+  if (isError || !resultado) {
+    return (
+      <div className="space-y-6">
+        <PageSEO
+          title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
+          canonical="/duplasena/dupla-de-pascoa"
+        />
+        <div>Erro ao carregar informações da Dupla de Páscoa.</div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <PageSEO
         title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
-        description="Histórico completo da Dupla de Páscoa: resultados de todas as edições, 1º e 2º sorteios, maiores prêmios e estatísticas."
+        description="Todos os resultados da Dupla de Páscoa desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
         canonical="/duplasena/dupla-de-pascoa"
       />
       <div className="flex items-center gap-4">

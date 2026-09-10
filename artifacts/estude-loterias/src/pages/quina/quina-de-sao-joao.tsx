@@ -15,18 +15,36 @@ export default function QuinaDeSaoJoao() {
   const { data, isLoading, isError } = useGetQuinaDeSaoJoao();
 
   if (isLoading) {
-    return <div>Carregando informações...</div>;
+    return (
+      <div className="space-y-8">
+        <PageSEO
+          title="Quina de São João — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
+          canonical="/quina/quina-de-sao-joao"
+        />
+        <div>Carregando informações...</div>
+      </div>
+    );
   }
 
   if (isError || !data) {
-    return <div>Erro ao carregar informações da Quina de São João.</div>;
+    return (
+      <div className="space-y-8">
+        <PageSEO
+          title="Quina de São João — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
+          canonical="/quina/quina-de-sao-joao"
+        />
+        <div>Erro ao carregar informações da Quina de São João.</div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-8">
       <PageSEO
         title="Quina de São João — Histórico, Resultados e Estatísticas"
-        description="Todos os resultados da Quina de São João: dezenas sorteadas, prêmios, ganhadores e estatísticas do sorteio especial realizado anualmente perto de 24 de junho."
+        description="Todos os resultados da Quina de São João desde sua primeira edição: histórico completo de dezenas sorteadas, prêmios, ganhadores e estatísticas do concurso especial."
         canonical="/quina/quina-de-sao-joao"
       />
       <div className="flex items-center gap-4">
