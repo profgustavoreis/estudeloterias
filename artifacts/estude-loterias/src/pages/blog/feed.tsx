@@ -132,7 +132,7 @@ export default function BlogFeedPage() {
   return (
     <>
       <PageSEO
-        title="Blog - Análises, Dicas e Estatísticas de Loterias"
+        title="Blog — Análises, Dicas e Estatísticas de Loterias"
         description="Artigos educativos, estratégias de apostas, estatísticas atualizadas e análises completas para as loterias Caixa (Mega-Sena, Lotofácil, Quina e mais)."
         canonical="/blog"
       />

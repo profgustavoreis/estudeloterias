@@ -106,6 +106,11 @@ export default function MaismilionariaEstatisticas() {
   if (isLoading) {
     return (
       <div className="space-y-6">
+        <PageSEO
+          title="Resumo Estatístico da +Milionária — Frequência e Análise das Dezenas"
+          description="Análise estatística completa da +Milionária: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
+          canonical="/maismilionaria/resumo-estatistico"
+        />
         <div>
           <Skeleton className="h-9 w-48 mb-2" />
           <Skeleton className="h-4 w-72" />
@@ -126,6 +131,11 @@ export default function MaismilionariaEstatisticas() {
   if (isError || !stats) {
     return (
       <div className="space-y-6">
+        <PageSEO
+          title="Resumo Estatístico da +Milionária — Frequência e Análise das Dezenas"
+          description="Análise estatística completa da +Milionária: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
+          canonical="/maismilionaria/resumo-estatistico"
+        />
         <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>+Milionária · Resumo Estatístico</h1>
         <Card>
           <CardContent className="flex items-center justify-center py-16 text-muted-foreground">
@@ -163,7 +173,7 @@ export default function MaismilionariaEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico da +Milionária"
+        title="Resumo Estatístico da +Milionária — Frequência e Análise das Dezenas"
         description="Análise estatística completa da +Milionária: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
         canonical="/maismilionaria/resumo-estatistico"
       />

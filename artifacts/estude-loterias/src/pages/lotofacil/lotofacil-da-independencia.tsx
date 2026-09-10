@@ -23,18 +23,36 @@ export default function LotofacilDaIndependencia() {
   const postReadingTime = blogPost?.readingTimeMinutes ?? 8;
 
   if (isLoading) {
-    return <div>Carregando informações...</div>;
+    return (
+      <div className="space-y-8">
+        <PageSEO
+          title="Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09."
+          canonical="/lotofacil/lotofacil-da-independencia"
+        />
+        <div>Carregando informações...</div>
+      </div>
+    );
   }
 
   if (isError || !data) {
-    return <div>Erro ao carregar informações da Lotofácil da Independência.</div>;
+    return (
+      <div className="space-y-8">
+        <PageSEO
+          title="Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas"
+          description="Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09."
+          canonical="/lotofacil/lotofacil-da-independencia"
+        />
+        <div>Erro ao carregar informações da Lotofácil da Independência.</div>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Lotofácil da Independência 2026 — Sorteio de R$ 300 Milhões em 15/09"
-        description="A Lotofácil da Independência 2026 tem sorteio confirmado para 15 de setembro com prêmio recorde de R$ 300 milhões que não acumula. Confira o histórico de dezenas e premiações."
+        title="Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas"
+        description="Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09."
         canonical="/lotofacil/lotofacil-da-independencia"
       />
       <div className="flex items-center gap-4">

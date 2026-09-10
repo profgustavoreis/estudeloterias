@@ -55,6 +55,7 @@ Thumbs.db
 
 # OpenCode / Omo temporary session files
 .omo/
+.opencode/
 
 # GrayMatter local memory store
 .graymatter/

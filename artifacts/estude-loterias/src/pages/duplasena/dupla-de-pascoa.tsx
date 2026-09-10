@@ -30,6 +30,11 @@ export default function DuplasenaDuplaDePascoa() {
   if (isLoading) {
     return (
       <div className="space-y-6">
+        <PageSEO
+          title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
+          description="Histórico completo da Dupla de Páscoa: resultados de todas as edições, 1º e 2º sorteios, maiores prêmios e estatísticas."
+          canonical="/duplasena/dupla-de-pascoa"
+        />
         <div className="flex items-center gap-4">
           <Skeleton className="w-16 h-16 rounded-xl" />
           <div><Skeleton className="h-9 w-64" /><Skeleton className="h-5 w-96 mt-1" /></div>
@@ -42,8 +47,8 @@ export default function DuplasenaDuplaDePascoa() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Dupla de Páscoa — Sorteio Especial da Dupla Sena"
-        description="Tudo sobre a Dupla de Páscoa: o sorteio especial da Dupla Sena com prêmio acumulado. Confira histórico, regras e como funciona a reserva de prêmios."
+        title="Dupla de Páscoa — Histórico, Resultados e Estatísticas"
+        description="Histórico completo da Dupla de Páscoa: resultados de todas as edições, 1º e 2º sorteios, maiores prêmios e estatísticas."
         canonical="/duplasena/dupla-de-pascoa"
       />
       <div className="flex items-center gap-4">

@@ -335,7 +335,7 @@ export function buildArticleHead(artigo: Article): string {
  * og próprios em vez de herdar o metadata da homepage.
  */
 export function buildBlogIndexHead(): string {
-  const title = `Blog | ${SITE_NAME}`;
+  const title = `Blog — Análises, Dicas e Estatísticas de Loterias | ${SITE_NAME}`;
   const description =
     "Artigos, análises e estatísticas sobre as loterias da Caixa: probabilidades, estratégias, resultados e curiosidades da Mega-Sena, Lotofácil, Quina e mais.";
 
@@ -465,9 +465,9 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 
   if (p === "/lotofacil/lotofacil-da-independencia") {
     return buildHeadTags({
-      title: `Lotofácil da Independência 2026: R$ 300 Milhões em 15/09 | ${SITE_NAME}`,
+      title: `Lotofácil da Independência 2026 — Histórico, Resultados e Estatísticas | ${SITE_NAME}`,
       description:
-        "Lotofácil da Independência 2026: sorteio confirmado para 15 de setembro com prêmio recorde de R$ 300 milhões que não acumula. Veja histórico, regras e estatísticas.",
+        "Todos os resultados da Lotofácil da Independência até 2026: dezenas sorteadas em todos os anos, premiações, estatísticas completas e informações do concurso especial de 15/09.",
       canonicalUrl,
     });
   }
@@ -565,9 +565,12 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 
       // Resumo estatístico: /:modalidade/resumo-estatistico
       if (rest === "/resumo-estatistico") {
+        const isSuperSete = mod.slug === "super-sete";
         return buildHeadTags({
-          title: `Resumo Estatístico ${mod.article} — Frequência e Análise das Dezenas | ${SITE_NAME}`,
-          description: `Análise estatística completa ${mod.article}: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos.`,
+          title: `Resumo Estatístico ${mod.article} — Frequência e Análise ${isSuperSete ? "dos Números" : "das Dezenas"} | ${SITE_NAME}`,
+          description: isSuperSete
+            ? `Análise estatística completa da Super Sete: números mais e menos sorteados por posição, pares, somas, números especiais e muito mais baseado em todo o histórico de concursos.`
+            : `Análise estatística completa ${mod.article}: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos.`,
           canonicalUrl,
         });
       }
