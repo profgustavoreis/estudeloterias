@@ -12,7 +12,7 @@ import {
   List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck, PartyPopper, Newspaper,
 } from "lucide-react";
 
-// ── Afiliado do header (Fase 0: Clube Lotosport) ──────────────────────────────
+// ── Afiliado do header (Fase 1-A: Clube Lotosport) ────────────────────────────
 const HEADER_AFFILIADO: Afiliado = "clube_lotosport";
 // Ponto único de troca do rótulo do CTA (A/B futuro).
 const HEADER_CTA_LABEL = "Ver bolões";
@@ -38,7 +38,7 @@ function AffiliateHeaderCta({
       href={linkUrl}
       target="_blank"
       rel="sponsored noopener noreferrer"
-      title="Site parceiro · +18"
+      title="Site parceiro · 18+"
       onClick={() =>
         trackAffiliateClick({
           afiliado: HEADER_AFFILIADO,
@@ -60,7 +60,7 @@ function AffiliateHeaderCta({
       </span>
       {showMicrocopy && (
         <span className="text-[10px] font-medium leading-none text-white/90">
-          site parceiro · +18
+          site parceiro · 18+
         </span>
       )}
     </a>
@@ -104,7 +104,7 @@ const lotofacilInfo = [
   { href: "/lotofacil/como-jogar",                   label: "Como Jogar",                    icon: BookOpen,   desc: "Regras e formas de apostar" },
   { href: "/lotofacil/premiacao",                    label: "Premiação",                     icon: Trophy,     desc: "Faixas e percentuais de prêmio" },
   { href: "/lotofacil/perguntas-frequentes",         label: "Perguntas Frequentes",          icon: HelpCircle, desc: "Dúvidas comuns respondidas" },
-  { href: "/lotofacil/lotofacil-da-independencia",   label: "Lotofácil da Independência",    icon: Gift,       desc: "O sorteio especial de 7 de setembro" },
+  { href: "/lotofacil/lotofacil-da-independencia",   label: "Lotofácil da Independência",    icon: Gift,       desc: "O sorteio especial de 15 de setembro" },
 ];
 
 const lotofacilAll = [...lotofacilTools, ...lotofacilInfo];
@@ -633,17 +633,18 @@ export function TopNav() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
-            {/* Desktop CTA do afiliado (com identificação "site parceiro · +18") */}
+            {/* Desktop CTA do afiliado (com identificação "site parceiro · 18+") */}
             <AffiliateHeaderCta
               placement="topnav_desktop"
               showMicrocopy
               className="hidden sm:flex flex-col items-center justify-center px-4 py-1.5 rounded-lg text-sm font-semibold leading-tight"
             />
 
-            {/* Mobile CTA compacto — mesmo destino, visível no header em telas pequenas */}
+            {/* Mobile CTA compacto — mesmo destino, com disclosure visível ("site parceiro · 18+") */}
             <AffiliateHeaderCta
               placement="topnav_mobile"
-              className="sm:hidden inline-flex items-center justify-center min-h-[44px] px-3 rounded-lg text-xs font-semibold"
+              showMicrocopy
+              className="sm:hidden inline-flex flex-col items-center justify-center min-h-[44px] px-3 py-1 rounded-lg text-xs font-semibold leading-tight"
             />
 
             {/* Mobile hamburger */}

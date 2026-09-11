@@ -1,8 +1,13 @@
 /**
  * Affiliate (monetização por afiliação) helpers.
  *
- * Fase 0: apenas "Clube Lotosport" está ativo. Net Sorte / Lotosport ficam
- * como placeholders (`null`) para a Fase 1, quando os links existirem.
+ * Fase 1-A: Clube Lotosport (bolões) e Portal Net Sorte (ferramentas) ativos.
+ * Lotosport permanece configurado, mas ainda NÃO é renderizado (A/B futuro).
+ *
+ * Cada parceiro pode ter mais de uma variante de link:
+ * - `landing`  → página de captura / tráfego frio.
+ * - `checkout` → checkout direto / tráfego quente.
+ * - `anual` / `vitalicio` → planos do Lotosport (só checkout).
  *
  * Regras:
  * - Todo link de saída deve usar `target="_blank"` + `rel="sponsored noopener noreferrer"`.
@@ -12,19 +17,48 @@
 
 export type Afiliado = "clube_lotosport" | "net_sorte" | "lotosport";
 
-/** URLs de convite/afiliado. `null` = ainda sem link (Fase 1). */
-export const AFFILIATE_URLS: Record<Afiliado, string | null> = {
-  clube_lotosport: "https://clubelotosport.com.br/convite/694f3c11405d9",
-  net_sorte: null,
-  lotosport: null,
+/** Variantes de link disponíveis por parceiro. */
+export type AffiliateVariant = "landing" | "checkout" | "anual" | "vitalicio";
+
+/** URLs de afiliado por parceiro e variante. Variante ausente = indisponível. */
+export const AFFILIATE_URLS: Record<Afiliado, Partial<Record<AffiliateVariant, string>>> = {
+  clube_lotosport: {
+    landing: "https://clubelotosport.com.br/convite/694f3c11405d9",
+  },
+  net_sorte: {
+    // Tráfego frio → landing; tráfego quente → checkout.
+    landing: "https://edzz.la/R3QX6?a=56195291",
+    checkout: "https://chk.eduzz.com/305064?a=56195291",
+  },
+  // Lotosport só tem checkout (anual e vitalício). Configurado, não renderizado.
+  lotosport: {
+    anual: "https://chk.eduzz.com/2074024?a=56195291",
+    vitalicio: "https://chk.eduzz.com/2075097?a=56195291",
+  },
+};
+
+/** Variante usada quando nenhuma é informada (ex.: Net Sorte em tráfego frio). */
+export const DEFAULT_AFFILIATE_VARIANT: Record<Afiliado, AffiliateVariant> = {
+  clube_lotosport: "landing",
+  net_sorte: "landing",
+  lotosport: "anual",
 };
 
 /** Nome legível do parceiro, para copy/UI. */
 export const AFFILIATE_NAMES: Record<Afiliado, string> = {
   clube_lotosport: "Clube Lotosport",
-  net_sorte: "Net Sorte",
+  net_sorte: "Portal Net Sorte",
   lotosport: "Lotosport",
 };
+
+/** Resolve a URL base de um parceiro (sem params de rastreio). */
+export function getAffiliateBaseUrl(
+  afiliado: Afiliado,
+  variant?: AffiliateVariant,
+): string | null {
+  const links = AFFILIATE_URLS[afiliado];
+  return links[variant ?? DEFAULT_AFFILIATE_VARIANT[afiliado]] ?? null;
+}
 
 export interface BuildAffiliateUrlParams {
   afiliado: Afiliado;
@@ -32,13 +66,20 @@ export interface BuildAffiliateUrlParams {
   placement: string;
   /** Texto do CTA, usado no subid/UTM para A/B futuro (ex.: `Ver bolões`). */
   ctaLabel: string;
+  /**
+   * Variante do link. Padrão: `DEFAULT_AFFILIATE_VARIANT[afiliado]`
+   * (Net Sorte = `landing`, para tráfego frio).
+   */
+  variant?: AffiliateVariant;
 }
 
 export interface AffiliateTrackParams {
   afiliado: Afiliado;
   placement: string;
   ctaLabel: string;
-  /** URL final já montada. Se omitida, usa `AFFILIATE_URLS[afiliado]`. */
+  /** Variante do link usada (landing/checkout/anual/vitalício). */
+  variant?: AffiliateVariant;
+  /** URL final já montada. Se omitida, usa a URL base do parceiro. */
   linkUrl?: string;
   /** Permite forçar o subid; por padrão é lido da query da `linkUrl`. */
   subid?: string;
@@ -117,14 +158,15 @@ function derivePageType(pathname: string): string {
  * - `utm_campaign=esl-aff-{aff}`
  * - `utm_content={placement}-{label}`
  *
- * Retorna `null` quando o parceiro ainda não tem link (Fase 1).
+ * Retorna `null` quando o parceiro/variante ainda não tem link.
  */
 export function buildAffiliateUrl({
   afiliado,
   placement,
   ctaLabel,
+  variant,
 }: BuildAffiliateUrlParams): string | null {
-  const base = AFFILIATE_URLS[afiliado];
+  const base = getAffiliateBaseUrl(afiliado, variant);
   if (!base) return null;
 
   const url = safeUrl(base);
@@ -133,14 +175,16 @@ export function buildAffiliateUrl({
   const aff = slugify(afiliado);
   const place = slugify(placement);
   const label = slugify(ctaLabel);
+  const variantSlug = slugify(variant ?? DEFAULT_AFFILIATE_VARIANT[afiliado]);
 
-  const subid = `esl-${aff}-${place}-${label}-${yyyymmdd()}-${rand6()}`;
+  const subid = `esl-${aff}-${place}-${label}-${variantSlug}-${yyyymmdd()}-${rand6()}`;
 
   url.searchParams.set(SUBID_PARAM, subid);
   url.searchParams.set("utm_source", "estudeloterias");
   url.searchParams.set("utm_medium", "affiliate");
   url.searchParams.set("utm_campaign", `esl-aff-${aff}`);
   url.searchParams.set("utm_content", `${place}-${label}`);
+  url.searchParams.set("utm_term", variantSlug);
 
   return url.toString();
 }
@@ -164,7 +208,8 @@ function fireAffiliateEvent(
   const gtag = getGtag();
   if (!gtag) return;
 
-  const linkUrl = params.linkUrl ?? AFFILIATE_URLS[params.afiliado] ?? "";
+  const linkUrl =
+    params.linkUrl ?? getAffiliateBaseUrl(params.afiliado, params.variant) ?? "";
   const page =
     params.page ?? (typeof window !== "undefined" ? window.location.pathname : "");
   const pageType = params.pageType ?? derivePageType(page);
@@ -172,6 +217,7 @@ function fireAffiliateEvent(
   gtag("event", eventName, {
     afiliado: params.afiliado,
     placement: params.placement,
+    variante: params.variant ?? DEFAULT_AFFILIATE_VARIANT[params.afiliado],
     cta_label: params.ctaLabel,
     pagina: page,
     pagina_tipo: pageType,

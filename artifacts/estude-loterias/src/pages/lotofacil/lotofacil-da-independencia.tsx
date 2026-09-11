@@ -159,7 +159,7 @@ export default function LotofacilDaIndependencia() {
         placement="lotofacil_independencia_inline"
         moduleId="aff_slot_7788990011"
         title="Jogar em bolão na Lotofácil da Independência"
-        body="No Clube Lotosport você pode entrar em bolões com mais dezenas, dividindo o custo com outras pessoas. Veja as opções disponíveis para o próximo concurso especial."
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
       />
 
       <Card id="historico">

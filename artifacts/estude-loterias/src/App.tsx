@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { PageFallback } from "@/components/ui/PageFallback";
+import { CookieConsent } from "@/components/CookieConsent";
+import { CookiePreferencesLink } from "@/components/CookiePreferencesLink";
 import { AnalyticsTracker } from "@/lib/analytics";
 
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -301,6 +303,8 @@ function App() {
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <AnalyticsTracker />
           <Router />
+          <CookieConsent />
+          <CookiePreferencesLink />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

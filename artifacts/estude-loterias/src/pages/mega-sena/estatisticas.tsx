@@ -14,6 +14,7 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
 import { cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -180,7 +181,15 @@ export default function MegaSenaEstatisticas() {
         </div>
       </div>
 
-      <AdUnit slot="1122334455" format="horizontal" className="w-full" />
+      <AffiliateCard
+        afiliado="net_sorte"
+        variant="landing"
+        placement="ferramenta_inline"
+        moduleId="aff_ferramenta_megasena_estatisticas"
+        title="Monte jogos com mais dezenas"
+        body="No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias."
+        ctaLabel="Ver ferramentas"
+      />
 
       {/* ── Seção 1: Frequência de Dezenas ── */}
       <section className="space-y-3">

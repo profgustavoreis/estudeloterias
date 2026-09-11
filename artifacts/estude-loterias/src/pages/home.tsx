@@ -6,7 +6,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { Helmet } from "react-helmet-async";
-import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
 import { Calendar, ArrowRight, Newspaper } from "lucide-react";
 import { formatArticleDate } from "@/lib/blog-utils";
 
@@ -163,7 +163,15 @@ export default function Home() {
         <p className="text-muted-foreground mt-2">Acompanhe os últimos resultados e prêmios acumulados.</p>
       </div>
 
-      <AdUnit slot="1234567890" format="horizontal" className="w-full" />
+      <AffiliateCard
+        afiliado="clube_lotosport"
+        variant="landing"
+        placement="home_inline"
+        moduleId="home_inline_top"
+        title="Jogue em bolão com o Clube Lotosport"
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros apostadores — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        ctaLabel="Ver bolões"
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {(sorted ?? []).map(loteria => (
@@ -281,7 +289,15 @@ export default function Home() {
         </section>
       )}
 
-      <AdUnit slot="0987654321" format="horizontal" className="w-full" />
+      <AffiliateCard
+        afiliado="clube_lotosport"
+        variant="landing"
+        placement="home_inline"
+        moduleId="home_inline_bottom"
+        title="Jogue em bolão e divida o custo"
+        body="O Clube Lotosport organiza bolões de várias loterias Caixa: você escolhe a cota e concorre com o grupo, com o prêmio proporcional às cotas compradas."
+        ctaLabel="Conhecer o Clube Lotosport"
+      />
     </div>
   );
 }

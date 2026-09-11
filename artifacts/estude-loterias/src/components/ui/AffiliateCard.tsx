@@ -6,12 +6,18 @@ import {
   trackAffiliateClick,
   trackAffiliateImpression,
   type Afiliado,
+  type AffiliateVariant,
 } from "@/lib/affiliate";
 import { cn } from "@/lib/utils";
 
 export interface AffiliateCardProps {
-  /** Parceiro. Fase 0: apenas Clube Lotosport. */
+  /** Parceiro. Padrão: Clube Lotosport. */
   afiliado?: Afiliado;
+  /**
+   * Variante do link. `landing` (tráfego frio) ou `checkout` (tráfego quente).
+   * Padrão: `DEFAULT_AFFILIATE_VARIANT[afiliado]`.
+   */
+  variant?: AffiliateVariant;
   /** Identificador da posição na página (ex.: `lotofacil_independencia_inline`). */
   placement: string;
   /** Identificador do bloco enviado ao GA. Padrão: o próprio placement. */
@@ -26,7 +32,7 @@ export interface AffiliateCardProps {
 const DEFAULT_CTA = "Ver bolões";
 const DEFAULT_AFILIADO: Afiliado = "clube_lotosport";
 const DISCLOSURE = "Link de parceria. Podemos receber comissão, sem custo para você.";
-const RESPONSIBLE = "+18 · Jogue com responsabilidade";
+const RESPONSIBLE = "18+ · Jogue com responsabilidade";
 
 /**
  * Card nativo de afiliado (substitui o AdUnit naquela posição).
@@ -37,6 +43,7 @@ const RESPONSIBLE = "+18 · Jogue com responsabilidade";
  */
 export function AffiliateCard({
   afiliado = DEFAULT_AFILIADO,
+  variant,
   placement,
   moduleId,
   title,
@@ -48,13 +55,13 @@ export function AffiliateCard({
 
   // Subid/UTM gerados uma vez por montagem para manter impressão e clique coerentes.
   const linkUrl = useMemo(
-    () => buildAffiliateUrl({ afiliado, placement, ctaLabel }),
-    [afiliado, placement, ctaLabel],
+    () => buildAffiliateUrl({ afiliado, placement, ctaLabel, variant }),
+    [afiliado, placement, ctaLabel, variant],
   );
 
   const trackParams = useMemo(
-    () => ({ afiliado, placement, ctaLabel, linkUrl: linkUrl ?? undefined, moduleId }),
-    [afiliado, placement, ctaLabel, linkUrl, moduleId],
+    () => ({ afiliado, variant, placement, ctaLabel, linkUrl: linkUrl ?? undefined, moduleId }),
+    [afiliado, variant, placement, ctaLabel, linkUrl, moduleId],
   );
 
   // Impressão: >=50% visível por >=1s, no máximo 1x por sessão.

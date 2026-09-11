@@ -171,7 +171,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     href={footerAffiliate.linkUrl}
                     target="_blank"
                     rel="sponsored noopener noreferrer"
-                    title="Site parceiro · +18"
+                    title="Site parceiro · 18+"
                     onClick={() =>
                       trackAffiliateClick({
                         afiliado: footerAffiliate.afiliado,
@@ -187,7 +187,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <span className="sr-only">(site parceiro, abre em nova aba)</span>
                   </a>
                   <span className="block text-[10px] text-muted-foreground/80 leading-relaxed">
-                    Link de parceria. Podemos receber comissão, sem custo para você. Site parceiro · +18
+                    Link de parceria. Podemos receber comissão, sem custo para você. Site parceiro · 18+
                   </span>
                 </div>
               )}

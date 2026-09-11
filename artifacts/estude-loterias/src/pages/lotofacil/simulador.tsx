@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { formatDateShort } from "@/lib/formatters";
-import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
 import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
@@ -372,7 +372,15 @@ export default function LotofacilSimulador() {
             )}
           </div>
           <div className="flex flex-col gap-4">
-            <AdUnit slot="5586112233" format="rectangle" className="w-full" />
+            <AffiliateCard
+              afiliado="net_sorte"
+              variant="landing"
+              placement="ferramenta_inline"
+              moduleId="aff_ferramenta_lotofacil_simulador"
+              title="Monte jogos com mais dezenas"
+              body="No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias."
+              ctaLabel="Ver ferramentas"
+            />
           </div>
         </div>
       )}
