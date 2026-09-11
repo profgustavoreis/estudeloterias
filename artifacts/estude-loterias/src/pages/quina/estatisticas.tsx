@@ -14,6 +14,8 @@ import {
   Accordion, AccordionContent, AccordionItem, AccordionTrigger,
 } from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 import { cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -160,6 +162,8 @@ export default function QuinaEstatisticas() {
   const totalFreqColuna = stats.frequenciaPorColuna.reduce((a, b) => a + b.sorteios, 0);
   const totalSomaConcursos = stats.somaDezenas.intervalos.reduce((a, b) => a + b.sorteios, 0);
 
+  const ferramenta = getToolExperiment();
+
   return (
     <div className="space-y-8">
       <PageSEO
@@ -181,7 +185,15 @@ export default function QuinaEstatisticas() {
         </div>
       </div>
 
-      <AdUnit slot="1122334455" format="horizontal" className="w-full" />
+      <AffiliateCard
+        afiliado={ferramenta.afiliado}
+        variant={ferramenta.variant}
+        placement="ferramenta_inline"
+        moduleId="aff_ferramenta_quina_estatisticas"
+        title={ferramenta.title}
+        body={ferramenta.body}
+        ctaLabel={ferramenta.ctaLabel}
+      />
 
       {/* ── Seção 1: Frequência de Dezenas ── */}
       <section className="space-y-3">

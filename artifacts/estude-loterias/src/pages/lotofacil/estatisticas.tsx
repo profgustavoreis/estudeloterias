@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/accordion";
 import { AdUnit } from "@/components/ui/AdUnit";
 import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 import { cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -157,6 +158,8 @@ export default function LotofacilEstatisticas() {
   const totalFreqColuna = stats.frequenciaPorColuna.reduce((a, b) => a + b.sorteios, 0);
   const totalSomaConcursos = stats.somaDezenas.intervalos.reduce((a, b) => a + b.sorteios, 0);
 
+  const ferramenta = getToolExperiment();
+
   return (
     <div className="space-y-8">
       <PageSEO
@@ -179,13 +182,13 @@ export default function LotofacilEstatisticas() {
       </div>
 
       <AffiliateCard
-        afiliado="net_sorte"
-        variant="landing"
+        afiliado={ferramenta.afiliado}
+        variant={ferramenta.variant}
         placement="ferramenta_inline"
         moduleId="aff_ferramenta_lotofacil_estatisticas"
-        title="Monte jogos com mais dezenas"
-        body="No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias."
-        ctaLabel="Ver ferramentas"
+        title={ferramenta.title}
+        body={ferramenta.body}
+        ctaLabel={ferramenta.ctaLabel}
       />
 
       {/* ── Seção 1: Frequência de Dezenas ── */}

@@ -554,6 +554,15 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
     });
   }
 
+  if (p === "/parceiros") {
+    return buildHeadTags({
+      title: `Parceiros e como ganhamos dinheiro | ${SITE_NAME}`,
+      description:
+        "Conheça os parceiros do Estude Loterias e como o site se mantém com links de afiliado. Transparência sobre a relação comercial, sem vínculo com a CAIXA.",
+      canonicalUrl,
+    });
+  }
+
   if (p === "/contato") {
     return buildHeadTags({
       title: `Contato | ${SITE_NAME}`,

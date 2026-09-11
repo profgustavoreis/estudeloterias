@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { formatDateShort } from "@/lib/formatters";
-import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
@@ -66,6 +67,8 @@ export default function TimemaniaSimulador() {
   const paginaAtual = Math.min(paginaTabela, totalPaginasTabela);
   const concursosPagina = resultado?.concursos.slice((paginaAtual - 1) * PAGE_SIZE, paginaAtual * PAGE_SIZE) ?? [];
   const resumoLinhas = resultado?.resumo.filter(r => r.acertos >= 0 && r.acertos <= 7) ?? [];
+
+  const ferramenta = getToolExperiment();
 
   return (
     <div className="space-y-6">
@@ -278,7 +281,15 @@ export default function TimemaniaSimulador() {
             )}
           </div>
           <div className="flex flex-col gap-4">
-            <AdUnit slot="8899001133" format="rectangle" className="w-full" />
+            <AffiliateCard
+              afiliado={ferramenta.afiliado}
+              variant={ferramenta.variant}
+              placement="ferramenta_inline"
+              moduleId="aff_ferramenta_timemania_simulador"
+              title={ferramenta.title}
+              body={ferramenta.body}
+              ctaLabel={ferramenta.ctaLabel}
+            />
           </div>
         </div>
       )}

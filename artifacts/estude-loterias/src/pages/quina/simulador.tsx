@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { formatDateShort } from "@/lib/formatters";
-import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
@@ -100,6 +101,8 @@ export default function QuinaSimulador() {
   const rodapeProb = nSimulado === 5
     ? "As probabilidades indicadas correspondem a uma aposta simples de 5 dezenas."
     : `As probabilidades indicadas correspondem a uma aposta múltipla de ${nSimulado} dezenas.`;
+
+  const ferramenta = getToolExperiment();
 
   return (
     <div className="space-y-6">
@@ -370,7 +373,15 @@ export default function QuinaSimulador() {
             )}
           </div>
           <div className="flex flex-col gap-4">
-            <AdUnit slot="5586112233" format="rectangle" className="w-full" />
+            <AffiliateCard
+              afiliado={ferramenta.afiliado}
+              variant={ferramenta.variant}
+              placement="ferramenta_inline"
+              moduleId="aff_ferramenta_quina_simulador"
+              title={ferramenta.title}
+              body={ferramenta.body}
+              ctaLabel={ferramenta.ctaLabel}
+            />
           </div>
         </div>
       )}

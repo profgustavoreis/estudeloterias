@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { LotteryBall } from "@/components/ui/lottery-ball";
 import { formatDateShort } from "@/lib/formatters";
 import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 import { FlaskConical, RotateCcw, Loader2, Trophy, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
 
@@ -102,6 +103,8 @@ export default function LotofacilSimulador() {
   const rodapeProb = nSimulado === 15
     ? "As probabilidades indicadas correspondem a uma aposta simples de 15 dezenas."
     : `As probabilidades indicadas correspondem a uma aposta múltipla de ${nSimulado} dezenas.`;
+
+  const ferramenta = getToolExperiment();
 
   return (
     <div className="space-y-6">
@@ -373,13 +376,13 @@ export default function LotofacilSimulador() {
           </div>
           <div className="flex flex-col gap-4">
             <AffiliateCard
-              afiliado="net_sorte"
-              variant="landing"
+              afiliado={ferramenta.afiliado}
+              variant={ferramenta.variant}
               placement="ferramenta_inline"
               moduleId="aff_ferramenta_lotofacil_simulador"
-              title="Monte jogos com mais dezenas"
-              body="No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias."
-              ctaLabel="Ver ferramentas"
+              title={ferramenta.title}
+              body={ferramenta.body}
+              ctaLabel={ferramenta.ctaLabel}
             />
           </div>
         </div>

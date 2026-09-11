@@ -57,6 +57,7 @@ const INSTITUCIONAL_PAGES: SitemapEntry[] = [
   { url: "/sobre",         changefreq: "monthly", priority: "0.4" },
   { url: "/privacidade",   changefreq: "monthly", priority: "0.3" },
   { url: "/termos",        changefreq: "monthly", priority: "0.3" },
+  { url: "/parceiros",     changefreq: "monthly", priority: "0.3" },
   { url: "/contato",       changefreq: "monthly", priority: "0.3" },
 ];
 

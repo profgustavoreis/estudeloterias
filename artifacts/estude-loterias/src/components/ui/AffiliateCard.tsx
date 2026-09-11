@@ -151,7 +151,7 @@ export function AffiliateCard({
         className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#007b34] via-[#009640] to-[#007b34]"
       />
 
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
         <span className="inline-flex items-center gap-1 rounded-full bg-[#009640] px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white">
           <BadgeCheck className="w-3 h-3" aria-hidden />
           Parceiro
@@ -161,7 +161,12 @@ export function AffiliateCard({
         </span>
       </div>
 
-      <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground leading-snug">
+      {/* Nome do parceiro visível (eyebrow acima do título) */}
+      <p className="text-xs font-bold uppercase tracking-widest text-[#009640]">
+        {AFFILIATE_NAMES[afiliado]}
+      </p>
+
+      <h2 className="mt-1 text-lg sm:text-xl font-bold tracking-tight text-foreground leading-snug">
         {title}
       </h2>
 

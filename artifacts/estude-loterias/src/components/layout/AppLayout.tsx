@@ -19,6 +19,7 @@ const institucional: Array<{ href: string; label: string; external?: boolean }> 
   { href: "/sobre", label: "Sobre o Site" },
   { href: "/termos", label: "Termos de Uso" },
   { href: "/privacidade", label: "Política de Privacidade" },
+  { href: "/parceiros", label: "Parceiros" },
   { href: "https://estudematematica.com.br/contato", label: "Contato", external: true },
 ];
 
@@ -203,6 +204,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <Link href="/privacidade" className="hover:text-foreground transition-colors">Privacidade</Link>
               <span>·</span>
               <Link href="/termos" className="hover:text-foreground transition-colors">Termos</Link>
+              <span>·</span>
+              <Link href="/parceiros" className="hover:text-foreground transition-colors">Parceiros</Link>
               <span>·</span>
               <a href="https://estudematematica.com.br/contato" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Contato</a>
             </div>

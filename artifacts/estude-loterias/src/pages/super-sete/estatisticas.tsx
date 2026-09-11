@@ -17,6 +17,8 @@ import { AdUnit } from "@/components/ui/AdUnit";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 import { cn } from "@/lib/utils";
 import { BarChart3 } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -171,6 +173,8 @@ export default function SuperSeteEstatisticas() {
   const especialSet = new Set(especial?.dezenas ?? []);
   const totalEspecial = especial ? especial.distribuicao.reduce((a, d) => a + d.sorteios, 0) : 0;
 
+  const ferramenta = getToolExperiment();
+
   return (
     <div className="space-y-8">
       <PageSEO
@@ -192,7 +196,15 @@ export default function SuperSeteEstatisticas() {
         </div>
       </div>
 
-      <AdUnit slot="1122334455" format="horizontal" className="w-full" />
+      <AffiliateCard
+        afiliado={ferramenta.afiliado}
+        variant={ferramenta.variant}
+        placement="ferramenta_inline"
+        moduleId="aff_ferramenta_supersete_estatisticas"
+        title={ferramenta.title}
+        body={ferramenta.body}
+        ctaLabel={ferramenta.ctaLabel}
+      />
 
       {/* ── Seção 1: Frequência de Dígitos por Posição ── */}
       <section className="space-y-3">

@@ -15,6 +15,8 @@
  * - Disclosure de parceria sempre antes do clique (CDC/CONAR).
  */
 
+import { getExperimentTrackFields } from "./experiment";
+
 export type Afiliado = "clube_lotosport" | "net_sorte" | "lotosport";
 
 /** Variantes de link disponíveis por parceiro. */
@@ -89,6 +91,13 @@ export interface AffiliateTrackParams {
   page?: string;
   /** Sobrescreve o tipo de página inferido (ex.: `home`, `modalidade`, `blog`). */
   pageType?: string;
+  /**
+   * Identificador do experimento A/B (ex.: `ab_ferramentas_net_vs_loto`).
+   * Quando presente, é enviado como `experiment_id` no evento.
+   */
+  experimentId?: string;
+  /** Braço do experimento (`"A"`/`"B"`). Enviado como `variation`. */
+  variation?: string;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -214,6 +223,16 @@ function fireAffiliateEvent(
     params.page ?? (typeof window !== "undefined" ? window.location.pathname : "");
   const pageType = params.pageType ?? derivePageType(page);
 
+  // Campos de experimento A/B. Preferência para o que vier explícito nos
+  // params; caso contrário, usa a atribuição ativa dos cards de ferramenta
+  // (ver `src/lib/experiment.ts`). Só entram no evento quando existem.
+  const experimentFields = params.experimentId
+    ? {
+        experiment_id: params.experimentId,
+        ...(params.variation ? { variation: params.variation } : {}),
+      }
+    : getExperimentTrackFields(params.placement);
+
   gtag("event", eventName, {
     afiliado: params.afiliado,
     placement: params.placement,
@@ -225,6 +244,7 @@ function fireAffiliateEvent(
     link_url: linkUrl,
     link_domain: getLinkDomain(linkUrl),
     subid: params.subid ?? getSubidFromUrl(linkUrl),
+    ...experimentFields,
     outbound: true,
     ...extra,
   });

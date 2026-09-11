@@ -7,6 +7,7 @@ import { AppLayout } from "@/components/layout/AppLayout";
 import { PageFallback } from "@/components/ui/PageFallback";
 import { CookieConsent } from "@/components/CookieConsent";
 import { CookiePreferencesLink } from "@/components/CookiePreferencesLink";
+import { StickyAffiliateBar } from "@/components/ui/StickyAffiliateBar";
 import { AnalyticsTracker } from "@/lib/analytics";
 
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -127,6 +128,7 @@ const SuperSeteFAQ = lazy(() => import("@/pages/super-sete/faq"));
 const Sobre = lazy(() => import("@/pages/sobre"));
 const Privacidade = lazy(() => import("@/pages/privacidade"));
 const Termos = lazy(() => import("@/pages/termos"));
+const Parceiros = lazy(() => import("@/pages/parceiros"));
 const Contato = lazy(() => import("@/pages/contato"));
 
 const BlogFeed = lazy(() => import("@/pages/blog/feed"));
@@ -278,6 +280,7 @@ function Router() {
         <Route path="/sobre" component={Sobre} />
         <Route path="/privacidade" component={Privacidade} />
         <Route path="/termos" component={Termos} />
+        <Route path="/parceiros" component={Parceiros} />
         <Route path="/contato" component={Contato} />
 
         {/* Public Blog Routes */}
@@ -304,6 +307,7 @@ function App() {
           <AnalyticsTracker />
           <Router />
           <CookieConsent />
+          <StickyAffiliateBar />
           <CookiePreferencesLink />
         </WouterRouter>
         <Toaster />
