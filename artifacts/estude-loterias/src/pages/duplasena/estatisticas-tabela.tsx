@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn } from "@/lib/utils";
 import { Table as TableIcon } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 
 const COR = "#a61324";
 
@@ -103,6 +105,8 @@ export default function DuplasenaEstatisticasTabela() {
 
   const cardTitle = { mais: "Dezenas Mais Sorteadas", menos: "Dezenas Menos Sorteadas", atrasadas: "Dezenas Mais Atrasadas" }[tab];
   const cardDesc = { mais: "Ranking de todas as dezenas por frequência histórica (maior → menor)", menos: "Ranking de todas as dezenas por frequência histórica (menor → maior)", atrasadas: "Ranking de todas as dezenas por atraso (mais ausente → mais recente)" }[tab];
+
+  const ferramenta = getToolExperiment();
 
   return (
     <div className="space-y-6">
@@ -197,6 +201,16 @@ export default function DuplasenaEstatisticasTabela() {
           <AdUnit slot="3322114466" format="rectangle" className="w-full" />
         </div>
       </div>
+
+      <AffiliateCard
+        afiliado={ferramenta.afiliado}
+        variant={ferramenta.variant}
+        placement="ferramenta_inline"
+        moduleId="aff_duplasena_tabela_de_dezenas"
+        title={ferramenta.title}
+        body={ferramenta.body}
+        ctaLabel={ferramenta.ctaLabel}
+      />
     </div>
   );
 }

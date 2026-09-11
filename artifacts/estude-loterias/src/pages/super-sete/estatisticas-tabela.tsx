@@ -11,6 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Table as TableIcon } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 
 const COR = "#a8cf45";
 const BALL_BG = "#a8cf45";
@@ -108,6 +110,8 @@ export default function SuperSeteEstatisticasTabela() {
 
   const cardTitle = { mais: "Números Mais Sorteados", menos: "Números Menos Sorteados", atrasadas: "Números Mais Atrasados" }[tab];
   const cardDesc = { mais: "Ranking de todos os números por frequência histórica (maior → menor)", menos: "Ranking de todos os números por frequência histórica (menor → maior)", atrasadas: "Ranking de todos os números por atraso (mais ausente → mais recente)" }[tab];
+
+  const ferramenta = getToolExperiment();
 
   return (
     <div className="space-y-6">
@@ -217,6 +221,16 @@ export default function SuperSeteEstatisticasTabela() {
           <AdUnit slot="3322114455" format="rectangle" className="w-full" />
         </div>
       </div>
+
+      <AffiliateCard
+        afiliado={ferramenta.afiliado}
+        variant={ferramenta.variant}
+        placement="ferramenta_inline"
+        moduleId="aff_supersete_tabela_de_dezenas"
+        title={ferramenta.title}
+        body={ferramenta.body}
+        ctaLabel={ferramenta.ctaLabel}
+      />
     </div>
   );
 }

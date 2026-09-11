@@ -9,6 +9,7 @@ import { LotteryBall } from "@/components/ui/lottery-ball";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
 import { ConcursoNavigator } from "@/components/ui/ConcursoNavigator";
 import type { ResultadoDiadesorte } from "@workspace/api-client-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -273,6 +274,16 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoDiad
         <RepeticoesCard concurso={resultado.concurso} dezenas={resultado.dezenas} />
         <PadroesCard dezenas={resultado.dezenas} />
       </div>
+
+      <AffiliateCard
+        afiliado="clube_lotosport"
+        variant="landing"
+        placement="resultado_inline"
+        moduleId="aff_diadesorte_resultado"
+        title="Jogue em bolão"
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        ctaLabel="Ver bolões"
+      />
     </div>
   );
 }

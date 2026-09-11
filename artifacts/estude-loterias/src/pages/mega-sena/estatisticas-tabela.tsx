@@ -11,6 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { Table as TableIcon } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
+import { getToolExperiment } from "@/lib/experiment";
 
 const COR = "#009640";
 
@@ -145,6 +147,8 @@ export default function MegaSenaEstatisticasTabela() {
     menos:     "Ranking de todas as dezenas por frequência histórica (menor → maior)",
     atrasadas: "Ranking de todas as dezenas por atraso (mais ausente → mais recente)",
   }[tab];
+
+  const ferramenta = getToolExperiment();
 
   return (
     <div className="space-y-6">
@@ -282,6 +286,16 @@ export default function MegaSenaEstatisticasTabela() {
           <AdUnit slot="3322114455" format="rectangle" className="w-full" />
         </div>
       </div>
+
+      <AffiliateCard
+        afiliado={ferramenta.afiliado}
+        variant={ferramenta.variant}
+        placement="ferramenta_inline"
+        moduleId="aff_megasena_tabela_de_dezenas"
+        title={ferramenta.title}
+        body={ferramenta.body}
+        ctaLabel={ferramenta.ctaLabel}
+      />
     </div>
   );
 }
