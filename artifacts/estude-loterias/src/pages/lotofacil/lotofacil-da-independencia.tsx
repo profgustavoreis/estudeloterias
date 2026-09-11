@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { formatCurrency } from "@/lib/formatters";
 import { DezenasGrid } from "@/components/ui/dezenas-grid";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AdUnit } from "@/components/ui/AdUnit";
+import { AffiliateCard } from "@/components/ui/AffiliateCard";
 import { Badge } from "@/components/ui/badge";
 import { Flag, Trophy, Sparkles, Clock, ArrowRight, BookOpen, TrendingUp } from "lucide-react";
 import { PageSEO } from "@/components/seo/PageSEO";
@@ -154,7 +154,13 @@ export default function LotofacilDaIndependencia() {
         </Link>
       </div>
 
-      <AdUnit slot="7788990011" format="horizontal" className="w-full" />
+      <AffiliateCard
+        afiliado="clube_lotosport"
+        placement="lotofacil_independencia_inline"
+        moduleId="aff_slot_7788990011"
+        title="Jogar em bolão na Lotofácil da Independência"
+        body="No Clube Lotosport você pode entrar em bolões com mais dezenas, dividindo o custo com outras pessoas. Veja as opções disponíveis para o próximo concurso especial."
+      />
 
       <Card id="historico">
         <CardHeader>

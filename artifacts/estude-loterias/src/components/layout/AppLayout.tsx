@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { TopNav } from "./TopNav";
+import { buildAffiliateUrl, trackAffiliateClick, type Afiliado } from "@/lib/affiliate";
 
 const loterias: Array<{ name: string; href: string; active: boolean; soon?: boolean }> = [
   { name: "Mega-Sena",   href: "/mega-sena",    active: true },
@@ -24,6 +25,18 @@ const institucional: Array<{ href: string; label: string; external?: boolean }> 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const ano = new Date().getFullYear();
+
+  const footerAffiliate = useMemo(() => {
+    const afiliado: Afiliado = "clube_lotosport";
+    const ctaLabel = "Ver bolões";
+    const placement = "footer";
+    return {
+      afiliado,
+      ctaLabel,
+      placement,
+      linkUrl: buildAffiliateUrl({ afiliado, placement, ctaLabel }),
+    };
+  }, []);
 
   // Scroll to top on menu-driven route changes. Tool interactions (simulador/gerador/conferidor) stay in-page so naturally unaffected.
   useEffect(() => {
@@ -149,14 +162,35 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 As loterias são jogos de azar permitidos apenas para maiores de 18 anos.
                 Jogue com responsabilidade.
               </p>
-              <a
-                href="https://clubelotosport.com.br/convite/694f3c11405d9"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-xs text-[#009640] hover:underline font-medium"
-              >
-                Apostar no Clube LotoSport →
-              </a>
+              {footerAffiliate.linkUrl && (
+                <div className="space-y-1">
+                  <span className="inline-flex items-center rounded-full bg-[#009640] px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white">
+                    Parceiro
+                  </span>
+                  <a
+                    href={footerAffiliate.linkUrl}
+                    target="_blank"
+                    rel="sponsored noopener noreferrer"
+                    title="Site parceiro · +18"
+                    onClick={() =>
+                      trackAffiliateClick({
+                        afiliado: footerAffiliate.afiliado,
+                        placement: footerAffiliate.placement,
+                        ctaLabel: footerAffiliate.ctaLabel,
+                        linkUrl: footerAffiliate.linkUrl ?? undefined,
+                      })
+                    }
+                    className="flex w-fit items-center gap-1 text-xs text-[#009640] hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[#009640] rounded"
+                  >
+                    {footerAffiliate.ctaLabel}
+                    <span aria-hidden>↗</span>
+                    <span className="sr-only">(site parceiro, abre em nova aba)</span>
+                  </a>
+                  <span className="block text-[10px] text-muted-foreground/80 leading-relaxed">
+                    Link de parceria. Podemos receber comissão, sem custo para você. Site parceiro · +18
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

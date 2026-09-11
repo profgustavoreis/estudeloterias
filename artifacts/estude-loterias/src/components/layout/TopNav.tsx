@@ -1,11 +1,71 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import {
+  buildAffiliateUrl,
+  trackAffiliateClick,
+  type Afiliado,
+} from "@/lib/affiliate";
 import {
   ChevronDown, Menu, X,
   BarChart3, Dices, Gift, HelpCircle, Home,
   List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck, PartyPopper, Newspaper,
 } from "lucide-react";
+
+// ── Afiliado do header (Fase 0: Clube Lotosport) ──────────────────────────────
+const HEADER_AFFILIADO: Afiliado = "clube_lotosport";
+// Ponto único de troca do rótulo do CTA (A/B futuro).
+const HEADER_CTA_LABEL = "Ver bolões";
+
+function AffiliateHeaderCta({
+  placement,
+  className,
+  showMicrocopy = false,
+}: {
+  placement: string;
+  className?: string;
+  showMicrocopy?: boolean;
+}) {
+  const linkUrl = useMemo(
+    () => buildAffiliateUrl({ afiliado: HEADER_AFFILIADO, placement, ctaLabel: HEADER_CTA_LABEL }),
+    [placement],
+  );
+
+  if (!linkUrl) return null;
+
+  return (
+    <a
+      href={linkUrl}
+      target="_blank"
+      rel="sponsored noopener noreferrer"
+      title="Site parceiro · +18"
+      onClick={() =>
+        trackAffiliateClick({
+          afiliado: HEADER_AFFILIADO,
+          placement,
+          ctaLabel: HEADER_CTA_LABEL,
+          linkUrl,
+        })
+      }
+      className={cn(
+        "bg-[#009640] text-white hover:bg-[#007b34] transition-colors",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#009640] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        className,
+      )}
+    >
+      <span className="inline-flex items-center gap-1">
+        {HEADER_CTA_LABEL}
+        <span aria-hidden>↗</span>
+        <span className="sr-only">(site parceiro, abre em nova aba)</span>
+      </span>
+      {showMicrocopy && (
+        <span className="text-[10px] font-medium leading-none text-white/90">
+          site parceiro · +18
+        </span>
+      )}
+    </a>
+  );
+}
 
 // ── Mega-Sena items ───────────────────────────────────────────────────────────
 const megaSenaTools = [
@@ -573,14 +633,18 @@ export function TopNav() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
-            <a
-              href="https://clubelotosport.com.br/convite/694f3c11405d9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg bg-[#009640] text-white hover:bg-[#007b34] transition-colors"
-            >
-              Apostar
-            </a>
+            {/* Desktop CTA do afiliado (com identificação "site parceiro · +18") */}
+            <AffiliateHeaderCta
+              placement="topnav_desktop"
+              showMicrocopy
+              className="hidden sm:flex flex-col items-center justify-center px-4 py-1.5 rounded-lg text-sm font-semibold leading-tight"
+            />
+
+            {/* Mobile CTA compacto — mesmo destino, visível no header em telas pequenas */}
+            <AffiliateHeaderCta
+              placement="topnav_mobile"
+              className="sm:hidden inline-flex items-center justify-center min-h-[44px] px-3 rounded-lg text-xs font-semibold"
+            />
 
             {/* Mobile hamburger */}
             <button
@@ -1062,14 +1126,11 @@ export function TopNav() {
               </div>
             </div>
 
-            <a
-              href="https://clubelotosport.com.br/convite/694f3c11405d9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center p-3 rounded-lg bg-[#009640] text-white font-semibold text-sm"
-            >
-              Apostar no Clube LotoSport
-            </a>
+            <AffiliateHeaderCta
+              placement="topnav_mobile_menu"
+              showMicrocopy
+              className="flex flex-col items-center justify-center gap-0.5 p-3 rounded-lg text-sm font-semibold"
+            />
           </div>
         </div>
       )}
