@@ -290,13 +290,13 @@ export default function Home() {
       )}
 
       <AffiliateCard
-        afiliado="clube_lotosport"
+        afiliado="net_sorte"
         variant="landing"
         placement="home_inline"
-        moduleId="home_inline_bottom"
-        title="Jogue em bolão e divida o custo"
-        body="O Clube Lotosport organiza bolões de várias loterias Caixa: você escolhe a cota e concorre com o grupo, com o prêmio proporcional às cotas compradas."
-        ctaLabel="Conhecer o Clube Lotosport"
+        moduleId="home_inline_net_sorte"
+        title="Monte jogos com mais dezenas"
+        body="No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias."
+        ctaLabel="Ver ferramentas"
       />
     </div>
   );

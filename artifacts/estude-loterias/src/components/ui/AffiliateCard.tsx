@@ -36,8 +36,8 @@ const RESPONSIBLE = "18+ · Jogue com responsabilidade";
 
 /**
  * Card nativo de afiliado (substitui o AdUnit naquela posição).
- * Visualmente distinto do conteúdo editorial: borda tracejada, gradiente sutil
- * e selo "Parceiro".
+ * Visualmente distinto do conteúdo editorial: moldura sólida com tom do
+ * parceiro, filete superior e selo "Parceiro".
  *
  * Nunca deve ser envolvido por `<ins class="adsbygoogle">`.
  */
@@ -140,8 +140,7 @@ export function AffiliateCard({
       data-affiliate={afiliado}
       data-affiliate-placement={placement}
       className={cn(
-        "relative overflow-hidden rounded-2xl border-2 border-dashed border-[#009640]/40",
-        "bg-gradient-to-br from-[#009640]/[0.08] via-background to-background",
+        "relative overflow-hidden rounded-xl border border-[#009640]/40 bg-card text-card-foreground shadow-sm",
         "p-5 sm:p-6",
         className,
       )}
@@ -149,7 +148,7 @@ export function AffiliateCard({
       {/* Filete superior de destaque */}
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#009640] via-emerald-400 to-[#009640]"
+        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#007b34] via-[#009640] to-[#007b34]"
       />
 
       <div className="flex items-center gap-2 mb-3">

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
-import { CONSENT_OPEN_EVENT, readConsent, saveConsent } from "@/lib/consent";
+import { CONSENT_OPEN_EVENT, MARKETING_CONSENT_ENABLED, readConsent, saveConsent } from "@/lib/consent";
 
 /** Estilo base compartilhado: garante peso visual equivalente entre as ações. */
 const actionButtonBase =
@@ -80,7 +80,8 @@ export function CookieConsent() {
   const openPreferences = useCallback(() => {
     const current = readConsent();
     setAnalyticsDraft(current?.analytics ?? false);
-    setMarketingDraft(current?.marketing ?? false);
+    // Categoria oculta enquanto a publicidade estiver desativada: nunca pré-marca.
+    setMarketingDraft(MARKETING_CONSENT_ENABLED && (current?.marketing ?? false));
     setPrefsOpen(true);
   }, []);
 
@@ -98,7 +99,13 @@ export function CookieConsent() {
     setPrefsOpen(false);
   }, []);
 
-  const handleAcceptAll = useCallback(() => commit(true, true), [commit]);
+  // "Aceitar todos" concede todas as categorias ATIVAS; com a publicidade
+  // desativada, concede apenas análise. O `saveConsent` ainda reforça o
+  // `marketing: false` como defesa em profundidade.
+  const handleAcceptAll = useCallback(
+    () => commit(true, MARKETING_CONSENT_ENABLED),
+    [commit],
+  );
   const handleRejectAll = useCallback(() => commit(false, false), [commit]);
   const handleSavePreferences = useCallback(
     () => commit(analyticsDraft, marketingDraft),
@@ -170,13 +177,15 @@ export function CookieConsent() {
               checked={analyticsDraft}
               onCheckedChange={setAnalyticsDraft}
             />
-            <CategoryRow
-              id="consent-marketing"
-              title="Publicidade"
-              description="Cookies de anúncios e personalização (Google AdSense). Hoje estão desativados; esta preferência deixa o consentimento pronto para quando os anúncios entrarem em produção."
-              checked={marketingDraft}
-              onCheckedChange={setMarketingDraft}
-            />
+            {MARKETING_CONSENT_ENABLED && (
+              <CategoryRow
+                id="consent-marketing"
+                title="Publicidade"
+                description="Cookies de anúncios e personalização (Google AdSense). Hoje estão desativados; esta preferência deixa o consentimento pronto para quando os anúncios entrarem em produção."
+                checked={marketingDraft}
+                onCheckedChange={setMarketingDraft}
+              />
+            )}
           </div>
 
           <DialogFooter className="gap-2 sm:gap-2">

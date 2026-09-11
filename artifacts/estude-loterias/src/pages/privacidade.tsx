@@ -56,7 +56,7 @@ export default function Privacidade() {
           <ul className="text-sm leading-relaxed list-disc list-inside space-y-1 text-muted-foreground">
             <li><strong>Essenciais:</strong> necessários para o funcionamento básico e a segurança do site. Não podem ser desativados pelas preferências de cookies.</li>
             <li><strong>Análise (estatísticas):</strong> ajudam a medir audiência e entender como as páginas são usadas, de forma agregada. Incluem o Google Analytics 4 (seção 5).</li>
-            <li><strong>Marketing/publicidade:</strong> usados para medir o desempenho de campanhas e, caso venhamos a exibir anúncios, para personalização. Atualmente não exibimos anúncios de terceiros.</li>
+            <li><strong>Marketing/publicidade:</strong> seriam usados para medir o desempenho de campanhas e, caso venhamos a exibir anúncios, para personalização. <strong>Atualmente não há cookies de publicidade ativos</strong> e essa categoria não é solicitada no banner de consentimento; caso os anúncios sejam ativados, ela voltará a ser apresentada.</li>
           </ul>
           <p className="text-sm leading-relaxed">
             As categorias não essenciais só são ativadas com o seu consentimento e podem ser
@@ -68,9 +68,12 @@ export default function Privacidade() {
           <h2 className="text-base font-semibold">4. Consentimento e preferências de cookies</h2>
           <p className="text-sm leading-relaxed">
             Na primeira visita, exibimos um banner de consentimento no qual você pode{" "}
-            <strong>aceitar</strong> ou <strong>rejeitar</strong> cada categoria de cookies
-            (análise e marketing), de forma granular. Também utilizamos o Consent Mode do
-            Google, de modo que as ferramentas de análise respeitam as suas escolhas.
+            <strong>aceitar</strong> ou <strong>rejeitar</strong> cada categoria de cookies, de
+            forma granular. Hoje o banner cobre apenas as categorias <strong>essenciais</strong> e
+            de <strong>análise</strong>, pois não há cookies de publicidade em uso; a categoria de
+            publicidade voltará a ser exibida se os anúncios forem ativados. Também utilizamos o
+            Consent Mode do Google, de modo que as ferramentas de análise respeitam as suas
+            escolhas.
           </p>
           <p className="text-sm leading-relaxed">
             Você pode alterar ou <strong>revogar</strong> o consentimento a qualquer momento

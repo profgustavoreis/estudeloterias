@@ -6,8 +6,11 @@ import { openCookiePreferences } from "@/lib/consent";
  * Link "Preferências de cookies" para o rodapé.
  *
  * O `AppLayout.tsx` é editado em paralelo por outra lane, então este componente
- * injeta o link via portal no grupo de links existente do rodapé
- * (ao lado de "Privacidade · Termos · Contato"), sem precisar alterá-lo.
+ * injeta o link via portal na lista institucional do rodapé, sem precisar
+ * alterá-lo. O botão recebe exatamente as classes dos demais links
+ * institucionais (`text-xs text-muted-foreground hover:text-foreground`) e vira
+ * um novo `<li>`, herdando o `space-y-2` da lista.
+ *
  * Se o rodapé não estiver disponível, não renderiza nada.
  */
 export function CookiePreferencesLink() {
@@ -19,14 +22,16 @@ export function CookiePreferencesLink() {
     const footer = document.querySelector("footer");
     if (!footer) return;
 
-    const anchor = footer.querySelector('a[href="/privacidade"]');
-    const group = anchor?.parentElement;
-    if (!group) return;
+    // A lista institucional é o único <ul> do rodapé com um link de privacidade.
+    // O `href$=` aceita tanto `/privacidade` quanto um path com base.
+    const anchor = Array.from(
+      footer.querySelectorAll<HTMLAnchorElement>('a[href$="/privacidade"]'),
+    ).find((a) => a.closest("ul"));
+    const list = anchor?.closest("ul");
+    if (!list) return;
 
-    const holder = document.createElement("span");
-    // `display: contents` faz o separador e o botão virarem itens do flex do rodapé.
-    holder.className = "contents";
-    group.appendChild(holder);
+    const holder = document.createElement("li");
+    list.appendChild(holder);
     setTarget(holder);
 
     return () => {
@@ -38,16 +43,13 @@ export function CookiePreferencesLink() {
   if (!target) return null;
 
   return createPortal(
-    <>
-      <span aria-hidden="true">·</span>
-      <button
-        type="button"
-        onClick={openCookiePreferences}
-        className="rounded transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        Preferências de cookies
-      </button>
-    </>,
+    <button
+      type="button"
+      onClick={openCookiePreferences}
+      className="cursor-pointer text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded"
+    >
+      Preferências de cookies
+    </button>,
     target,
   );
 }

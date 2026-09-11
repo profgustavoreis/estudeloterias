@@ -13,6 +13,18 @@
 export const CONSENT_STORAGE_KEY = "el_cookie_consent_v1";
 export const CONSENT_VERSION = 1;
 
+/**
+ * Flag da finalidade de publicidade/marketing.
+ *
+ * Hoje o Google AdSense está desativado (`index.html`) e não há cookies de
+ * publicidade em uso, então NÃO pedimos consentimento para essa finalidade
+ * (categoria "Publicidade" oculta no CMP) e os sinais `ad_*` do Consent Mode
+ * permanecem sempre negados. Mantemos o estado/sinais prontos para reativar:
+ * basta virar este flag para `true` (e reativar o script do AdSense no
+ * `index.html`) que a UI e o Consent Mode voltam a oferecer/aceitar marketing.
+ */
+export const MARKETING_CONSENT_ENABLED = false;
+
 /** Disparado sempre que uma nova escolha é salva. Trackers escutam para (re)agir. */
 export const CONSENT_CHANGE_EVENT = "el-consent-change";
 /** Disparado para reabrir o painel do CMP (ex.: link no rodapé). */
@@ -75,11 +87,14 @@ export function readConsent(): ConsentState | null {
 
 /** Mapeia categorias do CMP para os sinais do Consent Mode v2. */
 function toGtagSignals(state: Pick<ConsentState, "analytics" | "marketing">) {
+  // Enquanto a publicidade estiver desativada, `ad_*` fica sempre negado,
+  // independentemente do que houver persistido no estado.
+  const marketingGranted = MARKETING_CONSENT_ENABLED && state.marketing;
   return {
     analytics_storage: state.analytics ? "granted" : "denied",
-    ad_storage: state.marketing ? "granted" : "denied",
-    ad_user_data: state.marketing ? "granted" : "denied",
-    ad_personalization: state.marketing ? "granted" : "denied",
+    ad_storage: marketingGranted ? "granted" : "denied",
+    ad_user_data: marketingGranted ? "granted" : "denied",
+    ad_personalization: marketingGranted ? "granted" : "denied",
   } as const;
 }
 
@@ -100,10 +115,12 @@ function emitConsentChange(): void {
  * Persiste a escolha, aplica no gtag e notifica os interessados.
  * Use sempre este helper (em vez de escrever no localStorage direto).
  */
-export function saveConsent(analytics: boolean, marketing: boolean): ConsentState {
+export function saveConsent(analytics: boolean, marketing: boolean = false): ConsentState {
+  // Com a publicidade desativada, nunca persistimos marketing: true.
+  const effectiveMarketing = MARKETING_CONSENT_ENABLED ? marketing : false;
   const state: ConsentState = {
     analytics,
-    marketing,
+    marketing: effectiveMarketing,
     version: CONSENT_VERSION,
     updatedAt: new Date().toISOString(),
   };
@@ -126,6 +143,8 @@ export function saveConsent(analytics: boolean, marketing: boolean): ConsentStat
  * (nada não-essencial roda antes do consentimento).
  */
 export function hasConsent(category: ConsentCategory = "analytics"): boolean {
+  // Finalidade inexistente (publicidade desativada) nunca conta como consentida.
+  if (category === "marketing" && !MARKETING_CONSENT_ENABLED) return false;
   const state = readConsent();
   if (!state) return false;
   return state[category];
