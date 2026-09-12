@@ -86,6 +86,12 @@ export default function Privacidade() {
             funcionamento e a segurança do site. Esta página tem caráter informativo e não
             constitui parecer jurídico.
           </p>
+          <p className="text-sm leading-relaxed">
+            Para comprovar a sua escolha, registramos no servidor a decisão de consentimento
+            (categorias aceitas ou recusadas, versão do aviso e um identificador anônimo gerado
+            pelo seu navegador). Esse registro não contém dados pessoais e serve apenas para
+            demonstrar que o consentimento foi solicitado e respondido.
+          </p>
         </section>
 
         <section className="space-y-3">

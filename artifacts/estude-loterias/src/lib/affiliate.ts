@@ -13,6 +13,8 @@
  * - Disclosure de parceria sempre antes do clique (CDC/CONAR).
  */
 
+import { hasConsent } from "@/lib/consent";
+
 export type Afiliado = "clube_lotosport" | "net_sorte";
 
 /** Variantes de link disponíveis por parceiro. */
@@ -196,6 +198,10 @@ function fireAffiliateEvent(
   params: AffiliateTrackParams,
   extra?: Record<string, unknown>,
 ): void {
+  // LGPD: medir clique/impressão no GA4 é tratamento para "análise", então só envia
+  // com consentimento. Exibir e linkar a oferta segue livre (sem gate).
+  if (!hasConsent("analytics")) return;
+
   const gtag = getGtag();
   if (!gtag) return;
 

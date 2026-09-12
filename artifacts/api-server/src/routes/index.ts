@@ -13,10 +13,12 @@ import maismilionariaRouter from "./maismilionaria";
 import adminRouter from "./admin";
 import blogRouter from "./blog";
 import adminBlogRouter from "./admin-blog";
+import consentRouter from "./consent";
 
 const router: IRouter = Router();
 
 router.use(healthRouter);
+router.use(consentRouter);
 router.use(loteriasRouter);
 router.use(megaSenaRouter);
 router.use(lotofacilRouter);

@@ -12,6 +12,10 @@
 
 export const CONSENT_STORAGE_KEY = "el_cookie_consent_v1";
 export const CONSENT_VERSION = 1;
+/** Identificador anônimo do navegador, usado só para correlacionar registros de consentimento. */
+export const CONSENT_CLIENT_ID_KEY = "el_consent_client_id";
+/** Endpoint same-origin que registra a decisão (prova LGPD art. 8º, §2º). */
+const CONSENT_ENDPOINT = "/api/consent";
 
 /**
  * Flag da finalidade de publicidade/marketing.
@@ -111,6 +115,72 @@ function emitConsentChange(): void {
   }
 }
 
+function generateClientId(): string {
+  try {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      return crypto.randomUUID();
+    }
+  } catch {
+    // Web Crypto indisponível: cai no fallback abaixo.
+  }
+  return `c_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`;
+}
+
+/**
+ * Obtém (ou gera uma única vez) o id anônimo do navegador. É armazenado no
+ * localStorage e NÃO é PII: é um valor aleatório usado apenas para correlacionar
+ * registros de consentimento. Retorna "" quando o storage está indisponível.
+ */
+export function getOrCreateConsentClientId(): string {
+  if (typeof window === "undefined") return "";
+  try {
+    const existing = window.localStorage.getItem(CONSENT_CLIENT_ID_KEY);
+    if (existing) return existing;
+    const generated = generateClientId();
+    window.localStorage.setItem(CONSENT_CLIENT_ID_KEY, generated);
+    return generated;
+  } catch {
+    return "";
+  }
+}
+
+/**
+ * Envia a decisão ao servidor em fire-and-forget. Best-effort: nunca lança nem
+ * bloqueia a UI. Usa `sendBeacon` quando disponível (sobrevive ao
+ * descarregamento da página) e `fetch` com `keepalive` como fallback.
+ */
+function reportConsentToServer(state: ConsentState): void {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return;
+
+  const payload = {
+    version: state.version,
+    analytics: state.analytics,
+    marketing: state.marketing,
+    clientId: getOrCreateConsentClientId(),
+  };
+
+  try {
+    const body = JSON.stringify(payload);
+
+    const beacon = navigator.sendBeacon;
+    if (typeof beacon === "function") {
+      const blob = new Blob([body], { type: "application/json" });
+      if (beacon.call(navigator, CONSENT_ENDPOINT, blob)) return;
+    }
+
+    void fetch(CONSENT_ENDPOINT, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body,
+      keepalive: true,
+    }).catch(() => {
+      // Silencioso: o registro no servidor é complementar ao localStorage.
+    });
+  } catch {
+    // Silencioso: nunca deixa o registro de consentimento afetar o usuário.
+  }
+}
+
 /**
  * Persiste a escolha, aplica no gtag e notifica os interessados.
  * Use sempre este helper (em vez de escrever no localStorage direto).
@@ -135,6 +205,7 @@ export function saveConsent(analytics: boolean, marketing: boolean = false): Con
 
   applyConsentToGtag(state);
   emitConsentChange();
+  reportConsentToServer(state);
   return state;
 }
 
