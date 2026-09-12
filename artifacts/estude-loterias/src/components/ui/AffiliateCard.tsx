@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef } from "react";
-import { useLocation } from "wouter";
 import { BadgeCheck } from "lucide-react";
 import {
   AFFILIATE_NAMES,
@@ -27,12 +26,6 @@ export interface AffiliateCardProps {
   body: string;
   /** Ponto único de troca do rótulo do CTA (A/B futuro). */
   ctaLabel?: string;
-  /**
-   * Suprime a tinta/glow decorativo e mantém o card sólido (`bg-card`).
-   * Usado como anti-colisão nas páginas da Dupla Sena (#a61324).
-   * Padrão: detectado pela rota (`/duplasena`).
-   */
-  suppressTint?: boolean;
   className?: string;
 }
 
@@ -44,13 +37,17 @@ const RESPONSIBLE = "18+ · Jogue com responsabilidade";
 /**
  * Card nativo de afiliado (substitui o AdUnit naquela posição).
  *
- * Identidade: VERMELHO = parceiro/publicidade (verde é a marca do site).
+ * Identidade: TEAL = parceiro/publicidade (verde é a marca do site).
  * Tokens em `index.css` (`--affiliate-*`):
- *   accent   borda/filete/glow/ring (>=3:1 como UI; nunca atrás de texto normal)
- *   cta      fundo sólido do CTA (branco 5.74:1 — AA)
- *   cta-hover  hover do CTA (branco 6.47:1 — AA)
- *   label    texto do parceiro/selo (5.74:1 no claro; 10.2:1 no escuro)
- *   accent-top  tinta decorativa do topo, sem texto sobreposto
+ *   accent     borda/glow/ring/acento (branco 5.43:1 — AA, pode ir em texto/CTA)
+ *   cta        fundo sólido do CTA (branco 5.43:1 — AA)
+ *   cta-hover  hover do CTA (branco 7.59:1 — AA)
+ *   label      texto do parceiro/selo (7.59:1 no claro; alto contraste no escuro)
+ *   accent-top tinta decorativa do topo, sem texto sobreposto
+ *
+ * A "assinatura" da superfície é o tint suave (canto superior) + borda de acento
+ * arredondada + glow — sem filete duro. Hover intensifica borda/glow e eleva o
+ * card de leve.
  *
  * Corpo em `text-foreground/75` (7.95:1 no claro) e disclosure/18+ em
  * `text-foreground/60` (4.69:1 no claro). Nada de `muted-foreground/80`.
@@ -65,15 +62,9 @@ export function AffiliateCard({
   title,
   body,
   ctaLabel = DEFAULT_CTA,
-  suppressTint,
   className,
 }: AffiliateCardProps) {
   const cardRef = useRef<HTMLElement>(null);
-  const [location] = useLocation();
-
-  // Anti-colisão: na Dupla Sena o vermelho de afiliado encosta no #a61324 da
-  // loteria. Mantemos rótulo + ícone + contorno (acento claro), mas sem tinta.
-  const plain = suppressTint ?? location.startsWith("/duplasena");
 
   // Subid/UTM gerados uma vez por montagem para manter impressão e clique coerentes.
   const linkUrl = useMemo(
@@ -161,29 +152,24 @@ export function AffiliateCard({
       aria-label={`Conteúdo de parceiro — ${AFFILIATE_NAMES[afiliado]}`}
       data-affiliate={afiliado}
       data-affiliate-placement={placement}
-      data-affiliate-plain={plain ? "" : undefined}
       className={cn(
-        // Superfície sólida (`bg-card`); destaque por filete + borda de acento.
-        "group relative overflow-hidden rounded-xl border border-affiliate-accent/30 border-t-4 border-t-affiliate-accent bg-card text-card-foreground shadow-sm transition-all duration-300",
-        !plain && "hover:border-affiliate-accent/50 hover:shadow-xl hover:shadow-affiliate-accent/15",
+        // Superfície de destaque: borda de acento arredondada + tint + glow, sem filete duro.
+        "group relative overflow-hidden rounded-xl border border-affiliate-accent/25 bg-card text-card-foreground shadow-sm transition-all duration-300",
+        "hover:border-affiliate-accent/50 hover:shadow-xl hover:shadow-affiliate-accent/15 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
         "p-5 sm:p-6",
         className,
       )}
     >
-      {!plain && (
-        <>
-          {/* Tinta decorativa no topo (ancorada à direita, onde não há texto) */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute right-0 top-0 h-24 w-2/3 bg-gradient-to-l from-affiliate-accent-top to-transparent dark:hidden"
-          />
-          {/* Glow radial ambiente (decorativo, não intercepta cliques) */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-affiliate-accent/15 blur-2xl transition-colors duration-500 group-hover:bg-affiliate-accent/25 dark:bg-affiliate-accent/20"
-          />
-        </>
-      )}
+      {/* Tinta decorativa no topo (ancorada à direita, onde não há texto) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-0 h-24 w-2/3 bg-gradient-to-l from-affiliate-accent-top to-transparent"
+      />
+      {/* Glow radial ambiente (decorativo, não intercepta cliques) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-affiliate-accent/15 blur-2xl transition-colors duration-500 group-hover:bg-affiliate-accent/25 dark:bg-affiliate-accent/20"
+      />
 
       <div className="relative z-10">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
@@ -215,7 +201,7 @@ export function AffiliateCard({
             onClick={handleClick}
             className={cn(
               "inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2",
-              // Fundo sólido do token: branco passa em AA (5.74:1).
+              // Fundo sólido do token: branco passa em AA (5.43:1).
               "rounded-lg bg-affiliate-cta px-5 py-2.5 text-sm font-bold text-white",
               "shadow-sm transition-all hover:bg-affiliate-cta-hover hover:shadow-md hover:shadow-affiliate-accent/25",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",

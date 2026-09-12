@@ -48,9 +48,10 @@ function AffiliateHeaderCta({
         })
       }
       className={cn(
-        // CTA de afiliado: vermelho = parceiro/publicidade (verde é a marca do site).
-        "bg-affiliate-cta text-white hover:bg-affiliate-cta-hover transition-colors",
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        // CTA de afiliado do header: usa o VERDE da marca, como o resto da chrome.
+        // O acento teal de parceiro fica nos widgets de conteúdo (card/sticky/rodapé).
+        "bg-[#009640] text-white hover:bg-[#008237] transition-colors",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#009640] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
     >

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "wouter";
 import { BadgeCheck } from "lucide-react";
 import {
   AFFILIATE_NAMES,
@@ -24,10 +23,10 @@ import { cn } from "@/lib/utils";
  *   cabeçalho e pelos cards inline, então a barra fica restrita ao mobile para
  *   não sobrecarregar a tela com uma terceira superfície fixa.
  *
- * Identidade: vermelho = parceiro/publicidade, via tokens `--affiliate-*`
- * (`cta` branco 5.74:1, `cta-hover` 6.47:1, `label` 5.74:1 no claro /
- * 10.2:1 no escuro). `bg-card` sólido no escuro; destaque por borda/glow.
- * Na Dupla Sena a tinta/glow é suprimida (anti-colisão com #a61324).
+ * Identidade: TEAL = parceiro/publicidade, via tokens `--affiliate-*`
+ * (`cta` branco 5.43:1, `cta-hover` 7.59:1, `label` 7.59:1 no claro / alto
+ * contraste no escuro). Assinatura igual à do `AffiliateCard`: borda de acento
+ * arredondada + tint/glow, sem filete duro.
  */
 const PLACEMENT = "sticky_bottom";
 const AFILIADO: Afiliado = "clube_lotosport";
@@ -60,10 +59,6 @@ function writeSessionFlag(key: string): void {
 
 export function StickyAffiliateBar() {
   const barRef = useRef<HTMLDivElement>(null);
-  const [location] = useLocation();
-
-  // Anti-colisão: na Dupla Sena o vermelho de afiliado encosta no #a61324.
-  const plain = location.startsWith("/duplasena");
 
   const [dismissed, setDismissed] = useState<boolean>(() => readSessionFlag(DISMISS_KEY));
   const [hasConsentDecision, setHasConsentDecision] = useState<boolean>(
@@ -170,20 +165,22 @@ export function StickyAffiliateBar() {
       aria-label={`Conteúdo de parceiro — ${AFFILIATE_NAMES[AFILIADO]}`}
       data-affiliate={AFILIADO}
       data-affiliate-placement={PLACEMENT}
-      data-affiliate-plain={plain ? "" : undefined}
       className="fixed inset-x-0 bottom-0 z-40 sm:hidden animate-in fade-in slide-in-from-bottom-4 duration-300"
     >
       <div className="mx-auto max-w-2xl px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
-        <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/40 border-l-4 border-l-affiliate-accent bg-card shadow-lg">
-          {/* Glow de acento (decorativo; suprimido na Dupla Sena) */}
-          {!plain && (
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-affiliate-accent/20 blur-2xl dark:bg-affiliate-accent/25"
-            />
-          )}
+        <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/25 bg-card shadow-lg">
+          {/* Tinta decorativa no topo (mesma assinatura do card) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-affiliate-accent-top to-transparent"
+          />
+          {/* Glow de acento (decorativo) */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-affiliate-accent/20 blur-2xl dark:bg-affiliate-accent/25"
+          />
 
-          <div className="relative z-10 pl-4 pr-3 py-2">
+          <div className="relative z-10 px-4 py-2">
             <div className="flex min-h-11 items-center gap-2">
               <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-affiliate-cta-hover to-affiliate-cta px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white shadow-sm">
                 <BadgeCheck className="h-3 w-3" aria-hidden />

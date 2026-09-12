@@ -57,10 +57,10 @@
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
   /*
-   * Convenção de cor: VERDE = site; VERMELHO = parceiro/publicidade.
-   * O acento `--affiliate-accent` só pode ir em borda/filete/glow/ring/selo
-   * grande (>=3:1 como elemento de UI) — NUNCA atrás de texto normal, pois
-   * branco sobre ele não passa em AA. Texto/CTA usam os tons escuros.
+   * Convenção de cor: VERDE = site; TEAL = parceiro/publicidade.
+   * Com o teal o acento passa em AA sobre o branco (5.43:1), então
+   * `--affiliate-accent` pode ir em texto/CTA; os tokens de CTA/label usam tons
+   * ainda mais escuros (7.59:1). O acento claro fica em borda/glow/ring.
    */
   --color-affiliate-accent: var(--affiliate-accent);
   --color-affiliate-accent-top: var(--affiliate-accent-top);
@@ -135,18 +135,19 @@
   --radius: 0.3rem;
 
   /*
-   * Tokens de afiliado (verde = site; vermelho = parceiro/publicidade).
+   * Tokens de afiliado (verde = site; teal = parceiro/publicidade).
    * Contraste AA sobre o fundo claro (card branco):
-   *   --affiliate-cta      #c81e1e  branco 5.74:1
-   *   --affiliate-cta-hover#b91c1c  branco 6.47:1
-   *   --affiliate-label    #c81e1e  texto 5.74:1
-   *   --affiliate-accent   #ee3b3b  NÃO texto (branco 3.94:1) — só decoração
+   *   --affiliate-accent   #0f766e  branco 5.43:1
+   *   --affiliate-cta      #0f766e  branco 5.43:1
+   *   --affiliate-cta-hover#115e59  branco 7.59:1
+   *   --affiliate-label    #115e59  texto 7.59:1
+   *   --affiliate-accent-top  tinta decorativa (8% do acento), sem texto sobreposto
    */
-  --affiliate-accent: #ee3b3b;
-  --affiliate-accent-top: color-mix(in oklab, #ee3b3b 8%, transparent);
-  --affiliate-cta: #c81e1e;
-  --affiliate-cta-hover: #b91c1c;
-  --affiliate-label: #c81e1e;
+  --affiliate-accent: #0f766e;
+  --affiliate-accent-top: color-mix(in oklab, #0f766e 8%, transparent);
+  --affiliate-cta: #0f766e;
+  --affiliate-cta-hover: #115e59;
+  --affiliate-label: #115e59;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -194,15 +195,15 @@
   --sidebar-ring: 212.7 26.8% 83.9%;
 
   /*
-   * Afiliado no escuro: acento mais claro para manter >=3:1 sobre o card.
-   * `--affiliate-label` sobe para um tom claro (10.2:1); o #c81e1e do claro
-   * daria apenas 3.49:1 sobre o card escuro.
+   * Afiliado no escuro: acento claro (teal-400) para manter >=3:1 sobre o card;
+   * `--affiliate-label` sobe para teal-200 (contraste alto). O CTA mantém o
+   * teal-700 escuro com texto branco (5.43:1) para não estourar no escuro.
    */
-  --affiliate-accent: #f05252;
-  --affiliate-accent-top: color-mix(in oklab, #f05252 4%, transparent);
-  --affiliate-cta: #c81e1e;
-  --affiliate-cta-hover: #b91c1c;
-  --affiliate-label: #f7a3a3;
+  --affiliate-accent: #2dd4bf;
+  --affiliate-accent-top: color-mix(in oklab, #2dd4bf 5%, transparent);
+  --affiliate-cta: #0f766e;
+  --affiliate-cta-hover: #115e59;
+  --affiliate-label: #5eead4;
 }
 
 @layer base {
