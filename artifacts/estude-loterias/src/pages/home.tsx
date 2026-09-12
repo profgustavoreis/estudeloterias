@@ -146,7 +146,7 @@ export default function Home() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Visão Geral das Loterias</h1>
+        <h1 className="text-3xl font-bold">Resultados e estatísticas das loterias da Caixa</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map(i => (
             <Card key={i}>
@@ -189,8 +189,8 @@ export default function Home() {
         <meta name="twitter:image" content="https://estudeloterias.com.br/opengraph.jpg" />
       </Helmet>
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Visão Geral das Loterias</h1>
-        <p className="text-muted-foreground mt-2">Acompanhe os últimos resultados e prêmios acumulados.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Resultados e estatísticas das loterias da Caixa</h1>
+        <p className="text-muted-foreground mt-2">Um olhar matemático sobre sorteios, prêmios, frequências e probabilidades de cada modalidade.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
