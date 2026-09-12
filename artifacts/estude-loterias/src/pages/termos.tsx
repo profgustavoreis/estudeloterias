@@ -93,7 +93,7 @@ export default function Termos() {
           <p>
             O Estude Loterias é um site gratuito que pode exibir publicidade e conter{" "}
             <strong>links de afiliado</strong> para parceiros comerciais (por exemplo, Clube
-            Lotosport, Net Sorte e Lotosport). Ao clicar em um desses links e contratar um
+            Lotosport e Portal Net Sorte). Ao clicar em um desses links e contratar um
             serviço no site do parceiro, podemos receber uma <strong>comissão</strong>, sem
             qualquer custo adicional para você.
           </p>

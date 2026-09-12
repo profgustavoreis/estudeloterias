@@ -148,7 +148,7 @@ export default function Privacidade() {
           <p className="text-sm leading-relaxed">
             O Estude Loterias é gratuito e se mantém, entre outras formas, por meio de{" "}
             <strong>links de afiliado</strong>. Em nossas páginas podemos incluir links para
-            parceiros comerciais — por exemplo, Clube Lotosport, Net Sorte e Lotosport. Ao
+            parceiros comerciais — por exemplo, Clube Lotosport e Portal Net Sorte. Ao
             clicar em um desses links e contratar um serviço no site do parceiro, podemos
             receber uma <strong>comissão</strong>, sem qualquer custo adicional para você.
           </p>

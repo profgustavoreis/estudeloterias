@@ -16,11 +16,6 @@ const parceiros: Array<{ nome: string; descricao: string }> = [
     descricao:
       "Portal com ferramentas de fechamento e análise para montar jogos com mais dezenas gastando menos. Oferece garantia de 7 dias para os serviços contratados.",
   },
-  {
-    nome: AFFILIATE_NAMES.lotosport,
-    descricao:
-      "Plataforma de ferramentas e estratégias para as loterias, com planos de acesso anual e vitalício.",
-  },
 ];
 
 export default function Parceiros() {
@@ -30,7 +25,7 @@ export default function Parceiros() {
     <div className="max-w-3xl mx-auto space-y-8">
       <PageSEO
         title="Parceiros e como ganhamos dinheiro"
-        description="O Estude Loterias é gratuito e se mantém com links de afiliado. Conheça nossos parceiros (Clube Lotosport, Portal Net Sorte e Lotosport) e entenda como a parceria funciona."
+        description="O Estude Loterias é gratuito e se mantém com links de afiliado. Conheça nossos parceiros (Clube Lotosport e Portal Net Sorte) e entenda como a parceria funciona."
         canonical="/parceiros"
       />
 

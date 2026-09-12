@@ -1,13 +1,11 @@
 /**
  * Affiliate (monetização por afiliação) helpers.
  *
- * Fase 1-A: Clube Lotosport (bolões) e Portal Net Sorte (ferramentas) ativos.
- * Lotosport permanece configurado, mas ainda NÃO é renderizado (A/B futuro).
+ * Parceiros ativos: Clube Lotosport (bolões) e Portal Net Sorte (ferramentas).
  *
  * Cada parceiro pode ter mais de uma variante de link:
  * - `landing`  → página de captura / tráfego frio.
  * - `checkout` → checkout direto / tráfego quente.
- * - `anual` / `vitalicio` → planos do Lotosport (só checkout).
  *
  * Regras:
  * - Todo link de saída deve usar `target="_blank"` + `rel="sponsored noopener noreferrer"`.
@@ -15,12 +13,10 @@
  * - Disclosure de parceria sempre antes do clique (CDC/CONAR).
  */
 
-import { getExperimentTrackFields } from "./experiment";
-
-export type Afiliado = "clube_lotosport" | "net_sorte" | "lotosport";
+export type Afiliado = "clube_lotosport" | "net_sorte";
 
 /** Variantes de link disponíveis por parceiro. */
-export type AffiliateVariant = "landing" | "checkout" | "anual" | "vitalicio";
+export type AffiliateVariant = "landing" | "checkout";
 
 /** URLs de afiliado por parceiro e variante. Variante ausente = indisponível. */
 export const AFFILIATE_URLS: Record<Afiliado, Partial<Record<AffiliateVariant, string>>> = {
@@ -32,25 +28,18 @@ export const AFFILIATE_URLS: Record<Afiliado, Partial<Record<AffiliateVariant, s
     landing: "https://edzz.la/R3QX6?a=56195291",
     checkout: "https://chk.eduzz.com/305064?a=56195291",
   },
-  // Lotosport só tem checkout (anual e vitalício). Configurado, não renderizado.
-  lotosport: {
-    anual: "https://chk.eduzz.com/2074024?a=56195291",
-    vitalicio: "https://chk.eduzz.com/2075097?a=56195291",
-  },
 };
 
 /** Variante usada quando nenhuma é informada (ex.: Net Sorte em tráfego frio). */
 export const DEFAULT_AFFILIATE_VARIANT: Record<Afiliado, AffiliateVariant> = {
   clube_lotosport: "landing",
   net_sorte: "landing",
-  lotosport: "anual",
 };
 
 /** Nome legível do parceiro, para copy/UI. */
 export const AFFILIATE_NAMES: Record<Afiliado, string> = {
   clube_lotosport: "Clube Lotosport",
   net_sorte: "Portal Net Sorte",
-  lotosport: "Lotosport",
 };
 
 /** Resolve a URL base de um parceiro (sem params de rastreio). */
@@ -66,7 +55,7 @@ export interface BuildAffiliateUrlParams {
   afiliado: Afiliado;
   /** Onde o link aparece (ex.: `topnav_desktop`, `footer`, `lotofacil_independencia_inline`). */
   placement: string;
-  /** Texto do CTA, usado no subid/UTM para A/B futuro (ex.: `Ver bolões`). */
+  /** Texto do CTA, usado no subid/UTM (ex.: `Ver bolões`). */
   ctaLabel: string;
   /**
    * Variante do link. Padrão: `DEFAULT_AFFILIATE_VARIANT[afiliado]`
@@ -91,13 +80,6 @@ export interface AffiliateTrackParams {
   page?: string;
   /** Sobrescreve o tipo de página inferido (ex.: `home`, `modalidade`, `blog`). */
   pageType?: string;
-  /**
-   * Identificador do experimento A/B (ex.: `ab_ferramentas_net_vs_loto`).
-   * Quando presente, é enviado como `experiment_id` no evento.
-   */
-  experimentId?: string;
-  /** Braço do experimento (`"A"`/`"B"`). Enviado como `variation`. */
-  variation?: string;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -223,16 +205,6 @@ function fireAffiliateEvent(
     params.page ?? (typeof window !== "undefined" ? window.location.pathname : "");
   const pageType = params.pageType ?? derivePageType(page);
 
-  // Campos de experimento A/B. Preferência para o que vier explícito nos
-  // params; caso contrário, usa a atribuição ativa dos cards de ferramenta
-  // (ver `src/lib/experiment.ts`). Só entram no evento quando existem.
-  const experimentFields = params.experimentId
-    ? {
-        experiment_id: params.experimentId,
-        ...(params.variation ? { variation: params.variation } : {}),
-      }
-    : getExperimentTrackFields(params.placement);
-
   gtag("event", eventName, {
     afiliado: params.afiliado,
     placement: params.placement,
@@ -244,7 +216,6 @@ function fireAffiliateEvent(
     link_url: linkUrl,
     link_domain: getLinkDomain(linkUrl),
     subid: params.subid ?? getSubidFromUrl(linkUrl),
-    ...experimentFields,
     outbound: true,
     ...extra,
   });
