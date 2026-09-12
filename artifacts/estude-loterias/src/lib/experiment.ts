@@ -68,7 +68,7 @@ const ARMS: Record<ToolVariation, Omit<ToolExperimentAssignment, "experimentId" 
     afiliado: "net_sorte",
     variant: "landing",
     title: "Coloque a Matemática a serviço de sua sorte!",
-    body: "A plataforma Net Sorte oferece análises matemáticas detalhadas de todas as modalidades das Loterias Caixa e, principalmente, fechamentos lotéricos inteligentes para você apostar sozinho ou organizar seus próprios bolões. Uma assinatura de R$ 97 oferece acesso ilimitado às ferramentas do Portal Net Sorte por 12 meses.",
+    body: "A plataforma Net Sorte oferece análises matemáticas detalhadas de todas as modalidades das Loterias Caixa e, principalmente, fechamentos lotéricos inteligentes para você apostar sozinho ou organizar seus próprios bolões. Uma assinatura oferece acesso ilimitado às ferramentas do Portal Net Sorte por 12 meses.",
     noteLabel: "Nota do Gustavo:",
     ctaLabel: "Ver ferramentas",
   },
