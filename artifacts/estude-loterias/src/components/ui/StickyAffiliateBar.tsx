@@ -168,13 +168,13 @@ export function StickyAffiliateBar() {
       className="fixed inset-x-0 bottom-0 z-40 sm:hidden animate-in fade-in slide-in-from-bottom-4 duration-300"
     >
       <div className="mx-auto max-w-2xl px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
-        <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card bg-gradient-to-bl from-affiliate-accent/[0.06] via-card to-card shadow-lg">
-          {/* Tinta decorativa: mesmo tratamento radial do card, sem arestas */}
+        <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card shadow-lg">
+          {/* Superfície chapada: tint uniforme, sem aresta (mesmo do card) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(120%_120%_at_100%_0%,var(--affiliate-accent-top),transparent_62%)]"
+            className="pointer-events-none absolute inset-0 bg-affiliate-accent/[0.045]"
           />
-          {/* Glow de acento (decorativo) */}
+          {/* Glow de acento (blur, sem aresta) */}
           <div
             aria-hidden
             className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-affiliate-accent/25 blur-2xl dark:bg-affiliate-accent/30"

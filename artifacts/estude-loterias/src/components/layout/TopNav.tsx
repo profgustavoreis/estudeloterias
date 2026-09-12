@@ -17,6 +17,8 @@ import {
 const HEADER_AFFILIADO: Afiliado = "clube_lotosport";
 // Ponto único de troca do rótulo do CTA (A/B futuro).
 const HEADER_CTA_LABEL = "Ver bolões";
+// Rótulo curto exibido só no CTA compacto de mobile (evita truncar "Ver bolões").
+const HEADER_CTA_LABEL_MOBILE = "Bolões";
 
 function AffiliateHeaderCta({
   placement,
@@ -56,7 +58,8 @@ function AffiliateHeaderCta({
       )}
     >
       <span className="inline-flex items-center gap-1">
-        {HEADER_CTA_LABEL}
+        <span className="hidden sm:inline">{HEADER_CTA_LABEL}</span>
+        <span className="sm:hidden">{HEADER_CTA_LABEL_MOBILE}</span>
         <ArrowUpRight aria-hidden className="h-4 w-4" />
         <span className="sr-only">(site parceiro, abre em nova aba)</span>
       </span>

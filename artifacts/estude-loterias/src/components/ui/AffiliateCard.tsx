@@ -43,14 +43,13 @@ const RESPONSIBLE = "18+ · Jogue com responsabilidade";
  *   cta        fundo sólido do CTA (branco 5.43:1 — AA)
  *   cta-hover  hover do CTA (branco 7.59:1 — AA)
  *   label      texto do parceiro/selo (7.59:1 no claro; alto contraste no escuro)
- *   accent-top tinta decorativa do topo, sem texto sobreposto
  *
- * A "assinatura" da superfície é o tint suave (canto superior) + borda de acento
- * arredondada + glow — sem filete duro. Hover intensifica borda/glow e eleva o
- * card de leve.
+ * Superfície CHAPADA: base `bg-card` + tint teal uniforme de 4.5% numa camada
+ * própria (sem gradiente/faixa) + glow com blur no canto — nada de arestas.
+ * Hover intensifica borda/glow e eleva o card de leve.
  *
- * Corpo em `text-foreground/75` (7.95:1 no claro) e disclosure/18+ em
- * `text-foreground/60` (4.69:1 no claro). Nada de `muted-foreground/80`.
+ * Corpo em `text-foreground/75` (7.64:1 sobre o tint) e disclosure/18+ em
+ * `text-foreground/60` (4.62:1 sobre o tint). Nada de `muted-foreground/80`.
  *
  * Nunca deve ser envolvido por `<ins class="adsbygoogle">`.
  */
@@ -153,22 +152,20 @@ export function AffiliateCard({
       data-affiliate={afiliado}
       data-affiliate-placement={placement}
       className={cn(
-        // Superfície de parceiro: tint diagonal tênue (canto superior, sem aresta)
-        // + borda de acento + glow. Nada de faixa de altura fixa com corte duro.
+        // Superfície de parceiro CHAPADA (sem gradiente/faixa): base do card +
+        // tint teal uniforme em camada própria. Borda de acento + glow.
         "group relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card text-card-foreground shadow-sm transition-all duration-300",
-        "bg-gradient-to-bl from-affiliate-accent/[0.06] via-card to-card",
         "hover:border-affiliate-accent/50 hover:shadow-xl hover:shadow-affiliate-accent/20 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
         "p-5 sm:p-6",
         className,
       )}
     >
-      {/* Tinta decorativa: radial no canto superior direito, que se dissolve
-          completamente dentro do elemento — sem aresta/linha em nenhuma borda. */}
+      {/* Superfície chapada: tint uniforme cobrindo todo o card, sem aresta */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(120%_120%_at_100%_0%,var(--affiliate-accent-top),transparent_62%)]"
+        className="pointer-events-none absolute inset-0 bg-affiliate-accent/[0.045]"
       />
-      {/* Glow radial ambiente (decorativo, não intercepta cliques) */}
+      {/* Glow ambiente do canto (blur, sem aresta) */}
       <div
         aria-hidden
         className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-affiliate-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-affiliate-accent/30 dark:bg-affiliate-accent/25"
