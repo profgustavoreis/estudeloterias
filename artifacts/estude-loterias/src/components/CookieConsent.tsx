@@ -26,7 +26,9 @@ const rejectButtonClass = cn(actionButtonBase, "bg-foreground text-background ho
  *
  * Regras de conformidade aplicadas:
  * - Nada não-essencial roda antes da escolha (`analytics_storage`/`ad_*` negados por padrão).
- * - "Aceitar" e "Rejeitar" têm o mesmo peso visual; não há pré-marcação.
+ * - "Aceitar cookies" e "Rejeitar cookies" têm o mesmo peso visual; não há
+ *   pré-marcação. Os rótulos citam "cookies" explicitamente para que cada ação
+ *   seja inequívoca fora do contexto do banner.
  * - A escolha é persistida e pode ser revista/revogada a qualquer momento pelo
  *   link "Cookies" no rodapé, que reabre este banner.
  * - O banner é não-modal, não bloqueia a leitura e não reaparece sozinho após a decisão.
@@ -96,10 +98,10 @@ export function CookieConsent() {
 
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
           <button type="button" onClick={handleReject} className={rejectButtonClass}>
-            Rejeitar
+            Rejeitar cookies
           </button>
           <button type="button" onClick={handleAccept} className={acceptButtonClass}>
-            Aceitar
+            Aceitar cookies
           </button>
         </div>
       </div>

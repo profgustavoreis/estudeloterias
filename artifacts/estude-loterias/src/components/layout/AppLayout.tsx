@@ -165,7 +165,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </p>
               {footerAffiliate.linkUrl && (
                 <div className="space-y-1">
-                  <span className="inline-flex items-center rounded-full bg-[#009640] px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white">
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-affiliate-cta-hover to-affiliate-cta px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white">
                     Parceiro
                   </span>
                   <a
@@ -181,13 +181,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                         linkUrl: footerAffiliate.linkUrl ?? undefined,
                       })
                     }
-                    className="flex w-fit items-center gap-1 text-xs text-[#009640] hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[#009640] rounded"
+                    className="flex w-fit items-center gap-1 text-xs text-affiliate-label hover:text-affiliate-cta-hover dark:hover:text-affiliate-accent hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent rounded"
                   >
                     {footerAffiliate.ctaLabel}
                     <span aria-hidden>↗</span>
                     <span className="sr-only">(site parceiro, abre em nova aba)</span>
                   </a>
-                  <span className="block text-[10px] text-muted-foreground/80 leading-relaxed">
+                  <span className="block text-[10px] text-foreground/60 leading-relaxed">
                     Link de parceria. Podemos receber comissão, sem custo para você. Site parceiro · 18+
                   </span>
                 </div>

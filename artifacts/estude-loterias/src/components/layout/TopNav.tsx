@@ -48,8 +48,9 @@ function AffiliateHeaderCta({
         })
       }
       className={cn(
-        "bg-[#009640] text-white hover:bg-[#007b34] transition-colors",
-        "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#009640] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        // CTA de afiliado: vermelho = parceiro/publicidade (verde é a marca do site).
+        "bg-affiliate-cta text-white hover:bg-affiliate-cta-hover transition-colors",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
     >

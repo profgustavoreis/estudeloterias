@@ -56,6 +56,18 @@
   --color-sidebar-accent-border: var(--sidebar-accent-border);
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
+  /*
+   * Convenção de cor: VERDE = site; VERMELHO = parceiro/publicidade.
+   * O acento `--affiliate-accent` só pode ir em borda/filete/glow/ring/selo
+   * grande (>=3:1 como elemento de UI) — NUNCA atrás de texto normal, pois
+   * branco sobre ele não passa em AA. Texto/CTA usam os tons escuros.
+   */
+  --color-affiliate-accent: var(--affiliate-accent);
+  --color-affiliate-accent-top: var(--affiliate-accent-top);
+  --color-affiliate-cta: var(--affiliate-cta);
+  --color-affiliate-cta-hover: var(--affiliate-cta-hover);
+  --color-affiliate-label: var(--affiliate-label);
+
   --font-sans: var(--app-font-sans);
   --font-serif: var(--app-font-serif);
   --font-mono: var(--app-font-mono);
@@ -122,6 +134,20 @@
   --app-font-mono: 'JetBrains Mono', Menlo, monospace;
   --radius: 0.3rem;
 
+  /*
+   * Tokens de afiliado (verde = site; vermelho = parceiro/publicidade).
+   * Contraste AA sobre o fundo claro (card branco):
+   *   --affiliate-cta      #c81e1e  branco 5.74:1
+   *   --affiliate-cta-hover#b91c1c  branco 6.47:1
+   *   --affiliate-label    #c81e1e  texto 5.74:1
+   *   --affiliate-accent   #ee3b3b  NÃO texto (branco 3.94:1) — só decoração
+   */
+  --affiliate-accent: #ee3b3b;
+  --affiliate-accent-top: color-mix(in oklab, #ee3b3b 8%, transparent);
+  --affiliate-cta: #c81e1e;
+  --affiliate-cta-hover: #b91c1c;
+  --affiliate-label: #c81e1e;
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -166,6 +192,17 @@
   --sidebar-accent: 217.2 32.6% 17.5%;
   --sidebar-accent-foreground: 210 40% 98%;
   --sidebar-ring: 212.7 26.8% 83.9%;
+
+  /*
+   * Afiliado no escuro: acento mais claro para manter >=3:1 sobre o card.
+   * `--affiliate-label` sobe para um tom claro (10.2:1); o #c81e1e do claro
+   * daria apenas 3.49:1 sobre o card escuro.
+   */
+  --affiliate-accent: #f05252;
+  --affiliate-accent-top: color-mix(in oklab, #f05252 4%, transparent);
+  --affiliate-cta: #c81e1e;
+  --affiliate-cta-hover: #b91c1c;
+  --affiliate-label: #f7a3a3;
 }
 
 @layer base {
