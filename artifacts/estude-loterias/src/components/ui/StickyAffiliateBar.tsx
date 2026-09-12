@@ -23,10 +23,10 @@ import { cn } from "@/lib/utils";
  *   cabeçalho e pelos cards inline, então a barra fica restrita ao mobile para
  *   não sobrecarregar a tela com uma terceira superfície fixa.
  *
- * Identidade: TEAL = parceiro/publicidade, via tokens `--affiliate-*`
- * (`cta` branco 5.43:1, `cta-hover` 7.59:1, `label` 7.59:1 no claro / alto
- * contraste no escuro). Assinatura igual à do `AffiliateCard`: borda de acento
- * arredondada + tint/glow, sem filete duro.
+ * Identidade: TEAL = parceiro/publicidade. Mesma linguagem de banda do
+ * `AffiliateCard`, proporcional: faixa teal sólida no topo (selo + dispensar) e
+ * corpo neutro sobre `bg-card`. Contraste na banda (`#0f766e`): branco 5.47:1,
+ * `text-white/90` 4.76:1 — AA. Sem gradiente/linha.
  */
 const PLACEMENT = "sticky_bottom";
 const AFILIADO: Afiliado = "clube_lotosport";
@@ -169,39 +169,30 @@ export function StickyAffiliateBar() {
     >
       <div className="mx-auto max-w-2xl px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
         <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card shadow-lg">
-          {/* Superfície chapada: tint uniforme, sem aresta (mesmo do card) */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-affiliate-accent/[0.045]"
-          />
-          {/* Glow de acento (blur, sem aresta) */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-affiliate-accent/25 blur-2xl dark:bg-affiliate-accent/30"
-          />
+          {/* Banda teal compacta: selo + dispensar */}
+          <div className="flex min-h-11 items-center gap-2 bg-affiliate-cta px-4 py-1.5 text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-affiliate-cta shadow-sm">
+              <BadgeCheck className="h-3 w-3" aria-hidden />
+              Parceiro
+            </span>
+            <span className="text-[9px] font-semibold uppercase tracking-widest text-white/90">
+              Publicidade
+            </span>
+            <button
+              type="button"
+              onClick={handleDismiss}
+              className={cn(
+                "ml-auto inline-flex min-h-11 items-center rounded-md px-2 text-xs font-medium text-white/90",
+                "underline-offset-4 transition-colors hover:text-white hover:underline",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-affiliate-cta",
+              )}
+            >
+              Agora não
+            </button>
+          </div>
 
-          <div className="relative z-10 px-4 py-2">
-            <div className="flex min-h-11 items-center gap-2">
-              <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-affiliate-cta-hover to-affiliate-cta px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest text-white shadow-sm">
-                <BadgeCheck className="h-3 w-3" aria-hidden />
-                Parceiro
-              </span>
-              <span className="text-[9px] font-semibold uppercase tracking-widest text-foreground/60">
-                Publicidade
-              </span>
-              <button
-                type="button"
-                onClick={handleDismiss}
-                className={cn(
-                  "ml-auto inline-flex min-h-11 items-center rounded-md px-2 text-xs font-medium text-foreground/60",
-                  "underline-offset-4 transition-colors hover:text-foreground hover:underline",
-                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                )}
-              >
-                Agora não
-              </button>
-            </div>
-
+          {/* Corpo neutro sobre bg-card */}
+          <div className="px-4 py-2">
             <div className="mt-0.5 flex items-center gap-3">
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold leading-tight text-affiliate-label">

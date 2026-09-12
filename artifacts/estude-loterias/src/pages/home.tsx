@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useGetLoterias, useGetBlogPosts } from "@workspace/api-client-react";
 import type { LoteriaSummary } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -100,6 +101,35 @@ const HOME_ORDER = [
   "lotomania", "duplasena", "timemania", "diadesorte", "supersete",
 ];
 
+/**
+ * Card de afiliado da home, posicionado dentro do grid por breakpoint:
+ * - 1 coluna (mobile, <md): após MS+LF → entre LF e Q.
+ * - 2 colunas (md–xl): após MS+LF → fim da 1ª fileira (span 2).
+ * - 3 colunas (xl+): após MS+LF+Q → fim da 1ª fileira (span 3).
+ * Cada instância tem `moduleId` próprio; só a visível dispara impressão (a
+ * outra fica `display:none` e não intersecta o viewport).
+ */
+function HomeAffiliateCard({
+  moduleId,
+  className,
+}: {
+  moduleId: string;
+  className: string;
+}) {
+  return (
+    <AffiliateCard
+      afiliado="clube_lotosport"
+      variant="landing"
+      placement="home_inline"
+      moduleId={moduleId}
+      title="Jogue em bolão com o Clube Lotosport"
+      body="Compre cotas de bolões com mais jogos e divida o custo com outros apostadores — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+      ctaLabel="Ver bolões"
+      className={className}
+    />
+  );
+}
+
 export default function Home() {
   const { data: loterias, isLoading, isError } = useGetLoterias();
   const sorted = loterias?.slice().sort(
@@ -163,106 +193,108 @@ export default function Home() {
         <p className="text-muted-foreground mt-2">Acompanhe os últimos resultados e prêmios acumulados.</p>
       </div>
 
-      <AffiliateCard
-        afiliado="clube_lotosport"
-        variant="landing"
-        placement="home_inline"
-        moduleId="home_inline_top"
-        title="Jogue em bolão com o Clube Lotosport"
-        body="Compre cotas de bolões com mais jogos e divida o custo com outros apostadores — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
-        ctaLabel="Ver bolões"
-      />
-
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {(sorted ?? []).map(loteria => (
-          <Link key={loteria.modalidade} href={`/${loteria.modalidade === 'megasena' ? 'mega-sena' : loteria.modalidade === 'supersete' ? 'super-sete' : loteria.modalidade}`}>
-            <Card className="hover:shadow-md transition-shadow cursor-pointer border-t-4 h-full flex flex-col" style={{ borderTopColor: loteria.cor }}>
-              <CardContent className="p-5 flex-1 flex flex-col">
+        {(sorted ?? []).map((loteria, index) => (
+          <Fragment key={loteria.modalidade}>
+            <Link href={`/${loteria.modalidade === 'megasena' ? 'mega-sena' : loteria.modalidade === 'supersete' ? 'super-sete' : loteria.modalidade}`}>
+              <Card className="hover:shadow-md transition-shadow cursor-pointer border-t-4 h-full flex flex-col" style={{ borderTopColor: loteria.cor }}>
+                <CardContent className="p-5 flex-1 flex flex-col">
 
-                {/* ── Cabeçalho: nome + concurso ── */}
-                <div className="flex justify-between items-start mb-3">
-                  <span className="text-xl font-bold" style={{ color: loteria.cor }}>{loteria.nome}</span>
-                  <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-1 rounded whitespace-nowrap ml-2">
-                    Concurso {loteria.ultimoConcurso}
-                  </span>
-                </div>
+                  {/* ── Cabeçalho: nome + concurso ── */}
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-xl font-bold" style={{ color: loteria.cor }}>{loteria.nome}</span>
+                    <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-1 rounded whitespace-nowrap ml-2">
+                      Concurso {loteria.ultimoConcurso}
+                    </span>
+                  </div>
 
-                {/* ── Data do sorteio ── */}
-                <p className="text-sm text-muted-foreground mb-3">
-                  Data do sorteio: <span className="font-medium text-foreground">{formatDateWithWeekday(loteria.dataUltimoSorteio)}</span>
-                </p>
+                  {/* ── Data do sorteio ── */}
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Data do sorteio: <span className="font-medium text-foreground">{formatDateWithWeekday(loteria.dataUltimoSorteio)}</span>
+                  </p>
 
-                {/* ── Dezenas sorteadas (imediatamente após a data) ── */}
-                <div className="mb-4">
-                  <DezenasSection loteria={loteria} />
-                </div>
+                  {/* ── Dezenas sorteadas (imediatamente após a data) ── */}
+                  <div className="mb-4">
+                    <DezenasSection loteria={loteria} />
+                  </div>
 
-                {/* ── Resultado do sorteio (sem separador) ── */}
-                <div className="flex-1">
-                  {loteria.acumulado ? (
-                    <div>
-                      <div className="text-xs font-semibold text-destructive uppercase tracking-wider">Acumulou!</div>
-                      {!(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
-                        <div className="flex items-baseline justify-between mt-0.5">
-                          <span className="text-2xl font-bold">{formatCurrency(loteria.premioAcumulado)}</span>
-                          <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
-                        </div>
-                      ) : (
-                        <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.premioAcumulado)}</div>
-                      )}
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: loteria.cor }}>
-                        {(() => {
-                          const n = loteria.ganhadoresFaixa1 ?? 0;
-                          return `Saiu! (${n} ${n === 1 ? "acertador" : "acertadores"})`;
-                        })()}
-                      </div>
-                      {loteria.valorPremioFaixa1 != null && loteria.valorPremioFaixa1 > 0 && (
-                        !(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
+                  {/* ── Resultado do sorteio (sem separador) ── */}
+                  <div className="flex-1">
+                    {loteria.acumulado ? (
+                      <div>
+                        <div className="text-xs font-semibold text-destructive uppercase tracking-wider">Acumulou!</div>
+                        {!(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
                           <div className="flex items-baseline justify-between mt-0.5">
-                            <span className="text-2xl font-bold">{formatCurrency(loteria.valorPremioFaixa1)}</span>
+                            <span className="text-2xl font-bold">{formatCurrency(loteria.premioAcumulado)}</span>
                             <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
                           </div>
                         ) : (
-                          <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.valorPremioFaixa1)}</div>
-                        )
-                      )}
-                    </div>
-                  )}
-                </div>
-
-                {/* ── Próximo sorteio (com separador, melhor respiro) ── */}
-                {(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) && (
-                  <div className="border-t border-border mt-4 pt-4 space-y-3">
-                    {loteria.dataProximoConcurso && (
-                      <div>
-                        <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Próximo sorteio</div>
-                        <div className="text-sm font-semibold mt-0.5">
-                          {formatDateWithWeekday(loteria.dataProximoConcurso)}
-                        </div>
-                      </div>
-                    )}
-                    {loteria.valorEstimadoProximoConcurso != null && loteria.valorEstimadoProximoConcurso > 0 ? (
-                      <div>
-                        <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Prêmio estimado</div>
-                        <div className="flex items-baseline justify-between mt-0.5">
-                          <span className="text-lg font-bold">{formatCurrency(loteria.valorEstimadoProximoConcurso)}</span>
-                          <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
-                        </div>
+                          <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.premioAcumulado)}</div>
+                        )}
                       </div>
                     ) : (
-                      <div className="flex justify-end">
-                        <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                      <div>
+                        <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: loteria.cor }}>
+                          {(() => {
+                            const n = loteria.ganhadoresFaixa1 ?? 0;
+                            return `Saiu! (${n} ${n === 1 ? "acertador" : "acertadores"})`;
+                          })()}
+                        </div>
+                        {loteria.valorPremioFaixa1 != null && loteria.valorPremioFaixa1 > 0 && (
+                          !(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) ? (
+                            <div className="flex items-baseline justify-between mt-0.5">
+                              <span className="text-2xl font-bold">{formatCurrency(loteria.valorPremioFaixa1)}</span>
+                              <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                            </div>
+                          ) : (
+                            <div className="text-2xl font-bold mt-0.5">{formatCurrency(loteria.valorPremioFaixa1)}</div>
+                          )
+                        )}
                       </div>
                     )}
                   </div>
-                )}
 
-              </CardContent>
-            </Card>
-          </Link>
+                  {/* ── Próximo sorteio (com separador, melhor respiro) ── */}
+                  {(loteria.dataProximoConcurso || loteria.valorEstimadoProximoConcurso) && (
+                    <div className="border-t border-border mt-4 pt-4 space-y-3">
+                      {loteria.dataProximoConcurso && (
+                        <div>
+                          <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Próximo sorteio</div>
+                          <div className="text-sm font-semibold mt-0.5">
+                            {formatDateWithWeekday(loteria.dataProximoConcurso)}
+                          </div>
+                        </div>
+                      )}
+                      {loteria.valorEstimadoProximoConcurso != null && loteria.valorEstimadoProximoConcurso > 0 ? (
+                        <div>
+                          <div className="text-xs text-muted-foreground uppercase tracking-wider font-medium">Prêmio estimado</div>
+                          <div className="flex items-baseline justify-between mt-0.5">
+                            <span className="text-lg font-bold">{formatCurrency(loteria.valorEstimadoProximoConcurso)}</span>
+                            <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex justify-end">
+                          <span className="text-sm font-semibold" style={{ color: loteria.cor }}>Ver painel →</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                </CardContent>
+              </Card>
+            </Link>
+
+            {/* Afiliado — após MS+LF: mobile (entre LF e Q) e md 2-col (fim da 1ª fileira). */}
+            {index === 1 && (
+              <HomeAffiliateCard moduleId="home_inline_after_lf" className="xl:hidden col-span-full" />
+            )}
+
+            {/* Afiliado — após MS+LF+Q: só no grid de 3 colunas (xl). */}
+            {index === 2 && (
+              <HomeAffiliateCard moduleId="home_inline_after_q" className="hidden xl:block col-span-full" />
+            )}
+          </Fragment>
         ))}
       </div>
 

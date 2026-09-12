@@ -38,18 +38,18 @@ const RESPONSIBLE = "18+ · Jogue com responsabilidade";
  * Card nativo de afiliado (substitui o AdUnit naquela posição).
  *
  * Identidade: TEAL = parceiro/publicidade (verde é a marca do site).
- * Tokens em `index.css` (`--affiliate-*`):
- *   accent     borda/glow/ring/acento (branco 5.43:1 — AA, pode ir em texto/CTA)
- *   cta        fundo sólido do CTA (branco 5.43:1 — AA)
- *   cta-hover  hover do CTA (branco 7.59:1 — AA)
- *   label      texto do parceiro/selo (7.59:1 no claro; alto contraste no escuro)
+ * Opção B — BANDA SÓLIDA: um bloco teal no topo (cantos superiores arredondados
+ * pelo `overflow-hidden`) concentra o selo "Parceiro/Publicidade", o eyebrow com
+ * o nome do parceiro e o título, em texto branco. O corpo (texto + CTA +
+ * disclosure/18+) fica abaixo, neutro sobre `bg-card`. Sem gradiente e sem
+ * filete/linha: a banda é um bloco sólido.
  *
- * Superfície CHAPADA: base `bg-card` + tint teal uniforme de 4.5% numa camada
- * própria (sem gradiente/faixa) + glow com blur no canto — nada de arestas.
- * Hover intensifica borda/glow e eleva o card de leve.
- *
- * Corpo em `text-foreground/75` (7.64:1 sobre o tint) e disclosure/18+ em
- * `text-foreground/60` (4.62:1 sobre o tint). Nada de `muted-foreground/80`.
+ * Contraste na banda (`bg-affiliate-cta` = #0f766e):
+ *   branco sólido 5.47:1 (título) — AA
+ *   text-white/90 4.76:1 ("Publicidade" e eyebrow) — AA
+ *   selo branco com texto teal: 5.47:1 — AA
+ * Corpo sobre `bg-card`: `text-foreground/75` (7.95:1) e disclosure/18+
+ * `text-foreground/60` (4.69:1) — AA. Nada de `muted-foreground/80`.
  *
  * Nunca deve ser envolvido por `<ins class="adsbygoogle">`.
  */
@@ -152,46 +152,37 @@ export function AffiliateCard({
       data-affiliate={afiliado}
       data-affiliate-placement={placement}
       className={cn(
-        // Superfície de parceiro CHAPADA (sem gradiente/faixa): base do card +
-        // tint teal uniforme em camada própria. Borda de acento + glow.
+        // Widget de parceiro: banda teal sólida no topo + corpo neutro sobre bg-card.
         "group relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card text-card-foreground shadow-sm transition-all duration-300",
         "hover:border-affiliate-accent/50 hover:shadow-xl hover:shadow-affiliate-accent/20 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
-        "p-5 sm:p-6",
         className,
       )}
     >
-      {/* Superfície chapada: tint uniforme cobrindo todo o card, sem aresta */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-affiliate-accent/[0.045]"
-      />
-      {/* Glow ambiente do canto (blur, sem aresta) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-affiliate-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-affiliate-accent/30 dark:bg-affiliate-accent/25"
-      />
-
-      <div className="relative z-10">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-3">
-          <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-affiliate-cta-hover to-affiliate-cta px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white shadow-sm">
+      {/* Banda de cabeçalho sólida: selo + eyebrow + título (texto branco) */}
+      <div className="bg-affiliate-cta px-5 py-4 text-white sm:px-6 sm:py-5">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-2">
+          <span className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-affiliate-cta shadow-sm">
             <BadgeCheck className="w-3 h-3" aria-hidden />
             Parceiro
           </span>
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-foreground/60">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-white/90">
             Publicidade
           </span>
         </div>
 
         {/* Nome do parceiro visível (eyebrow acima do título) */}
-        <p className="text-xs font-bold uppercase tracking-widest text-affiliate-label">
+        <p className="text-xs font-bold uppercase tracking-widest text-white/90">
           {AFFILIATE_NAMES[afiliado]}
         </p>
 
-        <h2 className="mt-1 text-lg sm:text-xl font-bold tracking-tight text-foreground leading-snug">
+        <h2 className="mt-1 text-lg sm:text-xl font-bold tracking-tight text-white leading-snug">
           {title}
         </h2>
+      </div>
 
-        <p className="mt-2 text-sm text-foreground/75 leading-relaxed">{body}</p>
+      {/* Corpo neutro sobre bg-card */}
+      <div className="px-5 py-4 sm:px-6 sm:py-5">
+        <p className="text-sm text-foreground/75 leading-relaxed">{body}</p>
 
         <div className="mt-4">
           <a
@@ -201,7 +192,7 @@ export function AffiliateCard({
             onClick={handleClick}
             className={cn(
               "inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2",
-              // Fundo sólido do token: branco passa em AA (5.43:1).
+              // Fundo sólido do token: branco passa em AA (5.47:1).
               "rounded-lg bg-affiliate-cta px-6 py-3 text-sm sm:text-base font-bold text-white",
               "shadow-md shadow-affiliate-accent/20 transition-all hover:bg-affiliate-cta-hover hover:shadow-lg hover:shadow-affiliate-accent/30",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
