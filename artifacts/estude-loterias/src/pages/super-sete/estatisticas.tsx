@@ -203,6 +203,7 @@ export default function SuperSeteEstatisticas() {
         moduleId="aff_ferramenta_supersete_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

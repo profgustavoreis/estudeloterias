@@ -192,6 +192,7 @@ export default function TimemaniaEstatisticas() {
         moduleId="aff_ferramenta_timemania_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

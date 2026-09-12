@@ -205,6 +205,7 @@ export default function LotomaniaEstatisticas() {
         moduleId="aff_ferramenta_lotomania_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

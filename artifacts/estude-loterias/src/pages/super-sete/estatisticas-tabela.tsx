@@ -229,6 +229,7 @@ export default function SuperSeteEstatisticasTabela() {
         moduleId="aff_supersete_tabela_de_dezenas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
     </div>

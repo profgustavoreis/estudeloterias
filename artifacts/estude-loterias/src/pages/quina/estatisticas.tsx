@@ -192,6 +192,7 @@ export default function QuinaEstatisticas() {
         moduleId="aff_ferramenta_quina_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

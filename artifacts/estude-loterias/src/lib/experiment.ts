@@ -51,6 +51,8 @@ export interface ToolExperimentAssignment {
   /** Copy do card, coerente com o parceiro do braço. */
   title: string;
   body: string;
+  /** Rótulo opcional em negrito antes do corpo (ex.: "Nota do Gustavo:"). */
+  noteLabel?: string;
   ctaLabel: string;
 }
 
@@ -65,8 +67,9 @@ const ARMS: Record<ToolVariation, Omit<ToolExperimentAssignment, "experimentId" 
   A: {
     afiliado: "net_sorte",
     variant: "landing",
-    title: "Monte jogos com mais dezenas",
-    body: "No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias.",
+    title: "Coloque a Matemática a serviço de sua sorte!",
+    body: "A plataforma Net Sorte oferece análises matemáticas detalhadas de todas as modalidades das Loterias Caixa e, principalmente, fechamentos lotéricos inteligentes para você apostar sozinho ou organizar seus próprios bolões. Uma assinatura de R$ 97 oferece acesso ilimitado às ferramentas do Portal Net Sorte por 12 meses.",
+    noteLabel: "Nota do Gustavo:",
     ctaLabel: "Ver ferramentas",
   },
   B: {

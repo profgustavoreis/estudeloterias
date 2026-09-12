@@ -209,6 +209,7 @@ export default function DuplasenaEstatisticasTabela() {
         moduleId="aff_duplasena_tabela_de_dezenas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
     </div>

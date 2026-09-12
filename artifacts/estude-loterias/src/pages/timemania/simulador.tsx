@@ -288,6 +288,7 @@ export default function TimemaniaSimulador() {
               moduleId="aff_ferramenta_timemania_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

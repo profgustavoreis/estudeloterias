@@ -191,6 +191,7 @@ export default function MegaSenaEstatisticas() {
         moduleId="aff_ferramenta_megasena_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

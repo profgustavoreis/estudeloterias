@@ -24,6 +24,11 @@ export interface AffiliateCardProps {
   moduleId?: string;
   title: string;
   body: string;
+  /**
+   * Rótulo opcional exibido em negrito antes do `body`, no mesmo parágrafo.
+   * Ex.: `"Nota do Gustavo:"` renderiza `<strong>Nota do Gustavo:</strong> ...`.
+   */
+  noteLabel?: string;
   /** Ponto único de troca do rótulo do CTA (A/B futuro). */
   ctaLabel?: string;
   className?: string;
@@ -60,6 +65,7 @@ export function AffiliateCard({
   moduleId,
   title,
   body,
+  noteLabel,
   ctaLabel = DEFAULT_CTA,
   className,
 }: AffiliateCardProps) {
@@ -182,7 +188,15 @@ export function AffiliateCard({
 
       {/* Corpo neutro sobre bg-card */}
       <div className="px-5 py-4 sm:px-6 sm:py-5">
-        <p className="text-sm text-foreground/75 leading-relaxed">{body}</p>
+        <p className="text-sm text-foreground/75 leading-relaxed">
+          {noteLabel ? (
+            <>
+              <strong>{noteLabel}</strong> {body}
+            </>
+          ) : (
+            body
+          )}
+        </p>
 
         <div className="mt-4">
           <a

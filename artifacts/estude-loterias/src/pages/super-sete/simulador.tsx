@@ -369,6 +369,7 @@ export default function SuperSeteSimulador() {
               moduleId="aff_ferramenta_supersete_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

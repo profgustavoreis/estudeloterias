@@ -196,6 +196,7 @@ export default function DiaDeSorteEstatisticasTabela() {
         moduleId="aff_diadesorte_tabela_de_dezenas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
     </div>

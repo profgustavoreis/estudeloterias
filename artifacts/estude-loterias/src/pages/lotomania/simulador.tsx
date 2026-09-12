@@ -389,6 +389,7 @@ export default function LotomaniaSimulador() {
               moduleId="aff_ferramenta_lotomania_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

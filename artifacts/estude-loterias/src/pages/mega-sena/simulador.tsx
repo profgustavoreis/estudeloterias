@@ -474,6 +474,7 @@ export default function MegaSenaSimulador() {
               moduleId="aff_ferramenta_megasena_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

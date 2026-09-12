@@ -201,6 +201,7 @@ export default function MaismilionariaEstatisticas() {
         moduleId="aff_ferramenta_maismilionaria_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

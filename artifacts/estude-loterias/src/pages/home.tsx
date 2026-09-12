@@ -122,8 +122,9 @@ function HomeAffiliateCard({
       variant="landing"
       placement="home_inline"
       moduleId={moduleId}
-      title="Jogue em bolão com o Clube Lotosport"
-      body="Compre cotas de bolões com mais jogos e divida o custo com outros apostadores — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+      title="Confira os bolões do Clube Lotosport!"
+      noteLabel="Nota do Gustavo:"
+      body="Bolões representam a forma mais inteligente de multiplicar suas chances sem comprometer seu orçamento. Ao comprar uma cota, você divide o custo com outros apostadores. Se o bolão for contemplado, a premiação é dividida proporcionalmente segundo as cotas de cada participante. Para sua tranquilidade, as apostas do Clube Lotosport são registradas em lotérica oficial, e você sempre pode acessar os comprovantes digitalizados."
       ctaLabel="Ver bolões"
       className={className}
     />
@@ -326,8 +327,9 @@ export default function Home() {
         variant="landing"
         placement="home_inline"
         moduleId="home_inline_net_sorte"
-        title="Monte jogos com mais dezenas"
-        body="No Portal Net Sorte você usa fechamentos e análises para montar jogos com mais dezenas gastando menos. Garantia de 7 dias."
+        title="Coloque a Matemática a serviço de sua sorte!"
+        noteLabel="Nota do Gustavo:"
+        body="A plataforma Net Sorte oferece análises matemáticas detalhadas de todas as modalidades das Loterias Caixa e, principalmente, fechamentos lotéricos inteligentes para você apostar sozinho ou organizar seus próprios bolões. Uma assinatura de R$ 97 oferece acesso ilimitado às ferramentas do Portal Net Sorte por 12 meses."
         ctaLabel="Ver ferramentas"
       />
     </div>

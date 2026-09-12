@@ -309,6 +309,7 @@ export default function DiaDeSorteSimulador() {
               moduleId="aff_ferramenta_diadesorte_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

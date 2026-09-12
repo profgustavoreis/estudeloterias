@@ -382,6 +382,7 @@ export default function LotofacilSimulador() {
               moduleId="aff_ferramenta_lotofacil_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

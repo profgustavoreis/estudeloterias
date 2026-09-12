@@ -416,6 +416,7 @@ export default function MaismilionariaSimulador() {
               moduleId="aff_ferramenta_maismilionaria_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

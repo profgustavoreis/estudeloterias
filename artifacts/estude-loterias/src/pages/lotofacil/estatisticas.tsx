@@ -188,6 +188,7 @@ export default function LotofacilEstatisticas() {
         moduleId="aff_ferramenta_lotofacil_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

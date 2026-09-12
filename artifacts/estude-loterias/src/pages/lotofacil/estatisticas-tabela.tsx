@@ -295,6 +295,7 @@ export default function LotofacilEstatisticasTabela() {
         moduleId="aff_lotofacil_tabela_de_dezenas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
     </div>

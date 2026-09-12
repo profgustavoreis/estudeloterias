@@ -158,8 +158,9 @@ export default function LotofacilDaIndependencia() {
         afiliado="clube_lotosport"
         placement="lotofacil_independencia_inline"
         moduleId="aff_slot_7788990011"
-        title="Jogar em bolão na Lotofácil da Independência"
-        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        title="Confira os bolões do Clube Lotosport!"
+        noteLabel="Nota do Gustavo:"
+        body="Bolões representam a forma mais inteligente de multiplicar suas chances sem comprometer seu orçamento. Ao comprar uma cota, você divide o custo com outros apostadores. Se o bolão for contemplado, a premiação é dividida proporcionalmente segundo as cotas de cada participante. Para sua tranquilidade, as apostas do Clube Lotosport são registradas em lotérica oficial, e você sempre pode acessar os comprovantes digitalizados."
       />
 
       <Card id="historico">

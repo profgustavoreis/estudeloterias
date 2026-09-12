@@ -186,6 +186,7 @@ export default function DiaDeSorteEstatisticas() {
         moduleId="aff_ferramenta_diadesorte_estatisticas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
 

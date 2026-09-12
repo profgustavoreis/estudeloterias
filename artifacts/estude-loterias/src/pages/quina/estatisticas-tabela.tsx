@@ -295,6 +295,7 @@ export default function QuinaEstatisticasTabela() {
         moduleId="aff_quina_tabela_de_dezenas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
     </div>

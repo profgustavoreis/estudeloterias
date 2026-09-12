@@ -294,6 +294,7 @@ export default function MegaSenaEstatisticasTabela() {
         moduleId="aff_megasena_tabela_de_dezenas"
         title={ferramenta.title}
         body={ferramenta.body}
+        noteLabel={ferramenta.noteLabel}
         ctaLabel={ferramenta.ctaLabel}
       />
     </div>

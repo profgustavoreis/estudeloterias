@@ -363,6 +363,7 @@ export default function DuplasenaSimulador() {
               moduleId="aff_ferramenta_duplasena_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>

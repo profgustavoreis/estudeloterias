@@ -380,6 +380,7 @@ export default function QuinaSimulador() {
               moduleId="aff_ferramenta_quina_simulador"
               title={ferramenta.title}
               body={ferramenta.body}
+              noteLabel={ferramenta.noteLabel}
               ctaLabel={ferramenta.ctaLabel}
             />
           </div>
