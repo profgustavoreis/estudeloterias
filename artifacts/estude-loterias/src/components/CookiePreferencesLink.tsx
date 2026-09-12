@@ -3,13 +3,16 @@ import { createPortal } from "react-dom";
 import { openCookiePreferences } from "@/lib/consent";
 
 /**
- * Link "Preferências de cookies" para o rodapé.
+ * Link "Cookies" para o rodapé.
  *
  * O `AppLayout.tsx` é editado em paralelo por outra lane, então este componente
  * injeta o link via portal na lista institucional do rodapé, sem precisar
  * alterá-lo. O botão recebe exatamente as classes dos demais links
  * institucionais (`text-xs text-muted-foreground hover:text-foreground`) e vira
  * um novo `<li>`, herdando o `space-y-2` da lista.
+ *
+ * Reabre o banner de consentimento (decisão binária) para o usuário revisar ou
+ * revogar a escolha a qualquer momento.
  *
  * Se o rodapé não estiver disponível, não renderiza nada.
  */
