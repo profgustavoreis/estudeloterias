@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { BadgeCheck } from "lucide-react";
+import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import {
   AFFILIATE_NAMES,
   buildAffiliateUrl,
@@ -160,10 +160,11 @@ export function AffiliateCard({
         className,
       )}
     >
-      {/* Tinta decorativa no topo (ancorada à direita, onde não há texto) */}
+      {/* Tinta decorativa: radial no canto superior direito, que se dissolve
+          completamente dentro do elemento — sem aresta/linha em nenhuma borda. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-0 top-0 h-24 w-2/3 bg-gradient-to-l from-affiliate-accent-top to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(120%_120%_at_100%_0%,var(--affiliate-accent-top),transparent_62%)]"
       />
       {/* Glow radial ambiente (decorativo, não intercepta cliques) */}
       <div
@@ -208,12 +209,10 @@ export function AffiliateCard({
             )}
           >
             {ctaLabel}
-            <span
+            <ArrowUpRight
               aria-hidden
-              className="transition-transform duration-200 group-hover:translate-x-0.5"
-            >
-              ↗
-            </span>
+              className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+            />
             <span className="sr-only">(abre em nova aba)</span>
           </a>
         </div>

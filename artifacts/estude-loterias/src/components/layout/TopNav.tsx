@@ -10,6 +10,7 @@ import {
   ChevronDown, Menu, X,
   BarChart3, Dices, Gift, HelpCircle, Home,
   List, Sparkles, Table, Target, Trophy, FlaskConical, BookOpen, ClipboardCheck, PartyPopper, Newspaper,
+  ArrowUpRight,
 } from "lucide-react";
 
 // ── Afiliado do header (Fase 1-A: Clube Lotosport) ────────────────────────────
@@ -57,7 +58,7 @@ function AffiliateHeaderCta({
     >
       <span className="inline-flex items-center gap-1">
         {HEADER_CTA_LABEL}
-        <span aria-hidden>↗</span>
+        <ArrowUpRight aria-hidden className="h-4 w-4" />
         <span className="sr-only">(site parceiro, abre em nova aba)</span>
       </span>
       {showMicrocopy && (

@@ -2,6 +2,7 @@ import { Link, useLocation } from "wouter";
 import { useEffect, useMemo } from "react";
 import { TopNav } from "./TopNav";
 import { buildAffiliateUrl, trackAffiliateClick, type Afiliado } from "@/lib/affiliate";
+import { ArrowUpRight } from "lucide-react";
 
 const loterias: Array<{ name: string; href: string; active: boolean; soon?: boolean }> = [
   { name: "Mega-Sena",   href: "/mega-sena",    active: true },
@@ -184,7 +185,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     className="flex w-fit items-center gap-1 text-xs text-affiliate-label hover:text-affiliate-cta-hover dark:hover:text-affiliate-accent hover:underline font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent rounded"
                   >
                     {footerAffiliate.ctaLabel}
-                    <span aria-hidden>↗</span>
+                    <ArrowUpRight aria-hidden className="h-3.5 w-3.5" />
                     <span className="sr-only">(site parceiro, abre em nova aba)</span>
                   </a>
                   <span className="block text-[10px] text-foreground/60 leading-relaxed">

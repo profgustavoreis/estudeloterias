@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BadgeCheck } from "lucide-react";
+import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import {
   AFFILIATE_NAMES,
   buildAffiliateUrl,
@@ -169,10 +169,10 @@ export function StickyAffiliateBar() {
     >
       <div className="mx-auto max-w-2xl px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
         <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/25 bg-card shadow-lg">
-          {/* Tinta decorativa no topo (mesma assinatura do card) */}
+          {/* Tinta decorativa: mesmo tratamento radial do card, sem arestas */}
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-affiliate-accent-top to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(120%_120%_at_100%_0%,var(--affiliate-accent-top),transparent_62%)]"
           />
           {/* Glow de acento (decorativo) */}
           <div
@@ -223,7 +223,7 @@ export function StickyAffiliateBar() {
                 )}
               >
                 {CTA_LABEL}
-                <span aria-hidden>↗</span>
+                <ArrowUpRight aria-hidden className="h-4 w-4" />
                 <span className="sr-only">(abre em nova aba)</span>
               </a>
             </div>
