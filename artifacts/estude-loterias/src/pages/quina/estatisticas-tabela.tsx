@@ -154,7 +154,7 @@ export default function QuinaEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Quina — Frequência e Atraso"
+        title="Tabela de Dezenas da Quina | Frequência e Atraso"
         description="Ranking completo das 80 dezenas da Quina: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/quina/tabela-de-dezenas"
       />
@@ -168,7 +168,7 @@ export default function QuinaEstatisticasTabela() {
             Quina · Tabela de Dezenas
           </h1>
           <p className="text-muted-foreground mt-1">
-            Todas as 80 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
+            Todas as 80 dezenas | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
           </p>
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function SuperSeteFAQ() {
   const faqs = [
     {
       q: "Como funciona a Super Sete?",
-      a: "A Super Sete é uma loteria da Caixa onde você escolhe um número de 0 a 9 em cada uma das 7 colunas do volante, formando uma sequência de 7 números. No sorteio, são extraídos 7 números — um por coluna — e você ganha prêmio ao acertar 7, 6, 5, 4 ou 3 números na posição correta."
+      a: "A Super Sete é uma loteria da Caixa onde você escolhe um número de 0 a 9 em cada uma das 7 colunas do volante, formando uma sequência de 7 números. No sorteio, são extraídos 7 números, um por coluna, e você ganha prêmio ao acertar 7, 6, 5, 4 ou 3 números na posição correta."
     },
     {
       q: "Quanto custa uma aposta simples?",
@@ -44,7 +44,7 @@ export default function SuperSeteFAQ() {
     },
     {
       q: "Quais são as faixas de premiação?",
-      a: "A Super Sete possui 5 faixas de premiação: 1ª faixa — 7 números na posição correta; 2ª faixa — 6 números; 3ª faixa — 5 números; 4ª faixa — 4 números; 5ª faixa — 3 números. Todas as faixas premiam proporcionalmente à arrecadação e ao número de acertadores."
+      a: "A Super Sete possui 5 faixas de premiação: 1ª faixa: 7 números na posição correta; 2ª faixa: 6 números; 3ª faixa: 5 números; 4ª faixa: 4 números; 5ª faixa: 3 números. Todas as faixas premiam proporcionalmente à arrecadação e ao número de acertadores."
     },
     {
       q: "A Super Sete tem sorteio especial?",

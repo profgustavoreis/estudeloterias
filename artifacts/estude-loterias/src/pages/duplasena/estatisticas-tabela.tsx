@@ -111,7 +111,7 @@ export default function DuplasenaEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Dupla Sena — Frequência e Atraso"
+        title="Tabela de Dezenas da Dupla Sena | Frequência e Atraso"
         description={`Ranking completo das 50 dezenas da Dupla Sena (${sorteio === "1" ? "1º" : "2º"} sorteio): veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número.`}
         canonical="/duplasena/tabela-de-dezenas"
       />
@@ -122,7 +122,7 @@ export default function DuplasenaEstatisticasTabela() {
           </div>
           <div>
             <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Dupla Sena · Tabela de Dezenas</h1>
-            <p className="text-muted-foreground mt-1">Todas as 50 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
+            <p className="text-muted-foreground mt-1">Todas as 50 dezenas | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
           </div>
         </div>
         <Select value={sorteio} onValueChange={v => setSorteio(v as "1" | "2")}>

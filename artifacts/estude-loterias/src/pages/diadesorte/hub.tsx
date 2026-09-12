@@ -59,7 +59,7 @@ export default function DiaDeSorteHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Dia de Sorte — Resultados, Estatísticas e Ferramentas"
+        title="Dia de Sorte | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre o Dia de Sorte: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/diadesorte"
       />

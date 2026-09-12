@@ -154,7 +154,7 @@ export function AffiliateCard({
   return (
     <aside
       ref={cardRef}
-      aria-label={`Conteúdo de parceiro — ${AFFILIATE_NAMES[afiliado]}`}
+      aria-label={`Conteúdo de parceiro | ${AFFILIATE_NAMES[afiliado]}`}
       data-affiliate={afiliado}
       data-affiliate-placement={placement}
       className={cn(

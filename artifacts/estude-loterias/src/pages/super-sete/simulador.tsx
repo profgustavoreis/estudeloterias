@@ -114,7 +114,7 @@ export default function SuperSeteSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico da Super Sete — Teste sua Aposta no Histórico"
+        title="Simulador Histórico da Super Sete | Teste sua Aposta no Histórico"
         description="Escolha seus 7 números por coluna e descubra em quantos sorteios da Super Sete você teria ganhado. Simulador histórico gratuito."
         canonical="/super-sete/simulador"
       />
@@ -260,7 +260,7 @@ export default function SuperSeteSimulador() {
               <>
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base">Concursos — {FILTRO_LABELS[filtroAtivo]}</CardTitle>
+                  <CardTitle className="text-base">Concursos | {FILTRO_LABELS[filtroAtivo]}</CardTitle>
                   <CardDescription>
                     {totalConcursos.toLocaleString("pt-BR")} concurso{totalConcursos !== 1 ? "s" : ""} encontrado
                     {totalConcursos !== 1 ? "s" : ""}

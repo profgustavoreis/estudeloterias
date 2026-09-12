@@ -63,7 +63,7 @@ export default function DuplaSenaHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Dupla Sena — Resultados, Estatísticas e Ferramentas"
+        title="Dupla Sena | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a Dupla Sena: último resultado, histórico de concursos (1º e 2º sorteios), frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/duplasena"
       />

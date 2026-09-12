@@ -34,7 +34,7 @@ export default function MaismilionariaComoJogar() {
           </p>
           <p>
             Diferente das outras loterias, a +Milionária exige que você acerte tanto os números quanto os trevos
-            para levar o prêmio principal — o que torna o desafio ainda mais emocionante.
+            para levar o prêmio principal, o que torna o desafio ainda mais emocionante.
           </p>
         </CardContent>
       </Card>
@@ -68,7 +68,7 @@ export default function MaismilionariaComoJogar() {
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
               <strong>Dias de Sorteio:</strong> Os sorteios da +Milionária são realizados às <strong>quartas-feiras</strong>,
-              às 20h, e aos <strong>domingos</strong>, às 11h (horário de Brasília) — dois sorteios por semana.
+              às 20h, e aos <strong>domingos</strong>, às 11h (horário de Brasília). Dois sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta mínima custa <strong>R$ 6,00</strong> para 6 dezenas e 2 trevos.

@@ -33,7 +33,7 @@ export default function TimemaniaComoJogar() {
             A cada concurso são sorteados 7 números e um Time do Coração.
           </p>
           <p>
-            Além de concorrer a prêmios em dinheiro, você ainda ajuda o seu time do coração — 22% da arrecadação
+            Além de concorrer a prêmios em dinheiro, você ainda ajuda o seu time do coração. 22% da arrecadação
             da Timemania é destinada aos clubes de futebol brasileiros.
           </p>
         </CardContent>
@@ -68,7 +68,7 @@ export default function TimemaniaComoJogar() {
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
               <strong>Dias de Sorteio:</strong> Os sorteios da Timemania são realizados às <strong>terças e quintas</strong>,
-              às 21h, e aos <strong>domingos</strong>, às 11h (horário de Brasília) — três sorteios por semana.
+              às 21h, e aos <strong>domingos</strong>, às 11h (horário de Brasília). Três sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta custa <strong>R$ 3,50</strong>. Não há variação de preço,

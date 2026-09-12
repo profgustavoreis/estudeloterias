@@ -162,7 +162,7 @@ export function StickyAffiliateBar() {
     <div
       ref={barRef}
       role="complementary"
-      aria-label={`Conteúdo de parceiro — ${AFFILIATE_NAMES[AFILIADO]}`}
+      aria-label={`Conteúdo de parceiro | ${AFFILIATE_NAMES[AFILIADO]}`}
       data-affiliate={AFILIADO}
       data-affiliate-placement={PLACEMENT}
       className="fixed inset-x-0 bottom-0 z-40 sm:hidden animate-in fade-in slide-in-from-bottom-4 duration-300"

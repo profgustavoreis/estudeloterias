@@ -163,7 +163,7 @@ export default function DiaDeSorteEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico do Dia de Sorte — Frequência e Análise das Dezenas"
+        title="Resumo Estatístico do Dia de Sorte | Frequência e Análise das Dezenas"
         description="Análise estatística completa do Dia de Sorte: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
         canonical="/diadesorte/resumo-estatistico"
       />

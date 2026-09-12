@@ -103,12 +103,12 @@ function DezenasCard({ resultado }: { resultado: ResultadoDuplasena }) {
       </CardHeader>
       <CardContent className="space-y-4 flex-1">
         <div>
-          <SectionLabel>1º Sorteio — Em ordem crescente</SectionLabel>
+          <SectionLabel>1º Sorteio | Em ordem crescente</SectionLabel>
           <Balls dezenas={resultado.dezenas} size="md" />
         </div>
         {resultado.dezenas2 && resultado.dezenas2.length > 0 && (
           <div>
-            <SectionLabel>2º Sorteio — Em ordem crescente</SectionLabel>
+            <SectionLabel>2º Sorteio | Em ordem crescente</SectionLabel>
             <Balls dezenas={resultado.dezenas2} size="md" />
           </div>
         )}
@@ -117,13 +117,13 @@ function DezenasCard({ resultado }: { resultado: ResultadoDuplasena }) {
 
         {dezenasOrdem1 && dezenasOrdem1.length > 0 && (
           <div>
-            <SectionLabel>1º Sorteio — Na ordem do sorteio</SectionLabel>
+            <SectionLabel>1º Sorteio | Na ordem do sorteio</SectionLabel>
             <Balls dezenas={dezenasOrdem1} size="md" color={BALL_BG_LIGHT} />
           </div>
         )}
         {dezenasOrdem2 && dezenasOrdem2.length > 0 && (
           <div>
-            <SectionLabel>2º Sorteio — Na ordem do sorteio</SectionLabel>
+            <SectionLabel>2º Sorteio | Na ordem do sorteio</SectionLabel>
             <Balls dezenas={dezenasOrdem2} size="md" color={BALL_BG_LIGHT} />
           </div>
         )}
@@ -429,7 +429,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoDupl
   return (
     <div className="space-y-5">
       <PageSEO
-        title={`Resultado da Dupla Sena — Concurso ${resultado.concurso} (${resultado.data})`}
+        title={`Resultado da Dupla Sena | Concurso ${resultado.concurso} (${resultado.data})`}
         description={`Dezenas sorteadas no concurso ${resultado.concurso} da Dupla Sena em ${resultado.data}: ${resultado.dezenas.join(", ")} (1º sorteio). Confira também o 2º sorteio e estatísticas completas.`}
         canonical={`/duplasena/resultado/${resultado.concurso}`}
       />
@@ -468,7 +468,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoDupl
         placement="resultado_inline"
         moduleId="aff_duplasena_resultado"
         title="Jogue em bolão"
-        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes, e o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
         ctaLabel="Ver bolões"
       />
     </div>

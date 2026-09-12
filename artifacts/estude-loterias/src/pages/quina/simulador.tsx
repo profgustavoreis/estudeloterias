@@ -107,7 +107,7 @@ export default function QuinaSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico da Quina — Teste sua Aposta no Histórico"
+        title="Simulador Histórico da Quina | Teste sua Aposta no Histórico"
         description="Escolha suas dezenas e descubra em quantos sorteios da Quina você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/quina/simulador"
       />
@@ -297,7 +297,7 @@ export default function QuinaSimulador() {
               <>
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Concursos — {FILTRO_LABELS[filtro]}</CardTitle>
+                    <CardTitle className="text-base">Concursos | {FILTRO_LABELS[filtro]}</CardTitle>
                     <CardDescription>{totalConcursos.toLocaleString("pt-BR")} concurso{totalConcursos !== 1 ? "s" : ""} encontrado{totalConcursos !== 1 ? "s" : ""}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-0">

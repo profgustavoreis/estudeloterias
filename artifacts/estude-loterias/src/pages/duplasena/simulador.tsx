@@ -91,7 +91,7 @@ export default function DuplasenaSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico da Dupla Sena — Teste sua Aposta no Histórico"
+        title="Simulador Histórico da Dupla Sena | Teste sua Aposta no Histórico"
         description="Escolha de 6 a 15 dezenas e descubra em quantos sorteios da Dupla Sena você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/duplasena/simulador"
       />
@@ -161,7 +161,7 @@ export default function DuplasenaSimulador() {
                   <li>Defina quais concursos quer ver na tabela de resultados.</li>
                   <li>Clique em <strong>Simular</strong>.</li>
                   <li>O sistema varre todos os sorteios anteriores e indica em quantos você teria acertado cada faixa de premiação (6, 5, 4 ou 3 acertos).</li>
-                  <li>Cada concurso da Dupla Sena possui <strong>dois sorteios</strong> — o simulador verifica seus acertos em ambos.</li>
+                  <li>Cada concurso da Dupla Sena possui <strong>dois sorteios</strong>. O simulador verifica seus acertos em ambos.</li>
                 </ol>
               )}
             </CardContent>
@@ -286,7 +286,7 @@ export default function DuplasenaSimulador() {
               <>
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Concursos — {FILTRO_LABELS[filtro]}</CardTitle>
+                    <CardTitle className="text-base">Concursos | {FILTRO_LABELS[filtro]}</CardTitle>
                     <CardDescription>{totalConcursosArray.toLocaleString("pt-BR")} sorteio{totalConcursosArray !== 1 ? "s" : ""} encontrado{totalConcursosArray !== 1 ? "s" : ""}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-0">

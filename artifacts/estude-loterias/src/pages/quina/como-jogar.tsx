@@ -30,7 +30,7 @@ export default function QuinaComoJogar() {
           <p>
             A Quina é uma das loterias mais tradicionais da Caixa, com sorteios realizados todos os dias (domingo a sábado).
             O apostador marca de 5 a 15 números dentre os 80 disponíveis no volante (de 01 a 80) e ganha
-            se acertar 2, 3, 4 ou 5 desses números — sendo o prêmio principal para quem acerta os 5 números sorteados (a "quina").
+            se acertar 2, 3, 4 ou 5 desses números, sendo o prêmio principal para quem acerta os 5 números sorteados (a "quina").
           </p>
           <p>
             Além dos concursos regulares, a Quina tem duas premiações especiais: os concursos de <strong>final 5</strong> (acumulação

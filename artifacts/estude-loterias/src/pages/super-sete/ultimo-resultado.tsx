@@ -195,7 +195,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoSupe
   return (
     <div className="space-y-5">
       <PageSEO
-        title={`Resultado da Super Sete — Concurso ${resultado.concurso} (${resultado.data})`}
+        title={`Resultado da Super Sete | Concurso ${resultado.concurso} (${resultado.data})`}
         description={`Dezenas sorteadas no concurso ${resultado.concurso} da Super Sete em ${resultado.data}: ${resultado.dezenas.join(", ")}. Confira prêmios e estatísticas completas.`}
         canonical={`/super-sete/resultado/${resultado.concurso}`}
       />
@@ -232,7 +232,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoSupe
         placement="resultado_inline"
         moduleId="aff_supersete_resultado"
         title="Jogue em bolão"
-        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes. O prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
         ctaLabel="Ver bolões"
       />
     </div>

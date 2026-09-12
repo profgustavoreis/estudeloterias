@@ -171,7 +171,7 @@ export default function DuplasenaEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico da Dupla Sena — Frequência e Análise das Dezenas"
+        title="Resumo Estatístico da Dupla Sena | Frequência e Análise das Dezenas"
         description={`Análise estatística da Dupla Sena (${sorteio === "1" ? "1º" : "2º"} sorteio): dezenas mais e menos sorteadas, pares e ímpares, moldura e retrato, somas e muito mais baseado em todo o histórico de concursos.`}
         canonical="/duplasena/resumo-estatistico"
       />

@@ -167,7 +167,7 @@ export default function QuinaEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico da Quina — Frequência e Análise das Dezenas"
+        title="Resumo Estatístico da Quina | Frequência e Análise das Dezenas"
         description="Análise estatística completa da Quina: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
         canonical="/quina/resumo-estatistico"
       />

@@ -116,7 +116,7 @@ export default function SuperSeteEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Super Sete — Frequência e Atraso"
+        title="Tabela de Dezenas da Super Sete | Frequência e Atraso"
         description="Ranking completo dos 70 números da Super Sete (7 posições × 10 números): veja os mais e menos sorteados, os mais atrasados e a frequência histórica."
         canonical="/super-sete/tabela-de-dezenas"
       />
@@ -126,7 +126,7 @@ export default function SuperSeteEstatisticasTabela() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Super Sete · Tabela de Dezenas</h1>
-          <p className="text-muted-foreground mt-1">70 combinações (7 posições × 10 números) — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
+          <p className="text-muted-foreground mt-1">70 combinações (7 posições × 10 números) | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
         </div>
       </div>
 

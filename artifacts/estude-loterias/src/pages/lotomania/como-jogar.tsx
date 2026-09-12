@@ -30,11 +30,11 @@ export default function LotomaniaComoJogar() {
           <p>
             A Lotomania é uma das loterias da Caixa que mais premia. O apostador marca <strong>50 números</strong> dentre os
             100 disponíveis no volante (de 00 a 99) e ganha prêmios se acertar <strong>20, 19, 18, 17, 16, 15 ou nenhum</strong>
-            dos 20 números sorteados — sim, na Lotomania você também ganha se não acertar nenhum número!
+            dos 20 números sorteados. Sim, na Lotomania você também ganha se não acertar nenhum número!
           </p>
           <p>
             Diferente de outras loterias, a Lotomania tem um preço único: a aposta custa sempre <strong>R$ 3,00</strong>,
-            independentemente de ser surpresinha ou não. Não existem apostas múltiplas com mais dezenas — toda aposta
+            independentemente de ser surpresinha ou não. Não existem apostas múltiplas com mais dezenas. Toda aposta
             é sempre de 50 números.
           </p>
         </CardContent>
@@ -69,7 +69,7 @@ export default function LotomaniaComoJogar() {
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
               <strong>Dias de Sorteio:</strong> Os sorteios da Lotomania são realizados às <strong>segundas, quartas e sextas-feiras</strong>,
-              às 21h (horário de Brasília) — três sorteios por semana.
+              às 21h (horário de Brasília). Três sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta custa <strong>R$ 3,00</strong>. Não há variação de preço,
@@ -92,7 +92,7 @@ export default function LotomaniaComoJogar() {
             </p>
             <p>
               <strong>Aposta-Espelho:</strong> Faça uma nova aposta com o sistema selecionando os outros 50 números
-              não registrados no jogo original — é como jogar o "complemento" da sua aposta.
+              não registrados no jogo original, é como jogar o "complemento" da sua aposta.
             </p>
           </CardContent>
         </Card>

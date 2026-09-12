@@ -8,7 +8,7 @@ export default function SuperSetePremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Super Sete — Faixas e Probabilidades"
+        title="Premiação da Super Sete | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da Super Sete: 7, 6, 5, 4 e 3 acertos, percentuais do fundo de prêmios e probabilidades de cada faixa."
         canonical="/super-sete/premiacao"
       />
@@ -39,7 +39,7 @@ export default function SuperSetePremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>55%</div>
               <div>
-                <div className="font-semibold text-foreground">7 acertos — 1ª faixa</div>
+                <div className="font-semibold text-foreground">7 acertos | 1ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores dos 7 números sorteados.</div>
               </div>
             </div>
@@ -47,7 +47,7 @@ export default function SuperSetePremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>15%</div>
               <div>
-                <div className="font-semibold text-foreground">6 acertos — 2ª faixa</div>
+                <div className="font-semibold text-foreground">6 acertos | 2ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 6 números.</div>
               </div>
             </div>
@@ -55,7 +55,7 @@ export default function SuperSetePremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>15%</div>
               <div>
-                <div className="font-semibold text-foreground">5 acertos — 3ª faixa</div>
+                <div className="font-semibold text-foreground">5 acertos | 3ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 5 números.</div>
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function SuperSetePremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>15%</div>
               <div>
-                <div className="font-semibold text-foreground">4 acertos — 4ª faixa</div>
+                <div className="font-semibold text-foreground">4 acertos | 4ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 4 números.</div>
               </div>
             </div>
@@ -128,7 +128,7 @@ export default function SuperSetePremiacao() {
           </p>
           <p>
             Apenas a 1ª faixa (7 acertos) acumula quando não há ganhador. As demais faixas (6, 5, 4 e 3 acertos)
-            não acumulam — o prêmio é rateado entre os acertadores do concurso ou pago como valor fixo.
+            não acumulam. O prêmio é rateado entre os acertadores do concurso ou pago como valor fixo.
           </p>
           <p>
             A Super Sete não possui sorteio especial. Todos os concursos

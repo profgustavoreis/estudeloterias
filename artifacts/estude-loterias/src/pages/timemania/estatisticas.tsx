@@ -167,7 +167,7 @@ export default function TimemaniaEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico da Timemania — Frequência e Análise das Dezenas"
+        title="Resumo Estatístico da Timemania | Frequência e Análise das Dezenas"
         description="Análise estatística completa da Timemania: dezenas mais e menos sorteadas, pares, somas, ranking de times e muito mais baseado em todo o histórico de concursos."
         canonical="/timemania/resumo-estatistico"
       />

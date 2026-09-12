@@ -154,7 +154,7 @@ export default function LotofacilEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Lotofácil — Frequência e Atraso"
+        title="Tabela de Dezenas da Lotofácil | Frequência e Atraso"
         description="Ranking completo das 25 dezenas da Lotofácil: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/lotofacil/tabela-de-dezenas"
       />
@@ -168,7 +168,7 @@ export default function LotofacilEstatisticasTabela() {
             Lotofácil · Tabela de Dezenas
           </h1>
           <p className="text-muted-foreground mt-1">
-            Todas as 25 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
+            Todas as 25 dezenas | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
           </p>
         </div>
       </div>

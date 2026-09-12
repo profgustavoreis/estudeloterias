@@ -9,7 +9,7 @@ const parceiros: Array<{ nome: string; descricao: string }> = [
   {
     nome: AFFILIATE_NAMES.clube_lotosport,
     descricao:
-      "Plataforma de bolões. Ao comprar cotas, você entra em jogos com mais dezenas dividindo o custo com outros participantes — o prêmio é proporcional às suas cotas e os jogos são registrados em lotérica oficial.",
+      "Plataforma de bolões. Ao comprar cotas, você entra em jogos com mais dezenas dividindo o custo com outros participantes. O prêmio é proporcional às suas cotas e os jogos são registrados em lotérica oficial.",
   },
   {
     nome: AFFILIATE_NAMES.net_sorte,
@@ -56,7 +56,7 @@ export default function Parceiros() {
             <strong>links de afiliado</strong>. Em algumas páginas indicamos parceiros
             comerciais de forma identificada (com os rótulos <strong>“Parceiro”</strong> e{" "}
             <strong>“Publicidade”</strong>). Quando você clica em um desses links e contrata um
-            serviço no site do parceiro, podemos receber uma <strong>comissão</strong> —{" "}
+            serviço no site do parceiro, podemos receber uma <strong>comissão</strong>,{" "}
             <strong>sem nenhum custo adicional para você</strong>.
           </p>
           <p>

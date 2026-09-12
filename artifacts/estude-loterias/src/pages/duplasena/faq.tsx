@@ -8,7 +8,7 @@ export default function DuplasenaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Dupla Sena?",
-      a: "Os sorteios da Dupla Sena são realizados às terças, quintas e sábados, a partir das 20h (horário de Brasília) — três sorteios por semana."
+      a: "Os sorteios da Dupla Sena são realizados às terças, quintas e sábados, a partir das 20h (horário de Brasília). Três sorteios por semana."
     },
     {
       q: "Como funcionam os dois sorteios da Dupla Sena?",

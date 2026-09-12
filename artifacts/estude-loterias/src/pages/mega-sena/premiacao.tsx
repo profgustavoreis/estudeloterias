@@ -6,7 +6,7 @@ export default function MegaSenaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Mega-Sena — Faixas e Distribuição de Prêmios"
+        title="Premiação da Mega-Sena | Faixas e Distribuição de Prêmios"
         description="Entenda como o prêmio da Mega-Sena é distribuído entre as faixas de 4, 5 e 6 acertos, incluindo percentuais e regras de acumulação."
         canonical="/mega-sena/premiacao"
       />

@@ -8,7 +8,7 @@ export default function LotomaniaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Lotomania?",
-      a: "Os sorteios da Lotomania são realizados às segundas, quartas e sextas-feiras, a partir das 21h (horário de Brasília) — três sorteios por semana."
+      a: "Os sorteios da Lotomania são realizados às segundas, quartas e sextas-feiras, a partir das 21h (horário de Brasília). Três sorteios por semana."
     },
     {
       q: "Como faço para jogar na Lotomania?",
@@ -16,7 +16,7 @@ export default function LotomaniaFAQ() {
     },
     {
       q: "Quantos números preciso marcar?",
-      a: "Sempre 50 números. Diferente de outras loterias, a Lotomania não permite apostas com mais ou menos dezenas — toda aposta é sempre de 50 números."
+      a: "Sempre 50 números. Diferente de outras loterias, a Lotomania não permite apostas com mais ou menos dezenas. Toda aposta é sempre de 50 números."
     },
     {
       q: "Quanto custa a aposta?",

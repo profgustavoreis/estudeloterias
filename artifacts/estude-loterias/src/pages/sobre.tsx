@@ -13,7 +13,7 @@ const funcionalidades = [
   {
     icon: BarChart3,
     titulo: "Estatísticas Detalhadas",
-    desc: "Frequência, atraso, pares/ímpares, moldura/retrato, soma das dezenas e muito mais — baseado no histórico real.",
+    desc: "Frequência, atraso, pares/ímpares, moldura/retrato, soma das dezenas e muito mais, baseado no histórico real.",
   },
   {
     icon: Sparkles,
@@ -36,7 +36,7 @@ export default function Sobre() {
   return (
     <div className="max-w-3xl mx-auto space-y-10">
       <PageSEO
-        title="Sobre — Estatísticas e Ferramentas para Loterias da Caixa"
+        title="Sobre | Estatísticas e Ferramentas para Loterias da Caixa"
         description="Conheça o Estude Loterias: o site com estatísticas, resultados e ferramentas gratuitas para as loterias da Caixa Econômica Federal."
         canonical="/sobre"
       />
@@ -54,7 +54,7 @@ export default function Sobre() {
         <p>
           O <strong>Estude Loterias</strong> é um site independente dedicado a fornecer dados
           estatísticos, histórico de resultados e ferramentas de análise para as principais
-          loterias da Caixa Econômica Federal — Mega-Sena, Lotofácil, Quina e outras.
+          loterias da Caixa Econômica Federal: Mega-Sena, Lotofácil, Quina e outras.
         </p>
         <p>
           Nossa missão é simples: tornar o universo das loterias mais transparente e acessível,
@@ -98,7 +98,7 @@ export default function Sobre() {
         <p className="text-muted-foreground">
           As loterias são jogos de azar regulamentados pelo governo federal. A participação
           é permitida apenas para maiores de 18 anos. Nenhuma análise estatística garante
-          resultados futuros — cada sorteio é um evento independente. Jogue com responsabilidade
+          resultados futuros. Cada sorteio é um evento independente. Jogue com responsabilidade
           e dentro de suas possibilidades financeiras.
         </p>
       </section>

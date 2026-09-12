@@ -67,7 +67,7 @@ export default function DuplasenaComoJogar() {
           <CardContent className="space-y-4 text-muted-foreground">
             <p>
               <strong>Dias de Sorteio:</strong> Os sorteios da Dupla Sena são realizados às <strong>terças, quintas e sábados</strong>,
-              às 20h (horário de Brasília) — três sorteios por semana.
+              às 20h (horário de Brasília). Três sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta mínima (6 dezenas) custa <strong>R$ 3,00</strong>. O preço aumenta conforme

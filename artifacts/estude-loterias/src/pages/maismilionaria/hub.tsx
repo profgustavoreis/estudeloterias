@@ -61,7 +61,7 @@ export default function MaismilionariaHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="+Milionária — Resultados, Estatísticas e Ferramentas"
+        title="+Milionária | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a +Milionária: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/maismilionaria"
       />

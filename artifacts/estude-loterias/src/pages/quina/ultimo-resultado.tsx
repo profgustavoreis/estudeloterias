@@ -239,7 +239,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoQuin
   return (
     <div className="space-y-5">
       <PageSEO
-        title={`Resultado da Quina — Concurso ${resultado.concurso} (${resultado.data})`}
+        title={`Resultado da Quina | Concurso ${resultado.concurso} (${resultado.data})`}
         description={`Dezenas sorteadas no concurso ${resultado.concurso} da Quina em ${resultado.data}: ${resultado.dezenas.join(", ")}. Confira prêmios e estatísticas completas.`}
         canonical={`/quina/resultado/${resultado.concurso}`}
       />
@@ -278,7 +278,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoQuin
         placement="resultado_inline"
         moduleId="aff_quina_resultado"
         title="Jogue em bolão"
-        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes, e o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
         ctaLabel="Ver bolões"
       />
     </div>

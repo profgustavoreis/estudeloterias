@@ -91,7 +91,7 @@ export default function DiaDeSorteSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico do Dia de Sorte — Teste sua Aposta no Histórico"
+        title="Simulador Histórico do Dia de Sorte | Teste sua Aposta no Histórico"
         description="Escolha de 7 a 15 dezenas e descubra em quantos sorteios do Dia de Sorte você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/diadesorte/simulador"
       />
@@ -240,7 +240,7 @@ export default function DiaDeSorteSimulador() {
               <>
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Concursos — {FILTRO_LABELS[filtro]}</CardTitle>
+                    <CardTitle className="text-base">Concursos | {FILTRO_LABELS[filtro]}</CardTitle>
                     <CardDescription>{totalConcursos.toLocaleString("pt-BR")} concurso{totalConcursos !== 1 ? "s" : ""} encontrado{totalConcursos !== 1 ? "s" : ""}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-0">

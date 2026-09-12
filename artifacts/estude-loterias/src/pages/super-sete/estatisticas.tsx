@@ -178,7 +178,7 @@ export default function SuperSeteEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico da Super Sete — Frequência e Análise dos Números"
+        title="Resumo Estatístico da Super Sete | Frequência e Análise dos Números"
         description="Análise estatística completa da Super Sete: números mais e menos sorteados por posição, pares, somas, números especiais e muito mais baseado em todo o histórico de concursos."
         canonical="/super-sete/resumo-estatistico"
       />

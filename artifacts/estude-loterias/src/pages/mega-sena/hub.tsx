@@ -60,7 +60,7 @@ export default function MegaSenaHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Mega-Sena — Resultados, Estatísticas e Ferramentas"
+        title="Mega-Sena | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a Mega-Sena: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/mega-sena"
       />

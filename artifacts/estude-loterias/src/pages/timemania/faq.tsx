@@ -8,7 +8,7 @@ export default function TimemaniaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Timemania?",
-      a: "Os sorteios da Timemania são realizados às terças e quintas, às 21h, e aos domingos, às 11h (horário de Brasília) — três sorteios por semana."
+      a: "Os sorteios da Timemania são realizados às terças e quintas, às 21h, e aos domingos, às 11h (horário de Brasília). Três sorteios por semana."
     },
     {
       q: "Como faço para jogar na Timemania?",
@@ -16,7 +16,7 @@ export default function TimemaniaFAQ() {
     },
     {
       q: "Quantos números preciso marcar?",
-      a: "Sempre 10 números. Diferente de outras loterias, a Timemania não permite apostas com mais ou menos dezenas — toda aposta é sempre de 10 números + 1 Time do Coração."
+      a: "Sempre 10 números. Diferente de outras loterias, a Timemania não permite apostas com mais ou menos dezenas. Toda aposta é sempre de 10 números + 1 Time do Coração."
     },
     {
       q: "Quanto custa a aposta?",

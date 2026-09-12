@@ -61,7 +61,7 @@ export default function TimemaniaHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Timemania — Resultados, Estatísticas e Ferramentas"
+        title="Timemania | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a Timemania: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/timemania"
       />

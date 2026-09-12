@@ -154,7 +154,7 @@ export const AiGeneratorModal: React.FC<AiGeneratorModalProps> = ({
             </div>
             <div>
               <DialogTitle className="text-xl font-black tracking-tight text-white">
-                Assistente de IA — Gerar Rascunho
+                Assistente de IA | Gerar Rascunho
               </DialogTitle>
               <DialogDescription className="text-emerald-100 text-xs mt-0.5">
                 Descreva o assunto e deixe nossa IA estruturar o artigo completo com Markdown e meta tags SEO.

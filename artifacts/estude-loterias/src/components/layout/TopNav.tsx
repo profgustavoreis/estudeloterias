@@ -730,7 +730,7 @@ export function TopNav() {
 
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                Mega-Sena — Informações
+                Mega-Sena | Informações
               </div>
               <div className="space-y-1">
                 {megaSenaInfo.map(item => {
@@ -770,7 +770,7 @@ export function TopNav() {
 
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                Lotofácil — Informações
+                Lotofácil | Informações
               </div>
               <div className="space-y-1">
                 {lotofacilInfo.map(item => {
@@ -811,7 +811,7 @@ export function TopNav() {
 
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                Quina — Informações
+                Quina | Informações
               </div>
               <div className="space-y-1">
                 {quinaInfo.map(item => {
@@ -859,7 +859,7 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    +Milionária — Informações
+                    +Milionária | Informações
                   </div>
                   <div className="space-y-1">
                     {maisMilionariaInfo.map(item => {
@@ -904,7 +904,7 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Lotomania — Informações
+                    Lotomania | Informações
                   </div>
                   <div className="space-y-1">
                     {lotomaniaInfo.map(item => {
@@ -949,7 +949,7 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Dupla Sena — Informações
+                    Dupla Sena | Informações
                   </div>
                   <div className="space-y-1">
                     {duplaSenaInfo.map(item => {
@@ -994,7 +994,7 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Timemania — Informações
+                    Timemania | Informações
                   </div>
                   <div className="space-y-1">
                     {timemaniaInfo.map(item => {
@@ -1039,7 +1039,7 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Dia de Sorte — Informações
+                    Dia de Sorte | Informações
                   </div>
                   <div className="space-y-1">
                     {diaDeSorteInfo.map(item => {
@@ -1084,7 +1084,7 @@ export function TopNav() {
 
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-3">
-                    Super Sete — Informações
+                    Super Sete | Informações
                   </div>
                   <div className="space-y-1">
                     {superSeteInfo.map(item => {

@@ -111,7 +111,7 @@ export default function TimemaniaEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Timemania — Frequência e Atraso"
+        title="Tabela de Dezenas da Timemania | Frequência e Atraso"
         description="Ranking completo das 80 dezenas da Timemania: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/timemania/tabela-de-dezenas"
       />
@@ -121,7 +121,7 @@ export default function TimemaniaEstatisticasTabela() {
         </div>
         <div>
           <h1 className="text-3xl font-bold tracking-tight" style={{ color: COR }}>Timemania · Tabela de Dezenas</h1>
-          <p className="text-muted-foreground mt-1">Todas as 80 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
+          <p className="text-muted-foreground mt-1">Todas as 80 dezenas | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.</p>
         </div>
       </div>
 

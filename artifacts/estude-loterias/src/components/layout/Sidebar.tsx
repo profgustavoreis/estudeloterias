@@ -47,7 +47,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Lotofácil — Info",
+      title: "Lotofácil | Info",
       items: [
         { href: "/lotofacil/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/lotofacil/premiacao", label: "Premiação", icon: Target },
@@ -66,7 +66,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Quina — Info",
+      title: "Quina | Info",
       items: [
         { href: "/quina/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/quina/premiacao", label: "Premiação", icon: Target },
@@ -85,7 +85,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Lotomania — Info",
+      title: "Lotomania | Info",
       items: [
         { href: "/lotomania/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/lotomania/premiacao", label: "Premiação", icon: Target },
@@ -103,7 +103,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Timemania — Info",
+      title: "Timemania | Info",
       items: [
         { href: "/timemania/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/timemania/premiacao", label: "Premiação", icon: Target },
@@ -121,7 +121,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Dia de Sorte — Info",
+      title: "Dia de Sorte | Info",
       items: [
         { href: "/diadesorte/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/diadesorte/premiacao", label: "Premiação", icon: Target },
@@ -139,7 +139,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "+Milionária — Info",
+      title: "+Milionária | Info",
       items: [
         { href: "/maismilionaria/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/maismilionaria/premiacao", label: "Premiação", icon: Target },
@@ -157,7 +157,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Dupla Sena — Info",
+      title: "Dupla Sena | Info",
       items: [
         { href: "/duplasena/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/duplasena/premiacao", label: "Premiação", icon: Target },
@@ -176,7 +176,7 @@ export function Sidebar() {
       ]
     },
     {
-      title: "Super Sete — Info",
+      title: "Super Sete | Info",
       items: [
         { href: "/super-sete/como-jogar", label: "Como Jogar", icon: Info },
         { href: "/super-sete/premiacao", label: "Premiação", icon: Target },

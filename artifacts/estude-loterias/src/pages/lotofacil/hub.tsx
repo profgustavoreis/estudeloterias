@@ -60,7 +60,7 @@ export default function LotofacilHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Lotofácil — Resultados, Estatísticas e Ferramentas"
+        title="Lotofácil | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a Lotofácil: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/lotofacil"
       />

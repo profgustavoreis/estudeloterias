@@ -8,7 +8,7 @@ export default function QuinaFAQ() {
   const faqs = [
     {
       q: "Quando são realizados os sorteios da Quina?",
-      a: "Os sorteios da Quina são realizados todos os dias, às 21h de segunda a sábado e às 11h aos domingos (horário de Brasília) — um sorteio por dia."
+      a: "Os sorteios da Quina são realizados todos os dias, às 21h de segunda a sábado e às 11h aos domingos (horário de Brasília). Um sorteio por dia."
     },
     {
       q: "Como faço para jogar na Quina?",
@@ -80,7 +80,7 @@ export default function QuinaFAQ() {
     },
     {
       q: "Qual a diferença entre a Quina e a Mega-Sena?",
-      a: "A Quina tem 80 números no volante (vs. 60 da Mega-Sena), sorteia 5 números por concurso (vs. 6) e premia quem acerta de 2 a 5 números — uma faixa de premiação bem mais ampla e frequente do que a da Mega-Sena, que só premia a partir de 4 acertos."
+      a: "A Quina tem 80 números no volante (vs. 60 da Mega-Sena), sorteia 5 números por concurso (vs. 6) e premia quem acerta de 2 a 5 números, uma faixa de premiação bem mais ampla e frequente do que a da Mega-Sena, que só premia a partir de 4 acertos."
     }
   ];
 

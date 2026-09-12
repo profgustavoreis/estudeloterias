@@ -8,7 +8,7 @@ export default function QuinaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Quina — Faixas e Probabilidades"
+        title="Premiação da Quina | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da Quina: quantos acertos são necessários para ganhar, percentuais do fundo de prêmios e probabilidades de cada faixa."
         canonical="/quina/premiacao"
       />
@@ -37,7 +37,7 @@ export default function QuinaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>35%</div>
               <div>
-                <div className="font-semibold text-foreground">5 acertos — quina (1ª faixa)</div>
+                <div className="font-semibold text-foreground">5 acertos | quina (1ª faixa)</div>
                 <div className="text-sm">Distribuídos entre os acertadores dos 5 números sorteados.</div>
               </div>
             </div>
@@ -45,7 +45,7 @@ export default function QuinaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>15%</div>
               <div>
-                <div className="font-semibold text-foreground">4 acertos — quadra (2ª faixa)</div>
+                <div className="font-semibold text-foreground">4 acertos | quadra (2ª faixa)</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 4 números.</div>
               </div>
             </div>
@@ -53,7 +53,7 @@ export default function QuinaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>10%</div>
               <div>
-                <div className="font-semibold text-foreground">3 acertos — terno (3ª faixa)</div>
+                <div className="font-semibold text-foreground">3 acertos | terno (3ª faixa)</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 3 números.</div>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function QuinaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>10%</div>
               <div>
-                <div className="font-semibold text-foreground">2 acertos — duque (4ª faixa)</div>
+                <div className="font-semibold text-foreground">2 acertos | duque (4ª faixa)</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 2 números.</div>
               </div>
             </div>
@@ -84,7 +84,7 @@ export default function QuinaPremiacao() {
           </div>
 
           <p className="text-sm">
-            Diferente da Lotofácil, a Quina não tem prêmios fixos em dinheiro nas faixas menores — todas as
+            Diferente da Lotofácil, a Quina não tem prêmios fixos em dinheiro nas faixas menores: todas as
             quatro faixas de acerto (2, 3, 4 e 5 números) recebem uma fatia percentual do fundo de premiação.
           </p>
         </CardContent>

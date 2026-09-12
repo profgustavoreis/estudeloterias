@@ -157,7 +157,7 @@ export default function LotomaniaEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Lotomania — Frequência e Atraso"
+        title="Tabela de Dezenas da Lotomania | Frequência e Atraso"
         description="Ranking completo das 100 dezenas da Lotomania: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/lotomania/tabela-de-dezenas"
       />
@@ -171,7 +171,7 @@ export default function LotomaniaEstatisticasTabela() {
             Lotomania · Tabela de Dezenas
           </h1>
           <p className="text-muted-foreground mt-1">
-            Todas as 100 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
+            Todas as 100 dezenas | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
           </p>
         </div>
       </div>

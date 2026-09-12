@@ -343,7 +343,7 @@ export function buildArticleHead(artigo: Article): string {
  * og próprios em vez de herdar o metadata da homepage.
  */
 export function buildBlogIndexHead(): string {
-  const title = `Blog — Análises, Dicas e Estatísticas de Loterias | ${SITE_NAME}`;
+  const title = `Blog | Análises, Dicas e Estatísticas de Loterias | ${SITE_NAME}`;
   const description =
     "Artigos, análises e estatísticas sobre as loterias da Caixa: probabilidades, estratégias, resultados e curiosidades da Mega-Sena, Lotofácil, Quina e mais.";
 
@@ -529,7 +529,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
   // 4. Páginas institucionais
   if (p === "/sobre") {
     return buildHeadTags({
-      title: `Sobre — Estatísticas e Ferramentas para Loterias da Caixa | ${SITE_NAME}`,
+      title: `Sobre | Estatísticas e Ferramentas para Loterias da Caixa | ${SITE_NAME}`,
       description:
         "Conheça o Estude Loterias: o site com estatísticas, resultados e ferramentas gratuitas para as loterias da Caixa Econômica Federal.",
       canonicalUrl,
@@ -589,7 +589,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
       // Hub principal da loteria: /mega-sena, /lotofacil, etc.
       if (rest === "") {
         return buildHeadTags({
-          title: `${mod.name} — Resultados, Estatísticas e Ferramentas | ${SITE_NAME}`,
+          title: `${mod.name} | Resultados, Estatísticas e Ferramentas | ${SITE_NAME}`,
           description: `Tudo sobre a ${mod.name}: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais.`,
           canonicalUrl,
         });
@@ -603,7 +603,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 
         if (info) {
           const dezenasStr = info.dezenas.join(", ");
-          const title = `Resultado ${mod.article} — Concurso ${concursoNum} (${info.data}) | ${SITE_NAME}`;
+          const title = `Resultado ${mod.article} | Concurso ${concursoNum} (${info.data}) | ${SITE_NAME}`;
           const description =
             mod.slug === "duplasena"
               ? `Dezenas sorteadas no concurso ${concursoNum} da Dupla Sena em ${info.data}: ${dezenasStr} (1º sorteio). Confira também o 2º sorteio e estatísticas completas.`
@@ -618,7 +618,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 
         // Concurso não encontrado no banco ou recém-criado
         return buildHeadTags({
-          title: `Resultado ${mod.article} — Concurso ${concursoNum} | ${SITE_NAME}`,
+          title: `Resultado ${mod.article} | Concurso ${concursoNum} | ${SITE_NAME}`,
           description: `Confira o resultado do concurso ${concursoNum} ${mod.article}, dezenas sorteadas, rateio de prêmios e estatísticas completas.`,
           canonicalUrl,
         });
@@ -645,7 +645,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
       // Tabela de dezenas: /:modalidade/tabela-de-dezenas
       if (rest === "/tabela-de-dezenas") {
         return buildHeadTags({
-          title: `Tabela de Dezenas ${mod.article} — Frequência e Atraso | ${SITE_NAME}`,
+          title: `Tabela de Dezenas ${mod.article} | Frequência e Atraso | ${SITE_NAME}`,
           description: `Ranking completo das dezenas ${mod.article}: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número.`,
           canonicalUrl,
         });
@@ -655,7 +655,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
       if (rest === "/resumo-estatistico") {
         const isSuperSete = mod.slug === "super-sete";
         return buildHeadTags({
-          title: `Resumo Estatístico ${mod.article} — Frequência e Análise ${isSuperSete ? "dos Números" : "das Dezenas"} | ${SITE_NAME}`,
+          title: `Resumo Estatístico ${mod.article} | Frequência e Análise ${isSuperSete ? "dos Números" : "das Dezenas"} | ${SITE_NAME}`,
           description: isSuperSete
             ? `Análise estatística completa da Super Sete: números mais e menos sorteados por posição, pares, somas, números especiais e muito mais baseado em todo o histórico de concursos.`
             : `Análise estatística completa ${mod.article}: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos.`,
@@ -675,7 +675,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
       // Simulador: /:modalidade/simulador
       if (rest === "/simulador") {
         return buildHeadTags({
-          title: `Simulador Histórico ${mod.article} — Teste sua Aposta no Histórico | ${SITE_NAME}`,
+          title: `Simulador Histórico ${mod.article} | Teste sua Aposta no Histórico | ${SITE_NAME}`,
           description: `Escolha suas dezenas e descubra em quantos sorteios ${mod.article} você teria ganhado. Simulador histórico gratuito e completo.`,
           canonicalUrl,
         });
@@ -702,7 +702,7 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
       // Premiação: /:modalidade/premiacao
       if (rest === "/premiacao") {
         return buildHeadTags({
-          title: `Premiação ${mod.article} — Faixas e Distribuição de Prêmios | ${SITE_NAME}`,
+          title: `Premiação ${mod.article} | Faixas e Distribuição de Prêmios | ${SITE_NAME}`,
           description: `Entenda como o prêmio ${mod.article} é distribuído entre as faixas de acertos, incluindo percentuais e regras de acumulação.`,
           canonicalUrl,
         });

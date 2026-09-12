@@ -37,7 +37,7 @@ export default function DuplasenaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Dupla Sena — Faixas e Probabilidades"
+        title="Premiação da Dupla Sena | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da Dupla Sena: sena, quina, quadra e terno, percentuais do fundo de prêmios e probabilidades de cada faixa nos dois sorteios."
         canonical="/duplasena/premiacao"
       />
@@ -59,7 +59,7 @@ export default function DuplasenaPremiacao() {
         <CardContent className="space-y-6 text-muted-foreground">
           <p>
             Do valor destinado aos prêmios (prêmio bruto), são distribuídos percentuais independentes
-            para cada faixa de acerto, em cada um dos dois sorteios. Não há valor fixo para nenhuma faixa —
+            para cada faixa de acerto, em cada um dos dois sorteios. Não há valor fixo para nenhuma faixa:
             todos os prêmios são calculados como percentuais do prêmio bruto.
           </p>
 
@@ -131,7 +131,7 @@ export default function DuplasenaPremiacao() {
               <div className="flex items-center gap-4 p-4 border rounded-lg bg-amber-500/10 border-amber-500/30">
                 <div className="text-2xl font-bold text-amber-600 w-20 text-center">16%</div>
                 <div>
-                  <div className="font-semibold text-foreground">Reserva — Dupla de Páscoa</div>
+                  <div className="font-semibold text-foreground">Reserva | Dupla de Páscoa</div>
                   <div className="text-sm">Acumulados para a 1ª faixa do 1º sorteio do concurso especial Dupla de Páscoa.</div>
                 </div>
               </div>

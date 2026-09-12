@@ -163,7 +163,7 @@ export default function LotofacilEstatisticas() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Resumo Estatístico da Lotofácil — Frequência e Análise das Dezenas"
+        title="Resumo Estatístico da Lotofácil | Frequência e Análise das Dezenas"
         description="Análise estatística completa da Lotofácil: dezenas mais e menos sorteadas, pares, sequências, somas e muito mais baseado em todo o histórico de concursos."
         canonical="/lotofacil/resumo-estatistico"
       />

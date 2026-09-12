@@ -40,10 +40,10 @@ export default function Privacidade() {
             coletar incluem:
           </p>
           <ul className="text-sm leading-relaxed list-disc list-inside space-y-1 text-muted-foreground">
-            <li>Dados de navegação (páginas acessadas, tempo de visita, dispositivo e navegador) — coletados de forma agregada via ferramentas de análise, quando você autoriza o uso de cookies de análise.</li>
-            <li>Endereço IP — coletado automaticamente pelos servidores para fins de segurança e diagnóstico.</li>
-            <li>Cookies e identificadores de publicidade — usados apenas se você autorizar as categorias correspondentes no banner de cookies. No momento <strong>não exibimos anúncios</strong>; caso passemos a exibi-los, o Google poderá usar cookies para personalizar anúncios.</li>
-            <li>Dados de clique em links de afiliado (parâmetros de campanha, como <code>subid</code> e <code>utm_*</code>) — usados para medir o desempenho das parcerias, conforme a seção 7.</li>
+            <li>Dados de navegação (páginas acessadas, tempo de visita, dispositivo e navegador), coletados de forma agregada via ferramentas de análise, quando você autoriza o uso de cookies de análise.</li>
+            <li>Endereço IP: coletado automaticamente pelos servidores para fins de segurança e diagnóstico.</li>
+            <li>Cookies e identificadores de publicidade, usados apenas se você autorizar as categorias correspondentes no banner de cookies. No momento <strong>não exibimos anúncios</strong>; caso passemos a exibi-los, o Google poderá usar cookies para personalizar anúncios.</li>
+            <li>Dados de clique em links de afiliado (parâmetros de campanha, como <code>subid</code> e <code>utm_*</code>), usados para medir o desempenho das parcerias, conforme a seção 7.</li>
           </ul>
         </section>
 
@@ -154,7 +154,7 @@ export default function Privacidade() {
           <p className="text-sm leading-relaxed">
             O Estude Loterias é gratuito e se mantém, entre outras formas, por meio de{" "}
             <strong>links de afiliado</strong>. Em nossas páginas podemos incluir links para
-            parceiros comerciais — por exemplo, Clube Lotosport e Portal Net Sorte. Ao
+            parceiros comerciais, por exemplo, Clube Lotosport e Portal Net Sorte. Ao
             clicar em um desses links e contratar um serviço no site do parceiro, podemos
             receber uma <strong>comissão</strong>, sem qualquer custo adicional para você.
           </p>

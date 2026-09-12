@@ -111,7 +111,7 @@ export default function MegaSenaSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico da Mega-Sena — Teste sua Aposta no Histórico"
+        title="Simulador Histórico da Mega-Sena | Teste sua Aposta no Histórico"
         description="Escolha suas dezenas e descubra em quantos dos mais de 3.000 sorteios da Mega-Sena você teria ganhado. Simulador histórico gratuito e completo."
         canonical="/mega-sena/simulador"
       />
@@ -354,7 +354,7 @@ export default function MegaSenaSimulador() {
               <Card>
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base">
-                    Concursos — {FILTRO_LABELS[filtro]}
+                    Concursos | {FILTRO_LABELS[filtro]}
                   </CardTitle>
                   <CardDescription>
                     {totalConcursos.toLocaleString("pt-BR")} concurso

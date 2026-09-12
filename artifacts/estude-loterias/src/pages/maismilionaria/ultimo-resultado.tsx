@@ -261,7 +261,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoMais
   return (
     <div className="space-y-5">
       <PageSEO
-        title={`Resultado da +Milionária — Concurso ${resultado.concurso} (${resultado.data})`}
+        title={`Resultado da +Milionária | Concurso ${resultado.concurso} (${resultado.data})`}
         description={`Dezenas sorteadas no concurso ${resultado.concurso} da +Milionária em ${resultado.data}: ${resultado.dezenas.join(", ")}. Confira prêmios e estatísticas completas.`}
         canonical={`/maismilionaria/resultado/${resultado.concurso}`}
       />
@@ -300,7 +300,7 @@ function ResultadoView({ resultado, latestConcurso }: { resultado: ResultadoMais
         placement="resultado_inline"
         moduleId="aff_maismilionaria_resultado"
         title="Jogue em bolão"
-        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes — o prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
+        body="Compre cotas de bolões com mais jogos e divida o custo com outros participantes. O prêmio é proporcional às suas cotas. Jogos registrados em lotérica oficial."
         ctaLabel="Ver bolões"
       />
     </div>

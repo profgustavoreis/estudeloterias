@@ -153,7 +153,7 @@ export default function MegaSenaEstatisticasTabela() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Tabela de Dezenas da Mega-Sena — Frequência e Atraso"
+        title="Tabela de Dezenas da Mega-Sena | Frequência e Atraso"
         description="Ranking completo das 60 dezenas da Mega-Sena: veja as mais e menos sorteadas, as mais atrasadas e a frequência histórica de cada número."
         canonical="/mega-sena/tabela-de-dezenas"
       />
@@ -167,7 +167,7 @@ export default function MegaSenaEstatisticasTabela() {
             Mega-Sena · Tabela de Dezenas
           </h1>
           <p className="text-muted-foreground mt-1">
-            Todas as 60 dezenas — {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
+            Todas as 60 dezenas | {stats.totalConcursos.toLocaleString("pt-BR")} concursos analisados.
           </p>
         </div>
       </div>

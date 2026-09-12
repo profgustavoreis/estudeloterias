@@ -8,7 +8,7 @@ export default function LotofacilPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Lotofácil — Faixas e Probabilidades"
+        title="Premiação da Lotofácil | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da Lotofácil: quantos acertos são necessários para ganhar, percentuais do fundo de prêmios e probabilidades de cada faixa."
         canonical="/lotofacil/premiacao"
       />

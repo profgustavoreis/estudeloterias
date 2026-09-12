@@ -79,8 +79,8 @@ export default function Termos() {
           <p>
             As loterias são jogos de azar regulamentados pelo governo federal brasileiro.
             A participação é permitida <strong>apenas para pessoas maiores de 18 anos</strong>.
-            Nenhuma análise, estatística ou ferramenta deste site garante resultados futuros —
-            cada sorteio é um evento aleatório e independente, e não há qualquer promessa,
+            Nenhuma análise, estatística ou ferramenta deste site garante resultados futuros.
+            Cada sorteio é um evento aleatório e independente, e não há qualquer promessa,
             garantia ou probabilidade de prêmio. Jogue com responsabilidade e dentro de suas
             possibilidades financeiras. O Estude Loterias é um site independente e{" "}
             <strong>não possui vínculo com a Caixa Econômica Federal</strong> nem com qualquer

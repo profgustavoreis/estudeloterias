@@ -60,7 +60,7 @@ export default function QuinaHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Quina — Resultados, Estatísticas e Ferramentas"
+        title="Quina | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a Quina: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/quina"
       />

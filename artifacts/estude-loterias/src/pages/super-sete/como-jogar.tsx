@@ -30,7 +30,7 @@ export default function SuperSeteComoJogar() {
           <p>
             A Super Sete é uma loteria de prognósticos numéricos que oferece várias formas de ganhar. O volante
             contém <strong>7 colunas</strong>, cada uma com <strong>10 números (de 0 a 9)</strong>. Você escolhe
-            um número por coluna — ou seja, <strong>7 números no total</strong> — e concorre a prêmios em
+            um número por coluna, ou seja, <strong>7 números no total</strong>, e concorre a prêmios em
             <strong>três sorteios semanais</strong>.
           </p>
           <p>
@@ -70,11 +70,11 @@ export default function SuperSeteComoJogar() {
             <p>
               <strong>Dias de Sorteio:</strong> Os sorteios da Super Sete são realizados às{" "}
               <strong>segundas, quartas e sextas-feiras</strong>, a partir das <strong>21h</strong> (horário
-              de Brasília) — três sorteios por semana.
+              de Brasília). Três sorteios por semana.
             </p>
             <p>
               <strong>Valor da Aposta:</strong> A aposta simples (7 números) custa <strong>R$ 3,00</strong>.
-              Apostas com mais números têm preços proporcionais — veja a seção de apostas múltiplas abaixo.
+              Apostas com mais números têm preços proporcionais. Veja a seção de apostas múltiplas abaixo.
             </p>
           </CardContent>
         </Card>

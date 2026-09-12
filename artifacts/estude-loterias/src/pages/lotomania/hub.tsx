@@ -59,7 +59,7 @@ export default function LotomaniaHub() {
   return (
     <div className="space-y-8">
       <PageSEO
-        title="Lotomania — Resultados, Estatísticas e Ferramentas"
+        title="Lotomania | Resultados, Estatísticas e Ferramentas"
         description="Tudo sobre a Lotomania: último resultado, histórico de concursos, frequência das dezenas, gerador de apostas, simulador e muito mais."
         canonical="/lotomania"
       />

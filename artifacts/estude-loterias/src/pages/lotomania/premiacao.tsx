@@ -8,7 +8,7 @@ export default function LotomaniaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Lotomania — Faixas e Probabilidades"
+        title="Premiação da Lotomania | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da Lotomania: 20, 19, 18, 17, 16, 15 e 0 acertos, percentuais do fundo de prêmios e probabilidades de cada faixa."
         canonical="/lotomania/premiacao"
       />
@@ -29,7 +29,7 @@ export default function LotomaniaPremiacao() {
         </CardHeader>
         <CardContent className="space-y-6 text-muted-foreground">
           <p>
-            Desse valor, o fundo de premiação é dividido entre as sete faixas de acerto — incluindo uma faixa
+            Desse valor, o fundo de premiação é dividido entre as sete faixas de acerto, incluindo uma faixa
             especial para quem não acerta nenhum número:
           </p>
 
@@ -37,7 +37,7 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>45%</div>
               <div>
-                <div className="font-semibold text-foreground">20 acertos — 1ª faixa</div>
+                <div className="font-semibold text-foreground">20 acertos | 1ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores dos 20 números sorteados.</div>
               </div>
             </div>
@@ -45,7 +45,7 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>16%</div>
               <div>
-                <div className="font-semibold text-foreground">19 acertos — 2ª faixa</div>
+                <div className="font-semibold text-foreground">19 acertos | 2ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 19 dos 20 números sorteados.</div>
               </div>
             </div>
@@ -53,7 +53,7 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>10%</div>
               <div>
-                <div className="font-semibold text-foreground">18 acertos — 3ª faixa</div>
+                <div className="font-semibold text-foreground">18 acertos | 3ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 18 números.</div>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>7%</div>
               <div>
-                <div className="font-semibold text-foreground">17 acertos — 4ª faixa</div>
+                <div className="font-semibold text-foreground">17 acertos | 4ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 17 números.</div>
               </div>
             </div>
@@ -69,7 +69,7 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>7%</div>
               <div>
-                <div className="font-semibold text-foreground">16 acertos — 5ª faixa</div>
+                <div className="font-semibold text-foreground">16 acertos | 5ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 16 números.</div>
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>7%</div>
               <div>
-                <div className="font-semibold text-foreground">15 acertos — 6ª faixa</div>
+                <div className="font-semibold text-foreground">15 acertos | 6ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 15 números.</div>
               </div>
             </div>
@@ -85,8 +85,8 @@ export default function LotomaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-amber-500/10 border-amber-500/30">
               <div className="text-2xl font-bold text-amber-600 w-20 text-center">8%</div>
               <div>
-                <div className="font-semibold text-foreground">0 acertos — 7ª faixa</div>
-                <div className="text-sm">Distribuídos entre os acertadores de nenhum dos 20 números sorteados — uma faixa exclusiva da Lotomania!</div>
+                <div className="font-semibold text-foreground">0 acertos | 7ª faixa</div>
+                <div className="text-sm">Distribuídos entre os acertadores de nenhum dos 20 números sorteados: uma faixa exclusiva da Lotomania!</div>
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@ export default function LotomaniaPremiacao() {
           </div>
           <p className="text-xs text-muted-foreground mt-3">
             As probabilidades acima consideram uma aposta de 50 dezenas. Note que a probabilidade de acertar 0 números
-            é igual à de acertar os 20 — por isso ambas são 1 em 11.372.635.
+            é igual à de acertar os 20, por isso ambas são 1 em 11.372.635.
           </p>
         </CardContent>
       </Card>

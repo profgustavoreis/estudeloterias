@@ -136,7 +136,7 @@ export default function MaismilionariaSimulador() {
   return (
     <div className="space-y-6">
       <PageSEO
-        title="Simulador Histórico da +Milionária — Teste sua Aposta no Histórico"
+        title="Simulador Histórico da +Milionária | Teste sua Aposta no Histórico"
         description="Escolha de 6 a 12 dezenas e de 2 a 6 trevos da sorte e descubra em quantos sorteios da +Milionária você teria ganhado."
         canonical="/maismilionaria/simulador"
       />
@@ -330,7 +330,7 @@ export default function MaismilionariaSimulador() {
               <>
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Concursos — {FILTRO_LABELS[filtro]}</CardTitle>
+                    <CardTitle className="text-base">Concursos | {FILTRO_LABELS[filtro]}</CardTitle>
                     <CardDescription>{totalConcursos.toLocaleString("pt-BR")} concurso{totalConcursos !== 1 ? "s" : ""} encontrado{totalConcursos !== 1 ? "s" : ""}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-0">

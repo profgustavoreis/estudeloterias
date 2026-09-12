@@ -8,7 +8,7 @@ export default function TimemaniaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da Timemania — Faixas e Probabilidades"
+        title="Premiação da Timemania | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da Timemania: 7, 6, 5, 4, 3 acertos e Time do Coração, percentuais do fundo de prêmios e probabilidades de cada faixa."
         canonical="/timemania/premiacao"
       />
@@ -40,7 +40,7 @@ export default function TimemaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>50%</div>
               <div>
-                <div className="font-semibold text-foreground">7 acertos — 1ª faixa</div>
+                <div className="font-semibold text-foreground">7 acertos | 1ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores dos 7 números sorteados.</div>
               </div>
             </div>
@@ -48,7 +48,7 @@ export default function TimemaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>20%</div>
               <div>
-                <div className="font-semibold text-foreground">6 acertos — 2ª faixa</div>
+                <div className="font-semibold text-foreground">6 acertos | 2ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 6 números.</div>
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function TimemaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>20%</div>
               <div>
-                <div className="font-semibold text-foreground">5 acertos — 3ª faixa</div>
+                <div className="font-semibold text-foreground">5 acertos | 3ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 5 números.</div>
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function TimemaniaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-amber-500/10 border-amber-500/30">
               <div className="text-2xl font-bold text-amber-600 w-20 text-center">10%</div>
               <div>
-                <div className="font-semibold text-foreground">Reserva — Concursos final 0 ou 5</div>
+                <div className="font-semibold text-foreground">Reserva | Concursos final 0 ou 5</div>
                 <div className="text-sm">Acumulados e distribuídos aos acertadores dos 7 números nos concursos de final 0 ou 5.</div>
               </div>
             </div>

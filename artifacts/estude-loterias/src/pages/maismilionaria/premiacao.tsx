@@ -8,7 +8,7 @@ export default function MaismilionariaPremiacao() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <PageSEO
-        title="Premiação da +Milionária — Faixas e Probabilidades"
+        title="Premiação da +Milionária | Faixas e Probabilidades"
         description="Conheça as faixas de premiação da +Milionária: 6 acertos com Trevos, 5 acertos com Trevos, 4 acertos, 3 acertos, percentuais do fundo de prêmios e probabilidades."
         canonical="/maismilionaria/premiacao"
       />
@@ -37,7 +37,7 @@ export default function MaismilionariaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>50%</div>
               <div>
-                <div className="font-semibold text-foreground">6 acertos + 2 Trevos — 1ª faixa</div>
+                <div className="font-semibold text-foreground">6 acertos + 2 Trevos | 1ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores dos 6 números e 2 Trevos da Sorte.</div>
               </div>
             </div>
@@ -45,7 +45,7 @@ export default function MaismilionariaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>20%</div>
               <div>
-                <div className="font-semibold text-foreground">6 acertos (1 ou 0 Trevos) — 2ª faixa</div>
+                <div className="font-semibold text-foreground">6 acertos (1 ou 0 Trevos) | 2ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 6 números com 1 ou nenhum trevo.</div>
               </div>
             </div>
@@ -53,7 +53,7 @@ export default function MaismilionariaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-muted/30">
               <div className="text-2xl font-bold w-20 text-center" style={{ color: COR }}>20%</div>
               <div>
-                <div className="font-semibold text-foreground">5 acertos + 2 Trevos — 3ª faixa</div>
+                <div className="font-semibold text-foreground">5 acertos + 2 Trevos | 3ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 5 números e 2 Trevos da Sorte.</div>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function MaismilionariaPremiacao() {
             <div className="flex items-center gap-4 p-4 border rounded-lg bg-amber-500/10 border-amber-500/30">
               <div className="text-2xl font-bold text-amber-600 w-20 text-center">10%</div>
               <div>
-                <div className="font-semibold text-foreground">5 acertos (1 ou 0 Trevos) — 4ª faixa</div>
+                <div className="font-semibold text-foreground">5 acertos (1 ou 0 Trevos) | 4ª faixa</div>
                 <div className="text-sm">Distribuídos entre os acertadores de 5 números com 1 ou nenhum trevo.</div>
               </div>
             </div>
