@@ -247,7 +247,7 @@ function Cabecalho({ view }: { view: SpecialEditionView }) {
           )}
         >
           <Icon className="h-4 w-4" aria-hidden="true" />
-          {view.nome} · Edição especial
+          Informações importantes
         </span>
         <Badge className={badge.className}>{badge.label}</Badge>
       </div>

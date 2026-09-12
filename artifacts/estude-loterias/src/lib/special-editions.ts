@@ -101,7 +101,7 @@ export interface SpecialEditionView {
   proximaStatus: "confirmada" | "prevista" | null;
   valorEstimado: number | null;
 
-  /** H1 da página, alinhado ao padrão "Todos os Resultados da {nome}". */
+  /** H1 da página: apenas o nome do sorteio. */
   h1: string;
 
   ctaPrincipal: { href: string; label: string };
@@ -417,7 +417,9 @@ export function resolveSpecialEditionView(
   const anoEdicao =
     estado === "resultado" && resultadoDestaque ? resultadoDestaque.anoEdicao : anoProxima;
 
-  const h1 = `Todos os Resultados da ${meta.nome}`;
+  // H1: apenas o nome do sorteio. A frase "Todos os resultados da ..." fica no
+  // subtítulo da seção "Histórico de Sorteios", evitando duplicidade.
+  const h1 = meta.nome;
 
   const baseResultado = meta.rota.replace(/\/[^/]+$/, "");
   const hrefResultado = (concurso: number) => `${baseResultado}/resultado/${concurso}`;

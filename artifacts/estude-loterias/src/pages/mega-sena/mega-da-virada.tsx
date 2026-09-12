@@ -86,9 +86,9 @@ export default function MegaDaVirada() {
         description={seo.description}
         canonical={META.canonical}
       />
-      <div className="flex items-center gap-4">
-        <div className="w-16 h-16 rounded-xl bg-[#009640] flex items-center justify-center text-white shadow-lg">
-          <Gift className="w-8 h-8" />
+      <div className="flex items-start gap-3 sm:items-center sm:gap-4">
+        <div className="flex h-12 w-12 shrink-0 aspect-square items-center justify-center rounded-xl bg-[#009640] text-white shadow-lg sm:h-16 sm:w-16">
+          <Gift className="h-6 w-6 sm:h-8 sm:w-8" />
         </div>
         <div>
           <h1 className={cn("text-2xl md:text-3xl font-black tracking-tight", view.accent.text)}>
