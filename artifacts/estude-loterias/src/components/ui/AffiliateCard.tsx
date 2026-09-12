@@ -153,9 +153,11 @@ export function AffiliateCard({
       data-affiliate={afiliado}
       data-affiliate-placement={placement}
       className={cn(
-        // Superfície de destaque: borda de acento arredondada + tint + glow, sem filete duro.
-        "group relative overflow-hidden rounded-xl border border-affiliate-accent/25 bg-card text-card-foreground shadow-sm transition-all duration-300",
-        "hover:border-affiliate-accent/50 hover:shadow-xl hover:shadow-affiliate-accent/15 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
+        // Superfície de parceiro: tint diagonal tênue (canto superior, sem aresta)
+        // + borda de acento + glow. Nada de faixa de altura fixa com corte duro.
+        "group relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card text-card-foreground shadow-sm transition-all duration-300",
+        "bg-gradient-to-bl from-affiliate-accent/[0.06] via-card to-card",
+        "hover:border-affiliate-accent/50 hover:shadow-xl hover:shadow-affiliate-accent/20 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0",
         "p-5 sm:p-6",
         className,
       )}
@@ -169,7 +171,7 @@ export function AffiliateCard({
       {/* Glow radial ambiente (decorativo, não intercepta cliques) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-affiliate-accent/15 blur-2xl transition-colors duration-500 group-hover:bg-affiliate-accent/25 dark:bg-affiliate-accent/20"
+        className="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-affiliate-accent/20 blur-2xl transition-colors duration-500 group-hover:bg-affiliate-accent/30 dark:bg-affiliate-accent/25"
       />
 
       <div className="relative z-10">
@@ -203,8 +205,8 @@ export function AffiliateCard({
             className={cn(
               "inline-flex w-full sm:w-auto min-h-[44px] items-center justify-center gap-2",
               // Fundo sólido do token: branco passa em AA (5.43:1).
-              "rounded-lg bg-affiliate-cta px-5 py-2.5 text-sm font-bold text-white",
-              "shadow-sm transition-all hover:bg-affiliate-cta-hover hover:shadow-md hover:shadow-affiliate-accent/25",
+              "rounded-lg bg-affiliate-cta px-6 py-3 text-sm sm:text-base font-bold text-white",
+              "shadow-md shadow-affiliate-accent/20 transition-all hover:bg-affiliate-cta-hover hover:shadow-lg hover:shadow-affiliate-accent/30",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             )}
           >

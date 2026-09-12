@@ -168,7 +168,7 @@ export function StickyAffiliateBar() {
       className="fixed inset-x-0 bottom-0 z-40 sm:hidden animate-in fade-in slide-in-from-bottom-4 duration-300"
     >
       <div className="mx-auto max-w-2xl px-3 pt-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
-        <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/25 bg-card shadow-lg">
+        <div className="relative overflow-hidden rounded-xl border border-affiliate-accent/30 bg-card bg-gradient-to-bl from-affiliate-accent/[0.06] via-card to-card shadow-lg">
           {/* Tinta decorativa: mesmo tratamento radial do card, sem arestas */}
           <div
             aria-hidden
@@ -177,7 +177,7 @@ export function StickyAffiliateBar() {
           {/* Glow de acento (decorativo) */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-affiliate-accent/20 blur-2xl dark:bg-affiliate-accent/25"
+            className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-affiliate-accent/25 blur-2xl dark:bg-affiliate-accent/30"
           />
 
           <div className="relative z-10 px-4 py-2">
@@ -218,7 +218,7 @@ export function StickyAffiliateBar() {
                 onClick={() => trackAffiliateClick(trackParams)}
                 className={cn(
                   "inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-lg",
-                  "bg-affiliate-cta px-4 text-sm font-bold text-white shadow-sm transition-all hover:bg-affiliate-cta-hover hover:shadow-md hover:shadow-affiliate-accent/25",
+                  "bg-affiliate-cta px-4 text-sm font-bold text-white shadow-md shadow-affiliate-accent/20 transition-all hover:bg-affiliate-cta-hover hover:shadow-lg hover:shadow-affiliate-accent/30",
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-affiliate-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 )}
               >
