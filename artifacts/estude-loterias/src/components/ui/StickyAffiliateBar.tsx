@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowUpRight, BadgeCheck } from "lucide-react";
+import { ArrowUpRight, BadgeCheck, X } from "lucide-react";
 import {
   AFFILIATE_NAMES,
   buildAffiliateUrl,
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
  * - Só aparece depois de o usuário rolar ~30% da página (nunca na entrada).
  * - Só aparece depois de uma decisão de consentimento salva (`readConsent()`);
  *   enquanto o CMP estiver aberto, a barra NÃO existe — os dois nunca se empilham.
- * - Dispensável ("Agora não"), lembrada na sessão; não reabre sozinha.
+ * - Dispensável (ícone de fechar), lembrada na sessão; não reabre sozinha.
  * - Rotulada ("Parceiro"/"Publicidade") + disclosure + 18+.
  * - Mobile-first (`sm:hidden`): no desktop a conversão já é coberta pelo CTA do
  *   cabeçalho e pelos cards inline, então a barra fica restrita ao mobile para
@@ -181,13 +181,14 @@ export function StickyAffiliateBar() {
             <button
               type="button"
               onClick={handleDismiss}
+              aria-label="Fechar"
               className={cn(
-                "ml-auto inline-flex min-h-11 items-center rounded-md px-2 text-xs font-medium text-white/90",
-                "underline-offset-4 transition-colors hover:text-white hover:underline",
+                "ml-auto inline-flex h-11 w-11 items-center justify-center rounded-md text-white/90",
+                "transition-colors hover:bg-white/10 hover:text-white",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-affiliate-cta",
               )}
             >
-              Agora não
+              <X className="h-5 w-5" aria-hidden />
             </button>
           </div>
 
