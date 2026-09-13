@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "export NODE_ENV=development && pnpm run build && pnpm run start",
+    "gen:routes": "node ../../scripts/gen-spa-routes.mjs",
+    "check:routes": "node ../../scripts/check-spa-routes.mjs",
+    "prebuild": "pnpm run gen:routes",
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"

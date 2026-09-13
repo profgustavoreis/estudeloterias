@@ -15,80 +15,62 @@ import {
   buildNotFoundHead,
   normalizeRoutePath,
 } from "./middlewares/seo-head-injection";
+import { SPA_ROUTE_PATTERNS } from "./generated/spa-routes";
 
 // ---------------------------------------------------------------------------
-// Conjunto de rotas válidas do SPA (fonte: artifacts/estude-loterias/src/App.tsx)
+// Validacao das rotas validas do SPA
 // ---------------------------------------------------------------------------
-// O catch-all responde index.html para qualquer GET não-API. Para dar 404 real
-// a paths inexistentes (hoje tudo devolve 200 — soft 404), validamos aqui o
-// path contra as rotas declaradas no App.tsx. A lista é mantida em sincronia
-// manual com o roteador: adicionar rota nova no App.tsx exige adicioná-la aqui.
-const SPA_MODALITIES = [
-  "mega-sena",
-  "lotofacil",
-  "quina",
-  "lotomania",
-  "timemania",
-  "diadesorte",
-  "duplasena",
-  "maismilionaria",
-  "super-sete",
-] as const;
+// O catch-all responde index.html para qualquer GET nao-API. Para dar 404 real
+// a paths inexistentes (hoje tudo devolve 200, o chamado soft 404), validamos
+// aqui o path contra as rotas declaradas no App.tsx.
+//
+// A lista NAO e mantida a mao: `SPA_ROUTE_PATTERNS` e gerado em build time por
+// `scripts/gen-spa-routes.mjs` (a partir de
+// `artifacts/estude-loterias/src/App.tsx`, via AST do TypeScript) e roda no
+// `prebuild` do api-server. Adicionar uma rota no App.tsx + rodar o build ja a
+// inclui aqui, sem passo manual.
+//
+// Regras de parametro (explicitas e documentadas):
+//   - `:concurso` -> apenas digitos (`\d+`), preservando o comportamento
+//     historico de `/:modalidade/resultado/:concurso`;
+//   - qualquer outro parametro (`:slug`, `:id`, ...) -> um segmento nao vazio
+//     sem barra (`[^/]+`).
+// Mantem a normalizacao historica: query string e hash sao ignorados, barra
+// final e caixa nao importam.
+const SPA_PARAM_MATCHERS: Record<string, string> = {
+  concurso: "\\d+",
+};
+const SPA_DEFAULT_PARAM_MATCHER = "[^/]+";
 
-// Sub-rotas comuns a todas as modalidades.
-const SPA_MODALITY_SUBROUTES = [
-  "resultado",
-  "resultados",
-  "tabela-de-dezenas",
-  "resumo-estatistico",
-  "gerador",
-  "simulador",
-  "conferidor",
-  "como-jogar",
-  "premiacao",
-  "perguntas-frequentes",
-] as const;
+/** Escapa um segmento literal para uso dentro de uma RegExp. */
+function escapeRegExpLiteral(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-// Páginas especiais (slug próprio, fora do padrão acima).
-const SPA_SPECIAL_ROUTES = [
-  "mega-sena/mega-da-virada",
-  "lotofacil/lotofacil-da-independencia",
-  "quina/quina-de-sao-joao",
-  "duplasena/dupla-de-pascoa",
-] as const;
+/** Converte um padrao do App.tsx (ex.: `/blog/:slug`) em RegExp ancorada. */
+function routePatternToRegExp(pattern: string): RegExp {
+  if (pattern === "/") return /^\/$/;
+  const body = pattern
+    .replace(/\/+$/, "")
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => {
+      if (segment.startsWith(":")) {
+        const name = segment.slice(1);
+        return SPA_PARAM_MATCHERS[name] ?? SPA_DEFAULT_PARAM_MATCHER;
+      }
+      return escapeRegExpLiteral(segment);
+    })
+    .join("/");
+  return new RegExp(`^/${body}$`);
+}
 
-const SPA_STATIC_ROUTES: string[] = [
-  "/",
-  ...SPA_MODALITIES.map((m) => `/${m}`),
-  ...SPA_MODALITIES.flatMap((m) => SPA_MODALITY_SUBROUTES.map((s) => `/${m}/${s}`)),
-  ...SPA_SPECIAL_ROUTES.map((r) => `/${r}`),
-  // Institucionais
-  "/sobre",
-  "/privacidade",
-  "/termos",
-  "/parceiros",
-  "/contato",
-  // Blog público
-  "/blog",
-  // Blog admin
-  "/admin/blog",
-  "/admin/blog/novo",
-];
-
-const SPA_STATIC_ROUTE_SET = new Set(SPA_STATIC_ROUTES);
-
-// Rotas dinâmicas: concurso (dígitos), slug do blog e id de edição.
-const SPA_DYNAMIC_ROUTES: RegExp[] = [
-  new RegExp(`^/(?:${SPA_MODALITIES.join("|")})/resultado/\\d+$`),
-  /^\/blog\/[^/]+$/,
-  /^\/admin\/blog\/editar\/[^/]+$/,
-];
+const SPA_ROUTE_REGEXPS: RegExp[] = SPA_ROUTE_PATTERNS.map(routePatternToRegExp);
 
 /** Normaliza e valida um path do SPA (ignora query, barra final e caixa). */
 function isValidSpaRoute(reqPath: string): boolean {
   const p = normalizeRoutePath(reqPath).toLowerCase();
-  if (SPA_STATIC_ROUTE_SET.has(p)) return true;
-  return SPA_DYNAMIC_ROUTES.some((re) => re.test(p));
+  return SPA_ROUTE_REGEXPS.some((re) => re.test(p));
 }
 
 const app: Express = express();
