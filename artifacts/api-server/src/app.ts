@@ -6,7 +6,90 @@ import pinoHttp from "pino-http";
 import router from "./routes";
 import { sitemapHandler } from "./routes/sitemap";
 import { logger } from "./lib/logger";
-import { spaSeoHeadInjection, resolveSeoHead, injectHead } from "./middlewares/seo-head-injection";
+import {
+  spaSeoHeadInjection,
+  resolveSeoHead,
+  injectHead,
+  injectBodyLinks,
+  resolveBodyLinks,
+  buildNotFoundHead,
+  normalizeRoutePath,
+} from "./middlewares/seo-head-injection";
+
+// ---------------------------------------------------------------------------
+// Conjunto de rotas válidas do SPA (fonte: artifacts/estude-loterias/src/App.tsx)
+// ---------------------------------------------------------------------------
+// O catch-all responde index.html para qualquer GET não-API. Para dar 404 real
+// a paths inexistentes (hoje tudo devolve 200 — soft 404), validamos aqui o
+// path contra as rotas declaradas no App.tsx. A lista é mantida em sincronia
+// manual com o roteador: adicionar rota nova no App.tsx exige adicioná-la aqui.
+const SPA_MODALITIES = [
+  "mega-sena",
+  "lotofacil",
+  "quina",
+  "lotomania",
+  "timemania",
+  "diadesorte",
+  "duplasena",
+  "maismilionaria",
+  "super-sete",
+] as const;
+
+// Sub-rotas comuns a todas as modalidades.
+const SPA_MODALITY_SUBROUTES = [
+  "resultado",
+  "resultados",
+  "tabela-de-dezenas",
+  "resumo-estatistico",
+  "gerador",
+  "simulador",
+  "conferidor",
+  "como-jogar",
+  "premiacao",
+  "perguntas-frequentes",
+] as const;
+
+// Páginas especiais (slug próprio, fora do padrão acima).
+const SPA_SPECIAL_ROUTES = [
+  "mega-sena/mega-da-virada",
+  "lotofacil/lotofacil-da-independencia",
+  "quina/quina-de-sao-joao",
+  "duplasena/dupla-de-pascoa",
+] as const;
+
+const SPA_STATIC_ROUTES: string[] = [
+  "/",
+  ...SPA_MODALITIES.map((m) => `/${m}`),
+  ...SPA_MODALITIES.flatMap((m) => SPA_MODALITY_SUBROUTES.map((s) => `/${m}/${s}`)),
+  ...SPA_SPECIAL_ROUTES.map((r) => `/${r}`),
+  // Institucionais
+  "/sobre",
+  "/privacidade",
+  "/termos",
+  "/parceiros",
+  "/contato",
+  // Blog público
+  "/blog",
+  // Blog admin
+  "/admin/blog",
+  "/admin/blog/novo",
+];
+
+const SPA_STATIC_ROUTE_SET = new Set(SPA_STATIC_ROUTES);
+
+// Rotas dinâmicas: concurso (dígitos), slug do blog e id de edição.
+const SPA_DYNAMIC_ROUTES: RegExp[] = [
+  new RegExp(`^/(?:${SPA_MODALITIES.join("|")})/resultado/\\d+$`),
+  /^\/blog\/[^/]+$/,
+  /^\/admin\/blog\/editar\/[^/]+$/,
+];
+
+/** Normaliza e valida um path do SPA (ignora query, barra final e caixa). */
+function isValidSpaRoute(reqPath: string): boolean {
+  const p = normalizeRoutePath(reqPath).toLowerCase();
+  if (SPA_STATIC_ROUTE_SET.has(p)) return true;
+  return SPA_DYNAMIC_ROUTES.some((re) => re.test(p));
+}
 
 const app: Express = express();
 
@@ -54,7 +137,8 @@ if (frontendDist && fs.existsSync(path.join(frontendDist, "index.html"))) {
 
   // Catch-all do SPA: qualquer rota não coberta pelos assets retorna o
   // index.html com o head de SEO apropriado para a rota atual (concursos,
-  // estatísticas, blog, institucional, etc.).
+  // estatísticas, blog, institucional, etc.). Rotas que não fazem parte do
+  // roteador do SPA respondem HTTP 404 real (+ `X-Robots-Tag: noindex`).
   app.use(async (req: Request, res: Response) => {
     if (req.method !== "GET" && req.method !== "HEAD") {
       res.status(404).json({ error: "Not found" });
@@ -64,6 +148,9 @@ if (frontendDist && fs.existsSync(path.join(frontendDist, "index.html"))) {
       res.status(404).json({ error: "Not found" });
       return;
     }
+
+    const isKnownRoute = isValidSpaRoute(req.path);
+
     let html = indexHtml ?? "";
     try {
       let head = (res.locals.seoHead || res.locals.articleSeoHead) as string | undefined;
@@ -75,7 +162,19 @@ if (frontendDist && fs.existsSync(path.join(frontendDist, "index.html"))) {
         }
         head = seoResult;
       }
+      if (!isKnownRoute) {
+        res.status(404).setHeader("X-Robots-Tag", "noindex");
+        head = buildNotFoundHead(req.path);
+      }
       html = injectHead(html, head);
+
+      // Grafo de links internos no HTML inicial apenas em rotas válidas de
+      // resultado/lista. Falha de DB degrada para sem nav (resolveBodyLinks
+      // nunca lança).
+      if (isKnownRoute) {
+        const nav = await resolveBodyLinks(req.path);
+        if (nav) html = injectBodyLinks(html, nav);
+      }
     } catch (err) {
       logger.error({ err, path: req.path }, "Erro ao injetar SEO head no catch-all");
     }

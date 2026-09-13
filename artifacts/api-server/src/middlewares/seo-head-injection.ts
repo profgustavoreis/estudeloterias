@@ -1,7 +1,7 @@
 import { type Request, type Response, type NextFunction } from "express";
 import { db, articlesTable, blogRedirectsTable, lotteryResultsTable } from "@workspace/db";
 import type { Article } from "@workspace/db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, max } from "drizzle-orm";
 import {
   buildSpecialEditionFallback,
   buildSpecialEditionJsonLd,
@@ -145,6 +145,47 @@ export async function getConcursoInfo(dbName: string, concurso: number): Promise
   }
 }
 
+/**
+ * Cache TTL do último concurso conhecido por modalidade. Usado para montar o
+ * grafo de links internos no HTML inicial (anterior/próximo/recentes) sem
+ * rodar um `MAX(concurso)` a cada request. 5 minutos é suficiente: o concurso
+ * mais recente só muda em janelas de sorteio.
+ */
+const LATEST_CONCURSO_TTL_MS = 5 * 60 * 1000;
+const LATEST_CONCURSO_FAILURE_TTL_MS = 30 * 1000;
+const latestConcursoCache = new Map<string, { value: number | null; expiresAt: number }>();
+
+/** Último concurso conhecido no DB para a modalidade (id do DB, ex.: "megasena"). */
+export async function getLatestConcurso(dbName: string): Promise<number | null> {
+  const cached = latestConcursoCache.get(dbName);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.value;
+  }
+
+  try {
+    const [row] = await db
+      .select({ maxConcurso: max(lotteryResultsTable.concurso) })
+      .from(lotteryResultsTable)
+      .where(eq(lotteryResultsTable.modalidade, dbName));
+
+    const value = row?.maxConcurso ?? null;
+    latestConcursoCache.set(dbName, {
+      value,
+      expiresAt: Date.now() + LATEST_CONCURSO_TTL_MS,
+    });
+    return value;
+  } catch {
+    // Falha de DB: degrada sem o nav e cacheia negativamente por pouco tempo
+    // (evita martelar o banco em um pico de falhas), preservando um valor
+    // eventualmente já conhecido.
+    latestConcursoCache.set(dbName, {
+      value: cached?.value ?? null,
+      expiresAt: Date.now() + LATEST_CONCURSO_FAILURE_TTL_MS,
+    });
+    return cached?.value ?? null;
+  }
+}
+
 export function normalizeRoutePath(rawPath: string): string {
   let p = rawPath.split("?")[0]?.split("#")[0] ?? "/";
   p = p.replace(/\/+/g, "/");
@@ -198,6 +239,22 @@ export function buildHeadTags({
   ];
 
   return tags.filter(Boolean).join("\n");
+}
+
+/**
+ * `<head>` para rotas inválidas do SPA (HTTP 404 real). Mantém o canonical do
+ * caminho acessado (o catch-all já não deixa a home como canônica), mas marca
+ * explicitamente como `noindex, nofollow` — reforçado pelo header
+ * `X-Robots-Tag` enviado junto da resposta 404.
+ */
+export function buildNotFoundHead(reqPath: string): string {
+  const p = normalizeRoutePath(reqPath);
+  return buildHeadTags({
+    title: `Página não encontrada | ${SITE_NAME}`,
+    description: "A página que você procura não existe ou foi movida no Estude Loterias.",
+    canonicalUrl: `${BASE_URL}${p === "" ? "/" : p}`,
+    robots: "noindex, nofollow",
+  });
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
@@ -756,6 +813,116 @@ export function injectHead(html: string, head: string): string {
   out = out.replace(/\n\s*\n\s*\n+/g, "\n\n");
 
   return out.replace(/<\/head>/i, `${head}\n  </head>`);
+}
+
+/** Marcador que identifica o nav SSR injetado dentro de `#root` (idempotência). */
+const SSR_BODY_LINKS_MARKER = 'data-ssr-body-links="1"';
+
+interface BodyNavLink {
+  href: string;
+  label: string;
+}
+
+/** Monta um `<nav>` com links `<a href>` reais, deduplicando por href. */
+function buildBodyNav(links: BodyNavLink[], ariaLabel: string): string {
+  const seen = new Set<string>();
+  const anchors: string[] = [];
+  for (const link of links) {
+    if (seen.has(link.href)) continue;
+    seen.add(link.href);
+    anchors.push(`<a href="${escapeHtml(link.href)}">${escapeHtml(link.label)}</a>`);
+  }
+  if (anchors.length === 0) return "";
+  return `<nav ${SSR_BODY_LINKS_MARKER} aria-label="${escapeHtml(ariaLabel)}">${anchors.join("")}</nav>`;
+}
+
+/**
+ * Nav para a página de um concurso: hub, último resultado, lista, anterior e
+ * próximo (quando existem) + ~10 concursos recentes. `latest` é o último
+ * concurso conhecido no DB (ou null quando indisponível).
+ */
+export function buildConcursoBodyNav(
+  mod: ModalityConfig,
+  concurso: number,
+  latest: number | null,
+): string {
+  const links: BodyNavLink[] = [
+    { href: `/${mod.slug}`, label: mod.name },
+    { href: `/${mod.slug}/resultado`, label: "Último resultado" },
+    { href: `/${mod.slug}/resultados`, label: "Resultados" },
+  ];
+
+  if (concurso > 1) {
+    links.push({ href: `/${mod.slug}/resultado/${concurso - 1}`, label: "Anterior" });
+  }
+  if (latest !== null && concurso < latest) {
+    links.push({ href: `/${mod.slug}/resultado/${concurso + 1}`, label: "Próximo" });
+  }
+  if (latest !== null) {
+    for (let n = latest; n > latest - 10 && n >= 1; n--) {
+      links.push({ href: `/${mod.slug}/resultado/${n}`, label: `Concurso ${n}` });
+    }
+  }
+
+  return buildBodyNav(links, `Resultados ${mod.article}`);
+}
+
+/** Nav para a lista de resultados: hub, último resultado e ~20 concursos recentes. */
+export function buildResultadosBodyNav(mod: ModalityConfig, latest: number): string {
+  const links: BodyNavLink[] = [
+    { href: `/${mod.slug}`, label: mod.name },
+    { href: `/${mod.slug}/resultado`, label: "Último resultado" },
+  ];
+  for (let n = latest; n > latest - 20 && n >= 1; n--) {
+    links.push({ href: `/${mod.slug}/resultado/${n}`, label: `Concurso ${n}` });
+  }
+  return buildBodyNav(links, `Últimos resultados ${mod.article}`);
+}
+
+/**
+ * Resolve o nav de links internos (SSR) para as páginas de resultado. Retorna
+ * string vazia quando a rota não é de resultado/lista, o DB falha ou não há
+ * concursos conhecidos — o catch-all segue sem o nav, sem quebrar.
+ */
+export async function resolveBodyLinks(reqPath: string): Promise<string> {
+  const p = normalizeRoutePath(reqPath).toLowerCase();
+
+  const concursoMatch = /^\/([a-z-]+)\/resultado\/(\d+)$/.exec(p);
+  if (concursoMatch) {
+    const mod = MODALIDADES_CONFIG[concursoMatch[1]];
+    if (!mod) return "";
+    const concurso = parseInt(concursoMatch[2], 10);
+    const latest = await getLatestConcurso(mod.dbName);
+    return buildConcursoBodyNav(mod, concurso, latest);
+  }
+
+  const listMatch = /^\/([a-z-]+)\/resultados$/.exec(p);
+  if (listMatch) {
+    const mod = MODALIDADES_CONFIG[listMatch[1]];
+    if (!mod) return "";
+    const latest = await getLatestConcurso(mod.dbName);
+    if (latest === null) return "";
+    return buildResultadosBodyNav(mod, latest);
+  }
+
+  return "";
+}
+
+/**
+ * Injeta o nav de links internos logo após a abertura de `<div id="root">`.
+ * O React usa `createRoot`, então este conteúdo é substituído na primeira
+ * renderização (serve ao crawler, não duplica na UI). Idempotente: se o
+ * marcador já existir, não injeta de novo.
+ */
+export function injectBodyLinks(html: string, navHtml: string): string {
+  if (!navHtml) return html;
+  if (html.includes(SSR_BODY_LINKS_MARKER)) return html;
+
+  const rootTag = /<div[^>]*id=["']root["'][^>]*>/i.exec(html);
+  if (!rootTag) return html;
+
+  const insertAt = rootTag.index + rootTag[0].length;
+  return `${html.slice(0, insertAt)}${navHtml}${html.slice(insertAt)}`;
 }
 
 /**
