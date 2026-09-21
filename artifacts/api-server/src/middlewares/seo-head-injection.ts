@@ -9,7 +9,15 @@ import {
   serializeSpecialEditionJsonLd,
   type SpecialEditionFacts,
 } from "@workspace/seo-special-editions";
-import { getTodaySaoPaulo, resolveSpecialEdition } from "../services/special-editions";
+import { resolveSpecialEdition } from "../services/special-editions";
+import { getTodaySaoPaulo } from "../lib/sampa-date";
+import { MODALIDADES_CONFIG, type ModalityConfig } from "../lib/modalidades";
+import { logger } from "../lib/logger";
+import {
+  isConcursoIndexable,
+  parseConcursoPath,
+  type IndexingDecision,
+} from "../services/indexing-policy";
 
 /**
  * Middleware de injeção de SEO no head do HTML do SPA para todas as rotas
@@ -19,130 +27,77 @@ import { getTodaySaoPaulo, resolveSpecialEdition } from "../services/special-edi
  * este módulo provê a resolução dinâmica de <link rel="canonical">, <title>,
  * <meta name="description">, OpenGraph e Twitter tags de acordo com a rota
  * solicitada, evitando que o Googlebot veja a home como canonical fixa em todas as páginas.
+ *
+ * A partir da remediação de indexação, este módulo também resolve o **status
+ * HTTP** (soft-404 real) e o `X-Robots-Tag` das páginas de concurso, usando a
+ * régua única de `services/indexing-policy.ts`.
  */
 
 const BASE_URL = "https://estudeloterias.com.br";
 export const SITE_NAME = "Estude Loterias";
-
-export interface ModalityConfig {
-  slug: string;
-  dbName: string;
-  name: string;
-  article: string;
-  in: string;
-}
-
-export const MODALIDADES_CONFIG: Record<string, ModalityConfig> = {
-  "mega-sena": {
-    slug: "mega-sena",
-    dbName: "megasena",
-    name: "Mega-Sena",
-    article: "da Mega-Sena",
-    in: "na Mega-Sena",
-  },
-  "lotofacil": {
-    slug: "lotofacil",
-    dbName: "lotofacil",
-    name: "Lotofácil",
-    article: "da Lotofácil",
-    in: "na Lotofácil",
-  },
-  "quina": {
-    slug: "quina",
-    dbName: "quina",
-    name: "Quina",
-    article: "da Quina",
-    in: "na Quina",
-  },
-  "lotomania": {
-    slug: "lotomania",
-    dbName: "lotomania",
-    name: "Lotomania",
-    article: "da Lotomania",
-    in: "na Lotomania",
-  },
-  "timemania": {
-    slug: "timemania",
-    dbName: "timemania",
-    name: "Timemania",
-    article: "da Timemania",
-    in: "na Timemania",
-  },
-  "diadesorte": {
-    slug: "diadesorte",
-    dbName: "diadesorte",
-    name: "Dia de Sorte",
-    article: "do Dia de Sorte",
-    in: "no Dia de Sorte",
-  },
-  "duplasena": {
-    slug: "duplasena",
-    dbName: "duplasena",
-    name: "Dupla Sena",
-    article: "da Dupla Sena",
-    in: "na Dupla Sena",
-  },
-  "maismilionaria": {
-    slug: "maismilionaria",
-    dbName: "maismilionaria",
-    name: "+Milionária",
-    article: "da +Milionária",
-    in: "na +Milionária",
-  },
-  "super-sete": {
-    slug: "super-sete",
-    dbName: "supersete",
-    name: "Super Sete",
-    article: "da Super Sete",
-    in: "na Super Sete",
-  },
-};
 
 interface ConcursoInfo {
   data: string;
   dezenas: string[];
 }
 
-const concursoCache = new Map<string, ConcursoInfo | null>();
+/** TTL do cache de linha de concurso: positivo 24h, negativo 60s. */
+const CONCURSO_CACHE_POSITIVE_TTL_MS = 24 * 60 * 60 * 1000;
+const CONCURSO_CACHE_NEGATIVE_TTL_MS = 60 * 1000;
 const MAX_CONCURSO_CACHE = 10000;
 
+interface ConcursoCacheEntry {
+  value: ConcursoInfo | null;
+  expiresAt: number;
+}
+
+const concursoCache = new Map<string, ConcursoCacheEntry>();
+
+/**
+ * Linha do concurso no espelho local.
+ *
+ * `null` significa "linha ausente" e é cacheado por apenas 60s (evita o cache
+ * negativo eterno de concursos ainda não sorteados). Erro de DB é **propagado**
+ * para o chamador decidir o fail-open; falhas não são cacheadas.
+ */
 export async function getConcursoInfo(dbName: string, concurso: number): Promise<ConcursoInfo | null> {
   const cacheKey = `${dbName}:${concurso}`;
-  if (concursoCache.has(cacheKey)) {
-    return concursoCache.get(cacheKey) ?? null;
+  const cached = concursoCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return cached.value;
   }
 
-  try {
-    const [row] = await db
-      .select({
-        data: lotteryResultsTable.data,
-        dezenas: lotteryResultsTable.dezenas,
-      })
-      .from(lotteryResultsTable)
-      .where(
-        and(
-          eq(lotteryResultsTable.modalidade, dbName),
-          eq(lotteryResultsTable.concurso, concurso),
-        ),
-      )
-      .limit(1);
+  const [row] = await db
+    .select({
+      data: lotteryResultsTable.data,
+      dezenas: lotteryResultsTable.dezenas,
+    })
+    .from(lotteryResultsTable)
+    .where(
+      and(
+        eq(lotteryResultsTable.modalidade, dbName),
+        eq(lotteryResultsTable.concurso, concurso),
+      ),
+    )
+    .limit(1);
 
-    const info: ConcursoInfo | null = row
-      ? {
-          data: row.data,
-          dezenas: Array.isArray(row.dezenas) ? (row.dezenas as string[]) : [],
-        }
-      : null;
+  const info: ConcursoInfo | null = row
+    ? {
+        data: row.data,
+        dezenas: Array.isArray(row.dezenas) ? (row.dezenas as string[]) : [],
+      }
+    : null;
 
-    if (concursoCache.size >= MAX_CONCURSO_CACHE) {
-      const keysToDelete = Array.from(concursoCache.keys()).slice(0, 100);
-      for (const k of keysToDelete) concursoCache.delete(k);
-    }
-    concursoCache.set(cacheKey, info);
-    return info;
-  } catch {
-    return null;
+  if (concursoCache.size >= MAX_CONCURSO_CACHE) {
+    const keysToDelete = Array.from(concursoCache.keys()).slice(0, 100);
+    for (const k of keysToDelete) concursoCache.delete(k);
   }
+  concursoCache.set(cacheKey, {
+    value: info,
+    expiresAt:
+      Date.now() + (info ? CONCURSO_CACHE_POSITIVE_TTL_MS : CONCURSO_CACHE_NEGATIVE_TTL_MS),
+  });
+  return info;
 }
 
 /**
@@ -183,6 +138,178 @@ export async function getLatestConcurso(dbName: string): Promise<number | null> 
       expiresAt: Date.now() + LATEST_CONCURSO_FAILURE_TTL_MS,
     });
     return cached?.value ?? null;
+  }
+}
+
+/**
+ * Resultado da resolução de SEO de uma rota: o head HTML e, quando a rota
+ * exige, status HTTP e `X-Robots-Tag` (soft-404 e régua de indexação).
+ */
+export interface SeoHeadInjection {
+  head: string;
+  /** Status HTTP da resposta (default 200). */
+  status?: number;
+  /** Valor do header `X-Robots-Tag` (ausente = header não é enviado). */
+  robotsHeader?: string;
+}
+
+export type SeoHeadResult = SeoHeadInjection | { redirect: string };
+
+export type ConcursoResolution =
+  | { kind: "found"; latest: number; info: ConcursoInfo; decision: IndexingDecision }
+  | { kind: "grace"; latest: number }
+  | { kind: "missing"; latest: number }
+  | { kind: "invalid"; latest: number }
+  | { kind: "unavailable" };
+
+/**
+ * Resolve a situação de um concurso contra o espelho local:
+ *
+ *   - `latest` indisponível (DB fora do ar)  -> fail-open (200 index);
+ *   - `c < 1` ou `c > max + 1`               -> inválido (404);
+ *   - linha existe                           -> régua de indexação decide;
+ *   - `c === max + 1` sem linha              -> grace de sorteio (200 noindex);
+ *   - `1 <= c <= max` sem linha              -> lacuna real (404).
+ *
+ * `latest` vem de `getLatestConcurso` (TTL 5 min) e a linha de
+ * `getConcursoInfo` (positivo 24h, negativo 60s). Falha de DB na consulta da
+ * linha também faz fail-open, com log.
+ */
+export async function resolveConcurso(
+  mod: ModalityConfig,
+  concurso: number,
+): Promise<ConcursoResolution> {
+  const latest = await getLatestConcurso(mod.dbName);
+  if (latest === null) {
+    logger.warn(
+      { mod: mod.slug, concurso },
+      "SEO concurso: último concurso indisponível; fail-open (200 index, follow)",
+    );
+    return { kind: "unavailable" };
+  }
+
+  // Fora do intervalo plausível nem consulta o DB (inclui números absurdos).
+  if (!Number.isFinite(concurso) || concurso < 1 || concurso > latest + 1) {
+    return { kind: "invalid", latest };
+  }
+
+  let info: ConcursoInfo | null;
+  try {
+    info = await getConcursoInfo(mod.dbName, concurso);
+  } catch (err) {
+    logger.error(
+      { err, mod: mod.slug, concurso },
+      "SEO concurso: falha ao consultar o DB; fail-open (200 index, follow)",
+    );
+    return { kind: "unavailable" };
+  }
+
+  if (info) {
+    return {
+      kind: "found",
+      latest,
+      info,
+      decision: isConcursoIndexable({
+        modSlug: mod.slug,
+        concurso,
+        drawDate: info.data,
+      }),
+    };
+  }
+
+  if (concurso === latest + 1) return { kind: "grace", latest };
+  return { kind: "missing", latest };
+}
+
+/** Head de resultado com dezenas reais; `robots` vem da régua. */
+function buildConcursoResultHead(
+  mod: ModalityConfig,
+  concurso: number,
+  info: ConcursoInfo,
+  canonicalUrl: string,
+  robots: string,
+): string {
+  const dezenasStr = info.dezenas.join(", ");
+  const title = `Resultado ${mod.article} | Concurso ${concurso} (${info.data}) | ${SITE_NAME}`;
+  const description =
+    mod.slug === "duplasena"
+      ? `Dezenas sorteadas no concurso ${concurso} da Dupla Sena em ${info.data}: ${dezenasStr} (1º sorteio). Confira também o 2º sorteio e estatísticas completas.`
+      : `Dezenas sorteadas no concurso ${concurso} ${mod.article} em ${info.data}: ${dezenasStr}. Confira prêmios e estatísticas completas.`;
+
+  return buildHeadTags({ title, description, canonicalUrl, robots });
+}
+
+/**
+ * Head de concurso ainda sem linha no DB: usado na grace de sorteio
+ * (`max + 1`, noindex) e no fail-open (índice disponível mas DB fora, index).
+ */
+function buildConcursoPendingHead(
+  mod: ModalityConfig,
+  concurso: number,
+  canonicalUrl: string,
+  robots: string,
+): string {
+  return buildHeadTags({
+    title: `Resultado ${mod.article} | Concurso ${concurso} | ${SITE_NAME}`,
+    description: `Confira o resultado do concurso ${concurso} ${mod.article}, dezenas sorteadas, rateio de prêmios e estatísticas completas.`,
+    canonicalUrl,
+    robots,
+  });
+}
+
+/** Head do soft-404: concurso inexistente ou lacuna interna, sempre noindex. */
+function buildConcursoNotFoundHead(
+  mod: ModalityConfig,
+  concurso: number,
+  canonicalUrl: string,
+): string {
+  return buildHeadTags({
+    title: `Concurso ${concurso} não encontrado | ${mod.name} | ${SITE_NAME}`,
+    description: `O concurso ${concurso} ${mod.article} não existe ou não foi publicado. Confira os resultados disponíveis no Estude Loterias.`,
+    canonicalUrl,
+    robots: "noindex, follow",
+  });
+}
+
+/** Resolve head + status + `X-Robots-Tag` de `/:modalidade/resultado/:concurso`. */
+async function resolveConcursoHead(
+  mod: ModalityConfig,
+  concurso: number,
+  canonicalUrl: string,
+): Promise<SeoHeadInjection> {
+  const resolution = await resolveConcurso(mod, concurso);
+
+  switch (resolution.kind) {
+    case "invalid":
+    case "missing":
+      return {
+        head: buildConcursoNotFoundHead(mod, concurso, canonicalUrl),
+        status: 404,
+        robotsHeader: "noindex, follow",
+      };
+
+    case "grace":
+      return {
+        head: buildConcursoPendingHead(mod, concurso, canonicalUrl, "noindex, follow"),
+        status: 200,
+        robotsHeader: "noindex, follow",
+      };
+
+    case "unavailable":
+      return {
+        head: buildConcursoPendingHead(mod, concurso, canonicalUrl, "index, follow"),
+        status: 200,
+        robotsHeader: "index, follow",
+      };
+
+    case "found": {
+      const robots = resolution.decision.indexable ? "index, follow" : "noindex, follow";
+      return {
+        head: buildConcursoResultHead(mod, concurso, resolution.info, canonicalUrl, robots),
+        status: 200,
+        robotsHeader: robots,
+      };
+    }
   }
 }
 
@@ -514,10 +641,12 @@ async function buildSpecialEditionHead(
 }
 
 /**
- * Resolve o bloco de tags `<head>` para qualquer rota do site.
- * Retorna uma string de tags HTML ou um objeto `{ redirect: string }` para redirecionamentos 301.
+ * Resolve o bloco de tags `<head>` das rotas "estáticas" do site (home, blog,
+ * institucionais, edições especiais, hubs e ferramentas). Páginas de concurso
+ * NÃO passam por aqui: elas têm status/robots dinâmicos e são resolvidas em
+ * `resolveSeoHead`.
  */
-export async function resolveSeoHead(reqPath: string): Promise<string | { redirect: string }> {
+async function resolveSiteSeoHead(reqPath: string): Promise<string | { redirect: string }> {
   const p = normalizeRoutePath(reqPath);
   const canonicalUrl = `${BASE_URL}${p === "" ? "/" : p}`;
 
@@ -652,34 +781,9 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
         });
       }
 
-      // Concurso específico: /:modalidade/resultado/:concurso
-      const concursoMatch = /^\/resultado\/(\d+)$/.exec(rest);
-      if (concursoMatch) {
-        const concursoNum = parseInt(concursoMatch[1], 10);
-        const info = await getConcursoInfo(mod.dbName, concursoNum);
-
-        if (info) {
-          const dezenasStr = info.dezenas.join(", ");
-          const title = `Resultado ${mod.article} | Concurso ${concursoNum} (${info.data}) | ${SITE_NAME}`;
-          const description =
-            mod.slug === "duplasena"
-              ? `Dezenas sorteadas no concurso ${concursoNum} da Dupla Sena em ${info.data}: ${dezenasStr} (1º sorteio). Confira também o 2º sorteio e estatísticas completas.`
-              : `Dezenas sorteadas no concurso ${concursoNum} ${mod.article} em ${info.data}: ${dezenasStr}. Confira prêmios e estatísticas completas.`;
-
-          return buildHeadTags({
-            title,
-            description,
-            canonicalUrl,
-          });
-        }
-
-        // Concurso não encontrado no banco ou recém-criado
-        return buildHeadTags({
-          title: `Resultado ${mod.article} | Concurso ${concursoNum} | ${SITE_NAME}`,
-          description: `Confira o resultado do concurso ${concursoNum} ${mod.article}, dezenas sorteadas, rateio de prêmios e estatísticas completas.`,
-          canonicalUrl,
-        });
-      }
+      // O path /:modalidade/resultado/:concurso é resolvido por
+      // `resolveSeoHead` (status HTTP + régua de indexação) antes de chegar
+      // aqui; este fallback nunca o alcança com modalidade conhecida.
 
       // Último resultado: /:modalidade/resultado
       if (rest === "/resultado") {
@@ -787,6 +891,25 @@ export async function resolveSeoHead(reqPath: string): Promise<string | { redire
 }
 
 /**
+ * Resolve o head de SEO, o status HTTP e o `X-Robots-Tag` de qualquer rota do
+ * site. Páginas de concurso com modalidade conhecida passam pela régua de
+ * indexação e pelo soft-404; as demais rotas delegam para `resolveSiteSeoHead`.
+ */
+export async function resolveSeoHead(reqPath: string): Promise<SeoHeadResult> {
+  const p = normalizeRoutePath(reqPath);
+  const concursoPath = parseConcursoPath(p);
+  const mod = concursoPath ? MODALIDADES_CONFIG[concursoPath.modSlug] : undefined;
+
+  if (concursoPath && mod) {
+    const canonicalUrl = `${BASE_URL}${p === "" ? "/" : p}`;
+    return resolveConcursoHead(mod, concursoPath.concurso, canonicalUrl);
+  }
+
+  const result = await resolveSiteSeoHead(p);
+  return typeof result === "string" ? { head: result } : result;
+}
+
+/**
  * Injeta o bloco de cabeçalho no HTML antes do fechamento do `<head>`.
  * Remove os elementos SEO genéricos do shell (title, description, canonical,
  * robots, og:*, twitter:*, JSON-LD anterior) antes de inserir os tags novos.
@@ -882,21 +1005,18 @@ export function buildResultadosBodyNav(mod: ModalityConfig, latest: number): str
 /**
  * Resolve o nav de links internos (SSR) para as páginas de resultado. Retorna
  * string vazia quando a rota não é de resultado/lista, o DB falha ou não há
- * concursos conhecidos — o catch-all segue sem o nav, sem quebrar.
+ * concursos conhecidos: o catch-all segue sem o nav, sem quebrar.
  */
 export async function resolveBodyLinks(reqPath: string): Promise<string> {
-  const p = normalizeRoutePath(reqPath).toLowerCase();
-
-  const concursoMatch = /^\/([a-z-]+)\/resultado\/(\d+)$/.exec(p);
-  if (concursoMatch) {
-    const mod = MODALIDADES_CONFIG[concursoMatch[1]];
+  const parsed = parseConcursoPath(reqPath);
+  if (parsed) {
+    const mod = MODALIDADES_CONFIG[parsed.modSlug];
     if (!mod) return "";
-    const concurso = parseInt(concursoMatch[2], 10);
     const latest = await getLatestConcurso(mod.dbName);
-    return buildConcursoBodyNav(mod, concurso, latest);
+    return buildConcursoBodyNav(mod, parsed.concurso, latest);
   }
 
-  const listMatch = /^\/([a-z-]+)\/resultados$/.exec(p);
+  const listMatch = /^\/([a-z0-9-]+)\/resultados$/.exec(normalizeRoutePath(reqPath).toLowerCase());
   if (listMatch) {
     const mod = MODALIDADES_CONFIG[listMatch[1]];
     if (!mod) return "";
@@ -926,17 +1046,20 @@ export function injectBodyLinks(html: string, navHtml: string): string {
 }
 
 /**
- * Middleware compatível com o legado: executa injeção para rotas de blog ou gerais.
+ * Middleware compatível com o legado: resolve o SEO da rota e guarda head,
+ * status e `X-Robots-Tag` em `res.locals` para o catch-all aplicar.
  */
 export async function spaSeoHeadInjection(req: Request, res: Response, next: NextFunction) {
   try {
     const seoResult = await resolveSeoHead(req.path);
-    if (typeof seoResult === "object" && "redirect" in seoResult) {
+    if ("redirect" in seoResult) {
       res.redirect(301, seoResult.redirect);
       return;
     }
-    res.locals.seoHead = seoResult;
-    res.locals.articleSeoHead = seoResult;
+    res.locals.seoHead = seoResult.head;
+    res.locals.articleSeoHead = seoResult.head;
+    res.locals.seoStatus = seoResult.status ?? 200;
+    res.locals.seoRobotsHeader = seoResult.robotsHeader ?? "";
     next();
   } catch {
     next();

@@ -7,6 +7,13 @@ import type {
   SpecialEditionNext,
   SpecialEditionResult,
 } from "@workspace/seo-special-editions";
+import { getTodaySaoPaulo, type SaoPauloToday } from "../lib/sampa-date";
+
+// Re-export de compatibilidade: a implementação vive em `lib/sampa-date.ts`
+// desde a régua de indexação, mas os consumidores antigos seguem importando
+// daqui.
+export { getTodaySaoPaulo };
+export type { SaoPauloToday };
 
 export type {
   SpecialEditionFacts,
@@ -145,35 +152,10 @@ const VIRADA_ANO_EDICAO_EXCECOES: Record<number, number> = { 2955: 2025 };
 // Datas (sempre sem depender do fuso do processo)
 // ---------------------------------------------------------------------------
 
-export interface SaoPauloToday {
-  year: number;
-  month: number;
-  day: number;
-}
-
 interface BRDate {
   dd: number;
   mm: number;
   yyyy: number;
-}
-
-/**
- * "Hoje" em America/Sao_Paulo. É a fonte única de verdade temporal do serviço:
- * os dias de pico (virada de ano, noite do sorteio) acontecem antes/depois da
- * meia-noite UTC, então `new Date().getFullYear()` errava o ano da edição.
- */
-export function getTodaySaoPaulo(): SaoPauloToday {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "America/Sao_Paulo",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).formatToParts(new Date());
-  const pick = (type: Intl.DateTimeFormatPartTypes): number => {
-    const found = parts.find((p) => p.type === type);
-    return found ? Number(found.value) : 0;
-  };
-  return { year: pick("year"), month: pick("month"), day: pick("day") };
 }
 
 function parseBR(value: string | null | undefined): BRDate | null {

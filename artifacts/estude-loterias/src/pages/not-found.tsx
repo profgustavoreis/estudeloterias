@@ -7,7 +7,6 @@ export default function NotFound() {
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
       <Helmet>
         <title>Página não encontrada | Estude Loterias</title>
-        <meta name="robots" content="noindex,nofollow" />
       </Helmet>
       <Card className="w-full max-w-md mx-4">
         <CardContent className="pt-6">

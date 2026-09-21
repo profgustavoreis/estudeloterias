@@ -24,8 +24,9 @@ export function PageSEO({
   const url = canonical ? `${BASE_URL}${canonical}` : undefined;
   return (
     <Helmet>
+      {/* <meta name="robots"> é emitido exclusivamente pelo SSR
+          (seo-head-injection): não reintroduzir aqui para não duplicar. */}
       <title>{fullTitle}</title>
-      <meta name="robots" content="index, follow" />
       {description && <meta name="description" content={description} />}
       {url && <link rel="canonical" href={url} />}
 

@@ -1,0 +1,11 @@
+{
+  "generatedAt": null,
+  "source": "gsc:pages:90d",
+  "rules": {
+    "minClicks": 1,
+    "minImpressions": 10,
+    "periodDays": 90,
+    "pathPattern": "^/[a-z0-9-]+/resultado/\\d+$"
+  },
+  "paths": []
+}

@@ -135,25 +135,45 @@ if (frontendDist && fs.existsSync(path.join(frontendDist, "index.html"))) {
 
     let html = indexHtml ?? "";
     try {
-      let head = (res.locals.seoHead || res.locals.articleSeoHead) as string | undefined;
-      if (!head) {
+      // Head/status/robots resolvidos no middleware (`res.locals`); o fallback
+      // cobre chamadas que não passaram por ele.
+      let head: string | undefined;
+      let status = 200;
+      let robotsHeader: string | undefined;
+
+      const localHead = (res.locals.seoHead || res.locals.articleSeoHead) as unknown;
+      if (typeof localHead === "string" && localHead) {
+        head = localHead;
+        if (typeof res.locals.seoStatus === "number") status = res.locals.seoStatus;
+        if (typeof res.locals.seoRobotsHeader === "string" && res.locals.seoRobotsHeader) {
+          robotsHeader = res.locals.seoRobotsHeader;
+        }
+      } else {
         const seoResult = await resolveSeoHead(req.path);
-        if (typeof seoResult === "object" && "redirect" in seoResult) {
+        if ("redirect" in seoResult) {
           res.redirect(301, seoResult.redirect);
           return;
         }
-        head = seoResult;
+        head = seoResult.head;
+        status = seoResult.status ?? 200;
+        robotsHeader = seoResult.robotsHeader;
       }
+
+      // Rota fora do roteador do SPA: 404 real com head próprio.
       if (!isKnownRoute) {
-        res.status(404).setHeader("X-Robots-Tag", "noindex");
+        status = 404;
+        robotsHeader = "noindex";
         head = buildNotFoundHead(req.path);
       }
+
+      res.status(status);
+      if (robotsHeader) res.setHeader("X-Robots-Tag", robotsHeader);
       html = injectHead(html, head);
 
-      // Grafo de links internos no HTML inicial apenas em rotas válidas de
-      // resultado/lista. Falha de DB degrada para sem nav (resolveBodyLinks
-      // nunca lança).
-      if (isKnownRoute) {
+      // Grafo de links internos no HTML inicial apenas em rotas válidas e
+      // indexáveis/grace (nunca em 404 real). Falha de DB degrada para sem nav
+      // (`resolveBodyLinks` nunca lança).
+      if (isKnownRoute && status === 200) {
         const nav = await resolveBodyLinks(req.path);
         if (nav) html = injectBodyLinks(html, nav);
       }

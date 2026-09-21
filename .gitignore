@@ -57,6 +57,11 @@ Thumbs.db
 .omo/
 .opencode/
 
+# Exports locais do Google Search Console (CSVs de análise; não versionar).
+# O JSON derivado é versionado em artifacts/api-server/src/seo/.
+data/gsc/*
+!data/gsc/README.md
+
 # GrayMatter local memory store
 .graymatter/
 

@@ -2,6 +2,7 @@ import { type Request, type Response } from "express";
 import { db, articlesTable } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, asc, or } from "drizzle-orm";
+import { MODALIDADES_DB_NAMES, slugForDbName } from "../lib/modalidades";
 
 const BASE_URL = "https://estudeloterias.com.br";
 
@@ -12,25 +13,11 @@ interface SitemapEntry {
   priority: string;
 }
 
-const MODALIDADES = [
-  "megasena",
-  "lotofacil",
-  "quina",
-  "lotomania",
-  "timemania",
-  "diadesorte",
-  "duplasena",
-  "maismilionaria",
-  "supersete",
-] as const;
-
-function slug(modalidade: string): string {
-  const slugs: Record<string, string> = {
-    megasena: "mega-sena",
-    supersete: "super-sete",
-  };
-  return slugs[modalidade] ?? modalidade;
-}
+// Fontes únicas do mapa modalidade do DB <-> slug de hub (lib/modalidades).
+// NOTA: até a fase de corte entrar, o sitemap continua listando todos os
+// concursos; a régua de indexação (`services/indexing-policy.ts`) ainda não
+// filtra entradas aqui.
+const MODALIDADES = MODALIDADES_DB_NAMES;
 
 const COMMON_PAGES: Array<{ path: string; changefreq: string; priority: string }> = [
   { path: "",                    changefreq: "daily",   priority: "0.9" },
@@ -65,7 +52,7 @@ function buildStaticPages(): SitemapEntry[] {
   const pages: SitemapEntry[] = [];
 
   for (const m of MODALIDADES) {
-    const s = slug(m);
+    const s = slugForDbName(m);
 
     for (const cp of COMMON_PAGES) {
       pages.push({ url: `/${s}${cp.path}`, changefreq: cp.changefreq, priority: cp.priority });
@@ -138,7 +125,7 @@ export async function sitemapHandler(req: Request, res: Response) {
       priority: "1.0",
     })),
     ...rows.map((row) => ({
-      url: `/${slug(row.modalidade)}/resultado/${row.concurso}`,
+      url: `/${slugForDbName(row.modalidade)}/resultado/${row.concurso}`,
       lastmod: parseDate(row.data),
       changefreq: "never" as const,
       priority: "0.6",

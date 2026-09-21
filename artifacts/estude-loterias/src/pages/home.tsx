@@ -175,7 +175,6 @@ export default function Home() {
       <Helmet>
         <title>{HOME_TITLE}</title>
         <meta name="description" content={HOME_DESCRIPTION} />
-        <meta name="robots" content="index, follow" />
         <link rel="canonical" href={HOME_URL} />
         <meta property="og:title" content={HOME_TITLE} />
         <meta property="og:description" content={HOME_DESCRIPTION} />
