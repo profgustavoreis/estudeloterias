@@ -6,8 +6,10 @@ import { generateArticleWithAi, slugify } from "../services/ai-writer";
 
 const router = Router();
 
-// Aplica autenticação admin para todas as rotas do admin-blog
-router.use(adminAuthMiddleware);
+// Aplica autenticação admin para todas as rotas do admin-blog.
+// Escopo explícito: sem o prefixo, o guard interceptava QUALQUER /api/* não
+// casado antes (devolvendo 401 em vez do 404 correto).
+router.use("/admin/blog", adminAuthMiddleware);
 
 function calculateReadingTime(content: string): number {
   const words = content.trim().split(/\s+/).filter(Boolean).length;
