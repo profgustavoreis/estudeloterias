@@ -1,14 +1,21 @@
 #!/usr/bin/env node
 /**
- * Bateria de verificacao das rotas do SPA contra um host real.
+ * Bateria de verificação das rotas do SPA contra um host real (smoke test).
  *
- * Le os padroes de `artifacts/api-server/src/generated/spa-routes.ts` (a mesma
- * fonte que o validador do catch-all usa), materializa os parametros com
+ * Lê os padrões de `artifacts/api-server/src/generated/spa-routes.ts` (a mesma
+ * fonte que o validador do catch-all usa), materializa os parâmetros com
  * valores concretos e confere:
- *   - toda rota valida responde 200, sem `X-Robots-Tag: noindex`;
- *   - paths invalidos respondem 404 + `X-Robots-Tag: noindex`;
+ *   - toda rota válida responde HTTP 200 — o valor de `robots` NÃO entra na
+ *     asserção: `index`/`noindex` é decisão da régua de indexação
+ *     (`services/indexing-policy.ts`), não da validade da rota. Páginas antigas
+ *     de concurso cortadas corretamente respondem 200 + `noindex, follow` e
+ *     passam aqui;
+ *   - paths inválidos respondem 404 + `X-Robots-Tag: noindex`;
  *   - o nav server-side aparece num resultado;
  *   - assets do build e /sitemap.xml respondem.
+ *
+ * Para os invariantes de sitemap × status × robots, use
+ * `scripts/verify-indexing.mjs` (harness dedicado).
  *
  * Uso:
  *   node scripts/verify-spa-routes.mjs [BASE_URL]
@@ -16,60 +23,19 @@
  * Exemplos:
  *   node scripts/verify-spa-routes.mjs
  *   node scripts/verify-spa-routes.mjs http://localhost:5000
+ *   node scripts/verify-spa-routes.mjs https://estudeloterias.com.br
  *
- * Sai com codigo != 0 se qualquer rota valida falhar ou qualquer invalida
- * retornar diferente de 404.
+ * Sai com código != 0 se qualquer rota válida não responder 200 ou qualquer
+ * inválida não responder 404 + noindex.
  */
 
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+import {
+  INVALID_SPA_PATHS,
+  loadRoutePatterns,
+  materializePattern,
+} from "./lib/spa-routes.mjs";
 
 const BASE = (process.argv[2] || "http://localhost:5000").replace(/\/$/, "");
-const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = path.resolve(SCRIPT_DIR, "..");
-const GENERATED_FILE = path.join(
-  REPO_ROOT,
-  "artifacts/api-server/src/generated/spa-routes.ts",
-);
-
-/** Converte um padrao com `:param` em um path concreto testavel. */
-function materialize(pattern) {
-  if (pattern === "/") return "/";
-  return pattern
-    .split("/")
-    .map((segment) => {
-      if (!segment.startsWith(":")) return segment;
-      const name = segment.slice(1);
-      if (name === "concurso" || name === "id") return "1";
-      return "teste";
-    })
-    .join("/");
-}
-
-/** Le os padroes direto do arquivo gerado (linhas `  "/rota",`). */
-function loadRoutePatterns() {
-  if (!fs.existsSync(GENERATED_FILE)) {
-    throw new Error(
-      `Arquivo gerado nao encontrado: ${GENERATED_FILE}. Rode o build do api-server antes.`,
-    );
-  }
-  const text = fs.readFileSync(GENERATED_FILE, "utf8");
-  const patterns = [];
-  const lineRe = /^\s*"(\/[^"]*)",\s*$/gm;
-  let match;
-  while ((match = lineRe.exec(text)) !== null) patterns.push(match[1]);
-  if (patterns.length === 0) throw new Error(`Nenhuma rota extraida de ${GENERATED_FILE}`);
-  return patterns;
-}
-
-const INVALID_PATHS = [
-  "/xyz",
-  "/lotofacil/xyz",
-  "/lotofacil/resultado/abc",
-  "/foo/bar/baz",
-  "/mega-sena/resultado/1/2",
-];
 
 let failures = 0;
 const ok = (message) => console.log(`  \x1b[32mPASS\x1b[0m ${message}`);
@@ -78,6 +44,7 @@ const bad = (message) => {
   console.log(`  \x1b[31mFAIL\x1b[0m ${message}`);
 };
 const warn = (message) => console.log(`  \x1b[33mWARN\x1b[0m ${message}`);
+const note = (message) => console.log(`  \x1b[2m${message}\x1b[0m`);
 
 async function get(pathname) {
   return fetch(BASE + pathname, { redirect: "manual" });
@@ -85,15 +52,18 @@ async function get(pathname) {
 
 async function checkValidRoutes() {
   const patterns = loadRoutePatterns();
-  console.log(`\n== Rotas validas (${patterns.length}) em ${BASE}`);
+  console.log(`\n== Rotas válidas (${patterns.length}) em ${BASE}`);
+  note("asserção: HTTP 200 (robots é informativo; a régua de indexação decide index/noindex)");
   let passed = 0;
+  let noindexCount = 0;
   for (const pattern of patterns) {
-    const pathname = materialize(pattern);
+    const pathname = materializePattern(pattern);
     try {
       const response = await get(pathname);
       const robots = response.headers.get("x-robots-tag") || "";
-      if (response.status === 200 && !/noindex/i.test(robots)) {
+      if (response.status === 200) {
         passed += 1;
+        if (/noindex/i.test(robots)) noindexCount += 1;
       } else {
         bad(`${pathname} -> ${response.status}${robots ? ` (x-robots-tag: ${robots})` : ""}`);
       }
@@ -101,14 +71,16 @@ async function checkValidRoutes() {
       bad(`${pathname} -> erro: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
-  console.log(`  Rotas validas: ${passed}/${patterns.length} responderam 200.`);
+  console.log(
+    `  Rotas válidas: ${passed}/${patterns.length} responderam 200 (${noindexCount} com noindex, follow — esperado pela régua).`,
+  );
   return { total: patterns.length, passed };
 }
 
 async function checkInvalidRoutes() {
-  console.log(`\n== Rotas invalidas (${INVALID_PATHS.length}) em ${BASE}`);
+  console.log(`\n== Rotas inválidas (${INVALID_SPA_PATHS.length}) em ${BASE}`);
   let passed = 0;
-  for (const pathname of INVALID_PATHS) {
+  for (const pathname of INVALID_SPA_PATHS) {
     try {
       const response = await get(pathname);
       const robots = response.headers.get("x-robots-tag") || "";
@@ -122,8 +94,8 @@ async function checkInvalidRoutes() {
       bad(`${pathname} -> erro: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
-  console.log(`  Rotas invalidas: ${passed}/${INVALID_PATHS.length} responderam 404 + noindex.`);
-  return { total: INVALID_PATHS.length, passed };
+  console.log(`  Rotas inválidas: ${passed}/${INVALID_SPA_PATHS.length} responderam 404 + noindex.`);
+  return { total: INVALID_SPA_PATHS.length, passed };
 }
 
 async function checkSsrNav() {
@@ -178,11 +150,11 @@ async function checkSsrNav() {
   await checkSsrNav();
 
   console.log("\n== Resumo");
-  console.log(`  Validas:   ${valid.passed}/${valid.total} -> 200`);
-  console.log(`  Invalidas: ${invalid.passed}/${invalid.total} -> 404 + noindex`);
+  console.log(`  Válidas:   ${valid.passed}/${valid.total} -> 200`);
+  console.log(`  Inválidas: ${invalid.passed}/${invalid.total} -> 404 + noindex`);
   console.log(
     failures === 0
-      ? "  \x1b[32mTODAS AS ROTAS VALIDAS E INVALIDAS PASSARAM\x1b[0m"
+      ? "  \x1b[32mTODAS AS ROTAS VÁLIDAS E INVÁLIDAS PASSARAM\x1b[0m"
       : `  \x1b[31m${failures} FALHA(S)\x1b[0m`,
   );
   process.exit(failures === 0 ? 0 : 1);
