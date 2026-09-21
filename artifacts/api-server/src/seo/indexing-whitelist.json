@@ -1,5 +1,5 @@
 {
-  "generatedAt": null,
+  "generatedAt": "2026-09-21T06:35:29.510Z",
   "source": "gsc:pages:90d",
   "rules": {
     "minClicks": 1,
@@ -7,5 +7,4938 @@
     "periodDays": 90,
     "pathPattern": "^/[a-z0-9-]+/resultado/\\d+$"
   },
-  "paths": []
+  "paths": [
+    {
+      "path": "/diadesorte/resultado/123",
+      "clicks": 0,
+      "impressions": 29,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/124",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/158",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/243",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/247",
+      "clicks": 1,
+      "impressions": 53,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/249",
+      "clicks": 0,
+      "impressions": 75,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/25",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/251",
+      "clicks": 0,
+      "impressions": 45,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/262",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/265",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/276",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/310",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/382",
+      "clicks": 1,
+      "impressions": 9,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/7",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/72",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/76",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/79",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/82",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/diadesorte/resultado/85",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1059",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1263",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1369",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1386",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1387",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1416",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1423",
+      "clicks": 2,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1707",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1711",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1716",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1755",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/1980",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/2085",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/2615",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/2643",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/277",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/287",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/301",
+      "clicks": 1,
+      "impressions": 74,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/330",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/373",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/376",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/439",
+      "clicks": 1,
+      "impressions": 10,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/893",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/983",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/duplasena/resultado/985",
+      "clicks": 4,
+      "impressions": 15,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1",
+      "clicks": 1,
+      "impressions": 38,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1009",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1021",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1022",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1059",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1080",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1088",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/109",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1101",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1106",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1111",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1122",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1127",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1143",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1159",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1181",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1182",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1183",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1184",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/12",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1202",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1205",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1210",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1215",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1228",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1232",
+      "clicks": 0,
+      "impressions": 36,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1233",
+      "clicks": 0,
+      "impressions": 31,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1238",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1239",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1247",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1252",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1253",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1259",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1263",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1265",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1266",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1268",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1297",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/130",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1351",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1354",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1357",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/136",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1361",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/137",
+      "clicks": 0,
+      "impressions": 34,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1375",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1390",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1395",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1404",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1428",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1429",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1431",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1436",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1454",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1458",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1468",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1484",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1485",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1490",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/150",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1512",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/152",
+      "clicks": 0,
+      "impressions": 40,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/153",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1531",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1537",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1553",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1555",
+      "clicks": 1,
+      "impressions": 11,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1559",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/156",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1616",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1617",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1624",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1636",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1648",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1651",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1688",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1694",
+      "clicks": 0,
+      "impressions": 34,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1698",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1707",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1721",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1723",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1725",
+      "clicks": 1,
+      "impressions": 20,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1731",
+      "clicks": 2,
+      "impressions": 241,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1733",
+      "clicks": 0,
+      "impressions": 59,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1742",
+      "clicks": 2,
+      "impressions": 179,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1744",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1749",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/175",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1753",
+      "clicks": 2,
+      "impressions": 110,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1757",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1759",
+      "clicks": 1,
+      "impressions": 43,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1763",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1780",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1781",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1792",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1793",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1800",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1825",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1841",
+      "clicks": 0,
+      "impressions": 59,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1847",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1856",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1899",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1902",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1908",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/192",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1932",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1941",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1951",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1953",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1954",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1987",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/1996",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2028",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2031",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2114",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2133",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2134",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2136",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2201",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/225",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2260",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2278",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2301",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2313",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2338",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2369",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2382",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2401",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/259",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/260",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/267",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/275",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/277",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/2890",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3036",
+      "clicks": 2,
+      "impressions": 25,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3038",
+      "clicks": 1,
+      "impressions": 8,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3039",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/307",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3166",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/329",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/330",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/339",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/345",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3470",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3480",
+      "clicks": 0,
+      "impressions": 41,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3487",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3498",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3518",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3520",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3550",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/3580",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/378",
+      "clicks": 0,
+      "impressions": 33,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/383",
+      "clicks": 1,
+      "impressions": 28,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/385",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/4",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/42",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/423",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/447",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/532",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/601",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/605",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/640",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/673",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/702",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/722",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/73",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/732",
+      "clicks": 0,
+      "impressions": 53,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/738",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/739",
+      "clicks": 0,
+      "impressions": 177,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/743",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/745",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/749",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/751",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/753",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/755",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/759",
+      "clicks": 0,
+      "impressions": 75,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/762",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/767",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/791",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/793",
+      "clicks": 1,
+      "impressions": 12,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/799",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/801",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/841",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/843",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/869",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/883",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/895",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/9",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/909",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/916",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/925",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/939",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/951",
+      "clicks": 1,
+      "impressions": 21,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/976",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotofacil/resultado/979",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1052",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1053",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/106",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1210",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1251",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1260",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1278",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1303",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1334",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1389",
+      "clicks": 5,
+      "impressions": 34,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1461",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/147",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1477",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1490",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1569",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/157",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1621",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1680",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1685",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1691",
+      "clicks": 2,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1695",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1699",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1705",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1706",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1716",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1720",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1729",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1732",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1750",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1817",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1818",
+      "clicks": 1,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/184",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1932",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1936",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1941",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1944",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1951",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1952",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1955",
+      "clicks": 0,
+      "impressions": 28,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1958",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1961",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1967",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1973",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/1976",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/200",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2029",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2041",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2050",
+      "clicks": 1,
+      "impressions": 120,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2053",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2073",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2094",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2097",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2107",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2249",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2277",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2462",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2463",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/2532",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/254",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/256",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/3",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/332",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/344",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/367",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/382",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/396",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/40",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/427",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/448",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/489",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/561",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/567",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/647",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/671",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/764",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/777",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/845",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/849",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/853",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/916",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/950",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/955",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/956",
+      "clicks": 0,
+      "impressions": 33,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/959",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/960",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/lotomania/resultado/963",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/maismilionaria/resultado/185",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/maismilionaria/resultado/275",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/maismilionaria/resultado/365",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1024",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1034",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1037",
+      "clicks": 0,
+      "impressions": 31,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1040",
+      "clicks": 2,
+      "impressions": 225,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1042",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1044",
+      "clicks": 0,
+      "impressions": 60,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1076",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1099",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/112",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1143",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1146",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1224",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1228",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1257",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1262",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1266",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1314",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1329",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1340",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1346",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1353",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/136",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1385",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1395",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1403",
+      "clicks": 0,
+      "impressions": 49,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1441",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/147",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1516",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1530",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1532",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1538",
+      "clicks": 0,
+      "impressions": 36,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1540",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1542",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1548",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1596",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1623",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1630",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1633",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1637",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1641",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1642",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1647",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/165",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1656",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1657",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1659",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1660",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1664",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1685",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/169",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1695",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1697",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1698",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1699",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/170",
+      "clicks": 1,
+      "impressions": 32,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1703",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1704",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1707",
+      "clicks": 0,
+      "impressions": 40,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1718",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1725",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1727",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1730",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1735",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1744",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1747",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1753",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1758",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1791",
+      "clicks": 3,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1794",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1839",
+      "clicks": 1,
+      "impressions": 10,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1848",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1930",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/1937",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/195",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2027",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2029",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2032",
+      "clicks": 0,
+      "impressions": 67,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2034",
+      "clicks": 0,
+      "impressions": 38,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2035",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2039",
+      "clicks": 0,
+      "impressions": 129,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2043",
+      "clicks": 0,
+      "impressions": 75,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2049",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/205",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2051",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2056",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2058",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2060",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/214",
+      "clicks": 1,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2159",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2167",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2205",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2226",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2235",
+      "clicks": 1,
+      "impressions": 22,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2236",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/231",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2335",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/234",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2340",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/240",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/241",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2415",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2454",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2463",
+      "clicks": 2,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/251",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2522",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/2919",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/305",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/331",
+      "clicks": 0,
+      "impressions": 33,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/336",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/338",
+      "clicks": 0,
+      "impressions": 85,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/342",
+      "clicks": 0,
+      "impressions": 106,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/347",
+      "clicks": 0,
+      "impressions": 485,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/350",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/357",
+      "clicks": 2,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/404",
+      "clicks": 1,
+      "impressions": 8,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/415",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/416",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/419",
+      "clicks": 0,
+      "impressions": 40,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/422",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/425",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/428",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/429",
+      "clicks": 1,
+      "impressions": 10,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/431",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/432",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/441",
+      "clicks": 0,
+      "impressions": 29,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/442",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/443",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/445",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/470",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/477",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/495",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/514",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/520",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/555",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/615",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/619",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/67",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/682",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/706",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/72",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/720",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/73",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/78",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/785",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/786",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/788",
+      "clicks": 2,
+      "impressions": 27,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/791",
+      "clicks": 0,
+      "impressions": 42,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/795",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/798",
+      "clicks": 0,
+      "impressions": 37,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/81",
+      "clicks": 2,
+      "impressions": 8,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/844",
+      "clicks": 1,
+      "impressions": 9,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/877",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/898",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/929",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/mega-sena/resultado/97",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1001",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1003",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1008",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/101",
+      "clicks": 0,
+      "impressions": 28,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1037",
+      "clicks": 1,
+      "impressions": 8,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1051",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1058",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/108",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1081",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1084",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1085",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1086",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1099",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/111",
+      "clicks": 0,
+      "impressions": 49,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1113",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/118",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1261",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1267",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1294",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1308",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1326",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1473",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1528",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1571",
+      "clicks": 1,
+      "impressions": 9,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1616",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1624",
+      "clicks": 1,
+      "impressions": 54,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1631",
+      "clicks": 0,
+      "impressions": 28,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1634",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1635",
+      "clicks": 1,
+      "impressions": 11,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1636",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1637",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1638",
+      "clicks": 0,
+      "impressions": 43,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1640",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1641",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1642",
+      "clicks": 1,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1644",
+      "clicks": 1,
+      "impressions": 58,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1645",
+      "clicks": 0,
+      "impressions": 52,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1646",
+      "clicks": 3,
+      "impressions": 80,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1647",
+      "clicks": 2,
+      "impressions": 78,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1648",
+      "clicks": 1,
+      "impressions": 50,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1650",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1672",
+      "clicks": 0,
+      "impressions": 28,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1673",
+      "clicks": 1,
+      "impressions": 13,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1708",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1714",
+      "clicks": 1,
+      "impressions": 27,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1718",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1771",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1781",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/1904",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2027",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2048",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2066",
+      "clicks": 0,
+      "impressions": 35,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2075",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2081",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/209",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2091",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2092",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2095",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2097",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2099",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2100",
+      "clicks": 0,
+      "impressions": 29,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2171",
+      "clicks": 2,
+      "impressions": 13,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2300",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2390",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2398",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2430",
+      "clicks": 1,
+      "impressions": 9,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/250",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2500",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2501",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2502",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2507",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2510",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2523",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2622",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/270",
+      "clicks": 1,
+      "impressions": 12,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2700",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2706",
+      "clicks": 0,
+      "impressions": 240,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2707",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2708",
+      "clicks": 0,
+      "impressions": 43,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2709",
+      "clicks": 0,
+      "impressions": 48,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2820",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2954",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2957",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2961",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2967",
+      "clicks": 1,
+      "impressions": 15,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2970",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2982",
+      "clicks": 1,
+      "impressions": 53,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/2989",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/300",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3000",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3010",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3013",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3014",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3022",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3027",
+      "clicks": 0,
+      "impressions": 28,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3030",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3034",
+      "clicks": 0,
+      "impressions": 51,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3037",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3038",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3040",
+      "clicks": 0,
+      "impressions": 49,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3041",
+      "clicks": 0,
+      "impressions": 28,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3042",
+      "clicks": 2,
+      "impressions": 186,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3044",
+      "clicks": 0,
+      "impressions": 34,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3047",
+      "clicks": 1,
+      "impressions": 8,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3050",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3051",
+      "clicks": 0,
+      "impressions": 52,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3052",
+      "clicks": 0,
+      "impressions": 57,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3053",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3054",
+      "clicks": 1,
+      "impressions": 131,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3056",
+      "clicks": 1,
+      "impressions": 89,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3059",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/306",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3061",
+      "clicks": 0,
+      "impressions": 33,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3068",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3070",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3077",
+      "clicks": 1,
+      "impressions": 26,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3078",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3080",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3082",
+      "clicks": 2,
+      "impressions": 23,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3083",
+      "clicks": 0,
+      "impressions": 29,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3084",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3089",
+      "clicks": 1,
+      "impressions": 35,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3094",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3095",
+      "clicks": 0,
+      "impressions": 59,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3097",
+      "clicks": 1,
+      "impressions": 35,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3100",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3103",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3105",
+      "clicks": 0,
+      "impressions": 40,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3106",
+      "clicks": 1,
+      "impressions": 39,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3107",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3108",
+      "clicks": 0,
+      "impressions": 57,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3112",
+      "clicks": 0,
+      "impressions": 67,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3116",
+      "clicks": 0,
+      "impressions": 109,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3117",
+      "clicks": 0,
+      "impressions": 82,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3119",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3264",
+      "clicks": 1,
+      "impressions": 7,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3269",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/33",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/333",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/336",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3527",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/355",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3727",
+      "clicks": 1,
+      "impressions": 74,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3732",
+      "clicks": 2,
+      "impressions": 26,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3735",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3738",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3740",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3751",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3754",
+      "clicks": 0,
+      "impressions": 126,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3755",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3756",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3757",
+      "clicks": 0,
+      "impressions": 38,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3758",
+      "clicks": 0,
+      "impressions": 29,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3759",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3761",
+      "clicks": 1,
+      "impressions": 36,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3762",
+      "clicks": 0,
+      "impressions": 61,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3764",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3765",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3767",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/377",
+      "clicks": 0,
+      "impressions": 42,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3776",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3778",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3781",
+      "clicks": 14,
+      "impressions": 324,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3784",
+      "clicks": 0,
+      "impressions": 25,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3785",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3788",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3790",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3798",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3814",
+      "clicks": 0,
+      "impressions": 45,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3825",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3830",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3831",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3836",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3839",
+      "clicks": 2,
+      "impressions": 23,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/384",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3841",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3848",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3874",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/390",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3910",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3930",
+      "clicks": 0,
+      "impressions": 42,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3940",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3941",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/3970",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4000",
+      "clicks": 1,
+      "impressions": 10,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4037",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4040",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4041",
+      "clicks": 0,
+      "impressions": 236,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4042",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4047",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4048",
+      "clicks": 0,
+      "impressions": 171,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4059",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4065",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4072",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4089",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4098",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4114",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4117",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4123",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4145",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4154",
+      "clicks": 1,
+      "impressions": 8,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4161",
+      "clicks": 1,
+      "impressions": 30,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4162",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4164",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4165",
+      "clicks": 1,
+      "impressions": 17,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4166",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4167",
+      "clicks": 0,
+      "impressions": 21,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4168",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4170",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4171",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4176",
+      "clicks": 0,
+      "impressions": 44,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4179",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4184",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4186",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4188",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4306",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4323",
+      "clicks": 0,
+      "impressions": 38,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4476",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4608",
+      "clicks": 2,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4728",
+      "clicks": 1,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4745",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4769",
+      "clicks": 0,
+      "impressions": 39,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4780",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/4906",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5000",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5041",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5058",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5063",
+      "clicks": 0,
+      "impressions": 29,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5071",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5072",
+      "clicks": 0,
+      "impressions": 27,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5078",
+      "clicks": 0,
+      "impressions": 22,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5082",
+      "clicks": 2,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5083",
+      "clicks": 0,
+      "impressions": 44,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5087",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/509",
+      "clicks": 1,
+      "impressions": 9,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5096",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/51",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5101",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5168",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5192",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/529",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5413",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5551",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5571",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5583",
+      "clicks": 1,
+      "impressions": 6,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5619",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/567",
+      "clicks": 2,
+      "impressions": 14,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5777",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5802",
+      "clicks": 0,
+      "impressions": 17,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/5898",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/595",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/598",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6062",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6070",
+      "clicks": 0,
+      "impressions": 41,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6072",
+      "clicks": 0,
+      "impressions": 36,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6082",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6083",
+      "clicks": 0,
+      "impressions": 50,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6155",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6200",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6210",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6220",
+      "clicks": 1,
+      "impressions": 18,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6225",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6226",
+      "clicks": 1,
+      "impressions": 16,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6227",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6471",
+      "clicks": 1,
+      "impressions": 13,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/651",
+      "clicks": 1,
+      "impressions": 9,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/quina/resultado/661",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/668",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/67",
+      "clicks": 0,
+      "impressions": 44,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6734",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6799",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6800",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6802",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6809",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/6811",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/70",
+      "clicks": 0,
+      "impressions": 285,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/700",
+      "clicks": 1,
+      "impressions": 392,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/702",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/704",
+      "clicks": 0,
+      "impressions": 72,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/7086",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/713",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/718",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/719",
+      "clicks": 0,
+      "impressions": 35,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/732",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/741",
+      "clicks": 0,
+      "impressions": 18,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/746",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/748",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/752",
+      "clicks": 0,
+      "impressions": 49,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/753",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/756",
+      "clicks": 1,
+      "impressions": 170,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/759",
+      "clicks": 0,
+      "impressions": 307,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/760",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/762",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/763",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/764",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/769",
+      "clicks": 0,
+      "impressions": 24,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/77",
+      "clicks": 0,
+      "impressions": 15,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/770",
+      "clicks": 0,
+      "impressions": 75,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/771",
+      "clicks": 0,
+      "impressions": 53,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/773",
+      "clicks": 0,
+      "impressions": 33,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/775",
+      "clicks": 0,
+      "impressions": 20,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/776",
+      "clicks": 1,
+      "impressions": 22,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/777",
+      "clicks": 0,
+      "impressions": 42,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/778",
+      "clicks": 0,
+      "impressions": 55,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/779",
+      "clicks": 0,
+      "impressions": 19,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/780",
+      "clicks": 0,
+      "impressions": 100,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/781",
+      "clicks": 0,
+      "impressions": 67,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/782",
+      "clicks": 0,
+      "impressions": 156,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/783",
+      "clicks": 0,
+      "impressions": 85,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/784",
+      "clicks": 0,
+      "impressions": 126,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/785",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/787",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/788",
+      "clicks": 0,
+      "impressions": 30,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/791",
+      "clicks": 0,
+      "impressions": 124,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/793",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/794",
+      "clicks": 0,
+      "impressions": 23,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/796",
+      "clicks": 0,
+      "impressions": 43,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/797",
+      "clicks": 1,
+      "impressions": 166,
+      "reason": "gsc: cliques>=1 e impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/809",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/83",
+      "clicks": 0,
+      "impressions": 26,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/85",
+      "clicks": 0,
+      "impressions": 34,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/888",
+      "clicks": 0,
+      "impressions": 14,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/quina/resultado/915",
+      "clicks": 1,
+      "impressions": 3,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/super-sete/resultado/389",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/super-sete/resultado/726",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/1158",
+      "clicks": 1,
+      "impressions": 2,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/1424",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/1814",
+      "clicks": 1,
+      "impressions": 1,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/248",
+      "clicks": 0,
+      "impressions": 11,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/249",
+      "clicks": 0,
+      "impressions": 13,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/369",
+      "clicks": 0,
+      "impressions": 12,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/372",
+      "clicks": 0,
+      "impressions": 16,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/378",
+      "clicks": 0,
+      "impressions": 32,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/380",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/382",
+      "clicks": 0,
+      "impressions": 10,
+      "reason": "gsc: impressoes>=10 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/585",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/779",
+      "clicks": 1,
+      "impressions": 5,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/805",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    },
+    {
+      "path": "/timemania/resultado/919",
+      "clicks": 1,
+      "impressions": 4,
+      "reason": "gsc: cliques>=1 em 90d"
+    }
+  ]
 }

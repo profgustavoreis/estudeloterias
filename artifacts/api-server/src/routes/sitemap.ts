@@ -3,6 +3,7 @@ import { db, articlesTable } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, asc, or } from "drizzle-orm";
 import { MODALIDADES_DB_NAMES, slugForDbName } from "../lib/modalidades";
+import { isConcursoIndexable } from "../services/indexing-policy";
 
 const BASE_URL = "https://estudeloterias.com.br";
 
@@ -14,9 +15,9 @@ interface SitemapEntry {
 }
 
 // Fontes únicas do mapa modalidade do DB <-> slug de hub (lib/modalidades).
-// NOTA: até a fase de corte entrar, o sitemap continua listando todos os
-// concursos; a régua de indexação (`services/indexing-policy.ts`) ainda não
-// filtra entradas aqui.
+// As URLs de concurso passam pela régua de indexação (`services/indexing-policy.ts`),
+// a MESMA usada pelo `<head>`: o sitemap só anuncia o que é indexável.
+// Invariante: sitemap ⊆ { HTTP 200 + meta robots index, follow }.
 const MODALIDADES = MODALIDADES_DB_NAMES;
 
 const COMMON_PAGES: Array<{ path: string; changefreq: string; priority: string }> = [
@@ -124,12 +125,20 @@ export async function sitemapHandler(req: Request, res: Response) {
       changefreq: "weekly",
       priority: "1.0",
     })),
-    ...rows.map((row) => ({
-      url: `/${slugForDbName(row.modalidade)}/resultado/${row.concurso}`,
-      lastmod: parseDate(row.data),
-      changefreq: "never" as const,
-      priority: "0.6",
-    })),
+    ...rows
+      .filter((row) =>
+        isConcursoIndexable({
+          modSlug: slugForDbName(row.modalidade),
+          concurso: row.concurso,
+          drawDate: row.data,
+        }).indexable,
+      )
+      .map((row) => ({
+        url: `/${slugForDbName(row.modalidade)}/resultado/${row.concurso}`,
+        lastmod: parseDate(row.data),
+        changefreq: "never" as const,
+        priority: "0.6",
+      })),
   ];
 
   const xml = [

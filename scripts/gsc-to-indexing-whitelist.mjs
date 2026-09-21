@@ -184,17 +184,24 @@ function discoverCsvFiles(explicitFiles) {
         "Veja o cabecalho do script para exportar os CSVs do GSC.",
     );
   }
-  const files = fs
-    .readdirSync(GSC_DIR)
-    .filter((name) => name.toLowerCase().endsWith(".csv"))
-    .map((name) => path.join(GSC_DIR, name));
+  const walk = (dir) =>
+    fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) return walk(full);
+      return entry.isFile() && entry.name.toLowerCase().endsWith(".csv") ? [full] : [];
+    });
+  const allCsv = walk(GSC_DIR);
+  // O export do GSC vem em subpasta e com varios CSVs (Queries, Devices, ...).
+  // Preferimos o de Paginas; sem ele, usamos todos os CSVs encontrados.
+  const pagesCsv = allCsv.filter((f) => /pages|paginas/i.test(path.basename(f)));
+  const files = (pagesCsv.length > 0 ? pagesCsv : allCsv).sort();
   if (files.length === 0) {
     fail(
       `nenhum CSV em ${displayPath(GSC_DIR)}. ` +
         "Exporte as Paginas do GSC (90 dias, filtro contem /resultado/) e salve ali.",
     );
   }
-  return files.sort();
+  return files;
 }
 
 function buildWhitelist(files) {
@@ -239,13 +246,18 @@ function buildWhitelist(files) {
   }
 
   const paths = [...byPath.values()]
-    .filter((entry) => entry.clicks >= RULES.minClicks && entry.impressions >= RULES.minImpressions)
+    .filter((entry) => entry.clicks >= RULES.minClicks || entry.impressions >= RULES.minImpressions)
     .sort((a, b) => a.path.localeCompare(b.path))
     .map((entry) => ({
       path: entry.path,
       clicks: entry.clicks,
       impressions: entry.impressions,
-      reason: "gsc: cliques>=1 e impressoes>=10 em 90d",
+      reason:
+        entry.clicks >= RULES.minClicks && entry.impressions >= RULES.minImpressions
+          ? "gsc: cliques>=1 e impressoes>=10 em 90d"
+          : entry.clicks >= RULES.minClicks
+            ? "gsc: cliques>=1 em 90d"
+            : "gsc: impressoes>=10 em 90d",
     }));
 
   // Guarda defensiva: nada sem o shape de concurso pode chegar ao JSON.
