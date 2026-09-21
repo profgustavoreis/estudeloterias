@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -33,7 +34,7 @@ router.get("/timemania/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get timemania ultimo resultado");
+    logger.error({ err }, "Failed to get timemania ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -75,7 +76,7 @@ router.get("/timemania/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get timemania resultados");
+    logger.error({ err }, "Failed to get timemania resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -108,7 +109,7 @@ router.get("/timemania/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get timemania concurso");
+    logger.error({ err, concurso }, "Failed to get timemania concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -342,7 +343,7 @@ router.get("/timemania/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute timemania estatisticas");
+    logger.error({ err }, "Failed to compute timemania estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -397,7 +398,7 @@ router.get("/timemania/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get timemania resumo");
+    logger.error({ err }, "Failed to get timemania resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -498,7 +499,7 @@ router.post("/timemania/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate timemania");
+    logger.error({ err }, "Failed to simulate timemania");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
@@ -528,7 +529,7 @@ router.post("/timemania/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate timemania jogo");
+    logger.error({ err }, "Failed to generate timemania jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -38,7 +39,7 @@ router.get("/mega-sena/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get mega-sena ultimo resultado");
+    logger.error({ err }, "Failed to get mega-sena ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -84,7 +85,7 @@ router.get("/mega-sena/resultados", async (req, res) => {
       resultados,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get mega-sena resultados");
+    logger.error({ err }, "Failed to get mega-sena resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -125,7 +126,7 @@ router.get("/mega-sena/resultados/:concurso", async (req, res) => {
       valorAcumuladoConcursoEspecial: norm.valorAcumuladoConcursoEspecial ? Number(norm.valorAcumuladoConcursoEspecial) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get concurso");
+    logger.error({ err, concurso }, "Failed to get concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -368,7 +369,7 @@ router.get("/mega-sena/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute estatisticas");
+    logger.error({ err }, "Failed to compute estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -398,7 +399,7 @@ router.get("/mega-sena/mega-da-virada", async (req, res) => {
       historico: edicoes.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get mega da virada");
+    logger.error({ err }, "Failed to get mega da virada");
     res.status(500).json({ error: "Erro ao buscar Mega da Virada" });
   }
 });
@@ -454,7 +455,7 @@ router.get("/mega-sena/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get resumo");
+    logger.error({ err }, "Failed to get resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -554,7 +555,7 @@ router.post("/mega-sena/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate mega-sena");
+    logger.error({ err }, "Failed to simulate mega-sena");
     res.status(500).json({ error: "Erro ao realizar simulação" });
   }
 });

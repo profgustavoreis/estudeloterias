@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -36,7 +37,7 @@ router.get("/maismilionaria/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get maismilionaria ultimo resultado");
+    logger.error({ err }, "Failed to get maismilionaria ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -77,7 +78,7 @@ router.get("/maismilionaria/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get maismilionaria resultados");
+    logger.error({ err }, "Failed to get maismilionaria resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -114,7 +115,7 @@ router.get("/maismilionaria/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get maismilionaria concurso");
+    logger.error({ err, concurso }, "Failed to get maismilionaria concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -340,7 +341,7 @@ router.get("/maismilionaria/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute maismilionaria estatisticas");
+    logger.error({ err }, "Failed to compute maismilionaria estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -394,7 +395,7 @@ router.get("/maismilionaria/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get maismilionaria resumo");
+    logger.error({ err }, "Failed to get maismilionaria resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -558,7 +559,7 @@ router.post("/maismilionaria/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate maismilionaria");
+    logger.error({ err }, "Failed to simulate maismilionaria");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
@@ -605,7 +606,7 @@ router.post("/maismilionaria/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate maismilionaria jogo");
+    logger.error({ err }, "Failed to generate maismilionaria jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

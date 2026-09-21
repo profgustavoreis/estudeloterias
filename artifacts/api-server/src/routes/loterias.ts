@@ -68,7 +68,7 @@ router.get("/loterias", async (req, res) => {
     );
     res.json(loterias);
   } catch (err) {
-    req.log.error({ err }, "Failed to get loterias");
+    logger.error({ err }, "Failed to get loterias");
     res.status(500).json({ error: "Erro ao buscar loterias" });
   }
 });
@@ -96,7 +96,7 @@ router.get("/loterias/:modalidade/resultado/ultimo", async (req, res) => {
       valorEstimadoProximoConcurso: latest.valorEstimadoProximo ? Number(latest.valorEstimadoProximo) : null,
     });
   } catch (err) {
-    req.log.error({ err, modalidade }, "Failed to get ultimo resultado");
+    logger.error({ err, modalidade }, "Failed to get ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });

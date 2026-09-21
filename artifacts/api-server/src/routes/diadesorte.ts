@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -32,7 +33,7 @@ router.get("/diadesorte/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get diadesorte ultimo resultado");
+    logger.error({ err }, "Failed to get diadesorte ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -73,7 +74,7 @@ router.get("/diadesorte/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get diadesorte resultados");
+    logger.error({ err }, "Failed to get diadesorte resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -105,7 +106,7 @@ router.get("/diadesorte/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get diadesorte concurso");
+    logger.error({ err, concurso }, "Failed to get diadesorte concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -330,7 +331,7 @@ router.get("/diadesorte/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute diadesorte estatisticas");
+    logger.error({ err }, "Failed to compute diadesorte estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -384,7 +385,7 @@ router.get("/diadesorte/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get diadesorte resumo");
+    logger.error({ err }, "Failed to get diadesorte resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -483,7 +484,7 @@ router.post("/diadesorte/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate diadesorte");
+    logger.error({ err }, "Failed to simulate diadesorte");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
@@ -512,7 +513,7 @@ router.post("/diadesorte/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate diadesorte jogo");
+    logger.error({ err }, "Failed to generate diadesorte jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

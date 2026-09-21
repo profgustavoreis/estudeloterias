@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -31,7 +32,7 @@ router.get("/super-sete/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get super-sete ultimo resultado");
+    logger.error({ err }, "Failed to get super-sete ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -73,7 +74,7 @@ router.get("/super-sete/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get super-sete resultados");
+    logger.error({ err }, "Failed to get super-sete resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -106,7 +107,7 @@ router.get("/super-sete/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get super-sete concurso");
+    logger.error({ err, concurso }, "Failed to get super-sete concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -359,7 +360,7 @@ router.get("/super-sete/estatisticas", async (req, res) => {
       digitosUnicos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute super-sete estatisticas");
+    logger.error({ err }, "Failed to compute super-sete estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -414,7 +415,7 @@ router.get("/super-sete/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get super-sete resumo");
+    logger.error({ err }, "Failed to get super-sete resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -548,7 +549,7 @@ router.post("/super-sete/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate super-sete");
+    logger.error({ err }, "Failed to simulate super-sete");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
@@ -599,7 +600,7 @@ router.post("/super-sete/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate super-sete jogo");
+    logger.error({ err }, "Failed to generate super-sete jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

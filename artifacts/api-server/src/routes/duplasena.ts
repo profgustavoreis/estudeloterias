@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -42,7 +43,7 @@ router.get("/duplasena/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get duplasena ultimo resultado");
+    logger.error({ err }, "Failed to get duplasena ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -84,7 +85,7 @@ router.get("/duplasena/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get duplasena resultados");
+    logger.error({ err }, "Failed to get duplasena resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -123,7 +124,7 @@ router.get("/duplasena/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get duplasena concurso");
+    logger.error({ err, concurso }, "Failed to get duplasena concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -363,7 +364,7 @@ router.get("/duplasena/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute duplasena estatisticas");
+    logger.error({ err }, "Failed to compute duplasena estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -418,7 +419,7 @@ router.get("/duplasena/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get duplasena resumo");
+    logger.error({ err }, "Failed to get duplasena resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -449,7 +450,7 @@ router.get("/duplasena/dupla-de-pascoa", async (req, res) => {
       historico: edicoes.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get dupla de pascoa");
+    logger.error({ err }, "Failed to get dupla de pascoa");
     res.status(500).json({ error: "Erro ao buscar Dupla de Páscoa" });
   }
 });
@@ -663,7 +664,7 @@ router.post("/duplasena/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate duplasena");
+    logger.error({ err }, "Failed to simulate duplasena");
     res.status(500).json({ error: "Erro ao realizar simulação" });
   }
 });
@@ -702,7 +703,7 @@ router.post("/duplasena/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate duplasena jogo");
+    logger.error({ err }, "Failed to generate duplasena jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

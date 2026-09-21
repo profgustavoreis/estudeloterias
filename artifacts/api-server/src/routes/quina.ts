@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -38,7 +39,7 @@ router.get("/quina/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get quina ultimo resultado");
+    logger.error({ err }, "Failed to get quina ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -80,7 +81,7 @@ router.get("/quina/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get quina resultados");
+    logger.error({ err }, "Failed to get quina resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -113,7 +114,7 @@ router.get("/quina/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get quina concurso");
+    logger.error({ err, concurso }, "Failed to get quina concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -345,7 +346,7 @@ router.get("/quina/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute quina estatisticas");
+    logger.error({ err }, "Failed to compute quina estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -400,7 +401,7 @@ router.get("/quina/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get quina resumo");
+    logger.error({ err }, "Failed to get quina resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -431,7 +432,7 @@ router.get("/quina/quina-de-sao-joao", async (req, res) => {
       historico: edicoes.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get quina de sao joao");
+    logger.error({ err }, "Failed to get quina de sao joao");
     res.status(500).json({ error: "Erro ao buscar Quina de São João" });
   }
 });
@@ -521,7 +522,7 @@ router.post("/quina/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate quina");
+    logger.error({ err }, "Failed to simulate quina");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
@@ -560,7 +561,7 @@ router.post("/quina/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate quina jogo");
+    logger.error({ err }, "Failed to generate quina jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { logger } from "../lib/logger";
 import { db } from "@workspace/db";
 import { lotteryResultsTable } from "@workspace/db/schema";
 import { eq, and, desc, asc, count, max, sql } from "drizzle-orm";
@@ -38,7 +39,7 @@ router.get("/lotofacil/resultado/ultimo", async (req, res) => {
     if (!row) { res.status(503).json({ error: "Dados indisponíveis" }); return; }
     res.json("id" in row ? toResultado(row as any) : row);
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil ultimo resultado");
+    logger.error({ err }, "Failed to get lotofacil ultimo resultado");
     res.status(500).json({ error: "Erro ao buscar resultado" });
   }
 });
@@ -80,7 +81,7 @@ router.get("/lotofacil/resultados", async (req, res) => {
       resultados: rows.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil resultados");
+    logger.error({ err }, "Failed to get lotofacil resultados");
     res.status(500).json({ error: "Erro ao buscar resultados" });
   }
 });
@@ -113,7 +114,7 @@ router.get("/lotofacil/resultados/:concurso", async (req, res) => {
       arrecadacaoTotal: norm.arrecadacaoTotal ? Number(norm.arrecadacaoTotal) : null,
     });
   } catch (err) {
-    req.log.error({ err, concurso }, "Failed to get lotofacil concurso");
+    logger.error({ err, concurso }, "Failed to get lotofacil concurso");
     res.status(404).json({ error: "Concurso não encontrado" });
   }
 });
@@ -347,7 +348,7 @@ router.get("/lotofacil/estatisticas", async (req, res) => {
       numerosEspeciais,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to compute lotofacil estatisticas");
+    logger.error({ err }, "Failed to compute lotofacil estatisticas");
     res.status(500).json({ error: "Erro ao calcular estatísticas" });
   }
 });
@@ -402,7 +403,7 @@ router.get("/lotofacil/resumo", async (req, res) => {
       ultimoConcurso: maxRow.maxConcurso ?? 0,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil resumo");
+    logger.error({ err }, "Failed to get lotofacil resumo");
     res.status(500).json({ error: "Erro ao buscar resumo" });
   }
 });
@@ -432,7 +433,7 @@ router.get("/lotofacil/lotofacil-da-independencia", async (req, res) => {
       historico: edicoes.map(toResultado),
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to get lotofacil da independencia");
+    logger.error({ err }, "Failed to get lotofacil da independencia");
     res.status(500).json({ error: "Erro ao buscar Lotofácil da Independência" });
   }
 });
@@ -524,7 +525,7 @@ router.post("/lotofacil/simulador", async (req, res) => {
       totalConcursos: allRows.length,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to simulate lotofacil");
+    logger.error({ err }, "Failed to simulate lotofacil");
     res.status(500).json({ error: "Erro ao simular" });
   }
 });
@@ -563,7 +564,7 @@ router.post("/lotofacil/gerador", async (req, res) => {
       custo: custoPorJogo * qtdJogos,
     });
   } catch (err) {
-    req.log.error({ err }, "Failed to generate lotofacil jogo");
+    logger.error({ err }, "Failed to generate lotofacil jogo");
     res.status(500).json({ error: "Erro ao gerar jogo" });
   }
 });
